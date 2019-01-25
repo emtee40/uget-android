@@ -5,5 +5,58 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+
+    <!-- MainApp.java -->
+    <string name="notification_error_title">Error Occurred</string>
+    <string name="notification_error_content">Error occurred when downloading.</string>
+    <string name="notification_starting_title">Download Starting</string>
+    <string name="notification_starting_content">Starting download queue.</string>
+    <string name="notification_completed_title">Download Completed</string>
+    <string name="notification_completed_content">All queuing downloads have been completed.</string>
+
+    <!-- CategoryAdapter.java -->
+    <string name="cnode_total">All Category</string>
+
+    <!-- StateAdapter.java -->
+    <string name="cnode_default_new_name">New</string>
+    <string-array name="cnode_state">
+        <item>All Status</item>
+        <item>Active</item>
+        <item>Queuing</item>
+        <item>Finished</item>
+        <item>Recycled</item>
+    </string-array>
+
+    <!-- DownloadAdapter.java & preference -->
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">Mirrors</string>
+    <string name="dnode_file">File</string>
+    <string name="dnode_folder">Folder</string>
+    <string name="dnode_user">User</string>
+    <string name="dnode_password">Password</string>
+    <string name="dnode_connections">Max connections</string>
+    <string name="dnode_left">left</string>
+    <string name="dnode_retry">Retry</string>
+    <string name="dnode_retry_limit">Retry limit</string>
+    <string name="dnode_referrer">Referrer</string>
+    <string name="dnode_proxy_type">Proxy</string>
+    <string name="dnode_proxy_host">Host</string>
+    <string name="dnode_proxy_port">Port</string>
+    <string name="dnode_proxy_user">User</string>
+    <string name="dnode_proxy_password">Password</string>
+    <string-array name="dnode_proxy_type">
+        <item>Don\'t use</item>
+        <item>Default</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+    <string-array name="dnode_proxy_type_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
 </resources>

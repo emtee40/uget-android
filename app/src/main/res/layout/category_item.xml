@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_recycler_item" >
+
+    <ImageView
+        android:id="@+id/cnode_image"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start|center_vertical"
+        android:src="@android:drawable/picture_frame"
+        android:minWidth="32dp"
+        android:maxWidth="32dp" />
+
+<!--
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:id="@android:id/text1"  
+    android:layout_width="match_parent"  
+    android:layout_height="wrap_content"  
+    android:textAppearance="?android:attr/textAppearanceListItemSmall"  
+    android:gravity="center_vertical"  
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"  
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"  
+    android:background="?android:attr/activatedBackgroundIndicator"  
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"  
+    />  
+ -->
+
+    <TextView
+        android:id="@+id/cnode_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="start|center_vertical"
+        android:textColor="@android:color/black"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        />
+        <!-- 
+        android:textColor="#222222"
+        android:shadowColor="#cccccc"
+        android:shadowDx="1.0"
+        android:shadowDy="1.0"
+        android:shadowRadius="0.5"
+        -->
+    
+    <TextView
+        android:id="@+id/cnode_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="end|center_vertical"
+        android:paddingLeft="0dp"
+        android:paddingRight="3dp"
+
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>
