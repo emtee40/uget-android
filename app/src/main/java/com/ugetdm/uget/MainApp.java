@@ -736,33 +736,33 @@ public class MainApp extends Application {
 //          return;
         preferencesEditor = preferences.edit();
 
-        setting.ui.confirmDelete = preferences.getBoolean("preference_ui_confirm_delete", true);
-        setting.ui.confirmExit = preferences.getBoolean("preference_ui_confirm_exit", true);
-        setting.ui.exitOnBack = preferences.getBoolean("preference_ui_exit_on_back", false);
-        setting.ui.startNotification = preferences.getBoolean("preference_ui_notification_starting", true);
-        setting.ui.soundNotification = preferences.getBoolean("preference_ui_notification_sound", true);
-        setting.ui.vibrateNotification = preferences.getBoolean("preference_ui_notification_vibrate", true);
-        setting.ui.noWifiGoOffline = preferences.getBoolean("preference_ui_no_wifi_go_offline", false);
-        setting.ui.skipExistingUri = preferences.getBoolean("preference_ui_skip_existing_uri", false);
+        setting.ui.confirmDelete = preferences.getBoolean("pref_ui_confirm_delete", true);
+        setting.ui.confirmExit = preferences.getBoolean("pref_ui_confirm_exit", true);
+        setting.ui.exitOnBack = preferences.getBoolean("pref_ui_exit_on_back", false);
+        setting.ui.startNotification = preferences.getBoolean("pref_ui_notification_starting", true);
+        setting.ui.soundNotification = preferences.getBoolean("pref_ui_notification_sound", true);
+        setting.ui.vibrateNotification = preferences.getBoolean("pref_ui_notification_vibrate", true);
+        setting.ui.noWifiGoOffline = preferences.getBoolean("pref_ui_no_wifi_go_offline", false);
+        setting.ui.skipExistingUri = preferences.getBoolean("pref_ui_skip_existing_uri", false);
 
-        setting.clipboard.enable = preferences.getBoolean("preference_clipboard_monitor", true);
+        setting.clipboard.enable = preferences.getBoolean("pref_clipboard_monitor", true);
 
-        // preference_clipboard_type
-        setting.clipboard.types = preferences.getString("preference_clipboard_type",
+        // pref_clipboard_type
+        setting.clipboard.types = preferences.getString("pref_clipboard_type",
                 "BIN|ZIP|GZ|7Z|XZ|Z|TAR|TGZ|BZ2|" +
                 "LZH|A[0-9]?|RAR|R[0-9][0-9]|ISO|" +
                 "RPM|DEB|EXE|MSI|APK|" +
                 "3GP|AAC|FLAC|M4A|M4P|MP3|OGG|WAV|WMA|" +
                 "MP4|MKV|WEBM|OGV|AVI|MOV|WMV|FLV|F4V|MPG|MPEG|RMVB").replaceAll("(\\r|\\n)", "");
         // remove '\r' and '\n' and save it
-        preferencesEditor.putString("preference_clipboard_type", setting.clipboard.types);
+        preferencesEditor.putString("pref_clipboard_type", setting.clipboard.types);
         // for Java's Regular Express format - case-insensitive "(?i:XXXXXXXX)"
         setting.clipboard.types = "(?i:" + setting.clipboard.types + ")";
         // for Java's Regular Express function - String.matches() can't accept '*' directly.
         setting.clipboard.types = setting.clipboard.types.replace("*", "\\*");
 
-        // preference_clipboard_index
-        string = preferences.getString("preference_clipboard_index", "0");
+        // pref_clipboard_index
+        string = preferences.getString("pref_clipboard_index", "0");
         try {
             if (string.length() > 0)
                 setting.clipboard.nthCategory = Integer.parseInt(string);
@@ -770,19 +770,19 @@ public class MainApp extends Application {
                 setting.clipboard.nthCategory = 0;
         } catch (NumberFormatException e) {
             setting.clipboard.nthCategory = 0;
-            preferencesEditor.putString("preference_clipboard_index",
+            preferencesEditor.putString("pref_clipboard_index",
                     Integer.toString(setting.clipboard.nthCategory));
         }
 
-        // preference_clipboard_website
-        setting.clipboard.website = preferences.getBoolean("preference_clipboard_website", true);
-        // preference_clipboard_clear_at_exit
-        setting.clipboard.clearAtExit = preferences.getBoolean("preference_clipboard_clear_at_exit", true);
-        // preference_clipboard_clear_after_accepting
-        setting.clipboard.clearAfterAccepting = preferences.getBoolean("preference_clipboard_clear_after_accepting", true);
+        // pref_clipboard_website
+        setting.clipboard.website = preferences.getBoolean("pref_clipboard_website", true);
+        // pref_clipboard_clear_at_exit
+        setting.clipboard.clearAtExit = preferences.getBoolean("pref_clipboard_clear_at_exit", true);
+        // pref_clipboard_clear_after_accepting
+        setting.clipboard.clearAfterAccepting = preferences.getBoolean("pref_clipboard_clear_after_accepting", true);
 
-        // preference_sort
-        string = preferences.getString("preference_sort", "0");
+        // pref_sort
+        string = preferences.getString("pref_sort", "0");
         try {
             if (string.length() > 0)
                 setting.sortBy = Integer.parseInt(string);
@@ -790,12 +790,12 @@ public class MainApp extends Application {
                 setting.sortBy = 0;
         } catch (NumberFormatException e) {
             setting.sortBy = 0;
-            preferencesEditor.putString("preference_sort",
+            preferencesEditor.putString("pref_sort",
                     Integer.toString(setting.sortBy));
         }
 
-        // preference_speed_download
-        string = preferences.getString("preference_speed_download", "0");
+        // pref_speed_download
+        string = preferences.getString("pref_speed_download", "0");
         try {
             if (string.length() > 0)
                 setting.speedDownload = Integer.parseInt(string);
@@ -803,12 +803,12 @@ public class MainApp extends Application {
                 setting.speedDownload = 0;
         } catch (NumberFormatException e) {
             setting.speedDownload = Integer.MAX_VALUE;
-            preferencesEditor.putString("preference_speed_download",
+            preferencesEditor.putString("pref_speed_download",
                     Integer.toString(setting.speedDownload));
         }
 
-        // preference_speed_upload
-        string = preferences.getString("preference_speed_upload", "0");
+        // pref_speed_upload
+        string = preferences.getString("pref_speed_upload", "0");
         try {
             if (string.length() > 0)
                 setting.speedUpload = Integer.parseInt(string);
@@ -816,12 +816,12 @@ public class MainApp extends Application {
                 setting.speedUpload = 0;
         } catch (NumberFormatException e) {
             setting.speedUpload = Integer.MAX_VALUE;
-            preferencesEditor.putString("preference_speed_upload",
+            preferencesEditor.putString("pref_speed_upload",
                     Integer.toString(setting.speedUpload));
         }
 
-        // preference_plugin_order
-        string = preferences.getString("preference_plugin_order", "0");
+        // pref_plugin_order
+        string = preferences.getString("pref_plugin_order", "0");
         try {
             if (string.length() > 0)
                 setting.pluginOrder = Integer.parseInt(string);
@@ -829,16 +829,16 @@ public class MainApp extends Application {
                 setting.pluginOrder = 0;
         } catch (NumberFormatException e) {
             setting.pluginOrder = 0;
-            preferencesEditor.putString("preference_plugin_order",
+            preferencesEditor.putString("pref_plugin_order",
                     Integer.toString(setting.pluginOrder));
         }
 
-        // preference_aria2_x
-        setting.plugin.aria2.uri = preferences.getString("preference_aria2_uri", "http://localhost:6800/jsonrpc");
-        setting.plugin.aria2.token = preferences.getString("preference_aria2_token", null);
+        // pref_aria2_x
+        setting.plugin.aria2.uri = preferences.getString("pref_aria2_uri", "http://localhost:6800/jsonrpc");
+        setting.plugin.aria2.token = preferences.getString("pref_aria2_token", null);
 
-        // preference_aria2_speed_download
-        string = preferences.getString("preference_aria2_speed_download", "0");
+        // pref_aria2_speed_download
+        string = preferences.getString("pref_aria2_speed_download", "0");
         try {
             if (string.length() > 0)
                 setting.plugin.aria2.speedDownload = Integer.parseInt(string);
@@ -846,12 +846,12 @@ public class MainApp extends Application {
                 setting.plugin.aria2.speedDownload = 0;
         } catch (NumberFormatException e) {
             setting.plugin.aria2.speedDownload = Integer.MAX_VALUE;
-            preferencesEditor.putString("preference_aria2_speed_download",
+            preferencesEditor.putString("pref_aria2_speed_download",
                     Integer.toString(setting.plugin.aria2.speedDownload));
         }
 
-        // preference_aria2_speed_upload
-        string = preferences.getString("preference_aria2_speed_upload", "0");
+        // pref_aria2_speed_upload
+        string = preferences.getString("pref_aria2_speed_upload", "0");
         try {
             if (string.length() > 0)
                 setting.plugin.aria2.speedUpload = Integer.parseInt(string);
@@ -859,18 +859,18 @@ public class MainApp extends Application {
                 setting.plugin.aria2.speedUpload = 0;
         } catch (NumberFormatException e) {
             setting.plugin.aria2.speedUpload = Integer.MAX_VALUE;
-            preferencesEditor.putString("preference_aria2_speed_upload",
+            preferencesEditor.putString("pref_aria2_speed_upload",
                     Integer.toString(setting.plugin.aria2.speedUpload));
         }
 
-        setting.plugin.aria2.local = preferences.getBoolean("preference_aria2_local", false);
-        setting.plugin.aria2.path = preferences.getString("preference_aria2_path", "aria2c");
-        setting.plugin.aria2.arguments = preferences.getString("preference_aria2_args", "--enable-rpc=true -D --check-certificate=false").replaceAll("(\\r|\\n)", "");
-        setting.plugin.aria2.launch = preferences.getBoolean("preference_aria2_launch", true);
-        setting.plugin.aria2.shutdown = preferences.getBoolean("preference_aria2_shutdown", true);
+        setting.plugin.aria2.local = preferences.getBoolean("pref_aria2_local", false);
+        setting.plugin.aria2.path = preferences.getString("pref_aria2_path", "aria2c");
+        setting.plugin.aria2.arguments = preferences.getString("pref_aria2_args", "--enable-rpc=true -D --check-certificate=false").replaceAll("(\\r|\\n)", "");
+        setting.plugin.aria2.launch = preferences.getBoolean("pref_aria2_launch", true);
+        setting.plugin.aria2.shutdown = preferences.getBoolean("pref_aria2_shutdown", true);
 
-        // preference_media_match_mode
-        string = preferences.getString("preference_media_match_mode", "3");
+        // pref_media_match_mode
+        string = preferences.getString("pref_media_match_mode", "3");
         try {
             if (string.length() > 0)
                 setting.plugin.media.matchMode = Integer.parseInt(string);
@@ -878,12 +878,12 @@ public class MainApp extends Application {
                 setting.plugin.media.matchMode = 3;
         } catch (NumberFormatException e) {
             setting.plugin.media.matchMode = 3;
-            preferencesEditor.putString("preference_media_match_mode",
+            preferencesEditor.putString("pref_media_match_mode",
                     Integer.toString(setting.plugin.media.matchMode));
         }
 
-        // preference_media_quality
-        string = preferences.getString("preference_media_quality", "1");
+        // pref_media_quality
+        string = preferences.getString("pref_media_quality", "1");
         try {
             if (string.length() > 0)
                 setting.plugin.media.quality = Integer.parseInt(string);
@@ -891,12 +891,12 @@ public class MainApp extends Application {
                 setting.plugin.media.quality = 1;
         } catch (NumberFormatException e) {
             setting.plugin.media.quality = 1;
-            preferencesEditor.putString("preference_media_quality",
+            preferencesEditor.putString("pref_media_quality",
                     Integer.toString(setting.plugin.media.quality));
         }
 
-        // preference_media_type
-        string = preferences.getString("preference_media_type", "0");
+        // pref_media_type
+        string = preferences.getString("pref_media_type", "0");
         try {
             if (string.length() > 0)
                 setting.plugin.media.type = Integer.parseInt(string);
@@ -904,12 +904,12 @@ public class MainApp extends Application {
                 setting.plugin.media.type = 0;
         } catch (NumberFormatException e) {
             setting.plugin.media.type = 0;
-            preferencesEditor.putString("preference_media_type",
+            preferencesEditor.putString("pref_media_type",
                     Integer.toString(setting.plugin.media.type));
         }
 
-        // preference_autosave_interval
-        string = preferences.getString("preference_autosave_interval", "1");
+        // pref_autosave_interval
+        string = preferences.getString("pref_autosave_interval", "1");
         try {
             if (string.length() > 0)
                 setting.autosaveInterval = Integer.parseInt(string);
@@ -917,7 +917,7 @@ public class MainApp extends Application {
                 setting.autosaveInterval = 1;
         } catch (NumberFormatException e) {
             setting.autosaveInterval = Integer.MAX_VALUE;
-            preferencesEditor.putString("preference_autosave_interval",
+            preferencesEditor.putString("pref_autosave_interval",
                     Integer.toString(setting.autosaveInterval));
         }
 

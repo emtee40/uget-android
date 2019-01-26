@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_ui_confirm_exit"
+        android:title="@string/pref_ui_confirm_exit"
+        android:summary="@string/pref_ui_confirm_exit_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_ui_confirm_delete"
+        android:title="@string/pref_ui_confirm_delete"
+        android:summary="@string/pref_ui_confirm_delete_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pref_ui_exit_on_back"
+        android:title="@string/pref_ui_exit_on_back"
+        android:summary="@string/pref_ui_exit_on_back_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_ui_notification_starting"
+        android:title="@string/pref_ui_notification_starting"
+        android:summary="@string/pref_ui_notification_starting_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_ui_notification_sound"
+        android:title="@string/pref_ui_notification_sound"
+        android:summary="@string/pref_ui_notification_sound_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_ui_notification_vibrate"
+        android:title="@string/pref_ui_notification_vibrate"
+        android:summary="@string/pref_ui_notification_vibrate_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pref_ui_no_wifi_go_offline"
+        android:title="@string/pref_ui_no_wifi_go_offline"
+        android:summary="@string/pref_ui_no_wifi_go_offline_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pref_ui_skip_existing_uri"
+        android:title="@string/pref_ui_skip_existing_uri"
+        android:summary="@string/pref_ui_skip_existing_uri" />
+
+</PreferenceScreen>

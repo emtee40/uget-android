@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_clipboard_monitor"
+        android:title="@string/pref_clipboard_monitor"
+        android:summary="@string/pref_clipboard_monitor_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_clipboard_website"
+        android:title="@string/pref_clipboard_media_website"
+        android:summary="@string/pref_clipboard_media_website_summary" />
+
+    <EditTextPreference
+        android:defaultValue="BIN|ZIP|GZ|7Z|XZ|Z|TAR|TGZ|BZ2|LZH|A[0-9]?|RAR|R[0-9][0-9]|ISO|RPM|DEB|EXE|MSI|APK|3GP|AAC|FLAC|M4A|M4P|MP3|OGG|WAV|WMA|MP4|MKV|WEBM|OGV|AVI|MOV|WMV|FLV|F4V|MPG|MPEG|RMVB"
+        android:key="pref_clipboard_type"
+        android:title="@string/pref_clipboard_type"
+        android:dialogTitle="@string/pref_clipboard_type"
+        android:summary="@string/pref_clipboard_type_summary" />
+
+    <EditTextPreference
+        android:defaultValue="0"
+        android:numeric="integer"
+        android:key="pref_clipboard_index"
+        android:title="@string/pref_clipboard_index"
+        android:dialogTitle="@string/pref_clipboard_index"
+        android:summary="@string/pref_clipboard_index_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_clipboard_clear_at_exit"
+        android:title="@string/pref_clipboard_clear_at_exit"
+        android:summary="@string/pref_clipboard_clear_at_exit_summary" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_clipboard_clear_after_accepting"
+        android:title="@string/pref_clipboard_clear_after_accepting"
+        android:summary="@string/pref_clipboard_clear_after_accepting_summary" />
+
+</PreferenceScreen>

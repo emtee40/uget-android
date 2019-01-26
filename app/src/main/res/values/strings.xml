@@ -59,4 +59,151 @@
         <item>4</item>
     </string-array>
 
+	<!-- SettingsActivity.java -->
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- xml/pref_xxx.xml-->
+    <string name="pref_ui">User interface</string>
+    <string name="pref_sort">Download sorting…</string>
+    <string name="pref_sort_summary">If user choose "All Category" or "All Status", sorting downloads by…</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Unsort</item>
+        <item>Sort by name</item>
+        <item>Sort by added time</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Confirm delete</string>
+    <string name="pref_ui_confirm_delete_summary">Confirm when deleting files</string>
+    <string name="pref_ui_confirm_exit">Confirm exit</string>
+    <string name="pref_ui_confirm_exit_summary">Show confirmation dialog on exit</string>
+    <string name="pref_ui_exit_on_back">Exit on back pressed</string>
+    <string name="pref_ui_exit_on_back_summary">Exiting uGet when user press back button.</string>
+    <string name="pref_ui_notification_starting">Download starting notification</string>
+    <string name="pref_ui_notification_starting_summary">Show notification when download starting.</string>
+    <string name="pref_ui_notification_sound">Sound when download is finished</string>
+    <string name="pref_ui_notification_sound_summary">Sound when download is finished or error occurred.</string>
+    <string name="pref_ui_notification_vibrate">Vibrate when download is finished</string>
+    <string name="pref_ui_notification_vibrate_summary">Vibrate when download is finished or error occurred.</string>
+    <string name="pref_ui_no_wifi_go_offline">Go offline if no WiFi connection</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">Program will enable/disable offline mode if WiFi has disconnected/connected.</string>
+    <string name="pref_ui_skip_existing_uri">Skip existing URI</string>
+
+    <string name="pref_clipboard">Clipboard</string>
+    <string name="pref_clipboard_monitor">Clipboard monitor</string>
+    <string name="pref_clipboard_monitor_summary">Enable/Disable clipboard monitor</string>
+    <string name="pref_clipboard_media_website">Monitor URL of media website</string>
+    <string name="pref_clipboard_media_website_summary">Monitor URL of media website if uGet support this site.</string>
+    <string name="pref_clipboard_type">File types</string>
+    <string name="pref_clipboard_type_summary">Monitor clipboard for specified file types (support Regular Expression)</string>
+    <string name="pref_clipboard_type_error_title">Clipboard File types</string>
+    <string name="pref_clipboard_type_error_message">Syntax error in regular expression</string>
+    <string name="pref_clipboard_index">Default category index</string>
+    <string name="pref_clipboard_index_summary">Adding URL to Nth category if no category matched</string>
+    <string name="pref_clipboard_clear_at_exit">Clear clipboard at exit</string>
+    <string name="pref_clipboard_clear_at_exit_summary">Clear clipboard data at exit</string>
+    <string name="pref_clipboard_clear_after_accepting">Clear clipboard after accepting URL</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">Clear clipboard data after uGet accept a downloadable URL.</string>
+
+    <string name="pref_speed">Speed limit</string>
+    <string name="pref_speed_download">Download speed limit</string>
+    <string name="pref_speed_download_summary">Setup download speed limit (KiB/s)</string>
+    <string name="pref_speed_upload">Upload speed limit</string>
+    <string name="pref_speed_upload_summary">Setup upload speed limit (KiB/s)</string>
+
+    <string name="pref_plugin_order">Plug-in matching order…</string>
+    <string name="pref_plugin_order_summary">Select primary and secondary plug-in.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Aria2 plug-in options</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">Setup URI for aria2 JSON-RPC</string>
+    <string name="pref_aria2_token">RPC authorization secret token</string>
+    <string name="pref_aria2_token_summary">Don\'t change If you don\'t know what is this. Use with aria2 argument --rpc-secret</string>
+    <string name="pref_aria2_local">Run aria2 in this device</string>
+    <string name="pref_aria2_local_summary">Launch aria2 server in this device. You must install aria2c by yourself.</string>
+    <string name="pref_aria2_speed_download">Download speed limit for aria2</string>
+    <string name="pref_aria2_speed_download_summary">Setup download speed limit (KiB/s), it only affect aria2 plug-in.</string>
+    <string name="pref_aria2_speed_upload">Upload speed limit for aria2</string>
+    <string name="pref_aria2_speed_upload_summary">Setup upload speed limit (KiB/s), it only affect aria2 plug-in.</string>
+    <string name="pref_aria2_launch">Launch aria2</string>
+    <string name="pref_aria2_launch_summary">Launch aria2 on startup</string>
+    <string name="pref_aria2_shutdown">Shutdown aria2</string>
+    <string name="pref_aria2_shutdown_summary">Shutdown aria2 on exit</string>
+    <string name="pref_aria2_path">Path</string>
+    <string name="pref_aria2_path_summary">Full path of aria2 program</string>
+    <string name="pref_aria2_args">Arguments</string>
+    <string name="pref_aria2_args_summary">Passing arguments to aria2</string>
+
+    <string name="pref_media">Media website options</string>
+    <string name="pref_media_match_mode">Media matching mode</string>
+    <string name="pref_media_match_mode_summary">Setup media matching mode</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>"Don't match"</item>
+        <item>"Match 1 condition"</item>
+        <item>"Match 2 condition"</item>
+        <item>"Near quality"</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">Media Quality</string>
+    <string name="pref_media_quality_summary">Setup media matching condition - Quality</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Media Type</string>
+    <string name="pref_media_type_summary">Setup media matching condition - Type</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_other">Other</string>
+    <string name="pref_autosave_interval">Autosave Interval</string>
+    <string name="pref_autosave_interval_summary">Save all data every N minutes.</string>
+
 </resources>

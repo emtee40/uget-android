@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:defaultValue="0"
+        android:numeric="integer"
+        android:key="pref_speed_download"
+        android:title="@string/pref_speed_download"
+        android:summary="@string/pref_speed_download_summary"
+        android:dialogTitle="@string/pref_speed_download_summary" />
+
+    <EditTextPreference
+        android:defaultValue="0"
+        android:numeric="integer"
+        android:key="pref_speed_upload"
+        android:title="@string/pref_speed_upload"
+        android:summary="@string/pref_speed_upload_summary"
+        android:dialogTitle="@string/pref_speed_upload_summary" />
+
+</PreferenceScreen>
