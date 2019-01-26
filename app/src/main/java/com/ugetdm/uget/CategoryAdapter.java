@@ -14,16 +14,23 @@ import com.ugetdm.uget.lib.Node;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     // C pointer to node
-    protected long pointer;
-    protected long pointerGlobal;
+    protected long    pointer;
+    protected long    pointerMix;
+    protected boolean mixMode;
 
     // variable for single choice
     protected View      selectedView;
     public    int       selectedPosition = 0;
 
-    CategoryAdapter(long nodePointer, long pointerGlobal) {
+    CategoryAdapter(long nodePointer, long pointerMix) {
         this.pointer = nodePointer;
-        this.pointerGlobal = pointerGlobal;
+        this.pointerMix = pointerMix;
+
+        // if mixMode == false, CategoryAdapter will remove first item - "All Category"
+        if (pointerMix == 0)
+            mixMode = false;
+        else
+            mixMode = true;
     }
 
     @NonNull
@@ -40,8 +47,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         long nodePointer;
         long infoPointer;
 
+        // if mixMode == false, CategoryAdapter will remove first item - "All Category"
+        if (mixMode == false)
+            position++;
+        // set icon and name
         if (position == 0) {
-            nodePointer = Node.getNthChild(pointerGlobal, 0);
+            nodePointer = Node.getNthChild(pointerMix, 0);
             holder.image.setImageResource(R.drawable.ic_all_inclusive);
             holder.name.setText(R.string.cnode_total);
         } else {
@@ -53,6 +64,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.name.setPadding(3, 3, 3, 3);
         holder.quantity.setText(Integer.toString(Node.nChildren(nodePointer)));
 
+        // if mixMode == false, CategoryAdapter will remove first item - "All Category"
+        if (mixMode == false)
+            position--;
         // --- single choice ---
         if (selectedPosition == position) {
             holder.itemView.setSelected(true);
@@ -62,7 +76,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return Node.nChildren(pointer) + 1;
+        int  count = Node.nChildren(pointer);
+
+        // if mixMode == false, CategoryAdapter will remove first item - "All Category"
+        if (mixMode == false)
+            return count;
+        else
+            return count + 1;
     }
 
     // ------------------------------------------------------------------------
@@ -107,6 +127,29 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     public void setItemClickListener(ItemClickListener clickListener) {
         onItemClickListener = clickListener;
+    }
+
+    // ------------------------------------------------------------------------
+    // Mix Mode
+    public void setMixMode(boolean enable) {
+        if (mixMode != enable) {
+            mixMode  = enable;
+            if (enable == false) {
+				// remove first item - "All Category"
+                notifyItemRemoved(0);
+                selectedPosition--;
+                // select first item if original selected item has gone.
+                if (selectedPosition < 0) {
+                    selectedPosition = 0;
+                    notifyItemChanged(0);
+                }
+            }
+            else {
+				// restore first item - "All Category"
+                selectedPosition++;
+                notifyItemInserted(0);
+            }
+        }
     }
 
 }
