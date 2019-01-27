@@ -2,9 +2,6 @@
     <string name="app_name">uGet</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
 
     <!-- MainApp.java -->
     <string name="notification_error_title">Error Occurred</string>
@@ -59,8 +56,12 @@
         <item>4</item>
     </string-array>
 
-	<!-- SettingsActivity.java -->
-    <string name="title_activity_settings">Settings</string>
+    <!-- traveler_main.xml -->
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+
+    <!-- ActionBar / Toolbar -->
+    <string name="action_settings">Settings</string>    <!-- SettingsActivity.java -->
 
     <!-- xml/pref_xxx.xml-->
     <string name="pref_ui">User interface</string>

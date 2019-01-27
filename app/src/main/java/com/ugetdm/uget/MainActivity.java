@@ -1,10 +1,12 @@
 package com.ugetdm.uget;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,13 +15,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
+    // data
+    public static MainApp app = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // --- init MainApp start ---
+        app = (MainApp)getApplicationContext();
+        app.startRunning();
+        // --- init MainApp end ---
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -38,8 +47,16 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        // --- setup Toolbar after  setSupportActionBar()  and  toggle.syncState()  ---
+        // getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // getSupportActionBar().setDisplayShowHomeEnabled(true);
+        // getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setContentInsetStartWithNavigation(0);    // right side space of Navigation button
+        toolbar.setNavigationIcon(R.mipmap.ic_launcher_round);
+        // toolbar.setTitle(R.string.app_name);
+        // toolbar.setLogo(R.mipmap.ic_launcher_round);
+
+        initTraveler();
     }
 
     @Override
@@ -51,6 +68,42 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+    // ------------------------------------------------------------------------
+    // save & restore
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+    /*
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState (Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        app.downloadAdapter.notifyDataSetChanged();
+    }
+    */
+
+    // ------------------------------------------------------------------------
+    // option menu (Toolbar / ActionBar)
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,34 +121,53 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    // ------------------------------------------------------------------------
+    // Traveler
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+    RecyclerView downloadListView;
+    RecyclerView categoryListView;
+    RecyclerView stateListView;
 
-        } else if (id == R.id.nav_slideshow) {
+    public void initTraveler() {
+        downloadListView = findViewById(R.id.download_listview);
+        downloadListView.setLayoutManager(new LinearLayoutManager(this));
+        downloadListView.setAdapter(app.downloadAdapter);
+        downloadListView.setHasFixedSize(true);
 
-        } else if (id == R.id.nav_manage) {
+        categoryListView = findViewById(R.id.category_listview);
+        categoryListView.setLayoutManager(new LinearLayoutManager(this));
+        categoryListView.setAdapter(app.categoryAdapter);
+        categoryListView.setHasFixedSize(true);
 
-        } else if (id == R.id.nav_share) {
+        stateListView = findViewById(R.id.state_listview);
+        stateListView.setLayoutManager(new LinearLayoutManager(this));
+        stateListView.setAdapter(app.stateAdapter);
+        stateListView.setHasFixedSize(true);
 
-        } else if (id == R.id.nav_send) {
+        app.categoryAdapter.setItemClickListener(new CategoryAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                app.nthCategory = position;
+                app.switchDownloadAdapter();
+            }
+        });
 
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        app.stateAdapter.setItemClickListener(new StateAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                app.nthStatus = position;
+                app.switchDownloadAdapter();
+            }
+        });
     }
+
 }

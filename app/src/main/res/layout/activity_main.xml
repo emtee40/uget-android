@@ -13,13 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+    <!-- Left side Drawer -->
+    <LinearLayout
+        android:id="@+id/traveler_view"
+        android:orientation="vertical"
+        android:layout_width="288dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        android:background="@android:color/background_light">
+        <!-- android:theme="@style/ThemeOverlay.AppCompat.Dark" -->
+        <!-- app:popupTheme="" -->
+
+        <!--
+        <include
+            layout="@layout/traveler_header_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        -->
+
+        <include
+            layout="@layout/traveler_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
