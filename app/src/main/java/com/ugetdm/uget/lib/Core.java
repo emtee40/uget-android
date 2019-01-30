@@ -78,7 +78,7 @@ public class Core {
     public  int    downloadSpeed = 0;
     public  int    uploadSpeed   = 0;
 
-    public  native int     setSpeedLimit(int downloadSpeedKiB, int uploadSpeedKiB);
+    public  native void    setSpeedLimit(int downloadSpeedKiB, int uploadSpeedKiB);
     public  native void    adjustSpeed();
     public  native void    removeAllTask();
 

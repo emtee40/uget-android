@@ -289,11 +289,12 @@ Java_com_ugetdm_uget_lib_Rpc_stopServer (JNIEnv* env, jobject thiz)
 // void  com.ugetdm.uget.Rpc.Request.cFinal();
 //                          ^inner
 
-//JNIEXPORT void
-//Java_com_ugetdm_uget_lib_Rpc_00024Request_cFinal (JNIEnv* env, jobject thiz)
+// JNIEXPORT void JNICALL
+// Java_com_ugetdm_uget_lib_Rpc_Request_cFinal(JNIEnv *env, jobject thiz)
 
-JNIEXPORT void JNICALL
-Java_com_ugetdm_uget_lib_Rpc_Request_cFinal(JNIEnv *env, jobject thiz) {
+JNIEXPORT void
+Java_com_ugetdm_uget_lib_Rpc_00024Request_cFinal (JNIEnv* env, jobject thiz)
+{
 	UgetRpcReq*  req;
 	jclass       reqClass;
 

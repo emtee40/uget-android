@@ -69,7 +69,7 @@ Java_com_ugetdm_uget_lib_Info_getGroup (JNIEnv* env, jclass dataClass, jlong poi
 }
 
 JNIEXPORT void
-Java_com_ugetdm_uget_lib_Info_setGroup (JNIEnv* env, jclass dataClass, jlong pointer, int group)
+Java_com_ugetdm_uget_lib_Info_setGroup (JNIEnv* env, jclass dataClass, jlong pointer, jint group)
 {
 	UgInfo*       data;
     UgetRelation* relation;

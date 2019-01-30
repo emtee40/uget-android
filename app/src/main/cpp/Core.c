@@ -829,7 +829,7 @@ Java_com_ugetdm_uget_lib_Core_isUriExist (JNIEnv* env, jobject thiz, jstring uri
 // UgetTask
 
 JNIEXPORT void
-Java_com_ugetdm_uget_lib_Core_setSpeedLimit (JNIEnv* env, jobject thiz, int download_KiB, int upload_KiB)
+Java_com_ugetdm_uget_lib_Core_setSpeedLimit (JNIEnv* env, jobject thiz, jint download_KiB, jint upload_KiB)
 {
 	UgetApp*  app;
 	jclass    jCore_class;
