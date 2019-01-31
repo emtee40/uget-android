@@ -56,7 +56,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.download_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_download,parent,false);
         ViewHolder holder = new ViewHolder(view);
 
         // calculate minimum width of strings
