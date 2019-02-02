@@ -24,4 +24,6 @@ public class Download {
 	public int       proxyPort;
 	public String    proxyUser;
 	public String    proxyPassword;
+
+	public int       group;    // UgetRelation.group
 }

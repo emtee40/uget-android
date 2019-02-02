@@ -42,7 +42,7 @@ import static com.ugetdm.uget.lib.Ccj.context;
 public class MainApp extends Application {
     public Core    core;
 
-    // positionswitchDownloadAdapter
+    // position used by switchDownloadAdapter()
     public int     nthStatus   = 0;
     public int     nthCategory = 0;
     public int     nthDownload = -1;
@@ -339,7 +339,8 @@ public class MainApp extends Application {
     }
 
     public void createDefaultCategory() {
-        long      cNodePointer;
+        long      nodePointer;
+        long      infoPointer;
         Category  categoryData = new Category();
 
         categoryData.name = new String(getString(R.string.cnode_default_new_name) + " " + nthCategoryCreation++);
@@ -351,16 +352,14 @@ public class MainApp extends Application {
         categoryData.fileTypes = "torrent;metalink";
         categoryData.folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         categoryData.connections = 1;
-//      categoryData.retryLimit = 10;
+        categoryData.proxyPort = 80;
+        categoryData.group = Info.Group.queuing;
 
-        logAppend ("App.createDefaultCategory() create.");
-        cNodePointer = Node.create();
-        logAppend ("App.createDefaultCategory() setData.");
-        Info.set(Node.info(cNodePointer), categoryData);
-        categoryData = null;
+        nodePointer = Node.create();
+        infoPointer = Node.info(nodePointer);
+        Info.set(infoPointer, categoryData);
 
-        logAppend ("App.createDefaultCategory() addCategoryAndNotify.");
-        addCategoryAndNotify(cNodePointer);
+        addCategoryAndNotify(nodePointer);
     }
 
     public void switchDownloadAdapter() {
@@ -519,12 +518,11 @@ public class MainApp extends Application {
     }
 
     public void addDownloadAndNotify(long dNodePointer, int toNthCategory) {
-        long  cNodePointer;
+        int toNthCategoryReal = toNthCategory - 1;
+        if (toNthCategoryReal < 0)
+            toNthCategoryReal = 0;
 
-        if (toNthCategory > 0)
-            cNodePointer = Node.getNthChild(core.nodeReal, toNthCategory -1);
-        else
-            cNodePointer = 0;
+        long cNodePointer = Node.getNthChild(core.nodeReal, toNthCategoryReal);
         core.addDownload(dNodePointer, cNodePointer, false);
 
         categoryAdapter.notifyDataSetChanged();

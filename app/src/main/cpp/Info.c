@@ -71,11 +71,11 @@ Java_com_ugetdm_uget_lib_Info_getGroup (JNIEnv* env, jclass dataClass, jlong poi
 JNIEXPORT void
 Java_com_ugetdm_uget_lib_Info_setGroup (JNIEnv* env, jclass dataClass, jlong pointer, jint group)
 {
-	UgInfo*       data;
+	UgInfo*       info;
     UgetRelation* relation;
 
-	data = (UgInfo*)(intptr_t) pointer;
-    relation = ug_info_realloc(data, UgetRelationInfo);
+	info = (UgInfo*)(intptr_t) pointer;
+    relation = ug_info_realloc(info, UgetRelationInfo);
     relation->group = group;
 }
 
@@ -83,12 +83,12 @@ JNIEXPORT jstring
 Java_com_ugetdm_uget_lib_Info_getName(JNIEnv* env, jclass dataClass, jlong pointer)
 {
 	char*       name;
-	UgInfo*     data;
+	UgInfo*     info;
 	UgetCommon* common;
 	jstring     result;
 
-	data = (UgInfo*)(intptr_t) pointer;
-	common = ug_info_get(data, UgetCommonInfo);
+	info = (UgInfo*)(intptr_t) pointer;
+	common = ug_info_get(info, UgetCommonInfo);
 
 	if (common->name)
 		result = (*env)->NewStringUTF (env, common->name);
@@ -105,16 +105,16 @@ Java_com_ugetdm_uget_lib_Info_getName(JNIEnv* env, jclass dataClass, jlong point
 JNIEXPORT void
 Java_com_ugetdm_uget_lib_Info_setName(JNIEnv* env, jclass dataClass, jlong pointer, jstring name)
 {
-	UgInfo*     data;
+	UgInfo*     info;
 	UgetCommon* common;
 	const char* cstr;
 
-	data = (UgInfo*)(intptr_t) pointer;
+	info = (UgInfo*)(intptr_t) pointer;
 
 	if (name) {
 		cstr = (*env)->GetStringUTFChars(env, name, NULL);
 		if (cstr && cstr[0]) {
-			common = ug_info_realloc(data, UgetCommonInfo);
+			common = ug_info_realloc(info, UgetCommonInfo);
 			ug_free(common->name);
 			common->name = ug_strdup(cstr);
 		}
@@ -126,15 +126,15 @@ JNIEXPORT void
 Java_com_ugetdm_uget_lib_Info_setNameByUri(JNIEnv* env, jclass dataClass, jlong pointer, jstring uri)
 {
     UgetCommon* common;
-	UgInfo*     data;
+	UgInfo*     info;
 	const char* cstr;
 
-	data = (UgInfo*)(intptr_t) pointer;
+	info = (UgInfo*)(intptr_t) pointer;
 
 	if (uri) {
 		cstr = (*env)->GetStringUTFChars(env, uri, NULL);
 		if (cstr && cstr[0]) {
-			common = ug_info_realloc(data, UgetCommonInfo);
+			common = ug_info_realloc(info, UgetCommonInfo);
 			ug_free(common->name);
             common->name = uget_name_from_uri_str(cstr);
         }
@@ -146,13 +146,13 @@ JNIEXPORT jboolean
 Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Progress_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject progressObject)
 {
 	jclass        progressClass;
-	UgInfo*       data;
+	UgInfo*       info;
 	UgetCommon*   common;
 	UgetProgress* progress;
 
-	data = (UgInfo*)(intptr_t) pointer;
+	info = (UgInfo*)(intptr_t) pointer;
 
-	progress = ug_info_get(data, UgetProgressInfo);
+	progress = ug_info_get(info, UgetProgressInfo);
 	if (progress) {
 		progressClass = (*env)->GetObjectClass(env, progressObject);
 
@@ -184,7 +184,7 @@ Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Progress_2 (JNIEnv* env
 				(*env)->GetFieldID (env, progressClass, "percent", "I"),
 				progress->percent);
 
-		common = ug_info_get(data, UgetCommonInfo);
+		common = ug_info_get(info, UgetCommonInfo);
 		if (common) {
 			(*env)->SetIntField (env, progressObject,
 					(*env)->GetFieldID (env, progressClass, "retryCount", "I"),
@@ -205,95 +205,106 @@ Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Progress_2 (JNIEnv* env
 jboolean getDownloadData(JNIEnv* env, jlong pointer, jobject dDataObject)
 {
 	jclass      dDataClass;
-	UgInfo*     data;
-	UgetCommon* common;
-	UgetProxy*  proxy;
-	UgetHttp*   http;
+	UgInfo*     info;
 	jboolean    has_data = JNI_FALSE;
+	union {
+		UgetCommon*   common;
+		UgetProxy*    proxy;
+		UgetHttp*     http;
+		UgetRelation* relation;
+	} temp;
 
-	data = (UgInfo*)(intptr_t) pointer;
+	info = (UgInfo*)(intptr_t) pointer;
 
 	dDataClass = (*env)->GetObjectClass (env, dDataObject);
 
-	common = ug_info_get(data, UgetCommonInfo);
-	if (common) {
+	temp.common = ug_info_get(info, UgetCommonInfo);
+	if (temp.common) {
 		has_data = JNI_TRUE;
-		if (common->uri) {
+		if (temp.common->uri) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "uri", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, common->uri));
+					(*env)->NewStringUTF (env, temp.common->uri));
 		}
-		if (common->mirrors) {
+		if (temp.common->mirrors) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "mirrors", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, common->mirrors));
+					(*env)->NewStringUTF (env, temp.common->mirrors));
 		}
-		if (common->file) {
+		if (temp.common->file) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "file", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, common->file));
+					(*env)->NewStringUTF (env, temp.common->file));
 		}
-		if (common->folder) {
+		if (temp.common->folder) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "folder", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, common->folder));
+					(*env)->NewStringUTF (env, temp.common->folder));
 		}
-		if (common->user) {
+		if (temp.common->user) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "user", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, common->user));
+					(*env)->NewStringUTF (env, temp.common->user));
 		}
-		if (common->password) {
+		if (temp.common->password) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "password", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, common->password));
+					(*env)->NewStringUTF (env, temp.common->password));
 		}
 		// connections
 		(*env)->SetIntField (env, dDataObject,
 				(*env)->GetFieldID (env, dDataClass, "connections", "I"),
-				common->max_connections);
+				temp.common->max_connections);
 		// retryLimit
 //		(*env)->SetIntField (env, dDataObject,
 //				(*env)->GetFieldID (env, dDataClass, "retryLimit", "I"),
 //				common->retry_limit);
 	}
 
-	proxy = ug_info_get(data, UgetProxyInfo);
-	if (proxy) {
+	temp.proxy = ug_info_get(info, UgetProxyInfo);
+	if (temp.proxy) {
 		has_data = JNI_TRUE;
-		if (proxy->host) {
+		if (temp.proxy->host) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "proxyHost", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, proxy->host));
+					(*env)->NewStringUTF (env, temp.proxy->host));
 		}
-		if (proxy->user) {
+		if (temp.proxy->user) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "proxyUser", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, proxy->user));
+					(*env)->NewStringUTF (env, temp.proxy->user));
 		}
-		if (proxy->password) {
+		if (temp.proxy->password) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "proxyPassword", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, proxy->password));
+					(*env)->NewStringUTF (env, temp.proxy->password));
 		}
 		// port
 		(*env)->SetIntField (env, dDataObject,
 				(*env)->GetFieldID (env, dDataClass, "proxyPort", "I"),
-				proxy->port);
+				temp.proxy->port);
 		// type
 		(*env)->SetIntField (env, dDataObject,
 				(*env)->GetFieldID (env, dDataClass, "proxyType", "I"),
-				proxy->type);
+				temp.proxy->type);
 	}
 
-	http = ug_info_get(data, UgetHttpInfo);
-	if (http) {
+	temp.http = ug_info_get(info, UgetHttpInfo);
+	if (temp.http) {
 		has_data = JNI_TRUE;
-		if (http->referrer) {
+		if (temp.http->referrer) {
 			(*env)->SetObjectField (env, dDataObject,
 					(*env)->GetFieldID (env, dDataClass, "referrer", "Ljava/lang/String;"),
-					(*env)->NewStringUTF (env, http->referrer));
+					(*env)->NewStringUTF (env, temp.http->referrer));
 		}
+	}
+
+	temp.relation = ug_info_get(info, UgetRelationInfo);
+	if (temp.relation) {
+		has_data = JNI_TRUE;
+		(*env)->SetIntField (env, dDataObject,
+								(*env)->GetFieldID (env, dDataClass, "group", "I"),
+								temp.relation->group);
 	}
 
 	(*env)->DeleteLocalRef(env, dDataClass);
@@ -315,20 +326,21 @@ static void setDownloadData (JNIEnv* env, jlong pointer, jobject dDataObject)
 {
 	jclass      dDataClass;
 	jstring     jstr;
-	UgInfo*     data;
+	UgInfo*     info;
 	const char* cstr;
 	int         value;
-	struct {
-		UgetCommon* common;
-		UgetProxy*  proxy;
-		UgetHttp*   http;
+	union {
+		UgetCommon*   common;
+		UgetProxy*    proxy;
+		UgetHttp*     http;
+		UgetRelation* relation;
 	} temp;
 
-	data = (UgInfo*)(intptr_t) pointer;
+	info = (UgInfo*)(intptr_t) pointer;
 
 	dDataClass = (*env)->GetObjectClass(env, dDataObject);
 
-	temp.common = ug_info_realloc(data, UgetCommonInfo);
+	temp.common = ug_info_realloc(info, UgetCommonInfo);
 	// uri
 	jstr = (*env)->GetObjectField (env, dDataObject,
 			(*env)->GetFieldID (env, dDataClass, "uri", "Ljava/lang/String;"));
@@ -414,7 +426,7 @@ static void setDownloadData (JNIEnv* env, jlong pointer, jobject dDataObject)
 //	temp.common->retry_limit = (*env)->GetIntField (env, dDataObject,
 //			(*env)->GetFieldID (env, dDataClass, "retryLimit", "I"));
 
-	temp.proxy = ug_info_realloc(data, UgetProxyInfo);
+	temp.proxy = ug_info_realloc(info, UgetProxyInfo);
 	// proxyHost
 	jstr = (*env)->GetObjectField (env, dDataObject,
 			(*env)->GetFieldID (env, dDataClass, "proxyHost", "Ljava/lang/String;"));
@@ -465,7 +477,7 @@ static void setDownloadData (JNIEnv* env, jlong pointer, jobject dDataObject)
 			(*env)->GetFieldID (env, dDataClass, "proxyType", "I"));
 	temp.proxy->type = value;
 
-	temp.http = ug_info_realloc(data, UgetHttpInfo);
+	temp.http = ug_info_realloc(info, UgetHttpInfo);
 	// referrer
 	jstr = (*env)->GetObjectField (env, dDataObject,
 			(*env)->GetFieldID (env, dDataClass, "referrer", "Ljava/lang/String;"));
@@ -478,6 +490,11 @@ static void setDownloadData (JNIEnv* env, jlong pointer, jobject dDataObject)
 		(*env)->ReleaseStringUTFChars (env, jstr, cstr);
 	}
 	(*env)->DeleteLocalRef (env, jstr);
+
+	// group
+	temp.relation = ug_info_realloc(info, UgetRelationInfo);
+	temp.relation->group = (*env)->GetIntField (env, dDataObject,
+			(*env)->GetFieldID (env, dDataClass, "group", "I"));
 
 	(*env)->DeleteLocalRef (env, dDataClass);
 }
@@ -494,22 +511,22 @@ Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env
 	jclass        cDataClass;
 //	jarray        jArray;
 	jstring       jString;
-	UgInfo*       data;
+	UgInfo*       info;
     UgetCommon*   common;
 	UgetCategory* category;
 	jboolean      has_data = JNI_FALSE;
 
 	has_data = getDownloadData (env, pointer, cDataObject);
 
-	data = (UgInfo*)(intptr_t) pointer;
+	info = (UgInfo*)(intptr_t) pointer;
 
 	cDataClass = (*env)->GetObjectClass (env, cDataObject);
 
-	category = ug_info_get(data, UgetCategoryInfo);
+	category = ug_info_get(info, UgetCategoryInfo);
 	if (category) {
 		has_data = JNI_TRUE;
 
-        common = ug_info_get(data, UgetCommonInfo);
+        common = ug_info_get(info, UgetCommonInfo);
 		if (common && common->name)
 			jString = (*env)->NewStringUTF(env, common->name);
 		else
@@ -576,19 +593,19 @@ Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env
 	jclass        cDataClass;
 //	jarray        jArray;
 	jstring       jString;
-	UgInfo*       data;
+	UgInfo*       info;
     UgetCommon*   common;
 	UgetCategory* category;
 
 	setDownloadData(env, pointer, cDataObject);
 
-	data = (UgInfo*)(intptr_t) pointer;
+	info = (UgInfo*)(intptr_t) pointer;
 
 	cDataClass = (*env)->GetObjectClass (env, cDataObject);
 
 	jString = (*env)->GetObjectField (env, cDataObject,
 			(*env)->GetFieldID (env, cDataClass, "name", "Ljava/lang/String;"));
-    common = ug_info_realloc(data, UgetCommonInfo);
+    common = ug_info_realloc(info, UgetCommonInfo);
 	free (common->name);
     common->name = NULL;
 	if (jString) {
@@ -599,7 +616,7 @@ Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env
 	}
 	(*env)->DeleteLocalRef (env, jString);
 
-	category = ug_info_realloc (data, UgetCategoryInfo);
+	category = ug_info_realloc (info, UgetCategoryInfo);
 	category->active_limit = (*env)->GetIntField (env, cDataObject,
 			(*env)->GetFieldID (env, cDataClass, "activeLimit", "I"));
 	category->finished_limit = (*env)->GetIntField (env, cDataObject,
@@ -648,12 +665,12 @@ Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env
 JNIEXPORT jint
 Java_com_ugetdm_uget_lib_Info_getPriority (JNIEnv* env, jclass dataClass, jlong pointer)
 {
-	UgInfo*       data;
+	UgInfo*       info;
 	UgetRelation* relation;
 	jint          result;
 
-	data = (UgInfo*)(intptr_t) pointer;
-	relation = ug_info_get(data, UgetRelationInfo);
+	info = (UgInfo*)(intptr_t) pointer;
+	relation = ug_info_get(info, UgetRelationInfo);
 	if (relation)
 		result = relation->priority;
 	else
@@ -665,24 +682,24 @@ Java_com_ugetdm_uget_lib_Info_getPriority (JNIEnv* env, jclass dataClass, jlong 
 JNIEXPORT void
 Java_com_ugetdm_uget_lib_Info_setPriority (JNIEnv* env, jclass dataClass, jlong pointer, jint priority)
 {
-	UgInfo*       data;
+	UgInfo*       info;
 	UgetRelation* relation;
 
-	data = (UgInfo*)(intptr_t) pointer;
-	relation = ug_info_realloc(data, UgetRelationInfo);
+	info = (UgInfo*)(intptr_t) pointer;
+	relation = ug_info_realloc(info, UgetRelationInfo);
 	relation->priority = priority;
 }
 
 JNIEXPORT jstring
 Java_com_ugetdm_uget_lib_Info_getMessage (JNIEnv* env, jclass dataClass, jlong pointer)
 {
-	UgInfo*    data;
+	UgInfo*    info;
 	UgetLog*   log;
 	UgetEvent* event;
 	jstring    result;
 
-	data = (UgInfo*)(intptr_t) pointer;
-	log = ug_info_get(data, UgetLogInfo);
+	info = (UgInfo*)(intptr_t) pointer;
+	log = ug_info_get(info, UgetLogInfo);
 	if (log == NULL || log->messages.size == 0)
 		result = NULL;
 	else {
