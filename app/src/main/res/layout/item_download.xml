@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/selector_item" >
+    android:background="@drawable/selector_item_download" >
 
     <ImageView
         android:id="@+id/dnode_image"
@@ -18,8 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
-        <!-- Medium Size Text -->
 
         <!-- line 1 -->
         <LinearLayout
@@ -35,6 +33,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textIsSelectable="false"
+                android:textColor="@drawable/selector_item_text"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <TextView
                 android:id="@+id/dnode_retry"
@@ -56,7 +55,7 @@
             <ProgressBar
                 android:id="@+id/dnode_progress"
                 style="@android:style/Widget.ProgressBar.Horizontal"
-                android:minHeight="10dp"
+                android:minHeight="3dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -68,6 +67,7 @@
                 android:layout_gravity="end|center_vertical"
                 android:gravity="end"
                 android:lines="1"
+                android:textColor="@drawable/selector_item_text"
                 android:textIsSelectable="false"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
@@ -77,13 +77,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Small Text"
-                android:id="@+id/textView" />
 
             <TextView
                 android:id="@+id/dnode_message"
@@ -104,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
                 android:maxLines="1"
+                android:textColor="@drawable/selector_item_text"
                 android:textIsSelectable="false"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <TextView
@@ -115,6 +109,7 @@
                 android:gravity="center"
                 android:lines="1"
                 android:visibility="gone"
+                android:textColor="@drawable/selector_item_text"
                 android:textIsSelectable="false"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 			<TextView
@@ -124,14 +119,10 @@
                 android:layout_gravity="end|center_vertical"
                 android:gravity="end"
                 android:lines="1"
+                android:textColor="@drawable/selector_item_text"
                 android:textIsSelectable="false"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
-
-        <!--
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-         -->
 
     </LinearLayout>
 
