@@ -241,6 +241,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         // multiple choice
         if (selections.get(position))
             holder.itemView.setSelected(true);
+        else
+            holder.itemView.setSelected(false);
     }
 
     @Override
