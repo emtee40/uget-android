@@ -343,7 +343,7 @@ public class MainApp extends Application {
         long      infoPointer;
         Category  categoryData = new Category();
 
-        categoryData.name = new String(getString(R.string.cnode_default_new_name) + " " + nthCategoryCreation++);
+        categoryData.name = getString(R.string.cnode_default_new_name) + " " + nthCategoryCreation++;
         categoryData.activeLimit = 2;
         categoryData.finishedLimit = 100;
         categoryData.recycledLimit = 100;
@@ -466,22 +466,20 @@ public class MainApp extends Application {
 
     public boolean saveNthCategory(int nthCategory, String filename)
     {
-        long cNodePointer;
-
-        if (nthCategory > 0)
-            nthCategory -= 1;
-        cNodePointer = Node.getNthChild(core.nodeReal, nthCategory);
-        return core.saveCategory(cNodePointer, filename);
+        int nthCategoryReal = nthCategory - 1;
+        if (nthCategoryReal < 0)
+            nthCategoryReal = 0;
+        long nodePointer = Node.getNthChild(core.nodeReal, nthCategoryReal);
+        return core.saveCategory(nodePointer, filename);
     }
 
     public boolean saveNthCategory(int nthCategory, int fd)
     {
-        long cNodePointer;
-
-        if (nthCategory > 0)
-            nthCategory -= 1;
-        cNodePointer = Node.getNthChild(core.nodeReal, nthCategory);
-        return core.saveCategory(cNodePointer, fd);
+        int nthCategoryReal = nthCategory - 1;
+        if (nthCategoryReal < 0)
+            nthCategoryReal = 0;
+        long nodePointer = Node.getNthChild(core.nodeReal, nthCategoryReal);
+        return core.saveCategory(nodePointer, fd);
     }
 
     // ------------------------------------------------------------------------
