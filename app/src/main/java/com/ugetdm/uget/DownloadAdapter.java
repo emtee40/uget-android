@@ -332,11 +332,6 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     // ------------------------------------------------------------------------
     // Selection
 
-    public void clearSelected() {
-        selections.clear();
-        notifyDataSetChanged();
-    }
-
     public int countSelected() {
         return selections.size();
     }
@@ -351,8 +346,10 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
     public void setSelectedIndices(int indices[]) {
         selections.clear();
-        for (int i = 0; i < indices.length; i++)
-            selections.put(indices[i], true);
+        if (indices != null) {
+            for (int i = 0; i < indices.length; i++)
+                selections.put(indices[i], true);
+        }
         notifyDataSetChanged();
     }
 }

@@ -397,6 +397,7 @@ public class MainApp extends Application {
 
 	    if (downloadAdapter.pointer != cnode) {
 	        downloadAdapter.pointer = cnode;
+	        downloadAdapter.setSelectedIndices(null);
 	        downloadAdapter.notifyDataSetChanged();
 	        nthDownload = -1;
 	    }
