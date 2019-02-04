@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -138,10 +139,15 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView stateListView;
 
     public void initTraveler() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         downloadListView = findViewById(R.id.download_listview);
-        downloadListView.setLayoutManager(new LinearLayoutManager(this));
+        downloadListView.setLayoutManager(layoutManager);
         downloadListView.setAdapter(app.downloadAdapter);
         downloadListView.setHasFixedSize(true);
+        // add divider for downloadListView
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(downloadListView.getContext(),
+                layoutManager.getOrientation());
+        downloadListView.addItemDecoration(dividerItemDecoration);
 
         categoryListView = findViewById(R.id.category_listview);
         categoryListView.setLayoutManager(new LinearLayoutManager(this));
