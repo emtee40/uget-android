@@ -482,6 +482,13 @@ public class MainApp extends Application {
         return core.saveCategory(nodePointer, fd);
     }
 
+    public long getNthCategory(int nthCategory) {
+        int nthCategoryReal = nthCategory - 1;
+        if (nthCategoryReal < 0)
+            nthCategoryReal = 0;
+        return Node.getNthChild(core.nodeReal, nthCategoryReal);
+    }
+
     // ------------------------------------------------------------------------
     // download functions
 
