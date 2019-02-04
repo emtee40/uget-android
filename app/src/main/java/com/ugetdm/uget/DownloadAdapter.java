@@ -103,10 +103,30 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             progress = new Progress();
         }
 
-        // get imageView(status icon) & textView(name)
+        // --- show error/debug message if this item does not exist ---
         if (nodePointer == 0) {
+            String errorMessage = null;
+            errorMessage = "This item does not exist.";
+
             holder.name.setText("Removed");
             holder.image.setImageResource(android.R.drawable.ic_delete);
+            holder.retry.setText(' ' + stringRetry + ">55");
+            holder.progress.setProgress((int) 55);
+            // holder.progress.getProgressDrawable().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
+            holder.percent.setText(Integer.toString(55) + '%');
+            if (errorMessage == null) {
+                holder.message.setVisibility(View.GONE);
+                holder.speed.setVisibility(View.VISIBLE);
+                holder.speed.setText(Util.stringFromIntUnit(1024000, 1));
+                holder.left.setVisibility(View.VISIBLE);
+                holder.left.setText("55:55:55" + " " + stringLeft);
+            }
+            else {
+                holder.message.setVisibility(View.VISIBLE);
+                holder.message.setText(errorMessage);
+                holder.speed.setVisibility(View.GONE);
+                holder.left.setVisibility(View.GONE);
+            }
             return;
         }
 
@@ -155,11 +175,11 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         // ------------------------------------------------
         // line 2: progress bar + percent
 
-        // progress bar
+        // --- progress bar ---
         holder.progress.setProgress((int) progress.percent);
-        holder.progress.getProgressDrawable().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
+        // holder.progress.getProgressDrawable().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
 
-        // percent
+        // --- percent ---
         if (progress.total > 0 && progress.percent <= 100)
             holder.percent.setText(Integer.toString(progress.percent) + '%');
         else
@@ -170,17 +190,17 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
         if ((state & Node.Group.error) != 0 ) {
             // message
-            if (message != null) {
-                // show message
-                holder.message.setVisibility(View.VISIBLE);
+            holder.message.setVisibility(View.VISIBLE);
+            if (message == null)
+                holder.message.setText("");
+            else
                 holder.message.setText(message);
-                // clear speed
-                holder.speed.setVisibility(View.GONE);
-                holder.speed.setText("");
-                // clear time left
-                holder.left.setVisibility(View.GONE);
-                holder.left.setText("");  // + ' '
-            }
+            // clear speed
+            holder.speed.setVisibility(View.GONE);
+            holder.speed.setText("");
+            // clear time left
+            holder.left.setVisibility(View.GONE);
+            holder.left.setText("");  // + ' '
         }
         else {
             // --- clear message ---
@@ -232,6 +252,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             else {
                 holder.size.getLayoutParams().width = sizeTextWidth;
                 holder.size.requestLayout();
+                holder.size.setVisibility(View.VISIBLE);
             }
         }
         else {
