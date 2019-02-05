@@ -13,18 +13,18 @@ import com.ugetdm.uget.lib.Info;
 import com.ugetdm.uget.lib.Node;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-    // C pointer to node
+    // C pointer to category node
     protected long    pointer;
     protected long    pointerMix;
+    // if mixMode == true, place pointerMix ("All Category") at first.
     protected boolean mixMode;
+    // --- single choice ---
+    protected int     selectedPosition = 0;
+    protected View    selectedView;    // to speed up redrawing of view on selection changed
 
-    // variable for single choice
-    protected View      selectedView;
-    public    int       selectedPosition = 0;
-
-    CategoryAdapter(long nodePointer, long pointerMix) {
-        this.pointer = nodePointer;
-        this.pointerMix = pointerMix;
+    CategoryAdapter(long nodePointer, long nodeMix) {
+        pointer = nodePointer;
+        pointerMix = nodeMix;
 
         // if mixMode == false, CategoryAdapter will remove first item - "All Category"
         if (pointerMix == 0)
@@ -61,17 +61,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             holder.image.setImageResource(R.drawable.ic_category);
             holder.name.setText(Info.getName(infoPointer));
         }
-        holder.name.setPadding(3, 3, 3, 3);
         holder.quantity.setText(Integer.toString(Node.nChildren(nodePointer)));
 
         // if mixMode == false, CategoryAdapter will remove first item - "All Category"
         if (mixMode == false)
             position--;
+
         // --- single choice ---
         if (selectedPosition == position) {
+            selectedView = holder.itemView;    // to speed up redrawing of view on selection changed
             holder.itemView.setSelected(true);
-            selectedView = holder.itemView;
         }
+        else
+            holder.itemView.setSelected(false);
     }
 
     @Override
@@ -101,14 +103,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int  position = getAdapterPosition();
                     // --- single choice ---
-                    if (selectedView != itemView) {
-                        selectedView.setSelected(false);
-                        itemView.setSelected(true);
-                        selectedView = itemView;
+                    if (selectedPosition != position) {
+                        if (selectedView != null)       // notifyItemChanged(selectedPosition);
+                            selectedView.setSelected(false);
+                        selectedView = itemView;    // to speed up redrawing of view on selection changed
+                        selectedPosition = position;
+                        itemView.setSelected(true);     // notifyItemChanged(position);
                     }
-                    selectedPosition = getAdapterPosition();
-                    // notifyItemChanged(selectedPosition);
                     // --- notify ---
                     if (onItemClickListener != null)
                         onItemClickListener.onItemClick(view, selectedPosition);

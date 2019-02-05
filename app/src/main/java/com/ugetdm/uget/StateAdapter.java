@@ -11,18 +11,14 @@ import android.widget.TextView;
 
 import com.ugetdm.uget.lib.Node;
 
-/* ViewHolder.itemView
-You must use selector and add below line in top itemView in resource.xml
-android:background="@drawable/selector_recycler_item"
- */
 public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> {
-    // C pointer to node
-    protected long      nodePointer;
+    // C pointer to state node
+    protected long      pointer;
     // resource
     protected String[]  stateNames;
-    // variable for single choice
-    protected View      selectedView;
-    public    int       selectedPosition = 0;
+    // --- single choice ---
+    protected int       selectedPosition = 0;
+    protected View      selectedView;    // to speed up redrawing of view on selection changed
 
     protected static int[]  imageIds = {
             android.R.drawable.star_off,                // all
@@ -32,7 +28,7 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
             android.R.drawable.ic_menu_delete,          // recycled
     };
 
-    protected static int[]  stateValue = {
+    protected static int[]  stateGroups = {
             0,
             Node.Group.active,
             Node.Group.queuing,
@@ -41,8 +37,8 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
     };
 
     StateAdapter(Context context, long nodePointer) {
-        this.nodePointer = nodePointer;
-        this.stateNames = context.getResources().getStringArray(R.array.cnode_state);
+        pointer = nodePointer;
+        stateNames = context.getResources().getStringArray(R.array.cnode_state);
     }
 
     @NonNull
@@ -59,31 +55,34 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
         int       nChildren;
         long      currentNode;
 
-        holder.image.setImageResource(imageIds[position]);
-        holder.name.setText (stateNames[position]);
-        holder.name.setPadding (3,3,3,3);
-
         if (position == 0)
-            currentNode = nodePointer;
+            currentNode = pointer;
         else
-            currentNode = Node.getFakeByGroup(nodePointer, stateValue[position]);
+            currentNode = Node.getFakeByGroup(pointer, stateGroups[position]);
 
-        if (currentNode != 0) {
+        if (currentNode == 0 || position > imageIds.length) {
+            // display error state
+            holder.image.setImageResource(android.R.drawable.stat_notify_error);
+            holder.name.setText("----");
+            holder.quantity.setText("--");
+        }
+        else {
+            holder.image.setImageResource(imageIds[position]);
+            holder.name.setText(stateNames[position]);
             nChildren = Node.nChildren(currentNode);
             holder.quantity.setText(Integer.toString(nChildren));
-
-            // Queuing is NOT empty
+            // if "Queuing" is NOT empty, replace "pause" icon
             if (position == 2 && nChildren > 0)
                 holder.image.setImageResource(android.R.drawable.ic_popup_sync);
         }
-        else
-            holder.quantity.setText("0");
 
         // --- single choice ---
         if (selectedPosition == position) {
+            selectedView = holder.itemView;    // to speed up redrawing of view on selection changed
             holder.itemView.setSelected(true);
-            selectedView = holder.itemView;
         }
+        else
+            holder.itemView.setSelected(false);
     }
 
     @Override
@@ -107,14 +106,15 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int  position = getAdapterPosition();
                     // --- single choice ---
-                    if (selectedView != itemView) {
-                        selectedView.setSelected(false);
-                        itemView.setSelected(true);
-                        selectedView = itemView;
+                    if (selectedPosition != position) {
+                        if (selectedView != null)       // notifyItemChanged(selectedPosition);
+                            selectedView.setSelected(false);
+                        selectedView = itemView;    // to speed up redrawing of view on selection changed
+                        selectedPosition = position;
+                        itemView.setSelected(true);     // notifyItemChanged(position);
                     }
-                    selectedPosition = getAdapterPosition();
-                    // notifyItemChanged(selectedPosition);
                     // --- notify ---
                     if (onItemClickListener != null)
                         onItemClickListener.onItemClick(view, selectedPosition);
@@ -135,25 +135,3 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
         onItemClickListener = clickListener;
     }
 }
-
-//	iButton.setImageDrawable (context.getResources().getDrawable(
-//	android.R.drawable.picture_frame));
-//android.R.drawable.picture_frame
-//android.R.drawable.ic_delete
-//android.R.drawable.ic_menu_upload
-
-//Active    - android.R.drawable.ic_media_play
-//Queuing   - android.R.drawable.ic_popup_sync
-//Pause     - android.R.drawable.ic_media_pause
-//Warning   - android.R.drawable.ic_dialog_alert
-//Warning   - android.R.drawable.stat_sys_warning
-//Info      - android.R.drawable.ic_dialog_info
-//Upload    - android.R.drawable.stat_sys_upload
-//Finished  - android.R.drawable.ic_media_next
-//Finished  - android.R.drawable.stat_sys_download_done
-//Recycled  - android.R.drawable.ic_menu_delete
-//Batch A-Z - android.R.drawable.ic_menu_sort_alphabetically
-
-//
-//android.R.drawable.ic_menu_preferences
-
