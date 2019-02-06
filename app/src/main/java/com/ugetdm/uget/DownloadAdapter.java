@@ -1,9 +1,7 @@
 package com.ugetdm.uget;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +29,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     // resource
     protected String  stringRetry;
     protected String  stringLeft;
-    // multiple choice
+    // --- multiple choice ---
     protected SparseBooleanArray selections;
 
 
@@ -259,7 +257,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             holder.size.setVisibility(View.VISIBLE);
         }
 
-        // multiple choice
+        // --- multiple choice ---
         if (selections.get(position))
             holder.itemView.setSelected(true);
         else
@@ -300,16 +298,16 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     int  position = getAdapterPosition();
-                    // multiple choice
+                    // --- multiple choice ---
                     if (selections.get(position)) {
                         selections.delete(position);
-                        view.setSelected(false);
+                        view.setSelected(false);    // notifyItemChanged(position)
                     }
                     else {
                         selections.put(position, true);
-                        view.setSelected(true);
+                        view.setSelected(true);     // notifyItemChanged(position)
                     }
-                    // notify
+                    // --- notify ---
                     if (onItemClickListener != null)
                         onItemClickListener.onItemClick(view, position);
                 }
@@ -354,18 +352,14 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     }
 }
 
-//      iButton.setImageDrawable (context.getResources().getDrawable(
-//              android.R.drawable.picture_frame));
-// android.R.drawable.picture_frame
-// android.R.drawable.ic_delete
-// android.R.drawable.ic_menu_upload
-
-
+// --- icon list ---
 // Queuing   - android.R.drawable.ic_popup_sync
+// Queuing   - android.R.drawable.presence_invisible
 // Active    - android.R.drawable.ic_media_play
 // Pause     - android.R.drawable.ic_media_pause
 // Warning   - android.R.drawable.ic_dialog_alert
 // Warning   - android.R.drawable.stat_sys_warning
+// Error     - android.R.drawable.stat_notify_error
 // Info      - android.R.drawable.ic_dialog_info
 // Upload    - android.R.drawable.stat_sys_upload
 // Finished  - android.R.drawable.ic_media_next
@@ -373,5 +367,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 // Recycled  - android.R.drawable.ic_menu_delete
 // Batch A-Z - android.R.drawable.ic_menu_sort_alphabetically
 
-//
+// android.R.drawable.picture_frame
+// android.R.drawable.ic_delete
+// android.R.drawable.ic_menu_upload
 // android.R.drawable.ic_menu_preferences
