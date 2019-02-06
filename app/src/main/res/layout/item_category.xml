@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="start|center_vertical"
+        android:padding="3dp"
         android:textColor="@drawable/selector_item_text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
         <!-- android:textColor="#222222" -->
@@ -30,8 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="end|center_vertical"
-        android:paddingLeft="0dp"
-        android:paddingRight="3dp"
+        android:padding="3dp"
         android:textColor="@drawable/selector_item_text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
