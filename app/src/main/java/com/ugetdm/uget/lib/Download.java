@@ -25,5 +25,6 @@ public class Download {
 	public String    proxyUser;
 	public String    proxyPassword;
 
-	public int       group;    // UgetRelation.group
+	// Because old file doesn't save this field, I set a default value for old one.
+	public int       group = Info.Group.queuing;    // UgetRelation.group
 }
