@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/selector_item_download" >
+    android:background="@drawable/selector_item_download"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <ImageView
         android:id="@+id/dnode_image"

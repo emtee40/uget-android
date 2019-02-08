@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:paddingBottom="@dimen/nav_header_vertical_spacing"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -17,8 +18,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/state_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="2dp" />
+        android:layout_height="wrap_content" />
 
     <View
         android:layout_width="match_parent"
@@ -48,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:src="@drawable/ic_edit" />
     </LinearLayout>
@@ -55,7 +56,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/category_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="2dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
