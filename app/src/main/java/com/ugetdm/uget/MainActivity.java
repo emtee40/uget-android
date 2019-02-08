@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         stateListView.setAdapter(app.stateAdapter);
         stateListView.setHasFixedSize(true);
 
-        app.categoryAdapter.setItemClickListener(new CategoryAdapter.ItemClickListener() {
+        app.categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 app.nthCategory = position;
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        app.stateAdapter.setItemClickListener(new StateAdapter.ItemClickListener() {
+        app.stateAdapter.setOnItemClickListener(new StateAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 app.nthStatus = position;

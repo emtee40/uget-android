@@ -120,18 +120,40 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
                         onItemClickListener.onItemClick(view, selectedPosition);
                 }
             });
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int  position = getAdapterPosition();
+                    // --- notify ---
+                    if (onItemLongClickListener != null)
+                        return onItemLongClickListener.onItemLongClick(view, position);
+                    // --- result ---
+                    // return true if the callback consumed the long click, false otherwise.
+                    return false;
+                }
+            });
         }
     }
 
     // ------------------------------------------------------------------------
     // Listener
-    private ItemClickListener onItemClickListener;
+    private OnItemClickListener     onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
 
-    public interface ItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    public void setItemClickListener(ItemClickListener clickListener) {
+    public interface OnItemLongClickListener {
+        boolean onItemLongClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
         onItemClickListener = clickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener longClickListener) {
+        onItemLongClickListener = longClickListener;
     }
 }
