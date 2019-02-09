@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Color when the itemView is selected/pressed -->
-    <item android:state_selected="true"  android:drawable="@color/colorAccent"/>
+    <item android:state_selected="true"  android:drawable="@color/colorLightAccent"/>
     <item android:state_pressed="true"  android:drawable="@color/colorLightGray"/>
                                     <!-- android:drawable="@android:color/holo_blue_light" -->
     <!-- Standard background color -->
