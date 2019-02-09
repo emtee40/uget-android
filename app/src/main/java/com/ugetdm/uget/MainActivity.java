@@ -37,8 +37,14 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putInt("mode", NodeActivity.Mode.download_creation);
+                bundle.putInt("nthCategory", app.nthCategory);
+                bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
+                intent.putExtras(bundle);
+                intent.setClass(MainActivity.this, NodeActivity.class);
+                startActivity(intent);
             }
         });
 

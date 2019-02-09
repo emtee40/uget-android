@@ -2,6 +2,7 @@
     <string name="app_name">uGet</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!-- Don't translate above 2 message -->
 
     <!-- MainApp.java -->
     <string name="notification_error_title">Error Occurred</string>
@@ -11,12 +12,19 @@
     <string name="notification_completed_title">Download Completed</string>
     <string name="notification_completed_content">All queuing downloads have been completed.</string>
 
-    <!-- CategoryAdapter.java -->
-    <string name="cnode_total">All Category</string>
-
-    <!-- StateAdapter.java -->
-    <string name="cnode_default_new_name">New</string>
-    <string-array name="cnode_state">
+    <!-- Category preferences -->
+    <string name="cnode_name">Name</string>
+    <string name="cnode_active_limit">Active downloads</string>
+    <string name="cnode_finished_limit">Capacity of Finished</string>
+    <string name="cnode_recycled_limit">Capacity of Recycled</string>
+    <string name="cnode_matching">URI Matching conditions</string>
+    <string name="cnode_hosts">Matched hosts</string>
+    <string name="cnode_schemes">Matched schemes</string>
+    <string name="cnode_file_types">Matched types</string>
+    <string name="cnode_total">All Category</string>       <!-- CategoryAdapter.java -->
+    <string name="cnode_copy">Copy</string>                <!-- NodeActivity.java -->
+    <string name="cnode_default_new_name">New</string>     <!-- MainApp.java -->
+    <string-array name="cnode_state">                      <!-- StateAdapter.java -->
         <item>All Status</item>
         <item>Active</item>
         <item>Queuing</item>
@@ -24,16 +32,17 @@
         <item>Recycled</item>
     </string-array>
 
-    <!-- DownloadAdapter.java & preference -->
+    <!-- Download preferences -->
     <string name="dnode_uri">URI</string>
     <string name="dnode_mirrors">Mirrors</string>
     <string name="dnode_file">File</string>
+    <string name="dnode_file_placeholder">Leave blank to use default filename …</string>    <!-- NodeActivity.java -->
     <string name="dnode_folder">Folder</string>
     <string name="dnode_user">User</string>
     <string name="dnode_password">Password</string>
     <string name="dnode_connections">Max connections</string>
-    <string name="dnode_left">left</string>
-    <string name="dnode_retry">Retry</string>
+    <string name="dnode_left">left</string>                <!-- DownloadAdapter.java -->
+    <string name="dnode_retry">Retry</string>              <!-- DownloadAdapter.java -->
     <string name="dnode_retry_limit">Retry limit</string>
     <string name="dnode_referrer">Referrer</string>
     <string name="dnode_proxy_type">Proxy</string>
@@ -55,13 +64,25 @@
         <item>3</item>
         <item>4</item>
     </string-array>
+    <string name="dnode_startup">Startup</string>
+    <string name="dnode_startup_auto">Auto start</string>
+    <string name="dnode_startup_manually">Manually start</string>
+
+    <!-- NodeActivity.java -->
+    <string name="category_creation">New Category</string>
+    <string name="category_setting">Category preferences</string>
+    <string name="download_creation">New Download</string>
+    <string name="download_setting">Download preferences</string>
+    <string name="download_default">Download default</string>
+    <string name="download_creation_hints">Choose a category to place new download and apply properties from selected one.</string>
 
     <!-- traveler_main.xml -->
     <string name="category_title">Category</string>
     <string name="status_title">Status</string>
 
-    <!-- ActionBar / Toolbar -->
-    <string name="action_settings">Settings</string>    <!-- SettingsActivity.java -->
+    <!-- ActionBar / Toolbar / Menu -->
+    <string name="action_settings">Settings</string>             <!-- MainActivity.java -->
+    <string name="menu_select_folder">Select Folder…</string>    <!-- NodeActivity.java -->
 
     <!-- xml/pref_xxx.xml-->
     <string name="pref_ui">User interface</string>
@@ -206,5 +227,9 @@
     <string name="pref_other">Other</string>
     <string name="pref_autosave_interval">Autosave Interval</string>
     <string name="pref_autosave_interval_summary">Save all data every N minutes.</string>
+
+    <!-- messages -->
+    <string name="message_no_uri">No Download URI, please assign it.</string>    <!-- NodeActivity -->
+    <string name="message_no_name">No Category Name, please assign it.</string>  <!-- NodeActivity -->
 
 </resources>
