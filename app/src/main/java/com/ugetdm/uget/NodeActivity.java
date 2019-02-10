@@ -28,7 +28,6 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ugetdm.uget.lib.Category;
 import com.ugetdm.uget.lib.Download;
@@ -662,8 +661,12 @@ public class NodeActivity extends AppCompatActivity {
         String folder = FileUtil.getFullPathFromTreeUri(treeUri, this);
         if (isFolderWritable(folder) == false) {
             onFolderRequestResult(treeUri);
-            Toast.makeText(this, "Get permission for " + folder,
-                    Toast.LENGTH_SHORT).show();
+            // --- Snackbar ---
+            Snackbar.make(findViewById(R.id.fab), R.string.message_permission_folder_get, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            // --- Toast ---
+            //Toast.makeText(this, "Get permission for " + folder,
+            //        Toast.LENGTH_SHORT).show();
         }
 
         EditText editText;
@@ -673,8 +676,8 @@ public class NodeActivity extends AppCompatActivity {
 
     protected void runFolderRequest () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Permission to access this folder is required. Please pick this folder to get write permission.")
-                .setTitle("Permission required");
+        builder.setMessage(R.string.message_permission_folder)
+                .setTitle(R.string.message_permission_required);
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -718,9 +721,12 @@ public class NodeActivity extends AppCompatActivity {
 
             case FOLDER_REQUEST_CODE:
                 onFolderRequestResult(treeUri);
-
-                Toast.makeText(this, FileUtil.getFullPathFromTreeUri(treeUri,this),
-                        Toast.LENGTH_SHORT).show();
+                // --- Snackbar ---
+                Snackbar.make(findViewById(R.id.fab), FileUtil.getFullPathFromTreeUri(treeUri,this),
+                        Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                // --- Toast ---
+                //Toast.makeText(this, FileUtil.getFullPathFromTreeUri(treeUri,this),
+                //        Toast.LENGTH_SHORT).show();
                 break;
 
             default:

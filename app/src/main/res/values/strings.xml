@@ -228,12 +228,15 @@
     <string name="pref_autosave_interval">Autosave Interval</string>
     <string name="pref_autosave_interval_summary">Save all data every N minutes.</string>
 
-    <!-- MainActivity messages -->
-    <string name="message_permission_required">Permission to access the SD-CARD is required for this app to Download files.</string>
+    <!-- MainActivity / NodeActivity messages -->
     <string name="message_file_load_ok">File loaded.</string>
     <string name="message_file_load_fail">Failed to load file.</string>
     <string name="message_file_save_ok">File saved.</string>
     <string name="message_file_save_fail">Failed to save file.</string>
+    <string name="message_permission_required">Permission required</string>
+    <string name="message_permission_sd_card">Permission to access the SD-CARD is required for this app to Download files.</string>
+    <string name="message_permission_folder">Permission to access this folder is required. Please pick this folder to get write permission.</string>
+    <string name="message_permission_folder_get">Get folder permission until reboot.</string>
 
     <!-- NodeActivity message -->
     <string name="message_no_uri">No Download URI, please assign it.</string>
