@@ -282,6 +282,43 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         public TextView    left;
         public TextView    size;
 
+        public class ItemListener implements View.OnClickListener, View.OnLongClickListener {
+            @Override
+            public void onClick(View view) {
+                int  position = getAdapterPosition();
+                // --- selection mode ---
+                if (selections.size() > 0)
+                    toggleSelection(view, position);
+                // --- notify ---
+                if (onItemClickListener != null)
+                    onItemClickListener.onItemClick(view, position);
+            }
+
+            @Override
+            public boolean onLongClick(View view) {
+                int  position = getAdapterPosition();
+                toggleSelection(view, position);
+                // --- notify ---
+                if (onItemLongClickListener != null)
+                    return onItemLongClickListener.onItemLongClick(view, position);
+                // --- result ---
+                // return true if the callback consumed the long click, false otherwise.
+                return true;
+            }
+
+            public void toggleSelection(View view, int position) {
+                // --- multiple choice ---
+                if (selections.get(position)) {
+                    selections.delete(position);
+                    view.setSelected(false);    // notifyItemChanged(position)
+                }
+                else {
+                    selections.put(position, true);
+                    view.setSelected(true);     // notifyItemChanged(position)
+                }
+            }
+        }
+
         public ViewHolder(View view) {
             super(view);
             image = view.findViewById(R.id.dnode_image);
@@ -294,37 +331,10 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             left = view.findViewById(R.id.dnode_left);
             size = view.findViewById(R.id.dnode_size);
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int  position = getAdapterPosition();
-                    // --- multiple choice ---
-                    if (selections.get(position)) {
-                        selections.delete(position);
-                        view.setSelected(false);    // notifyItemChanged(position)
-                    }
-                    else {
-                        selections.put(position, true);
-                        view.setSelected(true);     // notifyItemChanged(position)
-                    }
-                    // --- notify ---
-                    if (onItemClickListener != null)
-                        onItemClickListener.onItemClick(view, position);
-                }
-            });
-
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    int  position = getAdapterPosition();
-                    // --- notify ---
-                    if (onItemLongClickListener != null)
-                        return onItemLongClickListener.onItemLongClick(view, position);
-                    // --- result ---
-                    // return true if the callback consumed the long click, false otherwise.
-                    return false;
-                }
-            });
+            // view.setLongClickable(true);
+            ItemListener itemListener = new ItemListener();
+            view.setOnClickListener(itemListener);
+            view.setOnLongClickListener(itemListener);
         }
     }
 
@@ -350,27 +360,34 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     }
 
     // ------------------------------------------------------------------------
-    // Selection
+    // Selection - implement ListView API
 
-    public int countSelected() {
+    public void clearChoices() {
+        selections.clear();
+        notifyDataSetChanged();
+    }
+
+    public int getCheckedItemCount() {
         return selections.size();
     }
 
-    public int[] getSelectedIndices() {
-        int[] indices = new int[selections.size()];
-
-        for (int i = 0; i < selections.size(); i++)
-            indices[i] = selections.keyAt(i);
-        return indices;
+    SparseBooleanArray getCheckedItemPositions() {
+        return selections.clone();
     }
 
-    public void setSelectedIndices(int indices[]) {
-        selections.clear();
-        if (indices != null) {
-            for (int i = 0; i < indices.length; i++)
-                selections.put(indices[i], true);
+    public boolean isItemChecked (int position) {
+        return selections.get(position);
+    }
+
+    public void setItemChecked(int position, boolean checked) {
+        if (checked) {
+            if (selections.get(position) == false)
+                selections.put(position, true);
         }
-        notifyDataSetChanged();
+        else
+            selections.delete(position);
+        // --- notify ---
+        notifyItemChanged(position);
     }
 }
 
