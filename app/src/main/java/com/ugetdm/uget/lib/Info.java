@@ -30,6 +30,7 @@ public class Info {
     public native static long    create();
     public native static void    ref(long infoPointer);
     public native static void    unref(long infoPointer);
+    public native static int     refCount(long infoPointer);
 
     public native static boolean get(long infoPointer, Progress progressData);
     public native static boolean get(long infoPointer, Download downloadData);

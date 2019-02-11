@@ -56,6 +56,16 @@ Java_com_ugetdm_uget_lib_Info_unref (JNIEnv* env, jclass dataClass, jlong pointe
 }
 
 JNIEXPORT jint
+Java_com_ugetdm_uget_lib_Info_refCount(JNIEnv* env, jclass dataClass, jlong pointer)
+{
+	UgInfo*    info;
+
+	info = (UgInfo*)(intptr_t) pointer;
+
+	return info->ref_count;
+}
+
+JNIEXPORT jint
 Java_com_ugetdm_uget_lib_Info_getGroup (JNIEnv* env, jclass dataClass, jlong pointer)
 {
 	UgInfo*       info;
