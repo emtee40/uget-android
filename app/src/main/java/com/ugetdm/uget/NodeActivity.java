@@ -45,10 +45,11 @@ public class NodeActivity extends AppCompatActivity {
     protected View              categoryForm;
     protected View              downloadForm;
     protected Category          categoryData;
-
+    // bundle and related data
     protected int     mode;
-    protected long    infoPointerKeep;    // Node.info(nodePointer)
     protected int     nthCategoryReal;    // nthCategory - 1
+    protected long    nodePointerKeep;
+    protected long    infoPointerKeep;    // Node.info(nodePointerKeep)
 
     // static
     public static final class Mode {
@@ -140,13 +141,15 @@ public class NodeActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         mode = bundle.getInt("mode");
         int  nthCategory = bundle.getInt("nthCategory", 0);
-        long infoPointer = Node.info(bundle.getLong("nodePointer"));
-        nthCategoryReal = nthCategory - 1;
+        long nodePointer = bundle.getLong("nodePointer");
+        long infoPointer = Node.info(nodePointer);
+        nthCategoryReal = nthCategory - 1;    // no first item - "All Category"
         if (nthCategoryReal < 0)
             nthCategoryReal = 0;
         if ((mode & Mode.node_setting) > 0) {
+            nodePointerKeep = nodePointer;
             infoPointerKeep = infoPointer;
-            Info.ref(infoPointerKeep);
+            Info.ref(infoPointerKeep);    // Info.refCount() + 1
         }
 
         // --- drawer ---
@@ -243,7 +246,7 @@ public class NodeActivity extends AppCompatActivity {
 
         switch(id) {
             case R.id.action_ok:
-                onOkSelected();
+                onSelectOk();
                 break;
 
             case R.id.action_cancel:
@@ -254,15 +257,19 @@ public class NodeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onOkSelected() {
+    public void onSelectOk() {
         Download downloadData;
         long    nodePointer, infoPointer;
 
-        app.addFolderHistory(categoryData.folder);
+        downloadData = (Download) categoryData;
+        getDownloadFormData(downloadForm, downloadData, categoryForm != null);
+        if (isFolderWritable(downloadData.folder) == false) {
+            runFolderRequest();
+            return;
+        }
+
         switch(mode) {
             case Mode.download_creation:
-                downloadData = (Download) categoryData;
-                getDownloadFormData(downloadForm, downloadData, false);
                 if (downloadData.uri == null || downloadData.uri.equals("")) {
                     // --- show message : No Download URI ---
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -278,9 +285,10 @@ public class NodeActivity extends AppCompatActivity {
                 break;
 
             case Mode.download_setting:
-                downloadData = (Download) categoryData;
-                getDownloadFormData(downloadForm, downloadData, false);
                 Info.set(infoPointerKeep, downloadData);
+                // if info->ref_count == 1, It's UgetNode is freed by App.
+                if (Info.refCount(infoPointerKeep) > 1)
+                    app.core.resetDownloadName(nodePointerKeep);
                 app.downloadAdapter.notifyDataSetChanged();
                 break;
 
@@ -307,6 +315,7 @@ public class NodeActivity extends AppCompatActivity {
                 break;
         }
 
+        app.addFolderHistory(categoryData.folder);
         finish();
     }
 
