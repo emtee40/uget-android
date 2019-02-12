@@ -1,9 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_file"
+        android:icon="@drawable/ic_archive"
+        android:title="@string/action_file"
+        app:showAsAction="ifRoom|withText">
+        <menu>
+            <item
+                android:id="@+id/action_new_category"
+                android:icon="@android:drawable/ic_menu_add"
+                android:title="@string/action_new_category" />
+
+            <item
+                android:id="@+id/action_import_category"
+                android:icon="@drawable/ic_import"
+                android:title="@string/action_import_category" />
+
+            <item
+                android:id="@+id/action_edit_category"
+                android:icon="@android:drawable/ic_menu_edit"
+                android:title="@string/action_edit_category" />
+
+            <item
+                android:id="@+id/action_export_category"
+                android:icon="@drawable/ic_export"
+                android:title="@string/action_export_category" />
+                android:title="@string/action_export_category" />
+
+            <item
+                android:id="@+id/action_save_all"
+                android:icon="@android:drawable/ic_menu_save"
+                android:title="@string/action_save_all" />
+
+            <item
+                android:id="@+id/action_delete_category"
+                android:icon="@android:drawable/ic_menu_close_clear_cancel"
+                android:title="@string/action_delete_category" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_sequence_batch"
+        android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        android:title="@string/action_sequence_batch"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_resume_all"
+        android:title="@string/action_resume_all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_pause_all"
+        android:title="@string/action_pause_all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_offline"
+        android:checkable="true"
+        android:title="@string/action_offline"/>
+
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+        <!-- android:orderInCategory="100" -->
+
+    <!-- selection mode -->
+
+    <item
+        android:id="@+id/action_start"
+        android:icon="@android:drawable/ic_media_play"
+        android:title="@string/action_start"
+        android:visible="false"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_pause"
+        android:icon="@android:drawable/ic_media_pause"
+        android:title="@string/action_pause"
+        android:visible="false"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_select_all"
+        android:title="@android:string/selectAll"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_remove"
+        android:title="@string/action_remove"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>

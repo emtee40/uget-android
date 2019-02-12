@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_download_open"
+        android:title="@string/menu_open" />
+
+    <item
+        android:id="@+id/menu_download_delete"
+        android:title="@string/menu_delete" >
+        <menu>
+            <item
+                android:id="@+id/menu_download_delete_recycle"
+                android:title="@string/menu_download_delete_recycle" />
+
+            <item
+                android:id="@+id/menu_download_delete_data"
+                android:title="@string/menu_download_delete_data" />
+
+            <item
+                android:id="@+id/menu_download_delete_file"
+                android:title="@string/menu_download_delete_file" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_download_force_start"
+        android:title="@string/menu_download_force_start" />
+
+    <item
+        android:id="@+id/menu_download_start"
+        android:title="@string/action_start" />
+
+    <item
+        android:id="@+id/menu_download_pause"
+        android:title="@string/action_pause" />
+
+    <item
+        android:id="@+id/menu_download_move"
+        android:title="@string/menu_move" >
+        <menu>
+            <item
+                android:id="@+id/menu_download_move_up"
+                android:title="@string/menu_move_up" />
+
+            <item
+                android:id="@+id/menu_download_move_down"
+                android:title="@string/menu_move_down" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_download_priority"
+        android:title="@string/menu_download_priority" >
+        <menu>
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/menu_download_priority_high"
+                android:title="@string/menu_download_priority_high" />
+
+            <item
+                android:id="@+id/menu_download_priority_normal"
+                android:title="@string/menu_download_priority_normal" />
+
+            <item
+                android:id="@+id/menu_download_priority_low"
+                android:title="@string/menu_download_priority_low" />
+        </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_download_properties"
+        android:title="@string/menu_properties" />
+</menu>

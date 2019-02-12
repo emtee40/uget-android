@@ -44,13 +44,23 @@
             android:text="@string/category_title" />
 
         <ImageView
-            android:id="@+id/category_edit"
+            android:id="@+id/category_move_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_edit" />
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:src="@drawable/ic_arrow_up" />
+
+        <ImageView
+            android:id="@+id/category_move_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_arrow_down" />
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
