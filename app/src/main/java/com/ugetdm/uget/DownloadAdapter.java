@@ -136,9 +136,9 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         else if ((state & Node.Group.pause) > 0)
             holder.image.setImageResource(android.R.drawable.ic_media_pause);
         else if ((state & Node.Group.error) > 0)
-            holder.image.setImageResource(android.R.drawable.stat_notify_error);
+            holder.image.setImageResource(R.drawable.ic_error);
         else if ((state & Node.Group.upload) > 0)
-            holder.image.setImageResource(android.R.drawable.stat_sys_upload);
+            holder.image.setImageResource(android.R.drawable.ic_menu_upload);
         else if ((state & Node.Group.queuing) > 0)
             holder.image.setImageResource(android.R.drawable.presence_invisible);
         else if ((state & Node.Group.active) > 0)
@@ -400,6 +400,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 // Warning   - android.R.drawable.stat_sys_warning
 // Error     - android.R.drawable.stat_notify_error
 // Info      - android.R.drawable.ic_dialog_info
+// Upload    - android.R.drawable.ic_menu_upload
 // Upload    - android.R.drawable.stat_sys_upload
 // Finished  - android.R.drawable.ic_media_next
 // Finished  - android.R.drawable.stat_sys_download_done
