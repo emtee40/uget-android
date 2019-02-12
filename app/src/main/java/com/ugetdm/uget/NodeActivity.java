@@ -166,12 +166,13 @@ public class NodeActivity extends AppCompatActivity {
 
         // --- Toolbar --- setup it after  setSupportActionBar()  and  toggle.syncState()
         if (mode > Mode.download_creation) {
-            toolbar.setNavigationIcon(null);
-            toolbar.setContentInsetsRelative(16+32+16, 0);
+            // toolbar.setNavigationIcon(null);
+            // toolbar.setContentInsetsRelative(16+32+16, 0);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         else {
-            toolbar.setNavigationIcon(R.drawable.ic_category_light);
-            toolbar.setContentInsetStartWithNavigation(0);    // right side space of Navigation button
+            // toolbar.setNavigationIcon(R.drawable.ic_category);
+            // toolbar.setContentInsetStartWithNavigation(0);    // right side space of Navigation button
         }
         switch (mode) {
             case Mode.download_creation:
