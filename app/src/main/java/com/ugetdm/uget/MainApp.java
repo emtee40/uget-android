@@ -6,13 +6,6 @@
 
 package com.ugetdm.uget;
 
-import com.ugetdm.uget.lib.*;
-import java.io.*;
-import java.util.List;
-import java.util.regex.PatternSyntaxException;
-//import java.util.concurrent.Semaphore;
-
-import android.app.ActivityManager;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -23,12 +16,8 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.UriPermission;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -37,7 +26,10 @@ import android.preference.PreferenceManager;
 import android.content.ClipboardManager;
 import android.util.*;
 
-import static com.ugetdm.uget.lib.Ccj.context;
+import com.ugetdm.uget.lib.*;
+
+import java.io.*;
+import java.util.List;
 
 public class MainApp extends Application {
     public Core    core;
@@ -45,8 +37,9 @@ public class MainApp extends Application {
     // position used by switchDownloadAdapter()
     public int     nthStatus   = 0;
     public int     nthCategory = 0;
-    public int     nthDownload = -1;
-    public int     nthDownloadVisible = 0;    // ListView.getFirstVisiblePosition()
+    public int     nthDownload = -1;          // cursor position
+    public int     nthDownloadVisible = 0;    // RecyclerView first visible position
+    public int     nDownloadSelected = 0;     // selection mode: nDownloadSelected > 0
 
     // scrolled position
 //    public int     downloadListScrolledX = 0;
@@ -397,8 +390,7 @@ public class MainApp extends Application {
 
 	    if (downloadAdapter.pointer != cnode) {
 	        downloadAdapter.pointer = cnode;
-	        downloadAdapter.setSelectedIndices(null);
-	        downloadAdapter.notifyDataSetChanged();
+	        downloadAdapter.clearChoices();
 	        nthDownload = -1;
 	    }
     }
@@ -1031,8 +1023,12 @@ public class MainApp extends Application {
         ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
 
         try {
-            uri = Uri.parse(item.getText().toString());
-            if (uri == null || uri.getScheme().compareTo("file") == 0)
+            String tempString = item.getText().toString();
+            uri = Uri.parse(tempString);
+            if (uri == null)
+                return null;
+            tempString = uri.getScheme();
+            if (tempString.compareTo("file") == 0 || tempString.contains(" "))
                 return null;
         }
         catch (Exception e) {
