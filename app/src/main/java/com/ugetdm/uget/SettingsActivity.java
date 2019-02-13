@@ -1,8 +1,10 @@
 package com.ugetdm.uget;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,7 +44,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         setupActionBar();
 
-        app = (MainApp)getApplicationContext();
+        app = (MainApp) getApplicationContext();
     }
 
     @Override
@@ -90,7 +92,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || SpeedSettingFragment.class.getName().equals(fragmentName)
                 || Aria2SettingFragment.class.getName().equals(fragmentName)
                 || MediaSettingFragment.class.getName().equals(fragmentName)
-                || OtherSettingFragment.class.getName().equals(fragmentName);
+                || OtherSettingFragment.class.getName().equals(fragmentName)
+                || AboutFragment.class.getName().equals(fragmentName);
     }
 
     // ------------------------------------------------------------------------
@@ -233,6 +236,41 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_other);
+        }
+    }
+
+    public static class AboutFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_about);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            updatePreferenceSummary();
+        }
+
+        private void updatePreferenceSummary() {
+            Preference preference;
+            String     myVerName;
+            int        myVerCode;
+
+            try {
+                Activity activity = getActivity();
+                PackageInfo packageInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
+                myVerCode = packageInfo.versionCode;
+                myVerName = packageInfo.versionName;
+            } catch (Exception e) {
+                myVerName = "unknow version";
+                myVerCode = 0;
+                e.printStackTrace();
+            }
+
+            preference = findPreference("pref_about_version");
+            preference.setSummary(
+                    getString(R.string.app_label) + " for Android " + myVerName + "." + myVerCode);
         }
     }
 

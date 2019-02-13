@@ -261,6 +261,9 @@
     <string name="pref_autosave_interval">Autosave Interval</string>
     <string name="pref_autosave_interval_summary">Save all data every N minutes.</string>
 
+    <string name="pref_about">About uGet</string>
+    <string name="pref_about_version">Version Information</string>
+
     <!-- MainActivity / NodeActivity messages -->
     <string name="message_delete_title">Really delete?</string>
     <string name="message_delete_file">Are you sure you want to delete files?</string>

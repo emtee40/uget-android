@@ -25,4 +25,8 @@
         android:fragment="com.ugetdm.uget.SettingsActivity$OtherSettingFragment"
         android:title="@string/pref_other" />
 
+    <header
+        android:fragment="com.ugetdm.uget.SettingsActivity$AboutFragment"
+        android:title="@string/pref_about" />
+
 </preference-headers>
