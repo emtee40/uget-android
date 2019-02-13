@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     public Toolbar      toolbar;
     public DrawerLayout drawer;
 
+    // ------------------------------------------------------------------------
+    // entire lifetime: ORIENTATION
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,22 +84,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (app.nDownloadSelected > 0) {
-            // --- selection mode ---
-            app.downloadAdapter.clearChoices();
-            app.nDownloadSelected = 0;
-            updateToolbar();
-        } else {
-            super.onBackPressed();
-        }
+    protected void onDestroy() {
+        app.mainActivity = null;
+
+        super.onDestroy();
     }
 
     // ------------------------------------------------------------------------
-    // save & restore
+    // visible lifetime
 
     @Override
     protected void onStart() {
@@ -113,17 +108,24 @@ public class MainActivity extends AppCompatActivity {
         app.saveStatus();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
+    // ------------------------------------------------------------------------
+    // foreground lifetime
 
     @Override
     protected void onResume() {
         super.onResume();
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    // ------------------------------------------------------------------------
+    // other
+
     /*
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -142,6 +144,54 @@ public class MainActivity extends AppCompatActivity {
         app.downloadAdapter.notifyDataSetChanged();
     }
     */
+
+    public void processUriFromIntent() {
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        // if this is from the share menu
+        if (Intent.ACTION_SEND.equals(action) && intent.hasExtra(Intent.EXTRA_TEXT)) {
+            String uri = intent.getStringExtra(Intent.EXTRA_TEXT);
+            // clear processed intent
+            intent.removeExtra(Intent.EXTRA_TEXT);
+
+            if (uri != null) {
+                if (app.setting.ui.skipExistingUri && app.core.isUriExist(uri.toString()) == true)
+                    return;
+                // match
+                long cnode = app.core.matchCategory(uri.toString(), null);
+                if (cnode == 0)
+                    cnode = Node.getNthChild(app.core.nodeReal, 0);
+                if (cnode != 0)
+                    app.core.addDownloadByUri(uri.toString(), cnode, true);
+                // moveTaskToBack(true);
+            }
+        }
+    }
+
+    // if  android:launchMode="singleTask"  , function onCreate() will not call when activity instance still exist.
+    // onNewIntent -> onRestart -> onStart ->onResume
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // store the new intent unless getIntent() will return the old one
+        setIntent(intent);
+        processUriFromIntent();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (app.nDownloadSelected > 0) {
+            // --- selection mode ---
+            app.downloadAdapter.clearChoices();
+            app.nDownloadSelected = 0;
+            updateToolbar();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     // ------------------------------------------------------------------------
     // option menu (Toolbar / ActionBar)
@@ -169,8 +219,48 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        Intent intent;
+        Bundle bundle;
         switch(id) {
+            case R.id.action_new_category:
+                intent = new Intent();
+                bundle = new Bundle();
+                bundle.putInt("mode", NodeActivity.Mode.category_creation);
+                bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
+                intent.putExtras(bundle);
+                intent.setClass(MainActivity.this, NodeActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.action_import_category:
+                break;
+
+            case R.id.action_edit_category:
+                intent = new Intent();
+                bundle = new Bundle();
+                bundle.putInt("mode", NodeActivity.Mode.category_setting);
+                bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
+                intent.putExtras(bundle);
+                intent.setClass(MainActivity.this, NodeActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.action_export_category:
+                break;
+
+            case R.id.action_save_all:
+                break;
+
+            case R.id.action_delete_category:
+                break;
+
+            case R.id.action_sequence_batch:
+                break;
+            case R.id.action_resume_all:
+                break;
+            case R.id.action_pause_all:
+                break;
+
             case R.id.action_offline:
                 if (app.setting.offlineMode)
                     app.setting.offlineMode = false;
@@ -180,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             break;
 
             case R.id.action_settings:
-                Intent intent = new Intent();
+                intent = new Intent();
                 intent.setClass(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
