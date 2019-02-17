@@ -352,7 +352,7 @@ public class MainApp extends Application {
         infoPointer = Node.info(nodePointer);
         Info.set(infoPointer, categoryData);
 
-        addCategoryAndNotify(nodePointer);
+        addCategoryNode(nodePointer);
     }
 
     public void switchDownloadAdapter() {
@@ -390,7 +390,8 @@ public class MainApp extends Application {
 
 	    if (downloadAdapter.pointer != cnode) {
 	        downloadAdapter.pointer = cnode;
-	        downloadAdapter.clearChoices();
+            downloadAdapter.selections.clear();
+	        downloadAdapter.notifyDataSetChanged();
 	        nthDownload = -1;
 	    }
     }
@@ -398,11 +399,14 @@ public class MainApp extends Application {
     // ------------------------------------------------------------------------
     // category functions
 
-    public void    addCategoryAndNotify(long cNodePointer)
+    public void    addCategoryNode(long cNodePointer)
     {
+        int  position;
+
         core.addCategory(cNodePointer);
+        position = Node.getPosition(core.nodeReal, cNodePointer);
         if (categoryAdapter != null)
-            categoryAdapter.notifyDataSetChanged();
+            categoryAdapter.notifyItemInserted(position);
         if (stateAdapter != null)
             stateAdapter.notifyDataSetChanged();
     }
@@ -415,12 +419,14 @@ public class MainApp extends Application {
             cNodePointer = Node.getNthChild(core.nodeReal, nth -1);
             if (cNodePointer != 0) {
                 core.deleteCategory(cNodePointer);
-                categoryAdapter.notifyDataSetChanged();
+                categoryAdapter.notifyItemRemoved(nth);
             }
         }
 
         if (Node.nChildren(core.nodeReal) == 0) {
+            // --- create new category and append it.
             createDefaultCategory();
+            categoryAdapter.notifyItemInserted(1);
         }
         else {
             // if no nth category, move position to previous category.
@@ -448,8 +454,7 @@ public class MainApp extends Application {
                 if (to_nth > from_nth)
                     cNodePosition = Node.next(cNodePosition);
                 result = core.moveCategory(cNodePointer, cNodePosition);
-                nthCategory = to_nth;
-                categoryAdapter.notifyDataSetChanged();
+                categoryAdapter.notifyItemMoved(from_nth, to_nth);
             }
         }
 
@@ -484,14 +489,14 @@ public class MainApp extends Application {
     // ------------------------------------------------------------------------
     // download functions
 
-    public File getDownloadedFile(int nthDownload)
+    public File getDownloadedFile(int nth)
     {
         long  pointer;
         String     path;
         Download   downloadData;
 
         // get download from category
-        pointer = Node.getNthChild(downloadAdapter.pointer, nthDownload);
+        pointer = Node.getNthChild(downloadAdapter.pointer, nth);
         if (pointer == 0)
             return null;
         pointer = Node.info(pointer);
@@ -515,50 +520,65 @@ public class MainApp extends Application {
         return file;
     }
 
-    public void addDownloadAndNotify(long dNodePointer, int toNthCategory) {
+    public void addDownloadNode(long dNodePointer, int toNthCategory) {
         int toNthCategoryReal = toNthCategory - 1;
         if (toNthCategoryReal < 0)
             toNthCategoryReal = 0;
 
         long cNodePointer = Node.getNthChild(core.nodeReal, toNthCategoryReal);
         core.addDownload(dNodePointer, cNodePointer, false);
+        int  position = Node.getPosition(cNodePointer, dNodePointer);
 
-        categoryAdapter.notifyDataSetChanged();
-        downloadAdapter.notifyDataSetChanged();
+        categoryAdapter.notifyItemChanged(toNthCategory);
+        downloadAdapter.notifyItemInserted(position);
     }
 
-    public void deleteNthDownload(int nthDownload, boolean deleteFiles)
+    public void deleteNthDownload(int nth, boolean deleteFiles)
     {
         long  cNodePointer;
         long  dNodePointer;
 
         cNodePointer = downloadAdapter.pointer;
-        dNodePointer = Node.getNthChild(cNodePointer, nthDownload);
+        dNodePointer = Node.getNthChild(cNodePointer, nth);
         if (dNodePointer != 0) {
             core.deleteDownload(dNodePointer, deleteFiles);
             stateAdapter.notifyDataSetChanged();
             categoryAdapter.notifyDataSetChanged();
-            downloadAdapter.notifyDataSetChanged();
+            downloadAdapter.notifyItemRemoved(nth);
         }
 
         userAction = true;
     }
 
-    public void recycleNthDownload(int nthDownload)
+    public int recycleNthDownload(int nth)
     {
         long  cNodePointer;
         long  dNodePointer;
+        int   nthLast = nth;
 
         cNodePointer = downloadAdapter.pointer;
-        dNodePointer = Node.getNthChild(cNodePointer, nthDownload);
+        dNodePointer = Node.getNthChild(cNodePointer, nth);
         if (dNodePointer != 0) {
-            core.recycleDownload(dNodePointer);
+            // core.recycleDownload() return false if it removed.
+            if (core.recycleDownload(dNodePointer))
+                nth = getDownloadNodePosition(dNodePointer);
+            else
+                nth = -1;
+
+            if (nth < 0) {
+                // item was removed
+                downloadAdapter.notifyItemRemoved(nthLast);
+                categoryAdapter.notifyDataSetChanged();
+            }
+            else {
+                // item was moved to other position
+                downloadAdapter.notifyItemMoved(nthLast, nth);
+            }
             stateAdapter.notifyDataSetChanged();
-            categoryAdapter.notifyDataSetChanged();
-            downloadAdapter.notifyDataSetChanged();
         }
 
         userAction = true;
+        return nth;
     }
 
     public boolean moveNthDownload(int from_nth, int to_nth)
@@ -572,107 +592,128 @@ public class MainApp extends Application {
         dNodePointer1 = Node.getNthChild(cNodePointer, from_nth);
         dNodePointer2 = Node.getNthChild(cNodePointer, to_nth);
         if (dNodePointer1 == 0)
-            result = false;
-        else {
-            result = core.moveDownload(dNodePointer1, dNodePointer2);
-            downloadAdapter.notifyDataSetChanged();
-        }
+            return false;
+
+        result = core.moveDownload(dNodePointer1, dNodePointer2);
+        downloadAdapter.notifyItemMoved(from_nth, to_nth);
 
         return result;
     }
 
-    public boolean activateNthDownload(int nth)
+    public int activateNthDownload(int nth)
     {
         long    cNodePointer;
         long    dNodePointer;
-        boolean result;
+        int      nthLast = nth;
 
         cNodePointer = downloadAdapter.pointer;
         dNodePointer = Node.getNthChild(cNodePointer, nth);
         if (dNodePointer == 0)
-            result = false;
+            return -1;
         else {
-            result = core.activateDownload(dNodePointer);
-//          if (result) {
-            downloadAdapter.notifyDataSetChanged();
-            categoryAdapter.notifyDataSetChanged();
-            stateAdapter.notifyDataSetChanged();
-//          }
-        }
-
-        userAction = true;
-        return result;
-    }
-
-    public boolean pauseNthDownload(int nth)
-    {
-        long    cNodePointer;
-        long    dNodePointer;
-        boolean result;
-
-        cNodePointer = downloadAdapter.pointer;
-        dNodePointer = Node.getNthChild(cNodePointer, nth);
-        if (dNodePointer == 0)
-            result = false;
-        else {
-            result = core.pauseDownload(dNodePointer);
-            if (result) {
-                downloadAdapter.notifyDataSetChanged();
-                categoryAdapter.notifyDataSetChanged();
+            if (core.activateDownload(dNodePointer)) {
+                nth = getDownloadNodePosition(dNodePointer);
+                if (nth < 0) {
+                    // item was moved to other status
+                    downloadAdapter.notifyItemRemoved(nthLast);
+                }
+                else {
+                    // item was moved to other position
+                    downloadAdapter.notifyItemMoved(nthLast, nth);
+                }
                 stateAdapter.notifyDataSetChanged();
+                // categoryAdapter.notifyDataSetChanged();
             }
         }
 
         userAction = true;
-        return result;
+        return nth;
     }
 
-    public boolean queueNthDownload(int nth)
+    public int pauseNthDownload(int nth)
     {
         long    cNodePointer;
         long    dNodePointer;
-        boolean result;
+        int      nthLast = nth;
 
         cNodePointer = downloadAdapter.pointer;
         dNodePointer = Node.getNthChild(cNodePointer, nth);
         if (dNodePointer == 0)
-            result = false;
+            return -1;
         else {
-            result = core.queueDownload(dNodePointer);
-            if (result) {
-                downloadAdapter.notifyDataSetChanged();
-                categoryAdapter.notifyDataSetChanged();
+            if (core.pauseDownload(dNodePointer)) {
+                nth = getDownloadNodePosition(dNodePointer);
+                if (nth < 0) {
+                    // item was moved to other status
+                    downloadAdapter.notifyItemRemoved(nthLast);
+                }
+                else {
+                    // item was moved to other position
+                    downloadAdapter.notifyItemMoved(nthLast, nth);
+                }
                 stateAdapter.notifyDataSetChanged();
+                // categoryAdapter.notifyDataSetChanged();
+            }
+        }
+
+        userAction = true;
+        return nth;
+    }
+
+    public int queueNthDownload(int nth)
+    {
+        long    cNodePointer;
+        long    dNodePointer;
+        int      nthLast = nth;
+
+        cNodePointer = downloadAdapter.pointer;
+        dNodePointer = Node.getNthChild(cNodePointer, nth);
+        if (dNodePointer == 0)
+            return -1;
+        else {
+            if (core.queueDownload(dNodePointer)) {
+                nth = getDownloadNodePosition(dNodePointer);
+                if (nth < 0) {
+                    // item was moved to other status
+                    downloadAdapter.notifyItemRemoved(nthLast);
+                }
+                else {
+                    // item was moved to other position
+                    downloadAdapter.notifyItemMoved(nthLast, nth);
+                }
+                stateAdapter.notifyDataSetChanged();
+                // categoryAdapter.notifyDataSetChanged();
             }
         }
 
 //      userAction = true;
-        return result;
+        return nth;
     }
 
-    public boolean setNthDownloadRunnable(int nth)
+    public int tryQueueNthDownload(int nth)
     {
         long    cNodePointer;
         long    dNodePointer;
-        boolean result;
+        long    infoPointer;
 
         cNodePointer = downloadAdapter.pointer;
         dNodePointer = Node.getNthChild(cNodePointer, nth);
         if (dNodePointer == 0)
-            return false;
-        if ((Info.getGroup(Node.info(dNodePointer)) & Node.Group.active) > 0)
-            return false;
+            return -1;
+        infoPointer = Node.info(dNodePointer);
+        if ((Info.getGroup(infoPointer) & Info.Group.active) > 0)
+            return nth;
 
         return queueNthDownload(nth);
     }
 
-    public int  getNthDownloadPriority(int nthDownload)
+    public int  getNthDownloadPriority(int nth)
     {
         long    nodePointer;
         int     result;
 
         // get download node from category node
-        nodePointer = Node.getNthChild(downloadAdapter.pointer, nthDownload);
+        nodePointer = Node.getNthChild(downloadAdapter.pointer, nth);
         result = Info.getPriority(Node.info(nodePointer));
         return result;
     }
@@ -687,24 +728,44 @@ public class MainApp extends Application {
             Info.setPriority(Node.info(nodePointer), priority);
     }
 
-    public long getNthDownloadNode(int nthDownload) {
+    public long getNthDownloadNode(int nth) {
         long dNode;
 
-        dNode = Node.getNthChild(downloadAdapter.pointer, nthDownload);
+        dNode = Node.getNthChild(downloadAdapter.pointer, nth);
         if (dNode != 0)
             return Node.base(dNode);
         else
             return 0;
     }
 
-    public void setSelectedDownload(long dNode) {
+    public int  getDownloadNodePosition(long dNode) {
         if (dNode != 0) {
             dNode = Node.getFakeByParent(dNode, downloadAdapter.pointer);
             if (dNode != 0)
-                nthDownload = Node.getPosition(downloadAdapter.pointer, dNode);
-            else
-                nthDownload = -1;
+                return Node.getPosition(downloadAdapter.pointer, dNode);
         }
+        return -1;
+    }
+
+    public long[]  getActiveDownloadNode() {
+        long nodeArray[];
+        long curPointer;
+        int  length;
+
+        curPointer = downloadAdapter.pointer;
+        curPointer = Node.getFakeByGroup(curPointer, Info.Group.active);
+        length = Node.nChildren(curPointer);
+        if (length == 0)
+            return null;
+        nodeArray = new long[length];
+        curPointer = Node.children(curPointer);
+
+        for (int i = 0;  i < length;  i++) {
+            nodeArray[i] = Node.base(curPointer);
+            curPointer = Node.next(curPointer);
+        }
+
+        return nodeArray;
     }
 
     // ------------------------------------------------------------------------
@@ -1213,26 +1274,14 @@ public class MainApp extends Application {
                 .setContentText(getString(contentId))
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
-                .setDefaults(flags);
+                .setDefaults(flags)
+                .setSmallIcon(R.mipmap.ic_launcher_round);
+                // .setColor(Color.GREEN - 0x6600);  // 0xff00ff00 - 0x6600
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             builder.setChannelId(channelId);
-        }
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            builder.setSmallIcon(R.mipmap.ic_launcher);
-        else
-            builder.setSmallIcon(R.mipmap.ic_launcher_round); // .setColor(Color.GREEN - 0x6600);  // 0xff00ff00 - 0x6600
-        Notification notification = builder.getNotification();
-/*
-        Notification  notification = new Notification();
-        notification.icon = R.mipmap.ic_launcher;
-        notification.tickerText = getString(contentId);
-        notification.defaults = flags;    // Notification.DEFAULT_ALL
-        notification.setLatestEventInfo(App.this,
-                getString(titleId),
-                getString(contentId),
-                pendingIntent);
-*/
+        Notification notification = builder.build();
+
         notificationManager.notify(notificationId, notification);
     }
 

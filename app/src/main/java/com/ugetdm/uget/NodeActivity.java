@@ -282,7 +282,7 @@ public class NodeActivity extends AppCompatActivity {
                 nodePointer = Node.create();
                 infoPointer = Node.info(nodePointer);
                 Info.set(infoPointer, downloadData);
-                app.addDownloadAndNotify(nodePointer, nthCategoryReal + 1);
+                app.addDownloadNode(nodePointer, nthCategoryReal + 1);
                 break;
 
             case Mode.download_setting:
@@ -306,7 +306,7 @@ public class NodeActivity extends AppCompatActivity {
                 nodePointer = Node.create();
                 infoPointer = Node.info(nodePointer);
                 Info.set(infoPointer, categoryData);
-                app.addCategoryAndNotify(nodePointer);
+                app.addCategoryNode(nodePointer);
                 break;
 
             case Mode.category_setting:

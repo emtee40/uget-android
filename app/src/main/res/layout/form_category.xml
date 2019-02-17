@@ -7,15 +7,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="8dp">
+        android:paddingTop="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="16dp"
             android:paddingTop="8dp"
-            android:paddingRight="16dp"
             android:paddingBottom="8dp" >
 
             <TextView
@@ -43,9 +43,7 @@
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
                 android:paddingTop="8dp"
-                android:paddingRight="16dp"
                 android:paddingBottom="8dp">
 
                 <TextView
@@ -68,9 +66,7 @@
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
                 android:paddingTop="8dp"
-                android:paddingRight="16dp"
                 android:paddingBottom="8dp">
 
                 <TextView
@@ -93,9 +89,7 @@
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
                 android:paddingTop="8dp"
-                android:paddingRight="16dp"
                 android:paddingBottom="8dp">
 
                 <TextView
@@ -119,7 +113,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
             android:labelFor="@+id/hosts_editor"
             android:text="@string/cnode_hosts"
@@ -129,8 +122,6 @@
             android:id="@+id/hosts_editor"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:ems="10"
@@ -139,7 +130,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
             android:labelFor="@+id/schemes_editor"
             android:text="@string/cnode_schemes"
@@ -149,8 +139,6 @@
             android:id="@+id/schemes_editor"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:ems="10"
@@ -159,7 +147,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
             android:labelFor="@+id/file_types_editor"
             android:text="@string/cnode_file_types"
@@ -169,8 +156,6 @@
             android:id="@+id/file_types_editor"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:ems="10"

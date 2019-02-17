@@ -286,6 +286,9 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 int  position = getAdapterPosition();
+                // --- If you click fast, it some time throw the -1 position.
+                if (position == -1)
+                    return;
                 // --- selection mode ---
                 if (selections.size() > 0)
                     toggleSelection(view, position);
@@ -297,6 +300,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             @Override
             public boolean onLongClick(View view) {
                 int  position = getAdapterPosition();
+                // --- selection mode ---
                 toggleSelection(view, position);
                 // --- notify ---
                 if (onItemLongClickListener != null)
@@ -363,8 +367,14 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     // Selection - implement ListView API
 
     public void clearChoices() {
+        int  size = selections.size();
+        int  position;
+
+        for (int i = 0;  i < size;  i++) {
+            position = selections.keyAt(i);
+            notifyItemChanged(position);
+        }
         selections.clear();
-        notifyDataSetChanged();
     }
 
     public int getCheckedItemCount() {
@@ -380,14 +390,48 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     }
 
     public void setItemChecked(int position, boolean checked) {
-        if (checked) {
-            if (selections.get(position) == false)
+        if (position < getItemCount() && position >= 0) {
+            if (checked)
                 selections.put(position, true);
+            else
+                selections.delete(position);
+            // --- notify ---
+            notifyItemChanged(position);
         }
-        else
-            selections.delete(position);
-        // --- notify ---
-        notifyItemChanged(position);
+    }
+
+    // ------------------------------------------------------------------------
+    // Selection - UgetNode pointer
+
+    public long[] getCheckedNode() {
+        int  size = selections.size();
+        if (size == 0)
+            return null;
+
+        long nodeArray[] = new long[size];
+        for (int i = 0;  i < size;  i++) {
+            nodeArray[i] = Node.getNthChild(pointer, selections.keyAt(i));
+            nodeArray[i] = Node.base(nodeArray[i]);
+        }
+        return nodeArray;
+    }
+
+    public void setCheckedNode(long[] nodeArray) {
+        int   position;
+        long node;
+
+        clearChoices();   // clear selection
+        if (nodeArray == null)
+            return;
+
+        for (int i = 0;  i < nodeArray.length;  i++) {
+            node = Node.getFakeByParent(nodeArray[i], pointer);
+            if (node == 0)
+                continue;
+            position = Node.getPosition(pointer, node);
+            selections.put(position, true);
+            notifyItemChanged(position);
+        }
     }
 }
 

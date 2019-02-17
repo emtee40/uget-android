@@ -15,22 +15,15 @@ import com.ugetdm.uget.lib.Node;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     // C pointer to category node
     protected long    pointer;
-    protected long    pointerMix;
-    // if mixMode == true, place pointerMix ("All Category") at first.
-    protected boolean mixMode;
+    protected long    pointerMix;    // "All Category" at first item
     // --- single choice ---
     protected int     selectedPosition = 0;
     protected View    selectedView;    // to speed up redrawing of view on selection changed
 
     CategoryAdapter(long nodePointer, long nodeMix) {
+        // if pointerMix == 0, CategoryAdapter will remove first item - "All Category"
         pointer = nodePointer;
         pointerMix = nodeMix;
-
-        // if mixMode == false, CategoryAdapter will remove first item - "All Category"
-        if (pointerMix == 0)
-            mixMode = false;
-        else
-            mixMode = true;
     }
 
     @NonNull
@@ -47,8 +40,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         long nodePointer;
         long infoPointer;
 
-        // if mixMode == false, CategoryAdapter will remove first item - "All Category"
-        if (mixMode == false)
+        // if pointerMix == 0, CategoryAdapter will remove first item - "All Category"
+        if (pointerMix == 0)
             position++;
         // set icon and name
         if (position == 0) {
@@ -63,8 +56,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
         holder.quantity.setText(Integer.toString(Node.nChildren(nodePointer)));
 
-        // if mixMode == false, CategoryAdapter will remove first item - "All Category"
-        if (mixMode == false)
+        // if pointerMix == 0, CategoryAdapter will remove first item - "All Category"
+        if (pointerMix == 0)
             position--;
 
         // --- single choice ---
@@ -80,8 +73,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public int getItemCount() {
         int  count = Node.nChildren(pointer);
 
-        // if mixMode == false, CategoryAdapter will remove first item - "All Category"
-        if (mixMode == false)
+        // if pointerMix == 0, CategoryAdapter will remove first item - "All Category"
+        if (pointerMix == 0)
             return count;
         else
             return count + 1;
@@ -104,6 +97,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     int  position = getAdapterPosition();
+                    // --- If you click fast,  it some time throw the -1 position.
+                    if (position == -1)
+                        return;
                     // --- single choice ---
                     if (selectedPosition != position) {
                         if (selectedView != null)       // notifyItemChanged(selectedPosition);
@@ -155,26 +151,23 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     // ------------------------------------------------------------------------
-    // Mix Mode
-    public void setMixMode(boolean enable) {
-        if (mixMode != enable) {
-            mixMode  = enable;
-            if (enable == false) {
-				// remove first item - "All Category"
-                notifyItemRemoved(0);
-                selectedPosition--;
-                // select first item if original selected item has gone.
-                if (selectedPosition < 0) {
-                    selectedPosition = 0;
-                    notifyItemChanged(0);
-                }
-            }
-            else {
-				// restore first item - "All Category"
-                selectedPosition++;
-                notifyItemInserted(0);
+    // Selection - implement ListView API
+    public void setItemChecked(int position, boolean checked) {
+        if (position < getItemCount() && position >= 0) {
+            if (selectedPosition != position) {
+                notifyItemChanged(selectedPosition);
+                selectedPosition = position;
+                notifyItemChanged(position);
             }
         }
     }
 
+    // ------------------------------------------------------------------------
+    // Notification
+    public void notifyItemClicked(RecyclerView recyclerView) {
+        ViewHolder viewHolder;
+        viewHolder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedPosition);
+        if (onItemClickListener != null)
+            onItemClickListener.onItemClick(viewHolder.itemView, selectedPosition);
+    }
 }

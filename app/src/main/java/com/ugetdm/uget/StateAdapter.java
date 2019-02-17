@@ -107,6 +107,9 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     int  position = getAdapterPosition();
+                    // --- If you click fast,  it some time throw the -1 position.
+                    if (position == -1)
+                        return;
                     // --- single choice ---
                     if (selectedPosition != position) {
                         if (selectedView != null)       // notifyItemChanged(selectedPosition);
@@ -155,5 +158,26 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
 
     public void setOnItemLongClickListener(OnItemLongClickListener longClickListener) {
         onItemLongClickListener = longClickListener;
+    }
+
+    // ------------------------------------------------------------------------
+    // Selection - implement ListView API
+    public void setItemChecked(int position, boolean checked) {
+        if (position < getItemCount() && position >= 0) {
+            if (selectedPosition != position) {
+                notifyItemChanged(selectedPosition);
+                selectedPosition = position;
+                notifyItemChanged(position);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Notification
+    public void notifyItemClicked(RecyclerView recyclerView) {
+        ViewHolder viewHolder;
+        viewHolder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedPosition);
+        if (onItemClickListener != null)
+            onItemClickListener.onItemClick(viewHolder.itemView, selectedPosition);
     }
 }
