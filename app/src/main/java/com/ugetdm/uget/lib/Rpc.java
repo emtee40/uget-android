@@ -27,7 +27,7 @@ public class Rpc {
 
     public class Command {
         public String        uris[];
-        public Download      data;
+        public DownloadProp  prop;
         public boolean       quiet;
         public int           categoryIndex;    // default is -1
 
@@ -36,7 +36,7 @@ public class Rpc {
 
         Command () {
             uris = null;
-            data = new Download();
+            prop = new DownloadProp();
         }
     }
 

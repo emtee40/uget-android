@@ -158,7 +158,7 @@ Java_com_ugetdm_uget_lib_Rpc_getRequest (JNIEnv* env, jobject thiz)
 }
 
 // define in Node.c
-void getDownloadData(JNIEnv* env, jlong pointer, jobject dInfoObject);
+void getDownloadProp(JNIEnv* env, jlong pointer, jobject dInfoObject);
 
 // Rpc.Command  com.ugetdm.uget.Rpc.getCommand (Rpc.Request req)
 JNIEXPORT jobject
@@ -204,13 +204,13 @@ Java_com_ugetdm_uget_lib_Rpc_getCommand (JNIEnv* env, jobject thiz, jobject jreq
 	(*env)->SetObjectField (env, jObject,
 			(*env)->GetFieldID (env, jClass, "uris", "[Ljava/lang/String;"),
 			uriArray);
-	// Download info;
+	// DownloadProp prop;
 	node = uget_node_new (NULL);
 	uget_option_value_to_info (&cmd->value, node->info);
-	getDownloadData (env, (jlong)(intptr_t) node,
+	getDownloadProp (env, (jlong)(intptr_t) node,
 			(*env)->GetObjectField (env, jObject,
-					(*env)->GetFieldID (env, jClass, "info",
-							"Lcom/ugetdm/uget/lib/Download;")) );
+					(*env)->GetFieldID (env, jClass, "prop",
+							"Lcom/ugetdm/uget/lib/DownloadProp;")) );
 	uget_node_free (node);
 	// boolean  quiet;
 	(*env)->SetBooleanField (env, jObject,

@@ -6,7 +6,7 @@
 
 package com.ugetdm.uget.lib;
 
-public class Category extends Download {
+public class CategoryProp extends DownloadProp {
     public String    name;
     public int       activeLimit;
     public int       finishedLimit;

@@ -332,25 +332,25 @@ public class MainApp extends Application {
     }
 
     public void createDefaultCategory() {
-        long      nodePointer;
-        long      infoPointer;
-        Category  categoryData = new Category();
+        long  nodePointer;
+        long  infoPointer;
+        CategoryProp  categoryProp = new CategoryProp();
 
-        categoryData.name = getString(R.string.cnode_default_new_name) + " " + nthCategoryCreation++;
-        categoryData.activeLimit = 2;
-        categoryData.finishedLimit = 100;
-        categoryData.recycledLimit = 100;
-        categoryData.hosts = ".edu;.idv";
-        categoryData.schemes = "ftps;magnet";
-        categoryData.fileTypes = "torrent;metalink";
-        categoryData.folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        categoryData.connections = 1;
-        categoryData.proxyPort = 80;
-        categoryData.group = Info.Group.queuing;
+        categoryProp.name = getString(R.string.cnode_default_new_name) + " " + nthCategoryCreation++;
+        categoryProp.activeLimit = 2;
+        categoryProp.finishedLimit = 100;
+        categoryProp.recycledLimit = 100;
+        categoryProp.hosts = ".edu;.idv";
+        categoryProp.schemes = "ftps;magnet";
+        categoryProp.fileTypes = "torrent;metalink";
+        categoryProp.folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        categoryProp.connections = 1;
+        categoryProp.proxyPort = 80;
+        categoryProp.group = Info.Group.queuing;
 
         nodePointer = Node.create();
         infoPointer = Node.info(nodePointer);
-        Info.set(infoPointer, categoryData);
+        Info.set(infoPointer, categoryProp);
 
         addCategoryNode(nodePointer);
     }
@@ -491,9 +491,9 @@ public class MainApp extends Application {
 
     public File getDownloadedFile(int nth)
     {
-        long  pointer;
-        String     path;
-        Download   downloadData;
+        long    pointer;
+        String  path;
+        DownloadProp   downloadProp;
 
         // get download from category
         pointer = Node.getNthChild(downloadAdapter.pointer, nth);
@@ -501,14 +501,14 @@ public class MainApp extends Application {
             return null;
         pointer = Node.info(pointer);
 
-        downloadData = new Download();
-        Info.get(pointer, downloadData);
+        downloadProp = new DownloadProp();
+        Info.get(pointer, downloadProp);
         path = new String();
-        if (downloadData.folder != null)
-            path += downloadData.folder + File.separator;
+        if (downloadProp.folder != null)
+            path += downloadProp.folder + File.separator;
         // filename
-        if (downloadData.file != null)
-            path += downloadData.file;
+        if (downloadProp.file != null)
+            path += downloadProp.file;
         else if (Info.getName(pointer) != null)
             path += Info.getName(pointer);
         else

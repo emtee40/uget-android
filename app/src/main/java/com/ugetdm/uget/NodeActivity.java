@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.provider.DocumentFile;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,22 +28,18 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.ugetdm.uget.lib.Category;
-import com.ugetdm.uget.lib.Download;
-import com.ugetdm.uget.lib.Info;
-import com.ugetdm.uget.lib.Node;
+import com.ugetdm.uget.lib.*;
 
 import java.util.List;
 
-
 public class NodeActivity extends AppCompatActivity {
-    protected static MainApp     app = null;
+    protected static MainApp    app = null;
     protected CategoryAdapter   categoryAdapter;
     protected ViewPagerAdapter  pagerAdapter;
     protected DrawerLayout      drawer;
     protected View              categoryForm;
     protected View              downloadForm;
-    protected Category          categoryData;
+    protected CategoryProp      categoryProp;
     // bundle and related data
     protected int     mode;
     protected int     nthCategoryReal;    // nthCategory - 1
@@ -115,8 +110,8 @@ public class NodeActivity extends AppCompatActivity {
                     nthCategoryReal = position;
                     long nodePointer = Node.getNthChild(app.core.nodeReal, position);
                     long infoPointer = Node.info(nodePointer);
-                    Info.get(infoPointer, categoryData);
-                    setDownloadFormData(downloadForm, categoryData, true);
+                    Info.get(infoPointer, categoryProp);
+                    setDownloadProp(downloadForm, categoryProp, true);
                 }
                 if (drawer != null)
                     drawer.closeDrawer(GravityCompat.START);
@@ -135,7 +130,7 @@ public class NodeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         app = (MainApp)getApplicationContext();
-        categoryData = new Category();
+        categoryProp = new CategoryProp();
 
         // --- bundle ---
         Bundle bundle = getIntent().getExtras();
@@ -193,20 +188,20 @@ public class NodeActivity extends AppCompatActivity {
         initTraveler();
 
         // --- properties ---
-        Info.get(infoPointer, categoryData);
+        Info.get(infoPointer, categoryProp);
         if ((mode & Mode.category_mode) > 0) {
             if (mode == Mode.category_creation)
-                categoryData.name = getString(R.string.cnode_copy) + " - " + categoryData.name;
-            setCategoryFormData(categoryForm, categoryData, false);
-            setDownloadFormData(downloadForm, categoryData, true);
+                categoryProp.name = getString(R.string.cnode_copy) + " - " + categoryProp.name;
+            setCategoryProp(categoryForm, categoryProp, false);
+            setDownloadProp(downloadForm, categoryProp, true);
         }
         if ((mode & Mode.download_mode) > 0) {
             if (mode == Mode.download_creation) {
                 Uri uri = app.getUriFromClipboard(false);
                 if (uri != null)
-                    categoryData.uri = uri.toString();
+                    categoryProp.uri = uri.toString();
             }
-            setDownloadFormData(downloadForm, categoryData, false);
+            setDownloadProp(downloadForm, categoryProp, false);
         }
     }
 
@@ -259,19 +254,19 @@ public class NodeActivity extends AppCompatActivity {
     }
 
     public void onSelectOk() {
-        Download downloadData;
+        DownloadProp downloadProp;
         long    nodePointer, infoPointer;
 
-        downloadData = (Download) categoryData;
-        getDownloadFormData(downloadForm, downloadData, categoryForm != null);
-        if (isFolderWritable(downloadData.folder) == false) {
-            runFolderRequest();
+        downloadProp = (DownloadProp) categoryProp;
+        getDownloadProp(downloadForm, downloadProp, categoryForm != null);
+        if (isFolderWritable(downloadProp.folder) == false) {
+            startFolderRequest();
             return;
         }
 
         switch(mode) {
             case Mode.download_creation:
-                if (downloadData.uri == null || downloadData.uri.equals("")) {
+                if (downloadProp.uri == null || downloadProp.uri.equals("")) {
                     // --- show message : No Download URI ---
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setIcon(android.R.drawable.ic_dialog_alert);
@@ -281,12 +276,12 @@ public class NodeActivity extends AppCompatActivity {
                 }
                 nodePointer = Node.create();
                 infoPointer = Node.info(nodePointer);
-                Info.set(infoPointer, downloadData);
+                Info.set(infoPointer, downloadProp);
                 app.addDownloadNode(nodePointer, nthCategoryReal + 1);
                 break;
 
             case Mode.download_setting:
-                Info.set(infoPointerKeep, downloadData);
+                Info.set(infoPointerKeep, downloadProp);
                 // if info->ref_count == 1, It's UgetNode is freed by App.
                 if (Info.refCount(infoPointerKeep) > 1)
                     app.core.resetDownloadName(nodePointerKeep);
@@ -294,8 +289,8 @@ public class NodeActivity extends AppCompatActivity {
                 break;
 
             case Mode.category_creation:
-                getCategoryFormData(categoryForm, categoryData, false);
-                if (categoryData.uri == null || categoryData.name.equals("")) {
+                getCategoryProp(categoryForm, categoryProp, false);
+                if (categoryProp.uri == null || categoryProp.name.equals("")) {
                     // --- show message : No Category Name ---
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setIcon(android.R.drawable.ic_dialog_alert);
@@ -305,184 +300,184 @@ public class NodeActivity extends AppCompatActivity {
                 }
                 nodePointer = Node.create();
                 infoPointer = Node.info(nodePointer);
-                Info.set(infoPointer, categoryData);
+                Info.set(infoPointer, categoryProp);
                 app.addCategoryNode(nodePointer);
                 break;
 
             case Mode.category_setting:
-                getCategoryFormData(categoryForm, categoryData, false);
-                Info.set(infoPointerKeep, categoryData);
+                getCategoryProp(categoryForm, categoryProp, false);
+                Info.set(infoPointerKeep, categoryProp);
                 app.categoryAdapter.notifyDataSetChanged();
                 break;
         }
 
-        app.addFolderHistory(categoryData.folder);
+        app.addFolderHistory(categoryProp.folder);
         finish();
     }
 
     // ------------------------------------------------------------------------
     // Form - Category properties
 
-    public void getCategoryFormData(View categoryForm, Category categoryData, boolean multiple) {
+    public void getCategoryProp(View categoryForm, CategoryProp categoryProp, boolean multiple) {
         EditText editText;
         String string;
 
         if (multiple == false) {
             editText = (EditText) categoryForm.findViewById(R.id.name_editor);
-            categoryData.name = editText.getText().toString();
+            categoryProp.name = editText.getText().toString();
         }
         // activeLimit
         editText = (EditText) categoryForm.findViewById(R.id.active_limit_editor);
         string = editText.getText().toString();
         if (string.length() > 0)
-            categoryData.activeLimit = Integer.parseInt(string);
+            categoryProp.activeLimit = Integer.parseInt(string);
         else
-            categoryData.activeLimit = 2;
+            categoryProp.activeLimit = 2;
         // finishedLimit
         editText = (EditText) categoryForm.findViewById(R.id.finished_limit_editor);
         string = editText.getText().toString();
         if (string.length() > 0)
-            categoryData.finishedLimit = Integer.parseInt(string);
+            categoryProp.finishedLimit = Integer.parseInt(string);
         else
-            categoryData.finishedLimit = 100;
+            categoryProp.finishedLimit = 100;
         // recycledLimit
         editText = (EditText) categoryForm.findViewById(R.id.recycled_limit_editor);
         string = editText.getText().toString();
         if (string.length() > 0)
-            categoryData.recycledLimit = Integer.parseInt(string);
+            categoryProp.recycledLimit = Integer.parseInt(string);
         else
-            categoryData.recycledLimit = 100;
+            categoryProp.recycledLimit = 100;
 
         editText = (EditText) categoryForm.findViewById(R.id.hosts_editor);
-        categoryData.hosts = editText.getText().toString();
+        categoryProp.hosts = editText.getText().toString();
         editText = (EditText) categoryForm.findViewById(R.id.schemes_editor);
-        categoryData.schemes = editText.getText().toString();
+        categoryProp.schemes = editText.getText().toString();
         editText = (EditText) categoryForm.findViewById(R.id.file_types_editor);
-        categoryData.fileTypes = editText.getText().toString();
+        categoryProp.fileTypes = editText.getText().toString();
     }
 
-    public void setCategoryFormData(View categoryForm, Category categoryData, boolean multiple) {
+    public void setCategoryProp(View categoryForm, CategoryProp categoryProp, boolean multiple) {
         EditText editText;
 
         if (multiple == false) {
             editText = (EditText) categoryForm.findViewById(R.id.name_editor);
-            editText.setText(categoryData.name);
+            editText.setText(categoryProp.name);
         }
         editText = (EditText) categoryForm.findViewById(R.id.active_limit_editor);
-        editText.setText(Integer.toString(categoryData.activeLimit));
+        editText.setText(Integer.toString(categoryProp.activeLimit));
         editText = (EditText) categoryForm.findViewById(R.id.finished_limit_editor);
-        editText.setText(Integer.toString(categoryData.finishedLimit));
+        editText.setText(Integer.toString(categoryProp.finishedLimit));
         editText = (EditText) categoryForm.findViewById(R.id.recycled_limit_editor);
-        editText.setText(Integer.toString(categoryData.recycledLimit));
+        editText.setText(Integer.toString(categoryProp.recycledLimit));
         editText = (EditText) categoryForm.findViewById(R.id.hosts_editor);
-        editText.setText(categoryData.hosts);
+        editText.setText(categoryProp.hosts);
         editText = (EditText) categoryForm.findViewById(R.id.schemes_editor);
-        editText.setText(categoryData.schemes);
+        editText.setText(categoryProp.schemes);
         editText = (EditText) categoryForm.findViewById(R.id.file_types_editor);
-        editText.setText(categoryData.fileTypes);
+        editText.setText(categoryProp.fileTypes);
     }
 
     // ------------------------------------------------------------------------
     // Form - Download properties
 
-    public void getDownloadFormData(View downloadForm, Download downloadData, boolean multiple) {
+    public void getDownloadProp(View downloadForm, DownloadProp downloadProp, boolean multiple) {
         EditText editText;
         Switch switchWidget;
         String string;
 
         switchWidget = downloadForm.findViewById(R.id.dnode_startup_switch);
-        downloadData.group = (switchWidget.isChecked()) ? Info.Group.queuing : Info.Group.pause;
+        downloadProp.group = (switchWidget.isChecked()) ? Info.Group.queuing : Info.Group.pause;
         if (multiple == false) {
             editText = (EditText) downloadForm.findViewById(R.id.dnode_uri_editor);
-            categoryData.uri = editText.getText().toString();
+            downloadProp.uri = editText.getText().toString();
         }
         editText = (EditText) downloadForm.findViewById(R.id.dnode_mirrors_editor);
-        categoryData.mirrors = editText.getText().toString();
+        downloadProp.mirrors = editText.getText().toString();
         editText = (EditText) downloadForm.findViewById(R.id.dnode_file_editor);
-        categoryData.file = editText.getText().toString();
+        downloadProp.file = editText.getText().toString();
 
         editText = (EditText) downloadForm.findViewById(R.id.dnode_folder_editor);
-        categoryData.folder = editText.getText().toString();
+        downloadProp.folder = editText.getText().toString();
         // check folder
-        int folderLength = categoryData.folder.length();
-        if (folderLength > 1 && categoryData.folder.charAt(folderLength - 1) == '/')
-            categoryData.folder = categoryData.folder.substring(0, folderLength - 1);
+        int folderLength = downloadProp.folder.length();
+        if (folderLength > 1 && downloadProp.folder.charAt(folderLength - 1) == '/')
+            downloadProp.folder = downloadProp.folder.substring(0, folderLength - 1);
 
         editText = (EditText) downloadForm.findViewById(R.id.dnode_referrer_editor);
-        categoryData.referrer = editText.getText().toString();
+        downloadProp.referrer = editText.getText().toString();
         editText = (EditText) downloadForm.findViewById(R.id.dnode_user_editor);
-        categoryData.user = editText.getText().toString();
+        downloadProp.user = editText.getText().toString();
         editText = (EditText) downloadForm.findViewById(R.id.dnode_password_editor);
-        categoryData.password = editText.getText().toString();
+        downloadProp.password = editText.getText().toString();
         // connections
         editText = (EditText) downloadForm.findViewById(R.id.dnode_connections_editor);
         string = editText.getText().toString();
         if (string.length() > 0)
-            categoryData.connections = Integer.parseInt(string);
+            downloadProp.connections = Integer.parseInt(string);
         else
-            categoryData.connections = 1;
+            downloadProp.connections = 1;
         // retryLimit
 //		editText = (EditText) findViewById(R.id.dnode_retry_editor);
 //		string = editText.getText().toString();
 //		if (string.length() > 0)
-//			categoryData.retryLimit = Integer.parseInt(string);
+//			downloadProp.retryLimit = Integer.parseInt(string);
 //		else
-//			categoryData.retryLimit = 10;
+//			downloadProp.retryLimit = 10;
         // proxy port
         editText = (EditText) downloadForm.findViewById(R.id.dnode_proxy_port_editor);
         string = editText.getText().toString();
         if (string.length() > 0)
-            categoryData.proxyPort = Integer.parseInt(string);
+            downloadProp.proxyPort = Integer.parseInt(string);
         else
-            categoryData.proxyPort = 80;
+            downloadProp.proxyPort = 80;
         // proxy others
         editText = (EditText) downloadForm.findViewById(R.id.dnode_proxy_host_editor);
-        categoryData.proxyHost = editText.getText().toString();
+        downloadProp.proxyHost = editText.getText().toString();
         editText = (EditText) downloadForm.findViewById(R.id.dnode_proxy_user_editor);
-        categoryData.proxyUser = editText.getText().toString();
+        downloadProp.proxyUser = editText.getText().toString();
         editText = (EditText) downloadForm.findViewById(R.id.dnode_proxy_password_editor);
-        categoryData.proxyPassword = editText.getText().toString();
+        downloadProp.proxyPassword = editText.getText().toString();
         Spinner spinner = (Spinner) downloadForm.findViewById(R.id.dnode_proxy_type_spinner);
-        categoryData.proxyType = spinner.getSelectedItemPosition();
+        downloadProp.proxyType = spinner.getSelectedItemPosition();
     }
 
-    public void setDownloadFormData(View downloadForm, Download downloadData, boolean multiple) {
+    public void setDownloadProp(View downloadForm, DownloadProp downloadProp, boolean multiple) {
         EditText editText;
         Switch switchWidget;
 
         switchWidget = downloadForm.findViewById(R.id.dnode_startup_switch);
-        switchWidget.setChecked(downloadData.group == Info.Group.queuing);
+        switchWidget.setChecked(downloadProp.group == Info.Group.queuing);
         if (multiple == false) {
             editText = (EditText) downloadForm.findViewById(R.id.dnode_uri_editor);
-            editText.setText(categoryData.uri);
+            editText.setText(downloadProp.uri);
             editText = (EditText) downloadForm.findViewById(R.id.dnode_mirrors_editor);
-            editText.setText(categoryData.mirrors);
+            editText.setText(downloadProp.mirrors);
             editText = (EditText) downloadForm.findViewById(R.id.dnode_file_editor);
-            editText.setText(categoryData.file);
+            editText.setText(downloadProp.file);
         }
         editText = (EditText) downloadForm.findViewById(R.id.dnode_folder_editor);
-        editText.setText(categoryData.folder);
+        editText.setText(downloadProp.folder);
         editText = (EditText) downloadForm.findViewById(R.id.dnode_referrer_editor);
-        editText.setText(categoryData.referrer);
+        editText.setText(downloadProp.referrer);
         editText = (EditText) downloadForm.findViewById(R.id.dnode_user_editor);
-        editText.setText(categoryData.user);
+        editText.setText(downloadProp.user);
         editText = (EditText) downloadForm.findViewById(R.id.dnode_password_editor);
-        editText.setText(categoryData.password);
+        editText.setText(downloadProp.password);
         editText = (EditText) downloadForm.findViewById(R.id.dnode_connections_editor);
-        editText.setText(Integer.toString(categoryData.connections));
+        editText.setText(Integer.toString(downloadProp.connections));
 //		editText = (EditText) findViewById(R.id.dnode_retry_editor);
-//		editText.setText(Integer.toString(categoryData.retryLimit));
+//		editText.setText(Integer.toString(downloadProp.retryLimit));
         // proxy
         editText = (EditText) downloadForm.findViewById(R.id.dnode_proxy_port_editor);
-        editText.setText(Integer.toString(categoryData.proxyPort));
+        editText.setText(Integer.toString(downloadProp.proxyPort));
         editText = (EditText) downloadForm.findViewById(R.id.dnode_proxy_host_editor);
-        editText.setText(categoryData.proxyHost);
+        editText.setText(downloadProp.proxyHost);
         editText = (EditText) downloadForm.findViewById(R.id.dnode_proxy_user_editor);
-        editText.setText(categoryData.proxyUser);
+        editText.setText(downloadProp.proxyUser);
         editText = (EditText) downloadForm.findViewById(R.id.dnode_proxy_password_editor);
-        editText.setText(categoryData.proxyPassword);
+        editText.setText(downloadProp.proxyPassword);
         Spinner spinner = (Spinner) downloadForm.findViewById(R.id.dnode_proxy_type_spinner);
-        spinner.setSelection(categoryData.proxyType);
+        spinner.setSelection(downloadProp.proxyType);
     }
 
     protected void initDownloadForm(View downloadForm, boolean multiple) {
@@ -534,9 +529,9 @@ public class NodeActivity extends AppCompatActivity {
                     public void
                     onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                         if (position == 0)
-                            disableProxy();
+                            setProxyEnable(false);
                         else
-                            enableProxy();
+                            setProxyEnable(true);
                     }
 
                     @Override
@@ -546,50 +541,30 @@ public class NodeActivity extends AppCompatActivity {
         );
     }
 
-    protected void enableProxy() {
+    protected void setProxyEnable(boolean enable) {
         View  view;
         view = findViewById(R.id.dnode_proxy_host);
-        view.setEnabled(true);
+        view.setEnabled(enable);
         view = findViewById(R.id.dnode_proxy_host_editor);
-        view.setEnabled(true);
+        view.setEnabled(enable);
         view = findViewById(R.id.dnode_proxy_port);
-        view.setEnabled(true);
+        view.setEnabled(enable);
         view = findViewById(R.id.dnode_proxy_port_editor);
-        view.setEnabled(true);
+        view.setEnabled(enable);
         view = findViewById(R.id.dnode_proxy_user);
-        view.setEnabled(true);
+        view.setEnabled(enable);
         view = findViewById(R.id.dnode_proxy_user_editor);
-        view.setEnabled(true);
+        view.setEnabled(enable);
         view = findViewById(R.id.dnode_proxy_password);
-        view.setEnabled(true);
+        view.setEnabled(enable);
         view = findViewById(R.id.dnode_proxy_password_editor);
-        view.setEnabled(true);
-    }
-
-    protected void disableProxy() {
-        View  view;
-        view = findViewById(R.id.dnode_proxy_host);
-        view.setEnabled(false);
-        view = findViewById(R.id.dnode_proxy_host_editor);
-        view.setEnabled(false);
-        view = findViewById(R.id.dnode_proxy_port);
-        view.setEnabled(false);
-        view = findViewById(R.id.dnode_proxy_port_editor);
-        view.setEnabled(false);
-        view = findViewById(R.id.dnode_proxy_user);
-        view.setEnabled(false);
-        view = findViewById(R.id.dnode_proxy_user_editor);
-        view.setEnabled(false);
-        view = findViewById(R.id.dnode_proxy_password);
-        view.setEnabled(false);
-        view = findViewById(R.id.dnode_proxy_password_editor);
-        view.setEnabled(false);
+        view.setEnabled(enable);
     }
 
     // ------------------------------------------------------------------------
     // FolderMenu
 
-    private static final int MENU_ID_SELECT_FOLDER = 16;
+    private static final int ID_MENU_SELECT_FOLDER = 16;
 
     protected void initFolderMenu(View parent) {
         ImageView  imageView;
@@ -614,15 +589,15 @@ public class NodeActivity extends AppCompatActivity {
             if (app.folderHistory[count] != null)
                 menu.add(app.folderHistory[count]);
         }
-        menu.add(Menu.NONE, MENU_ID_SELECT_FOLDER, Menu.NONE,
+        menu.add(Menu.NONE, ID_MENU_SELECT_FOLDER, Menu.NONE,
                 getString(R.string.menu_select_folder));
 
         popupMenu.setOnMenuItemClickListener(
                 new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == MENU_ID_SELECT_FOLDER)
-                            runFolderChooser();
+                        if (item.getItemId() == ID_MENU_SELECT_FOLDER)
+                            startFolderChooser();
                         else {
                             EditText editText = (EditText) findViewById(R.id.dnode_folder_editor);
                             editText.setText(item.getTitle().toString());
@@ -637,8 +612,8 @@ public class NodeActivity extends AppCompatActivity {
     // --------------------------------
     // folder chooser + permission
 
-    private static final int FOLDER_CHOOSER_CODE = 42;
-    private static final int FOLDER_REQUEST_CODE = 43;
+    private static final int RESULT_FOLDER_CHOOSER = 0xDF0C;
+    private static final int RESULT_FOLDER_REQUEST = 0xDF0E;
 
     protected boolean isFolderWritable(String folder) {
         // for Android 5+
@@ -657,14 +632,14 @@ public class NodeActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void runFolderChooser () {
+    protected void startFolderChooser () {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
                 Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        startActivityForResult(intent, FOLDER_CHOOSER_CODE);
+        startActivityForResult(intent, RESULT_FOLDER_CHOOSER);
     }
 
     protected void onFolderChooserResult (Uri  treeUri) {
@@ -684,7 +659,7 @@ public class NodeActivity extends AppCompatActivity {
         editText.setText(folder);
     }
 
-    protected void runFolderRequest () {
+    protected void startFolderRequest () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.message_permission_folder)
                 .setTitle(R.string.message_permission_required);
@@ -697,7 +672,7 @@ public class NodeActivity extends AppCompatActivity {
                 intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
                         Intent.FLAG_GRANT_READ_URI_PERMISSION |
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                startActivityForResult(intent, FOLDER_REQUEST_CODE);
+                startActivityForResult(intent, RESULT_FOLDER_REQUEST);
             }
         });
 
@@ -721,15 +696,12 @@ public class NodeActivity extends AppCompatActivity {
             return;
         Uri  treeUri = resultData.getData(); // you can't use Uri.fromFile() to get path
 
-        DocumentFile docFile = DocumentFile.fromTreeUri(this, treeUri);
-        String name = docFile.getName();
-
         switch (requestCode) {
-            case FOLDER_CHOOSER_CODE:
+            case RESULT_FOLDER_CHOOSER:
                 onFolderChooserResult(treeUri);
                 break;
 
-            case FOLDER_REQUEST_CODE:
+            case RESULT_FOLDER_REQUEST:
                 onFolderRequestResult(treeUri);
                 // --- Snackbar ---
                 Snackbar.make(findViewById(R.id.fab), FileUtil.getFullPathFromTreeUri(treeUri,this),

@@ -72,7 +72,7 @@ public class TimeoutHandler {
         public void run() {
             queuingCounts++;
             int  nActive;
-            long selectedNode = 0;
+            long selection[] = null;
 
             // Go offline if no WiFi connection
             if (app.setting.ui.noWifiGoOffline) {
@@ -93,13 +93,9 @@ public class TimeoutHandler {
                 }
             }
 
-            // if current status is "All" or "Active", get selected node.
-            if (app.nthStatus == 0 || app.nthStatus == 1) {
-                if (app.nthDownload > -1)
-                    selectedNode = Node.getNthChild(app.downloadAdapter.pointer, app.nthDownload);
-                if (selectedNode != 0)
-                    selectedNode = Node.base(selectedNode);
-            }
+            // --- reserve selected node ---
+            if (app.downloadAdapter.getCheckedItemCount() > 0)
+                selection = app.downloadAdapter.getCheckedNode();
 
             nActive = app.core.grow(app.setting.offlineMode);
             if (nActiveLast != nActive) {
@@ -128,24 +124,25 @@ public class TimeoutHandler {
             if (nActive > 0 && (queuingCounts & 1) == 1)
                 app.core.adjustSpeed();
 
-            // if current status is "All" or "Active", set selected node
-            if ((app.nthStatus == 0 || app.nthStatus == 1) && selectedNode != 0) {
-                if (app.core.nMoved > 0) {
-                    int  nthDownloadOld = app.nthDownload;
-                    app.nthDownload = Node.getPosition(app.downloadAdapter.pointer, selectedNode);
-                    if (app.mainActivity != null) {
-                        /* TODO
-                        if (app.mainActivity.isNthDownloadVisible(nthDownloadOld))
-                            app.mainActivity.scrollToNthDownload(app.nthDownload, true);
-                        app.mainActivity.syncCursorPosition();
-                        */
+            app.core.trim();
+
+            if (app.core.nMoved > 0 || app.core.nDeleted > 0) {
+                // --- restore selected node ---
+                app.downloadAdapter.setCheckedNode(selection);
+                // --- notify data changed ---
+                app.downloadAdapter.notifyDataSetChanged();
+                app.categoryAdapter.notifyDataSetChanged();
+                app.stateAdapter.notifyDataSetChanged();
+            } else {
+                long nodeArray[] = app.getActiveDownloadNode();
+                if (nodeArray != null) {
+                    for (int i = 0;  i < nodeArray.length;  i++) {
+                        int  position = app.getDownloadNodePosition(nodeArray[i]);
+                        if (position >= 0)
+                            app.downloadAdapter.notifyItemChanged(position);
                     }
                 }
             }
-
-            app.core.trim();
-            // notify data changed
-            app.downloadAdapter.notifyDataSetChanged();
 
             app.userAction = false;
             nActiveLast = nActive;
@@ -316,7 +313,7 @@ public class TimeoutHandler {
                     if (command.categoryIndex != -1)
                         cNodePointer = Node.getNthChild(app.core.nodeReal, command.categoryIndex);
                     if (cNodePointer == 0)
-                        cNodePointer = app.core.matchCategory(command.uris[index], command.data.file);
+                        cNodePointer = app.core.matchCategory(command.uris[index], command.prop.file);
 //                  if (cNodePointer == 0)
 //                      cNodePointer = Node.getNthChild(nodeReal, setting.clipboard.nthCategory);
                     if (cNodePointer == 0)
@@ -324,9 +321,9 @@ public class TimeoutHandler {
                     if (cNodePointer == 0)
                         continue;
                     // create node and add it
-                    command.data.uri = command.uris[index];
+                    command.prop.uri = command.uris[index];
                     dNodePointer = Node.create();
-                    Info.set(Node.info(dNodePointer), command.data);
+                    Info.set(Node.info(dNodePointer), command.prop);
                     app.core.addDownload(dNodePointer, cNodePointer, false);
                 }
                 // notify

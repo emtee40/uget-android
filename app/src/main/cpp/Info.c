@@ -211,8 +211,8 @@ Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Progress_2 (JNIEnv* env
 }
 
 
-// Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Download_2
-jboolean getDownloadData(JNIEnv* env, jlong pointer, jobject dDataObject)
+// Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_DownloadProp_2
+jboolean getDownloadProp(JNIEnv* env, jlong pointer, jobject dDataObject)
 {
 	jclass      dDataClass;
 	UgInfo*     info;
@@ -322,17 +322,17 @@ jboolean getDownloadData(JNIEnv* env, jlong pointer, jobject dDataObject)
 }
 
 JNIEXPORT jboolean
-Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Download_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject dDataObject)
+Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_DownloadProp_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject dDataObject)
 {
 	jboolean has_data;
 
-	has_data = getDownloadData (env, pointer, dDataObject);
+	has_data = getDownloadProp (env, pointer, dDataObject);
 	return has_data;
 }
 
 
-// Java_com_ugetdm_uget_lib_Info_setData__JLcom_ugetdm_uget_lib_Download_2
-static void setDownloadData (JNIEnv* env, jlong pointer, jobject dDataObject)
+// Java_com_ugetdm_uget_lib_Info_setData__JLcom_ugetdm_uget_lib_DownloadProp_2
+static void setDownloadProp (JNIEnv* env, jlong pointer, jobject dDataObject)
 {
 	jclass      dDataClass;
 	jstring     jstr;
@@ -510,13 +510,13 @@ static void setDownloadData (JNIEnv* env, jlong pointer, jobject dDataObject)
 }
 
 JNIEXPORT void
-Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_Download_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject dDataObject)
+Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_DownloadProp_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject dDataObject)
 {
-	setDownloadData (env, pointer, dDataObject);
+	setDownloadProp (env, pointer, dDataObject);
 }
 
 JNIEXPORT jboolean
-Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject cDataObject)
+Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_CategoryProp_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject cDataObject)
 {
 	jclass        cDataClass;
 //	jarray        jArray;
@@ -526,7 +526,7 @@ Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env
 	UgetCategory* category;
 	jboolean      has_data = JNI_FALSE;
 
-	has_data = getDownloadData (env, pointer, cDataObject);
+	has_data = getDownloadProp (env, pointer, cDataObject);
 
 	info = (UgInfo*)(intptr_t) pointer;
 
@@ -597,7 +597,7 @@ Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env
 }
 
 JNIEXPORT void
-Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject cDataObject)
+Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_CategoryProp_2 (JNIEnv* env, jclass dataClass, jlong pointer, jobject cDataObject)
 {
 	jclass        stringClass;
 	jclass        cDataClass;
@@ -607,7 +607,7 @@ Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_Category_2 (JNIEnv* env
     UgetCommon*   common;
 	UgetCategory* category;
 
-	setDownloadData(env, pointer, cDataObject);
+	setDownloadProp(env, pointer, cDataObject);
 
 	info = (UgInfo*)(intptr_t) pointer;
 

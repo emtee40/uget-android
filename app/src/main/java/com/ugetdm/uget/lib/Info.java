@@ -33,10 +33,10 @@ public class Info {
     public native static int     refCount(long infoPointer);
 
     public native static boolean get(long infoPointer, Progress progressData);
-    public native static boolean get(long infoPointer, Download downloadData);
-    public native static boolean get(long infoPointer, Category categoryData);
-    public native static void    set(long infoPointer, Download downloadData);
-    public native static void    set(long infoPointer, Category categoryData);
+    public native static boolean get(long infoPointer, DownloadProp downloadProp);
+    public native static boolean get(long infoPointer, CategoryProp categoryProp);
+    public native static void    set(long infoPointer, DownloadProp downloadProp);
+    public native static void    set(long infoPointer, CategoryProp categoryProp);
 
     public native static int     getGroup(long infoPointer);
     public native static void    setGroup(long infoPointer, int state);

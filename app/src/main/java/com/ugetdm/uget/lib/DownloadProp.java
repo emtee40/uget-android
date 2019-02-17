@@ -6,7 +6,7 @@
 
 package com.ugetdm.uget.lib;
 
-public class Download {
+public class DownloadProp {
 	public String    uri;
 	public String    mirrors;
 	public String    file;
