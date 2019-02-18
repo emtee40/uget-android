@@ -33,6 +33,9 @@
     </string-array>
 
     <!-- Download preferences -->
+    <string name="dnode_startup">Startup</string>
+    <string name="dnode_startup_auto">Auto start</string>
+    <string name="dnode_startup_manually">Manually start</string>
     <string name="dnode_uri">URI</string>
     <string name="dnode_mirrors">Mirrors</string>
     <string name="dnode_file">File</string>
@@ -57,16 +60,31 @@
         <item>SOCKS v4</item>
         <item>SOCKS v5</item>
     </string-array>
-    <string-array name="dnode_proxy_type_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+
+    <!-- Batch -->
+    <string name="batch_remaining">Remaining</string>
+    <string name="batch_total_counts">Total counts</string>
+    <string name="batch_hints">If you produce large amount of download, uGet may consume much time to process.</string>
+    <!-- Sequence Batch -->
+    <string name="batch_seq_wildcard_1">1st wildcard(*)</string>
+    <string name="batch_seq_wildcard_2">2nd wildcard(*)</string>
+    <string name="batch_seq_wildcard_3">3rd wildcard(*)</string>
+    <string name="batch_seq_eg">e.g.</string>
+    <string name="batch_seq_to">To:</string>
+    <string name="batch_seq_digits">digits:</string>
+    <string name="batch_seq_case_sensitive">case-sensitive</string>
+    <string name="batch_seq_type_number">Number</string>
+    <string name="batch_seq_type_char">Character</string>
+    <string name="batch_seq_type_none">None</string>
+    <string name="batch_seq_msg_no_wildcard">No wildcard(*) character in URI entry.</string>
+    <string name="batch_seq_msg_no_from_to">No character in \'From\' or \'To\' entry.</string>
+    <string name="batch_seq_msg_uri_not_valid">URI is not valid.</string>
+    <string name="batch_seq_preview">Preview</string>
+    <string-array name="batch_seq_type">
+        <item>None</item>
+        <item>Number</item>
+        <item>Character</item>
     </string-array>
-    <string name="dnode_startup">Startup</string>
-    <string name="dnode_startup_auto">Auto start</string>
-    <string name="dnode_startup_manually">Manually start</string>
 
     <!-- NodeActivity.java -->
     <string name="category_creation">New Category</string>

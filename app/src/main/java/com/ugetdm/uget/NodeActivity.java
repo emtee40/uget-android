@@ -1,11 +1,13 @@
 package com.ugetdm.uget;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.UriPermission;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -39,6 +41,7 @@ public class NodeActivity extends AppCompatActivity {
     protected DrawerLayout      drawer;
     protected View              categoryForm;
     protected View              downloadForm;
+    protected SequenceForm      sequenceForm;
     protected CategoryProp      categoryProp;
     // bundle and related data
     protected int     mode;
@@ -48,6 +51,7 @@ public class NodeActivity extends AppCompatActivity {
 
     // static
     public static final class Mode {
+        public static final int  batch_sequence    = 0x00;
         public static final int  download_creation = 0x01;
         public static final int  download_setting  = 0x02;
         public static final int  category_creation = 0x04;
@@ -72,6 +76,13 @@ public class NodeActivity extends AppCompatActivity {
             initDownloadForm(downloadForm, true);
             pagerAdapter.add(downloadForm, getString(R.string.download_default));
         }
+        else if (mode == Mode.batch_sequence) {
+            sequenceForm = new SequenceForm(this);
+            pagerAdapter.add(sequenceForm.view, getString(R.string.action_batch));
+            downloadForm = getLayoutInflater().inflate(R.layout.form_download,null);
+            initDownloadForm(downloadForm, true);
+            pagerAdapter.add(downloadForm, getString(R.string.download_setting));
+        }
         else {
             downloadForm = getLayoutInflater().inflate(R.layout.form_download,null);
             initDownloadForm(downloadForm, false);
@@ -85,10 +96,10 @@ public class NodeActivity extends AppCompatActivity {
 
         // --- TabLayout ---
         TabLayout tabLayout = findViewById(R.id.tablayout);
-        if ((mode & Mode.category_mode) > 0)
-            tabLayout.setupWithViewPager(viewPager);
-        else
+        if ((mode & Mode.download_mode) > 0)
             tabLayout.setVisibility(View.GONE);    // remove TabLayout if only one page
+        else
+            tabLayout.setupWithViewPager(viewPager);
     }
 
     protected void initTraveler() {
@@ -170,6 +181,9 @@ public class NodeActivity extends AppCompatActivity {
             // toolbar.setContentInsetStartWithNavigation(0);    // right side space of Navigation button
         }
         switch (mode) {
+            case Mode.batch_sequence:
+                getSupportActionBar().setTitle(getString(R.string.action_batch_sequence));
+                break;
             case Mode.download_creation:
                 getSupportActionBar().setTitle(getString(R.string.download_creation));
                 break;
@@ -195,7 +209,7 @@ public class NodeActivity extends AppCompatActivity {
             setCategoryProp(categoryForm, categoryProp, false);
             setDownloadProp(downloadForm, categoryProp, true);
         }
-        if ((mode & Mode.download_mode) > 0) {
+        else {
             if (mode == Mode.download_creation) {
                 Uri uri = app.getUriFromClipboard(false);
                 if (uri != null)
@@ -265,13 +279,40 @@ public class NodeActivity extends AppCompatActivity {
         }
 
         switch(mode) {
+            case Mode.batch_sequence:
+                if (sequenceForm.showPreview() == false) {
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+                    dialogBuilder.setTitle(R.string.action_batch_sequence);
+                    dialogBuilder.setMessage(sequenceForm.errorMessage);
+                    dialogBuilder.show();
+                }
+                else {
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    dialogBuilder.setTitle(R.string.action_batch);
+                    dialogBuilder.setMessage(getString(R.string.batch_hints) + "\n\n" +
+                            getString(R.string.batch_total_counts) + " : " + sequenceForm.count());
+                    dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            batchAdd();
+                        }
+                    });
+                    dialogBuilder.show();
+                }
+                return;
+
             case Mode.download_creation:
                 if (downloadProp.uri == null || downloadProp.uri.equals("")) {
                     // --- show message : No Download URI ---
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                    dialog.setIcon(android.R.drawable.ic_dialog_alert);
-                    dialog.setMessage(R.string.message_no_uri);
-                    dialog.show();
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+                    dialogBuilder.setMessage(R.string.message_no_uri);
+                    dialogBuilder.show();
                     return;
                 }
                 nodePointer = Node.create();
@@ -292,10 +333,10 @@ public class NodeActivity extends AppCompatActivity {
                 getCategoryProp(categoryForm, categoryProp, false);
                 if (categoryProp.uri == null || categoryProp.name.equals("")) {
                     // --- show message : No Category Name ---
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                    dialog.setIcon(android.R.drawable.ic_dialog_alert);
-                    dialog.setMessage(R.string.message_no_name);
-                    dialog.show();
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+                    dialogBuilder.setMessage(R.string.message_no_name);
+                    dialogBuilder.show();
                     return;
                 }
                 nodePointer = Node.create();
@@ -521,8 +562,13 @@ public class NodeActivity extends AppCompatActivity {
     // ProxyType
 
     protected void initProxyTypeSpinner(View parent) {
+        SpinnerItems proxyTypeAdapter = new SpinnerItems(this);
+        proxyTypeAdapter.names = getResources().getStringArray(R.array.dnode_proxy_type);
+        proxyTypeAdapter.imageIds = new int[]{android.R.drawable.presence_offline,
+                android.R.drawable.presence_online};
+
         Spinner spinner = (Spinner)parent.findViewById(R.id.dnode_proxy_type_spinner);
-        spinner.setAdapter(new ProxyTypeAdapter(this));
+        spinner.setAdapter(proxyTypeAdapter);
         spinner.setOnItemSelectedListener(
                 new Spinner.OnItemSelectedListener() {
                     @Override
@@ -716,4 +762,58 @@ public class NodeActivity extends AppCompatActivity {
         }
     }
 
+    // ------------------------------------------------------------------------
+    // Batch Handler
+
+    public void batchAdd() {
+        // --- disable OK and CANCEL ---
+        findViewById(R.id.action_ok).setEnabled(false);
+        findViewById(R.id.action_cancel).setEnabled(false);
+        // --- batch handler ---
+        batchUriIndex = 0;
+        batchUriArray = sequenceForm.getList();
+        batchHandler = new Handler();
+        batchHandler.postDelayed(batchRunnable, 0);
+    }
+
+    private AlertDialog batchDialog;
+    private int      batchUriIndex;
+    private String[] batchUriArray;
+    private Handler  batchHandler;
+    private Runnable batchRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long         timeMillis;
+            DownloadProp downloadProp;
+
+            if (batchDialog != null)
+                batchDialog.dismiss();
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(NodeActivity.this);
+            dialogBuilder.setIcon(android.R.drawable.ic_dialog_info);
+            dialogBuilder.setTitle(R.string.action_batch);
+            dialogBuilder.setMessage(
+                    getString(R.string.batch_remaining) + " : " + (batchUriArray.length - batchUriIndex) + "\n\n"
+                    + getString(R.string.batch_total_counts) + " : " + batchUriArray.length);
+            batchDialog = dialogBuilder.show();
+
+            timeMillis = System.currentTimeMillis();
+            downloadProp = (DownloadProp) categoryProp;
+            for (;  batchUriIndex < batchUriArray.length;  batchUriIndex++) {
+                if (System.currentTimeMillis() - timeMillis > 300)
+                    break;
+                long nodePointer = Node.create();
+                long infoPointer = Node.info(nodePointer);
+                downloadProp.uri = batchUriArray[batchUriIndex];
+                Info.set(infoPointer, downloadProp);
+                app.addDownloadNode(nodePointer, nthCategoryReal + 1);
+            }
+
+            if (batchUriIndex == batchUriArray.length) {
+                batchDialog.dismiss();
+                finish();
+                return;
+            }
+            batchHandler.postDelayed(this, 100);
+        }
+    };
 }

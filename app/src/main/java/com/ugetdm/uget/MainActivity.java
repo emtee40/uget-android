@@ -297,6 +297,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_batch_sequence:
+                intent = new Intent();
+                bundle = new Bundle();
+                bundle.putInt("mode", NodeActivity.Mode.batch_sequence);
+                bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
+                intent.putExtras(bundle);
+                intent.setClass(MainActivity.this, NodeActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.action_resume_all:
@@ -879,7 +886,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setMessage(R.string.message_permission_sd_card)
                         .setTitle(R.string.message_permission_required);
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         makeRequest();
                     }
