@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.UriPermission;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -1275,8 +1276,8 @@ public class MainApp extends Application {
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setDefaults(flags)
-                .setSmallIcon(R.mipmap.ic_launcher_round);
-                // .setColor(Color.GREEN - 0x6600);  // 0xff00ff00 - 0x6600
+                .setSmallIcon(R.mipmap.ic_notification)
+                .setColor(Color.GREEN - 0x6600);  // 0xff00ff00 - 0x6600
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             builder.setChannelId(channelId);
