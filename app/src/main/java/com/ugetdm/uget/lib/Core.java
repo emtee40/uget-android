@@ -39,7 +39,7 @@ public class Core {
     public  native void    cFinal(boolean shutdown_aria2);
 
     public  native int     grow(boolean no_queuing);
-    public  native int     trim();
+    public  native long[]  trim();
 
     public  native void    setConfigDir(String dir);
 

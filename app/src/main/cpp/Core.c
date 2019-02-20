@@ -248,29 +248,45 @@ Java_com_ugetdm_uget_lib_Core_grow (JNIEnv* env, jobject thiz, jboolean no_queui
 	return nActive;
 }
 
-JNIEXPORT jint
+JNIEXPORT jlongArray
 Java_com_ugetdm_uget_lib_Core_trim (JNIEnv* env, jobject thiz)
 {
-	UgetApp*  app;
-	jclass    jCore_class;
-	jint      nDeleted;
+	UgetApp*    app;
+	UgArrayPtr* deletedNodes;
+	jclass      jCore_class;
+    jlongArray  jArray;
+	int         index;
 
 	jCore_class = (*env)->GetObjectClass (env, thiz);
 //	jCore_class = (*env)->FindClass (env, "com/ugetdm/uget/lib/Core");
 	app = (UgetApp*)(intptr_t) (*env)->GetLongField(env, thiz,
-													(*env)->GetFieldID (env, jCore_class, "pointer", "J"));
+			(*env)->GetFieldID (env, jCore_class, "pointer", "J"));
 
-	// reset counter
-	app->n_deleted = 0;
-	// trim
-	nDeleted = uget_app_trim(app);
+	// C array
+	deletedNodes = ug_malloc(sizeof(UgArrayPtr));
+	ug_array_init(deletedNodes, sizeof(void*), 16);
+    // trim
+    app->n_deleted = uget_app_trim(app, deletedNodes);
+	// copy C array to Java array
+	if (app->n_deleted == 0)
+	    jArray = NULL;
+	else {
+        // Java long : 64-bit
+        // C pointer : 32-bit or 64-bit
+        jArray = (*env)->NewLongArray(env, app->n_deleted);
+	    for (index = 0;  index < deletedNodes->length;  index++)
+            (*env)->SetLongArrayRegion(env, jArray, index, 1, (jlong) deletedNodes->at[index]);
+	}
+	// C array
+	ug_array_clear(deletedNodes);
+	ug_free(deletedNodes);
 
 	(*env)->SetIntField(env, thiz,
 						(*env)->GetFieldID(env, jCore_class, "nDeleted", "I"),
 						app->n_deleted);
 	(*env)->DeleteLocalRef(env, jCore_class);
 
-	return nDeleted;
+	return jArray;
 }
 
 JNIEXPORT void
