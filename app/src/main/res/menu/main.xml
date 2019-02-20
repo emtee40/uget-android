@@ -104,9 +104,23 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_remove"
-        android:title="@string/action_remove"
+        android:id="@+id/action_delete"
+        android:title="@string/menu_delete"
         android:visible="false"
-        app:showAsAction="never" />
+        app:showAsAction="never" >
+        <menu>
+            <item
+                android:id="@+id/action_delete_recycle"
+                android:title="@string/menu_download_delete_recycle" />
+
+            <item
+                android:id="@+id/action_delete_data"
+                android:title="@string/menu_download_delete_data" />
+
+            <item
+                android:id="@+id/action_delete_file"
+                android:title="@string/menu_download_delete_file" />
+        </menu>
+    </item>
 
 </menu>

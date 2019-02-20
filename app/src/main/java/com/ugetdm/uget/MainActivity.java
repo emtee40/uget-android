@@ -207,8 +207,8 @@ public class MainActivity extends AppCompatActivity {
             // --- selection mode ---
             app.downloadAdapter.clearChoices();
             app.nDownloadSelected = 0;
-            updateToolbar();
             decideMenuVisible();
+            updateToolbar();
         }
         else if (app.setting.ui.exitOnBack) {
             if (app.setting.ui.confirmExit) {
@@ -365,17 +365,58 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0;  i < size;  i++)
                     app.downloadAdapter.setItemChecked(i, true);
                 app.nDownloadSelected = size;
-                decideTitle();
+                decideTitle();    // updateToolbar()
                 break;
 
-            case R.id.action_remove:
+            case R.id.action_delete_recycle:
                 selection = app.downloadAdapter.getCheckedNode();
                 for (int i=0;  i < selection.length;  i++) {
                     position = app.getDownloadNodePosition(selection[i]);
-                    if (position != -1)
-                        app.recycleNthDownload(position);
+                    if (position != -1) {
+                        if (app.recycleNthDownload(position) == -1) {
+                            // current position was removed
+                            selection[i] = 0;
+                            app.nDownloadSelected--;
+                        }
+                    }
                 }
                 app.downloadAdapter.setCheckedNode(selection);
+                if (app.nDownloadSelected == 0) {
+                    decideMenuVisible();
+                    updateToolbar();
+                }
+                break;
+
+            case R.id.action_delete_data:
+                selection = app.downloadAdapter.getCheckedNode();
+                for (int i=0;  i < selection.length;  i++) {
+                    position = app.getDownloadNodePosition(selection[i]);
+                    if (position != -1) {
+                        app.deleteNthDownload(position, false);
+                        app.downloadAdapter.selections.delete(position);
+                    }
+                }
+                app.nDownloadSelected = 0;
+                decideMenuVisible();
+                updateToolbar();
+                break;
+
+            case R.id.action_delete_file:
+                if (app.setting.ui.confirmDelete)
+                    confirmDeleteDownloads();
+                else {
+                    selection = app.downloadAdapter.getCheckedNode();
+                    for (int i=0;  i < selection.length;  i++) {
+                        position = app.getDownloadNodePosition(selection[i]);
+                        if (position != -1) {
+                            app.deleteNthDownload(position, true);
+                            app.downloadAdapter.selections.delete(position);
+                        }
+                    }
+                    app.nDownloadSelected = 0;
+                    decideMenuVisible();
+                    updateToolbar();
+                }
                 break;
 
             default:
@@ -460,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.action_start).setVisible(selectionMode);
         menu.findItem(R.id.action_pause).setVisible(selectionMode);
         menu.findItem(R.id.action_select_all).setVisible(selectionMode);
-        menu.findItem(R.id.action_remove).setVisible(selectionMode);
+        menu.findItem(R.id.action_delete).setVisible(selectionMode);
     }
 
     // ------------------------------------------------------------------------
@@ -816,6 +857,43 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+        builder.setNegativeButton(getResources().getString(android.R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    public void confirmDeleteDownloads() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(getResources().getString(R.string.message_delete_file));
+        builder.setTitle(getResources().getString(R.string.message_delete_title));
+        builder.setPositiveButton(getResources().getString(android.R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                long[] selection = app.downloadAdapter.getCheckedNode();
+                for (int i=0;  i < selection.length;  i++) {
+                    int position = app.getDownloadNodePosition(selection[i]);
+                    if (position != -1) {
+                        app.deleteNthDownload(position, true);
+                        app.downloadAdapter.selections.delete(position);
+                    }
+                }
+                app.nDownloadSelected = 0;
+                decideMenuVisible();
+                updateToolbar();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(getResources().getString(android.R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     public void confirmDeleteCategory() {
@@ -833,7 +911,6 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
         builder.setNegativeButton(getResources().getString(android.R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -855,7 +932,6 @@ public class MainActivity extends AppCompatActivity {
                 app.onTerminate();
             }
         });
-
         builder.setNegativeButton(getResources().getString(android.R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

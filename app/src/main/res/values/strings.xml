@@ -102,7 +102,6 @@
     <!-- MainActivity.java Selection mode -->
     <string name="action_start">Start</string>
     <string name="action_pause">Pause</string>
-    <string name="action_remove">Remove</string>
     <!-- MainActivity.java -->
     <string name="action_file">File</string>
     <string name="action_category_new">New category…</string>
