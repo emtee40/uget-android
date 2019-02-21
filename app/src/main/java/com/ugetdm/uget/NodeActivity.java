@@ -166,8 +166,17 @@ public class NodeActivity extends AppCompatActivity {
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
-            if (mode > Mode.download_creation)
-                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            if (mode > Mode.download_creation) {
+                // --- lock drawer, keep closed
+                //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                // --- reset Listener when icon changed
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                });
+            }
         }
 
         // --- Toolbar --- setup it after  setSupportActionBar()  and  toggle.syncState()
@@ -331,7 +340,7 @@ public class NodeActivity extends AppCompatActivity {
 
             case Mode.category_creation:
                 getCategoryProp(categoryForm, categoryProp, false);
-                if (categoryProp.uri == null || categoryProp.name.equals("")) {
+                if (categoryProp.name == null || categoryProp.name.equals("")) {
                     // --- show message : No Category Name ---
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
                     dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -556,6 +565,7 @@ public class NodeActivity extends AppCompatActivity {
                     textView.setText(R.string.dnode_startup_manually);
             }
         });
+        switchWidget.setChecked(categoryProp.group == Info.Group.queuing);
     }
 
     // ------------------------------------------------------------------------
