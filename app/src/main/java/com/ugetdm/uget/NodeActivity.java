@@ -320,7 +320,7 @@ public class NodeActivity extends AppCompatActivity {
                     // --- show message : No Download URI ---
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
                     dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-                    dialogBuilder.setMessage(R.string.message_no_uri);
+                    dialogBuilder.setMessage(R.string.dnode_uri_not_set);
                     dialogBuilder.show();
                     return;
                 }
@@ -344,7 +344,7 @@ public class NodeActivity extends AppCompatActivity {
                     // --- show message : No Category Name ---
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
                     dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-                    dialogBuilder.setMessage(R.string.message_no_name);
+                    dialogBuilder.setMessage(R.string.cnode_name_not_set);
                     dialogBuilder.show();
                     return;
                 }

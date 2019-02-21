@@ -14,6 +14,7 @@
 
     <!-- Category preferences -->
     <string name="cnode_name">Name</string>
+    <string name="cnode_name_not_set">No Category Name, please set it.</string>
     <string name="cnode_active_limit">Active downloads</string>
     <string name="cnode_finished_limit">Capacity of Finished</string>
     <string name="cnode_recycled_limit">Capacity of Recycled</string>
@@ -37,6 +38,7 @@
     <string name="dnode_startup_auto">Auto start</string>
     <string name="dnode_startup_manually">Manually start</string>
     <string name="dnode_uri">URI</string>
+    <string name="dnode_uri_not_set">No Download URI, please set it.</string>
     <string name="dnode_mirrors">Mirrors</string>
     <string name="dnode_file">File</string>
     <string name="dnode_file_placeholder">Leave blank to use default filename …</string>    <!-- NodeActivity.java -->
@@ -299,9 +301,5 @@
     <string name="message_permission_sd_card">Permission to access the SD-CARD is required for this app to Download files.</string>
     <string name="message_permission_folder">Permission to access this folder is required. Please pick this folder to get write permission.</string>
     <string name="message_permission_folder_get">Get folder permission until reboot.</string>
-
-    <!-- NodeActivity message -->
-    <string name="message_no_uri">No Download URI, please assign it.</string>
-    <string name="message_no_name">No Category Name, please assign it.</string>
 
 </resources>
