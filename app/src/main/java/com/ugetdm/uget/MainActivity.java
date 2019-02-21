@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,9 +32,9 @@ import android.widget.PopupMenu;
 
 import com.ugetdm.uget.lib.Core;
 import com.ugetdm.uget.lib.Node;
+import com.ugetdm.uget.lib.Util;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
 
 public class MainActivity extends AppCompatActivity {
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateToolbar();
         initTraveler();
+        initTimeoutHandler();
     }
 
     @Override
@@ -433,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
         // --- setup Toolbar after  setSupportActionBar()  and  toggle.syncState()  ---
         if (app.nDownloadSelected == 0) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            toolbar.setNavigationIcon(R.mipmap.ic_launcher_round);
+            toolbar.setNavigationIcon(R.mipmap.ic_notification);
             // --- left side to title space (if NavigationIcon exists)
             toolbar.setContentInsetStartWithNavigation(0);
             // reset Listener when icon changed
@@ -481,7 +483,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             // --- selection mode ---
             title = Integer.toString(app.nDownloadSelected);
-            toolbar.setSubtitle(null);
+            //toolbar.setSubtitle(null);
         }
         toolbar.setTitle(title);
     }
@@ -713,6 +715,9 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.menu_download_delete_recycle:
                         app.nthDownload = app.recycleNthDownload(app.nthDownload);
+                        if (app.nthDownload > 0)
+                            downloadListView.smoothScrollToPosition(app.nthDownload);
+                        // app.downloadAdapter.setItemChecked(app.nthDownload, true);
                         break;
 
                     case R.id.menu_download_delete_data:
@@ -731,33 +736,40 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.menu_download_force_start:
                         app.nthDownload = app.activateNthDownload(app.nthDownload);
+                        if (app.nthDownload > 0)
+                            downloadListView.smoothScrollToPosition(app.nthDownload);
+                        // app.downloadAdapter.setItemChecked(app.nthDownload, true);
                         break;
 
                     case R.id.menu_download_start:
                         app.nthDownload = app.tryQueueNthDownload(app.nthDownload);
+                        if (app.nthDownload > 0)
+                            downloadListView.smoothScrollToPosition(app.nthDownload);
+                        // app.downloadAdapter.setItemChecked(app.nthDownload, true);
                         break;
 
                     case R.id.menu_download_pause:
                         app.nthDownload = app.pauseNthDownload(app.nthDownload);
-                        if (app.nthDownload >= 0) {
+                        if (app.nthDownload >= 0)
+                            downloadListView.smoothScrollToPosition(app.nthDownload);
                             // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                            // downloadListView.smoothScrollToPosition(app.nthDownload);
-                        }
                         break;
 
                     case R.id.menu_download_move_up:
                         if (app.moveNthDownload(app.nthDownload, app.nthDownload -1)) {
                             app.nthDownload--;
+                            if (app.nthDownload >= 0)
+                                downloadListView.smoothScrollToPosition(app.nthDownload);
                             // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                            // downloadListView.smoothScrollToPosition(app.nthDownload);
                         }
                         break;
 
                     case R.id.menu_download_move_down:
                         if (app.moveNthDownload(app.nthDownload, app.nthDownload +1)) {
                             app.nthDownload++;
+                            if (app.nthDownload >= 0)
+                                downloadListView.smoothScrollToPosition(app.nthDownload);
                             // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                            // downloadListView.smoothScrollToPosition(app.nthDownload);
                         }
                         break;
 
@@ -1098,6 +1110,50 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    // ------------------------------------------------------------------------
+    // Timeout Interval & Handler
+
+    private static final int speedInterval = 1000;
+    private Handler  speedHandler  = new Handler();
+    private Runnable speedRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // show speed in subtitle
+            if (app.core.downloadSpeed == 0 && app.core.uploadSpeed == 0)
+                toolbar.setSubtitle(null);
+            else {
+                String string = "";
+                if (app.core.downloadSpeed > 0)
+                    string += "↓ " + Util.stringFromIntUnit(app.core.downloadSpeed, 1);
+                if (app.core.uploadSpeed > 0) {
+                    if (app.core.downloadSpeed > 0)
+                        string += " , ";
+                    string += "↑ " + Util.stringFromIntUnit(app.core.uploadSpeed, 1);
+                }
+                toolbar.setSubtitle(string);
+                string = null;
+            }
+
+            // show offline/selection in title
+            decideTitle();
+
+            // call this function after the specified time interval
+            speedHandler.postDelayed(this, speedInterval);
+        }
+    };
+
+    public void initTimeoutHandler() {
+        speedHandler.postDelayed(speedRunnable, speedInterval);
+        /*
+        speedHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initAd();
+            }
+        }, 1000);
+        */
     }
 
 }
