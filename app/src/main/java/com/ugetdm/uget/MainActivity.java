@@ -302,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent();
                 bundle = new Bundle();
                 bundle.putInt("mode", NodeActivity.Mode.batch_sequence);
+                bundle.putInt("nthCategory", app.nthCategory);
                 bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
                 intent.putExtras(bundle);
                 intent.setClass(MainActivity.this, NodeActivity.class);
@@ -660,11 +661,15 @@ public class MainActivity extends AppCompatActivity {
 
         // --- avoid menu popup twice ---
         popupMenuDownload = popupMenu;
+
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu popupMenu) {
                 popupMenuDownload = null;
+                // --- clear choice ---
                 app.downloadAdapter.clearChoices();
+                if (app.nthDownload >= 0)
+                    app.downloadAdapter.notifyItemChanged(app.nthDownload);
             }
         });
 
@@ -674,9 +679,6 @@ public class MainActivity extends AppCompatActivity {
                 long  dNodePointer;
                 int   nthDownloadLast;
 
-                // --- clear choice before doing something ---
-                app.downloadAdapter.setItemChecked(app.nthDownload, false);
-                // --- do something ---
                 switch (item.getItemId()) {
                     case R.id.menu_download_open:
                         File file = app.getDownloadedFile(app.nthDownload);
@@ -758,8 +760,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_download_move_up:
                         if (app.moveNthDownload(app.nthDownload, app.nthDownload -1)) {
                             app.nthDownload--;
-                            if (app.nthDownload >= 0)
-                                downloadListView.smoothScrollToPosition(app.nthDownload);
+                            downloadListView.smoothScrollToPosition(app.nthDownload);
                             // app.downloadAdapter.setItemChecked(app.nthDownload, true);
                         }
                         break;
@@ -767,8 +768,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_download_move_down:
                         if (app.moveNthDownload(app.nthDownload, app.nthDownload +1)) {
                             app.nthDownload++;
-                            if (app.nthDownload >= 0)
-                                downloadListView.smoothScrollToPosition(app.nthDownload);
+                            downloadListView.smoothScrollToPosition(app.nthDownload);
                             // app.downloadAdapter.setItemChecked(app.nthDownload, true);
                         }
                         break;
@@ -1026,7 +1026,8 @@ public class MainActivity extends AppCompatActivity {
             app.categoryAdapter.notifyDataSetChanged();
             app.stateAdapter.notifyDataSetChanged();
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab), R.string.message_file_load_ok, Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_load_ok) +
+                    " - " + filename, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
             //Toast.makeText(this, "load " + filename,
@@ -1034,7 +1035,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab), R.string.message_file_load_fail, Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.fab),getString(R.string.message_file_load_fail) +
+                    " - " + filename, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
             //Toast.makeText(this, "Failed to load " + filename,
@@ -1068,10 +1070,11 @@ public class MainActivity extends AppCompatActivity {
             parcelFD = null;
         }
 
-        // String filename = DocumentFile.fromSingleUri(this, treeUri).getName();
+        String filename = DocumentFile.fromSingleUri(this, treeUri).getName();
         if (parcelFD != null && app.saveNthCategory(app.nthCategory, parcelFD.detachFd()) != false) {
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab), R.string.message_file_save_ok, Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_save_ok) +
+                    " - " + filename, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
             //Toast.makeText(this, "save " + filename,
@@ -1079,7 +1082,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab), R.string.message_file_save_fail, Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_save_fail) +
+                    " - " + filename, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
             //Toast.makeText(this, "Failed to save " + filename,
