@@ -149,7 +149,7 @@ public class SequenceForm {
             default:
             case 0:
                 charCase = view.findViewById(R.id.batch_seq_char_case1);
-                digitsLabel = view.findViewById(R.id.batch_seq_digits_label1);
+                digitsLabel = view.findViewById(R.id.batch_seq_digits1_label);
                 digits = (EditText) view.findViewById(R.id.batch_seq_digits1);
                 from = (EditText) view.findViewById(R.id.batch_seq_from1);
                 to = (EditText) view.findViewById(R.id.batch_seq_to1);
@@ -157,7 +157,7 @@ public class SequenceForm {
 
             case 1:
                 charCase = view.findViewById(R.id.batch_seq_char_case2);
-                digitsLabel = view.findViewById(R.id.batch_seq_digits_label2);
+                digitsLabel = view.findViewById(R.id.batch_seq_digits2_label);
                 digits = (EditText) view.findViewById(R.id.batch_seq_digits2);
                 from = (EditText) view.findViewById(R.id.batch_seq_from2);
                 to = (EditText) view.findViewById(R.id.batch_seq_to2);
@@ -165,7 +165,7 @@ public class SequenceForm {
 
             case 2:
                 charCase = view.findViewById(R.id.batch_seq_char_case3);
-                digitsLabel = view.findViewById(R.id.batch_seq_digits_label3);
+                digitsLabel = view.findViewById(R.id.batch_seq_digits3_label);
                 digits = (EditText) view.findViewById(R.id.batch_seq_digits3);
                 from = (EditText) view.findViewById(R.id.batch_seq_from3);
                 to = (EditText) view.findViewById(R.id.batch_seq_to3);

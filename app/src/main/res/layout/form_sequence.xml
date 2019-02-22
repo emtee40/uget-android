@@ -1,295 +1,392 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:paddingTop="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="1">
-
-            <TableRow>
-                <TextView
-                    android:text="@string/dnode_uri"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <EditText
-                    android:id="@+id/batch_seq_uri_editor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textUri"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-            </TableRow>
-
-            <TableRow
-                android:paddingBottom="8dp">
-
-                <TextView
-                    android:text="@string/batch_seq_eg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <TextView
-                    android:text="http://for.example/path/pre*.jpg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textIsSelectable="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-            </TableRow>
-        </TableLayout>
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/darker_gray" />
-
-        <!--  -->
-        <TableLayout
+        <TextView
+            android:id="@+id/batch_seq_uri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:text="@string/dnode_uri"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_uri_editor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Range 1 -->
-            <LinearLayout>
-                <Spinner
-                    android:id="@+id/batch_seq_type1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="8dp"
-                    android:gravity="end"
-                    android:text="@string/batch_seq_wildcard_1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-            </LinearLayout>
+        <EditText
+            android:id="@+id/batch_seq_uri_editor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:inputType="textUri"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_uri"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp">
 
-                <EditText
-                    android:id="@+id/batch_seq_from1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:ems="3" />
+        <TextView
+            android:id="@+id/batch_seq_eg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/batch_seq_eg"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_uri_editor" />
 
-                <TextView
-                    android:text="@string/batch_seq_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="http://for.example/path/pre*.jpg"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_eg"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_uri_editor" />
 
-                <EditText
-                    android:id="@+id/batch_seq_to1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:ems="3" />
+        <!-- ============================================================== -->
+        <!-- horizontal center for Ranges -->
 
-                <TextView
-                    android:id="@+id/batch_seq_digits_label1"
-                    android:text="@string/batch_seq_digits"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/batch_horizontal_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
-                    android:id="@+id/batch_seq_digits1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="2"
-                    android:ems="2" />
-
-                <TextView
-                    android:id="@+id/batch_seq_char_case1"
-                    android:text="@string/batch_seq_case_sensitive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:visibility="gone" />
-            </TableRow>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@android:color/darker_gray" />
-
-            <!-- Range 2 -->
-            <LinearLayout>
-                <Spinner
-                    android:id="@+id/batch_seq_type2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="8dp"
-                    android:gravity="end"
-                    android:text="@string/batch_seq_wildcard_2"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-            </LinearLayout>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp">
-
-                <EditText
-                    android:id="@+id/batch_seq_from2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:ems="3" />
-
-                <TextView
-                    android:text="@string/batch_seq_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <EditText
-                    android:id="@+id/batch_seq_to2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:ems="3" />
-
-                <TextView
-                    android:id="@+id/batch_seq_digits_label2"
-                    android:text="@string/batch_seq_digits"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <EditText
-                    android:id="@+id/batch_seq_digits2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="2"
-                    android:ems="2" />
-
-                <TextView
-                    android:id="@+id/batch_seq_char_case2"
-                    android:text="@string/batch_seq_case_sensitive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:visibility="gone" />
-            </TableRow>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@android:color/darker_gray" />
-
-            <!-- Range 3 -->
-            <LinearLayout>
-                <Spinner
-                    android:id="@+id/batch_seq_type3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="8dp"
-                    android:gravity="end"
-                    android:text="@string/batch_seq_wildcard_3"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-            </LinearLayout>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp">
-
-                <EditText
-                    android:id="@+id/batch_seq_from3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:ems="3" />
-
-                <TextView
-                    android:text="@string/batch_seq_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <EditText
-                    android:id="@+id/batch_seq_to3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:ems="3" />
-
-                <TextView
-                    android:id="@+id/batch_seq_digits_label3"
-                    android:text="@string/batch_seq_digits"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <EditText
-                    android:id="@+id/batch_seq_digits3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="2"
-                    android:ems="2" />
-
-                <TextView
-                    android:id="@+id/batch_seq_char_case3"
-                    android:text="@string/batch_seq_case_sensitive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:visibility="gone" />
-            </TableRow>
-        </TableLayout>
+        <!-- ============================================================== -->
+        <!-- Range 1 -->
 
         <View
+            android:id="@+id/view1"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_eg" />
+
+        <Spinner
+            android:id="@+id/batch_seq_type1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/batch_seq_wildcard_1"
+            android:background="@android:color/darker_gray"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+
+        <EditText
+            android:id="@+id/batch_seq_from1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxLines="1"
+            android:ems="3"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/batch_seq_to1_label"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_type1" />
+
+        <TextView
+            android:id="@+id/batch_seq_to1_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/batch_seq_to"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from1"
+            app:layout_constraintEnd_toStartOf="@+id/batch_seq_to1"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from1" />
+
+        <EditText
+            android:id="@+id/batch_seq_to1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ems="3"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from1" />
+
+        <TextView
+            android:id="@+id/batch_seq_digits1_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/batch_seq_digits"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from1"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_to1"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from1" />
+
+        <EditText
+            android:id="@+id/batch_seq_digits1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ems="2"
+            android:inputType="number"
+            android:text="2"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_digits1_label"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from1" />
+
+        <TextView
+            android:id="@+id/batch_seq_char_case1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/batch_seq_case_sensitive"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from1"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_to1"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from1" />
+
+        <!-- ============================================================== -->
+        <!-- Range 2 -->
+
+        <View
+            android:id="@+id/view2"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_from1" />
+
+        <Spinner
+            android:id="@+id/batch_seq_type2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:background="@android:color/darker_gray"
+            android:text="@string/batch_seq_wildcard_2"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+
+        <EditText
+            android:id="@+id/batch_seq_from2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxLines="1"
+            android:ems="3"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/batch_seq_to2_label"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_type2" />
+
+        <TextView
+            android:id="@+id/batch_seq_to2_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/batch_seq_to"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from2"
+            app:layout_constraintEnd_toStartOf="@+id/batch_seq_to2"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from2" />
+
+        <EditText
+            android:id="@+id/batch_seq_to2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ems="3"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from2" />
+
+        <TextView
+            android:id="@+id/batch_seq_digits2_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/batch_seq_digits"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from2"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_to2"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from2" />
+
+        <EditText
+            android:id="@+id/batch_seq_digits2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ems="2"
+            android:inputType="number"
+            android:text="2"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_digits2_label"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from2" />
+
+        <TextView
+            android:id="@+id/batch_seq_char_case2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/batch_seq_case_sensitive"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from2"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_to2"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from2" />
+
+        <!-- ============================================================== -->
+        <!-- Range 3 -->
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_from2" />
+
+        <Spinner
+            android:id="@+id/batch_seq_type3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:background="@android:color/darker_gray"
+            android:text="@string/batch_seq_wildcard_3"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+
+        <EditText
+            android:id="@+id/batch_seq_from3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxLines="1"
+            android:ems="3"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/batch_seq_to3_label"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_type3" />
+
+        <TextView
+            android:id="@+id/batch_seq_to3_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/batch_seq_to"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from3"
+            app:layout_constraintEnd_toStartOf="@+id/batch_seq_to3"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from3" />
+
+        <EditText
+            android:id="@+id/batch_seq_to3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ems="3"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from3" />
+
+        <TextView
+            android:id="@+id/batch_seq_digits3_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/batch_seq_digits"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from3"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_to3"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from3" />
+
+        <EditText
+            android:id="@+id/batch_seq_digits3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ems="2"
+            android:inputType="number"
+            android:text="2"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_digits3_label"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from3" />
+
+        <TextView
+            android:id="@+id/batch_seq_char_case3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/batch_seq_case_sensitive"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            app:layout_constraintBaseline_toBaselineOf="@+id/batch_seq_from3"
+            app:layout_constraintStart_toEndOf="@+id/batch_seq_to3"
+            app:layout_constraintTop_toTopOf="@+id/batch_seq_from3" />
+
+        <!-- ============================================================== -->
+        <!-- Preview -->
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_from3" />
+
+        <TextView
+            android:id="@+id/batch_seq_preview_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:background="@android:color/darker_gray"
+            android:text="@string/batch_seq_preview"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
 
         <TextView
             android:id="@+id/batch_seq_preview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:scrollbars="vertical"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/batch_seq_preview_title" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </ScrollView>
