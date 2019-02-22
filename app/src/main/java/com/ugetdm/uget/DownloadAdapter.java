@@ -62,7 +62,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             stringRetry = context.getResources().getString(R.string.dnode_retry);
             stringLeft = context.getResources().getString(R.string.dnode_left);
             retryMinWidth = calcTextWidth(holder.retry, ' ' + stringRetry + ">999");  // + '9'
-            percentMinWidth = calcTextWidth(holder.percent, "0000%");
+            percentMinWidth = calcTextWidth(holder.percent, "000%") + 4;  // + padding
             speedMinWidth = calcTextWidth(holder.speed, "00000 WiB/s");  // + '0'
             sizeMinWidth = calcTextWidth(holder.size, "00000 WiB / 00000 WiB");  // + '0' + '0'
         }
@@ -99,29 +99,32 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             message = Info.getMessage(infoPointer);
             // get progress info
             progress = new Progress();
+            Info.get(infoPointer, progress);
         }
 
         // --- show error/debug message if this item does not exist ---
         if (nodePointer == 0) {
-            String errorMessage = null;
-            errorMessage = "This item does not exist.";
+            message = null;
+            // message = "This item does not exist.";
 
-            holder.name.setText("Removed");
+            holder.name.setText(android.R.string.no);
             holder.image.setImageResource(android.R.drawable.ic_delete);
             holder.retry.setText(' ' + stringRetry + ">55");
             holder.progress.setProgress((int) 55);
             // holder.progress.getProgressDrawable().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
             holder.percent.setText(Integer.toString(55) + '%');
-            if (errorMessage == null) {
+            if (message == null) {
                 holder.message.setVisibility(View.GONE);
                 holder.speed.setVisibility(View.VISIBLE);
                 holder.speed.setText(Util.stringFromIntUnit(1024000, 1));
                 holder.left.setVisibility(View.VISIBLE);
                 holder.left.setText("55:55:55" + " " + stringLeft);
+                holder.size.setVisibility(View.VISIBLE);
+                holder.size.setText("80 Kib");
             }
             else {
                 holder.message.setVisibility(View.VISIBLE);
-                holder.message.setText(errorMessage);
+                holder.message.setText(message);
                 holder.speed.setVisibility(View.GONE);
                 holder.left.setVisibility(View.GONE);
             }
@@ -156,8 +159,9 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
         // retry count
         if (progress.retryCount == 0) {
-            // holder.retry.setVisibility(View.GONE);
+            // avoid to overlap percent
             holder.retry.setText("");
+            holder.retry.getLayoutParams().width = percentMinWidth;
         }
         else {
             // holder.retry.setVisibility(View.VISIBLE);
@@ -165,10 +169,12 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
                 holder.retry.setText(' ' + stringRetry + ">99");
             else
                 holder.retry.setText(' ' + stringRetry + ":" + Integer.toString(progress.retryCount));
+            holder.retry.getLayoutParams().width = retryMinWidth;
             // holder.retry.setLayoutParams(new LinearLayout.LayoutParams(retryMinWidth,
             //         LinearLayout.LayoutParams.WRAP_CONTENT));
             // holder.retry.setMinimumWidth(retryMinWidth);
         }
+        holder.retry.requestLayout();
 
         // ------------------------------------------------
         // line 2: progress bar + percent
@@ -186,36 +192,28 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         // ------------------------------------------------
         // line 3: (message + size) or (speed + time left + size)
 
-        if ((state & Node.Group.error) != 0 ) {
-            // message
-            holder.message.setVisibility(View.VISIBLE);
+        if ((state & Node.Group.active) == 0) {
+            holder.speed.setVisibility(View.GONE);
+            holder.left.setVisibility(View.GONE);
             if (message == null)
                 holder.message.setText("");
-            else
+            else {
                 holder.message.setText(message);
-            // clear speed
-            holder.speed.setVisibility(View.GONE);
-            holder.speed.setText("");
-            // clear time left
-            holder.left.setVisibility(View.GONE);
-            holder.left.setText("");  // + ' '
+                holder.message.setVisibility(View.VISIBLE);
+                if ((state & Node.Group.error) == 0)
+                    holder.message.setTextColor(holder.message.getResources().getColor(android.R.color.tab_indicator_text));
+                else
+                    holder.message.setTextColor(holder.message.getResources().getColor(android.R.color.holo_red_dark));
+                // android.R.color.tab_indicator_text =  0x1060009
+            }
         }
         else {
-            // --- clear message ---
-            holder.message.setVisibility(View.GONE);
-            holder.message.setText("");
-            // --- speed ---
             holder.speed.setVisibility(View.VISIBLE);
-            if ((state & Node.Group.active) == 0)
-                holder.speed.setText("");
-            else
-                holder.speed.setText(Util.stringFromIntUnit(progress.downloadSpeed, 1));
-            // holder.speed.setTextColor(holder.speed.getResources().getColor(android.R.color.primary_text_dark));
-            // holder.speed.setTextColor(holder.speed.getResources().getColor(android.R.color.white));
-
-            // --- time left ---
             holder.left.setVisibility(View.VISIBLE);
-            if ((state & Node.Group.active) == 0 || progress.remainTime == 0)
+            holder.message.setVisibility(View.GONE);
+            // --- speed & left ---
+            holder.speed.setText(Util.stringFromIntUnit(progress.downloadSpeed, 1));
+            if (progress.remainTime == 0)
                 holder.left.setText("");
             else {
                 String timeLeftString = Util.stringFromSeconds((int) progress.remainTime, 1);
@@ -225,26 +223,32 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             }
         }
 
-        // size
+        // --- size ---
         String sizeText;
         int    sizeTextWidth;
         if (progress.total == 0) {
+            sizeText = "";
             sizeTextWidth = 0;
-            holder.size.setText("");
         }
         else if (progress.total == progress.complete) {
             sizeText = Util.stringFromIntUnit(progress.total, 0);
-            sizeTextWidth = calcTextWidth(holder.size, sizeText);
-            holder.size.setText(sizeText);
+            sizeTextWidth = calcTextWidth(holder.size, sizeText) + 4;    // + padding
         }
         else {
             sizeText = Util.stringFromIntUnit(progress.complete, 0) + " / " +
                     Util.stringFromIntUnit(progress.total, 0);
-            sizeTextWidth = calcTextWidth(holder.size, sizeText);
-            holder.size.setText(sizeText);
+            sizeTextWidth = calcTextWidth(holder.size, sizeText) + 4;    // + padding
         }
+        holder.size.setText(sizeText);
+
         // adjust width of size field
-        if (message != null) {
+        if (message == null) {
+            holder.size.getLayoutParams().width = sizeMinWidth;
+            holder.size.requestLayout();
+            holder.size.setVisibility(View.VISIBLE);
+        }
+        else {
+            // --- try to reduce width if this item has message.
             if (progress.total == 0)
                 holder.size.setVisibility(View.GONE);
             else {
@@ -252,9 +256,6 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
                 holder.size.requestLayout();
                 holder.size.setVisibility(View.VISIBLE);
             }
-        }
-        else {
-            holder.size.setVisibility(View.VISIBLE);
         }
 
         // --- multiple choice ---
@@ -425,9 +426,15 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             return;
 
         for (int i = 0;  i < nodeArray.length;  i++) {
-            node = Node.getFakeByParent(nodeArray[i], pointer);
+            // --- if node was removed
+            node = nodeArray[i];
             if (node == 0)
                 continue;
+            // --- if node move to other category/status
+            node = Node.getFakeByParent(node, pointer);
+            if (node == 0)
+                continue;
+            // --- if node stay in current category/status
             position = Node.getPosition(pointer, node);
             selections.put(position, true);
             notifyItemChanged(position);
