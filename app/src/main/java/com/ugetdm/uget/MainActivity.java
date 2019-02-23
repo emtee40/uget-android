@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // --- show message if no download ---
+        decideContent();
         // --- test clipboard type pattern ---
         try {
             String string = new String("test string");
@@ -426,6 +428,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
         }
 
+        // --- show message if no download ---
+        decideContent();
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -507,6 +512,16 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.action_delete).setVisible(selectionMode);
     }
 
+    public void decideContent() {
+        if (app.downloadAdapter.getItemCount() > 0) {
+            downloadListView.setVisibility(View.VISIBLE);
+            findViewById(R.id.message_no_download).setVisibility(View.GONE);
+        }
+        else {
+            downloadListView.setVisibility(View.GONE);
+            findViewById(R.id.message_no_download).setVisibility(View.VISIBLE);
+        }
+    }
     // ------------------------------------------------------------------------
     // Traveler
 
@@ -576,12 +591,7 @@ public class MainActivity extends AppCompatActivity {
         app.categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                app.nthCategory = position;
-                app.switchDownloadAdapter();
-                // --- category menu ---
-                invalidateOptionsMenu();    // this will call onPrepareOptionsMenu()
-                // --- category button up/down ---
-                decideCategoryButtonEnable();
+                onCategoryItemClick(position);
             }
         });
 
@@ -619,6 +629,17 @@ public class MainActivity extends AppCompatActivity {
 
         // --- category button up/down ---
         decideCategoryButtonEnable();
+    }
+
+    public void onCategoryItemClick(int position) {
+        app.nthCategory = position;
+        app.switchDownloadAdapter();
+        // --- category menu ---
+        invalidateOptionsMenu();    // this will call onPrepareOptionsMenu()
+        // --- category button up/down ---
+        decideCategoryButtonEnable();
+        // --- show message if no download ---
+        decideContent();
     }
 
     // --- category button up/down ---
@@ -670,6 +691,8 @@ public class MainActivity extends AppCompatActivity {
                 app.downloadAdapter.clearChoices();
                 if (app.nthDownload >= 0)
                     app.downloadAdapter.notifyItemChanged(app.nthDownload);
+                // --- show message if no download ---
+                decideContent();
             }
         });
 
@@ -957,8 +980,8 @@ public class MainActivity extends AppCompatActivity {
     // permission
 
     private static final int REQUEST_WRITE_STORAGE = 112;
-    private static final int FILE_CHOOSER_CODE = 42;
-    private static final int FILE_CREATOR_CODE = 43;
+    private static final int RESULT_FILE_CHOOSER = 42;
+    private static final int RESULT_FILE_CREATOR = 43;
 
     protected void checkPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -1004,7 +1027,7 @@ public class MainActivity extends AppCompatActivity {
             intent.setType("application/*");
             // Android doesn't support 'json', getMimeTypeFromExtension("json") return null
             // intent.setType(MimeTypeMap.getSingleton().getMimeTypeFromExtension("zip"));
-            startActivityForResult(intent, FILE_CHOOSER_CODE);
+            startActivityForResult(intent, RESULT_FILE_CHOOSER);
         }
     }
 
@@ -1030,8 +1053,12 @@ public class MainActivity extends AppCompatActivity {
                     " - " + filename, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
-            //Toast.makeText(this, "load " + filename,
+            //Toast.makeText(this, getString(R.string.message_file_load_ok) + " - " + filename,
             //        Toast.LENGTH_SHORT).show();
+
+            // --- select category that just loaded.
+            app.categoryAdapter.setItemChecked(app.categoryAdapter.getItemCount()-1, true);
+            app.categoryAdapter.notifyItemClicked(app.mainActivity.categoryListView);
         }
         else {
             // --- Snackbar ---
@@ -1039,7 +1066,7 @@ public class MainActivity extends AppCompatActivity {
                     " - " + filename, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
-            //Toast.makeText(this, "Failed to load " + filename,
+            //Toast.makeText(this, getString(R.string.message_file_load_fail) + " - " + filename,
             //        Toast.LENGTH_SHORT).show();
         }
 
@@ -1053,7 +1080,7 @@ public class MainActivity extends AppCompatActivity {
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("application/*");
             // Android doesn't support 'json', getMimeTypeFromExtension("json") return null
-            startActivityForResult(intent, FILE_CREATOR_CODE);
+            startActivityForResult(intent, RESULT_FILE_CREATOR);
         }
     }
 
@@ -1077,7 +1104,7 @@ public class MainActivity extends AppCompatActivity {
                     " - " + filename, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
-            //Toast.makeText(this, "save " + filename,
+            //Toast.makeText(this, getString(R.string.message_file_save_ok) + " - " + filename,
             //        Toast.LENGTH_SHORT).show();
         }
         else {
@@ -1086,7 +1113,7 @@ public class MainActivity extends AppCompatActivity {
                     " - " + filename, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
-            //Toast.makeText(this, "Failed to save " + filename,
+            //Toast.makeText(this, getString(R.string.message_file_save_fail) + " - " + filename,
             //        Toast.LENGTH_SHORT).show();
         }
 
@@ -1103,11 +1130,11 @@ public class MainActivity extends AppCompatActivity {
         String name = docFile.getName();
 
         switch (requestCode) {
-            case FILE_CHOOSER_CODE:
+            case RESULT_FILE_CHOOSER:
                 onFileChooserResult(treeUri);
                 break;
 
-            case FILE_CREATOR_CODE:
+            case RESULT_FILE_CREATOR:
                 onFileCreatorResult(treeUri);
                 break;
 

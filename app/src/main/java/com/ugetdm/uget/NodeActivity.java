@@ -1,6 +1,5 @@
 package com.ugetdm.uget;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -168,7 +167,7 @@ public class NodeActivity extends AppCompatActivity {
             toggle.syncState();
             if (mode > Mode.download_creation) {
                 // --- lock drawer, keep closed
-                //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 // --- reset Listener when icon changed
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
@@ -352,6 +351,11 @@ public class NodeActivity extends AppCompatActivity {
                 infoPointer = Node.info(nodePointer);
                 Info.set(infoPointer, categoryProp);
                 app.addCategoryNode(nodePointer);
+                app.categoryAdapter.notifyDataSetChanged();
+                // --- select category that just created.
+                app.categoryAdapter.setItemChecked(app.categoryAdapter.getItemCount()-1, true);
+                if (app.mainActivity != null)
+                    app.categoryAdapter.notifyItemClicked(app.mainActivity.categoryListView);
                 break;
 
             case Mode.category_setting:
@@ -362,6 +366,10 @@ public class NodeActivity extends AppCompatActivity {
         }
 
         app.addFolderHistory(categoryProp.folder);
+        // --- show message if no download ---
+        if (app.mainActivity != null)
+            app.mainActivity.decideContent();
+
         finish();
     }
 

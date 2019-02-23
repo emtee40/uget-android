@@ -143,6 +143,8 @@ public class TimeoutHandler {
                 if (app.mainActivity != null) {
                     app.mainActivity.decideMenuVisible();
                     app.mainActivity.updateToolbar();
+                    // --- show message if no download ---
+                    app.mainActivity.decideContent();
                 }
                 // --- notify data changed ---
                 app.downloadAdapter.notifyDataSetChanged();

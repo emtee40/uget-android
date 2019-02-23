@@ -293,13 +293,15 @@
     <string name="message_delete_title">Really delete?</string>
     <string name="message_delete_file">Are you sure you want to delete files?</string>
     <string name="message_file_not_exist">File does not exist.</string>
-    <string name="message_file_load_ok">File loaded.</string>
-    <string name="message_file_load_fail">Failed to load file.</string>
-    <string name="message_file_save_ok">File saved.</string>
-    <string name="message_file_save_fail">Failed to save file.</string>
+    <string name="message_file_load_ok">File loaded</string>
+    <string name="message_file_load_fail">Failed to load file</string>
+    <string name="message_file_save_ok">File saved</string>
+    <string name="message_file_save_fail">Failed to save file</string>
     <string name="message_permission_required">Permission required</string>
     <string name="message_permission_sd_card">Permission to access the SD-CARD is required for this app to Download files.</string>
     <string name="message_permission_folder">Permission to access this folder is required. Please pick this folder to get write permission.</string>
     <string name="message_permission_folder_get">Get folder permission until reboot.</string>
+    <string name="message_no_download_1">If you want to add new download, you can copy link to clipboard or share link to uGet.</string>
+    <string name="message_no_download_2">If you want change default download settings or number of active downloads, you can edit category properties. (press FILE in toolbar and select Edit category)</string>
 
 </resources>
