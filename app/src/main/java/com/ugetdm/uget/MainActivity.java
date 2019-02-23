@@ -595,6 +595,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        app.categoryAdapter.setOnItemLongClickListener(new CategoryAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                onCategoryItemClick(position);
+                app.categoryAdapter.setItemChecked(position, true);
+                // --- popupmenu ---
+                PopupMenu popupMenu = new PopupMenu(MainActivity.this, findViewById(R.id.state_listview_label));
+                popupMenu.inflate(R.menu.main_category);
+                popupMenu.getMenu().findItem(R.id.action_category_delete).setEnabled(app.nthCategory > 0);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        onOptionsItemSelected(item);
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
+                return true;
+            }
+        });
+
         app.stateAdapter.setOnItemClickListener(new StateAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
