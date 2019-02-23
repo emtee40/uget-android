@@ -28,8 +28,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.ugetdm.uget.lib.Core;
 import com.ugetdm.uget.lib.Node;
 import com.ugetdm.uget.lib.Util;
@@ -91,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         app.mainActivity = null;
+        // --- ad ---
+        if (BuildConfig.HAVE_ADS) {
+            if (adView != null)
+                ((AdView)adView).destroy();
+            adView = null;
+        }
 
         super.onDestroy();
     }
@@ -138,6 +148,11 @@ public class MainActivity extends AppCompatActivity {
             MyAlertDialog.setNeutralButton(getResources().getString(android.R.string.ok), OkClick);
             MyAlertDialog.show();
         }
+        // --- ad ---
+        if (BuildConfig.HAVE_ADS) {
+            if (adView != null)
+                ((AdView)adView).resume();
+        }
     }
 
     @Override
@@ -145,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         app.saveAllData();
+        // --- ad ---
+        if (BuildConfig.HAVE_ADS) {
+            if (adView != null)
+                ((AdView)adView).pause();
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -1199,14 +1219,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void initTimeoutHandler() {
         speedHandler.postDelayed(speedRunnable, speedInterval);
-        /*
         speedHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 initAd();
             }
         }, 1000);
-        */
+    }
+
+    // ------------------------------------------------------------------------
+    // Ad
+    View  adView = null;
+
+    public void initAd() {
+        if (BuildConfig.HAVE_ADS) {
+            AdView adView;
+            AdSize adSize;
+            LinearLayout adParent = (LinearLayout) findViewById(R.id.linearAd);
+
+            // adSize = AdSize.BANNER;
+            adSize = AdSize.SMART_BANNER;
+            adView = new AdView(this);
+            adView.setAdUnitId("ca-app-pub-2883534618110931/1238672609");
+            adView.setAdSize(adSize);
+            adParent.addView(adView);
+            this.adView = adView;
+
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .addTestDevice("TEST_DEVICE_ID")
+                    .build();
+            adView.loadAd(adRequest);  // SIGSEGV (signal SIGSEGV: invalid address (fault address: 0x0))
+        }
     }
 
 }
