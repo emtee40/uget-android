@@ -31,6 +31,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     protected String  stringLeft;
     // --- multiple choice ---
     protected SparseBooleanArray selections;
+    public    boolean enableSelection = true;
 
 
     public DownloadAdapter(long nodePointer) {
@@ -286,6 +287,10 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         public class ItemListener implements View.OnClickListener, View.OnLongClickListener {
             @Override
             public void onClick(View view) {
+                if (enableSelection == false)
+                    return;
+                enableSelection = false;
+
                 int  position = getAdapterPosition();
                 // --- If you click fast, it some time throw the -1 position.
                 if (position == -1)
