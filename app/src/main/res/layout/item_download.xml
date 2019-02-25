@@ -46,7 +46,7 @@
         android:id="@+id/dnode_progress"
         style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
         android:layout_width="0dp"
-        android:layout_height="3dp"
+        android:layout_height="wrap_content"
         android:minHeight="3dp"
         app:layout_constraintBottom_toTopOf="@+id/dnode_size"
         app:layout_constraintEnd_toStartOf="@+id/dnode_percent"
