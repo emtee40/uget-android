@@ -28,7 +28,7 @@ import android.util.Log;
 @SuppressLint("NewApi")
 public final class FileUtil {
 
-    static String TAG="TAG";
+    static String TAG="uGet";
     private static final String PRIMARY_VOLUME_NAME = "primary";
 
 

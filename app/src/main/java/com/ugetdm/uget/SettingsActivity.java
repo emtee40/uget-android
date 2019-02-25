@@ -270,7 +270,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             preference = findPreference("pref_about_version");
             preference.setSummary(
-                    getString(R.string.app_label) + " for Android " + myVerName + "." + myVerCode);
+                    getString(R.string.app_label) + " for Android " + myVerName + "\n\n" + "Code " + myVerCode);
         }
     }
 
