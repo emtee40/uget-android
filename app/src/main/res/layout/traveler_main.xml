@@ -9,6 +9,7 @@
     <!-- Disable click through on items behind the drawer -->
 
     <TextView
+        android:id="@+id/status_listview_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"

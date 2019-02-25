@@ -138,7 +138,6 @@ public class TimeoutHandler {
             if (app.core.nMoved > 0 || app.core.nDeleted > 0) {
                 // --- restore selected node ---
                 app.downloadAdapter.setCheckedNode(checkedNode);
-                app.nDownloadSelected = app.downloadAdapter.getCheckedItemCount();
                 // --- main activity
                 if (app.mainActivity != null) {
                     app.mainActivity.decideMenuVisible();

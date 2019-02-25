@@ -38,9 +38,6 @@ public class MainApp extends Application {
     // position used by switchDownloadAdapter()
     public int     nthStatus   = 0;
     public int     nthCategory = 0;
-    public int     nthDownload = -1;          // cursor position
-    public int     nthDownloadVisible = 0;    // RecyclerView first visible position
-    public int     nDownloadSelected = 0;     // selection mode: nDownloadSelected > 0
 
     // scrolled position
 //    public int     downloadListScrolledX = 0;
@@ -57,9 +54,9 @@ public class MainApp extends Application {
     public StateAdapter     stateAdapter;
     //
     public MainActivity     mainActivity;
+    // NodeActivity use this to save/restore properties
+    public CategoryProp     categoryProp = new CategoryProp();
 
-    // Ad
-    public AdManager        adManager = new AdManager();
     // Timeout Interval & Handler
     public TimeoutHandler   timeoutHandler = new TimeoutHandler(this);
 
@@ -272,6 +269,16 @@ public class MainApp extends Application {
 
         refreshUriPermission();  // update permission after device reboot
 
+        // loading category proterties from uGet for Android 1.x
+        if (preferences.getInt("pref_about_version", 0) == 0) {
+            preferences.edit().putInt("pref_about_version", 1).apply();
+            long cnode;
+            for (cnode = Node.children(core.nodeReal);  cnode != 0;  cnode = Node.next(cnode) ) {
+                long infoPointer = Node.info(cnode);
+                Info.setGroup(infoPointer, Info.Group.queuing);
+            }
+        }
+
         logAppend ("App.startRunning() return");
     }
 
@@ -393,7 +400,6 @@ public class MainApp extends Application {
 	        downloadAdapter.pointer = cnode;
             downloadAdapter.selections.clear();
 	        downloadAdapter.notifyDataSetChanged();
-	        nthDownload = -1;
 	    }
     }
 
