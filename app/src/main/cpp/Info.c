@@ -316,12 +316,6 @@ jboolean getDownloadProp(JNIEnv* env, jlong pointer, jobject dDataObject)
 								(*env)->GetFieldID (env, dDataClass, "group", "I"),
 								temp.relation->group);
 	}
-	else {
-		// Because old file doesn't save this field, I set a default value for old one. (version 1.x)
-		(*env)->SetIntField (env, dDataObject,
-							 (*env)->GetFieldID (env, dDataClass, "group", "I"),
-							 UGET_GROUP_QUEUING);
-	}
 
 	(*env)->DeleteLocalRef(env, dDataClass);
 	return has_data;
