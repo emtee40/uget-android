@@ -102,8 +102,16 @@ public class NodeActivity extends AppCompatActivity {
     }
 
     protected void initTraveler() {
-        if (mode > Mode.download_creation)
+        if (mode > Mode.download_creation) {
+            View view;
+            view = findViewById(R.id.traveler_node);
+            if (view != null)
+                view.setVisibility(View.GONE);
+            view = findViewById(R.id.traveler_separator);
+            if (view != null)
+                view.setVisibility(View.GONE);
             return;
+        }
 
         categoryAdapter = new CategoryAdapter(app.core.nodeReal, 0);
         categoryAdapter.selectedPosition = nthCategoryReal;
@@ -160,29 +168,28 @@ public class NodeActivity extends AppCompatActivity {
         // --- drawer ---
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null) {
-            // --- run NodeActivity in phone ---
+            // --- run NodeActivity with drawer ---
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
-            if (mode > Mode.download_creation) {
-                // --- lock drawer, keep closed
+            // --- lock drawer, keep closed
+            if (mode > Mode.download_creation)
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                // --- reset Listener when icon changed
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onBackPressed();
-                    }
-                });
-            }
         }
 
         // --- Toolbar --- setup it after  setSupportActionBar()  and  toggle.syncState()
-        if (mode > Mode.download_creation) {
+        if (mode > Mode.download_creation || drawer == null) {
             // toolbar.setNavigationIcon(null);
             // toolbar.setContentInsetsRelative(16+32+16, 0);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            // --- reset Listener when icon changed
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
         }
         else {
             // toolbar.setNavigationIcon(R.drawable.ic_category);
@@ -235,10 +242,111 @@ public class NodeActivity extends AppCompatActivity {
             Info.unref(infoPointerKeep);
     }
 
+    // Actvity Lifecycle when you rotate screen
+    // onPause -> onSaveInstanceState -> onStop -> onDestroy
+    // onCreate -> onStart -> onRestoreInstanceState -> onResume
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // restore properties
+        int categoryPosition = savedInstanceState.getInt("categoryPosition", -1);
+        if (downloadForm != null)
+            setDownloadProp(downloadForm, app.categoryProp, (mode & Mode.download_mode) == 0);
+        if (categoryForm != null)
+            setCategoryProp(categoryForm, app.categoryProp, false);
+        if (categoryAdapter != null && categoryPosition != -1)
+            categoryAdapter.setItemChecked(categoryPosition, true);
+        if (sequenceForm != null) {
+            EditText editText;
+            Spinner  spinner;
+            sequenceForm.rangeTypeEnableCountdown = 3;
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_uri_editor);
+            editText.setText(savedInstanceState.getString("batch_seq_uri"));
+            //
+            int[] intArray = savedInstanceState.getIntArray("batch_seq_type");
+            spinner = sequenceForm.view.findViewById(R.id.batch_seq_type1);
+            spinner.setSelection(intArray[0]);
+            spinner = sequenceForm.view.findViewById(R.id.batch_seq_type2);
+            spinner.setSelection(intArray[1]);
+            spinner = sequenceForm.view.findViewById(R.id.batch_seq_type3);
+            spinner.setSelection(intArray[2]);
+            //
+            String[] stringArray = savedInstanceState.getStringArray("batch_seq_range");
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_from1);
+            editText.setText(stringArray[0]);
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_to1);
+            editText.setText(stringArray[1]);
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_digits1);
+            editText.setText(stringArray[2]);
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_from2);
+            editText.setText(stringArray[3]);
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_to2);
+            editText.setText(stringArray[4]);
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_digits2);
+            editText.setText(stringArray[5]);
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_from3);
+            editText.setText(stringArray[6]);
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_to3);
+            editText.setText(stringArray[7]);
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_digits3);
+            editText.setText(stringArray[8]);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        // save properties
+        if (downloadForm != null)
+            getDownloadProp(downloadForm, app.categoryProp, (mode & Mode.download_mode) == 0);
+        if (categoryForm != null)
+            getCategoryProp(categoryForm, app.categoryProp, false);
+        if (categoryAdapter != null)
+            savedInstanceState.putInt("categoryPosition", categoryAdapter.selectedPosition);
+        if (sequenceForm != null) {
+            EditText editText;
+            Spinner  spinner;
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_uri_editor);
+            savedInstanceState.putString("batch_seq_uri", editText.getText().toString());
+            //
+            int[] intArray = new int[3];
+            spinner = sequenceForm.view.findViewById(R.id.batch_seq_type1);
+            intArray[0] = spinner.getSelectedItemPosition();
+            spinner = sequenceForm.view.findViewById(R.id.batch_seq_type2);
+            intArray[1] = spinner.getSelectedItemPosition();
+            spinner = sequenceForm.view.findViewById(R.id.batch_seq_type3);
+            intArray[2] = spinner.getSelectedItemPosition();
+            savedInstanceState.putIntArray("batch_seq_type", intArray);
+            //
+            String[] stringArray = new String[9];
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_from1);
+            stringArray[0] = editText.getText().toString();
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_to1);
+            stringArray[1] = editText.getText().toString();
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_digits1);
+            stringArray[2] = editText.getText().toString();
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_from2);
+            stringArray[3] = editText.getText().toString();
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_to2);
+            stringArray[4] = editText.getText().toString();
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_digits2);
+            stringArray[5] = editText.getText().toString();
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_from3);
+            stringArray[6] = editText.getText().toString();
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_to3);
+            stringArray[7] = editText.getText().toString();
+            editText = sequenceForm.view.findViewById(R.id.batch_seq_digits3);
+            stringArray[8] = editText.getText().toString();
+            savedInstanceState.putStringArray("batch_seq_range", stringArray);
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        // drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -366,7 +474,7 @@ public class NodeActivity extends AppCompatActivity {
         }
 
         app.addFolderHistory(categoryProp.folder);
-        // --- show message if no download ---
+        // --- show message if no download in new created category---
         if (app.mainActivity != null)
             app.mainActivity.decideContent();
 
