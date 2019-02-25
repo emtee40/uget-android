@@ -20,7 +20,7 @@ public class SequenceForm {
     protected Activity  activity;
     private   TextView  preview;
     private   Sequence  sequence;
-    private   boolean   autoComplete = false;
+    public    int       rangeTypeEnableCountdown = 0;
     public    String    errorMessage;
 
     public static final class RangeType {
@@ -39,8 +39,6 @@ public class SequenceForm {
 
         initRangeSpinner();
         initEditor();
-
-        setupHandler.postDelayed(setupRunnable, 500);
     }
 
     public void initRangeSpinner() {
@@ -108,8 +106,7 @@ public class SequenceForm {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (autoComplete)
-                    showPreview();
+                showPreview();
             }
         };
 
@@ -180,6 +177,8 @@ public class SequenceForm {
                 charCase.setVisibility(View.INVISIBLE);
                 from.setEnabled(false);
                 to.setEnabled(false);
+                if (rangeTypeEnableCountdown > 0)
+                    rangeTypeEnableCountdown--;
                 break;
 
             case RangeType.number:
@@ -193,7 +192,9 @@ public class SequenceForm {
                 if (from.getInputType() != InputType.TYPE_CLASS_NUMBER || (from.length() == 0 && to.length() == 0)) {
                     from.setInputType(InputType.TYPE_CLASS_NUMBER);
                     to.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    if (autoComplete) {
+                    if (rangeTypeEnableCountdown > 0)
+                        rangeTypeEnableCountdown--;
+                    else {
                         from.setText("0");
                         to.setText("9");
                     }
@@ -211,7 +212,9 @@ public class SequenceForm {
                 if (from.getInputType() != InputType.TYPE_CLASS_TEXT || (from.length() == 0 && to.length() == 0)) {
                     from.setInputType(InputType.TYPE_CLASS_TEXT);
                     to.setInputType(InputType.TYPE_CLASS_TEXT);
-                    if (autoComplete) {
+                    if (rangeTypeEnableCountdown > 0)
+                        rangeTypeEnableCountdown--;
+                    else {
                         from.setText("a");
                         to.setText("z");
                     }
@@ -220,8 +223,7 @@ public class SequenceForm {
         }
 
         // show preview after type changed.
-        if (autoComplete)
-            showPreview();
+        showPreview();
     }
 
     public boolean addRange(int nthRange) {
@@ -353,23 +355,4 @@ public class SequenceForm {
         return sequence.count(uriEditor.getText().toString());
     }
 
-    // ------------------------------------------------------------------------
-    // Handler
-    private Handler setupHandler = new Handler();
-    private Runnable setupRunnable = new Runnable() {
-        @Override
-        public void run() {
-            Spinner  spinner;
-
-            autoComplete = true;
-            spinner = (Spinner) view.findViewById(R.id.batch_seq_type1);
-            setRangeType(0, spinner.getSelectedItemPosition());
-            spinner = (Spinner) view.findViewById(R.id.batch_seq_type2);
-            setRangeType(1, spinner.getSelectedItemPosition());
-            spinner = (Spinner) view.findViewById(R.id.batch_seq_type3);
-            setRangeType(2, spinner.getSelectedItemPosition());
-
-            showPreview();
-        }
-    };
 }
