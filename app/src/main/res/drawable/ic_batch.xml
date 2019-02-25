@@ -2,8 +2,8 @@
     android:tint="#FFFFFF"
     android:viewportWidth="1000"
     android:viewportHeight="1000"
-    android:width="32dp"
-    android:height="32dp">
+    android:width="24dp"
+    android:height="24dp">
     <path
         android:pathData="M967 168.9l2 -2L811.7 10l-1.7 1.7V10H266.5v118.9H147v116.4H31v40h487.3v176.4H552v1.3h145.5v486.9H71V286.6H31V990h40v-0.1h666.4V872.8h115.1V754.5H969V168.9L967 168.9L967 168.9zM558.3 422.9V285.3h3.6l135.5 135.2v2.4H558.3L558.3 422.9zM737.5 832.7V404.1h0l0.1 -0.1L580.3 247l-0.7 0.7v-2.4H187v-76.3h491.8l133.8 133.5v530.2L737.5 832.7L737.5 832.7zM852.6 714.5V286.6h-0.7l0.7 -0.7L697.4 131v-2.1H306.5V50h488.6L929 183.6v530.9H852.6z"
         android:fillColor="#000000" />
