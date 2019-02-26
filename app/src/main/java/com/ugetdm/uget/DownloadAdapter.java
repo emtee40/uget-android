@@ -31,7 +31,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     protected String  stringLeft;
     // --- multiple choice ---
     protected SparseBooleanArray selections;
-    public    boolean enableSelection = true;
+    // --- single choice ---
+    public    boolean singleSelection;
 
 
     public DownloadAdapter(long nodePointer) {
@@ -293,15 +294,16 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         public class ItemListener implements View.OnClickListener, View.OnLongClickListener {
             @Override
             public void onClick(View view) {
-                if (enableSelection == false)
-                    return;
-                enableSelection = false;
-
-                int  position = getAdapterPosition();
-                // --- If you click fast, it some time throw the -1 position.
+                // --- selection mode ---
+                if (singleSelection) {
+                    if (selections.size() > 0)
+                        return;
+                }
+                // --- If you click fast, getAdapterPosition() sometimes throw the -1 position.
+                int position = getAdapterPosition();
                 if (position == -1)
                     return;
-                // --- selection mode ---
+                // --- multiple selection mode ---
                 if (selections.size() > 0)
                     toggleSelection(view, position);
                 // --- notify ---
@@ -393,6 +395,13 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         return selections.size();
     }
 
+    public int getCheckedItemPosition() {
+        if (selections.size() != 0)
+            return selections.keyAt(0);
+        else
+            return -1;
+    }
+
     SparseBooleanArray getCheckedItemPositions() {
         return selections.clone();
     }
@@ -415,7 +424,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     // ------------------------------------------------------------------------
     // Selection - UgetNode pointer
 
-    public long[] getCheckedNode() {
+    public long[] getCheckedNodes() {
         int  size = selections.size();
         if (size == 0)
             return null;
@@ -428,7 +437,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         return nodeArray;
     }
 
-    public void setCheckedNode(long[] nodeArray) {
+    public void setCheckedNodes(long[] nodeArray) {
         int   position;
         long node;
 
