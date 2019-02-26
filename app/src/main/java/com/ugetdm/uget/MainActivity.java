@@ -120,8 +120,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        // offline status
+        // --- offline status
         app.saveStatus();
+        // --- single selection mode ---
+        if (app.downloadAdapter.singleSelection) {
+            app.downloadAdapter.singleSelection = false;
+            app.downloadAdapter.selections.clear();
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -338,12 +343,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_resume_all:
-                selection = app.downloadAdapter.getCheckedNode();
+                selection = app.downloadAdapter.getCheckedNodes();
                 app.core.resumeCategories();
                 app.downloadAdapter.notifyDataSetChanged();
                 // --- selection mode ---
                 if (selection != null) {
-                    app.downloadAdapter.setCheckedNode(selection);
+                    app.downloadAdapter.setCheckedNodes(selection);
                     if (app.downloadAdapter.getCheckedItemCount() == 0) {
                         decideMenuVisible();
                         updateToolbar();
@@ -352,12 +357,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_pause_all:
-                selection = app.downloadAdapter.getCheckedNode();
+                selection = app.downloadAdapter.getCheckedNodes();
                 app.core.pauseCategories();
                 app.downloadAdapter.notifyDataSetChanged();
                 // --- selection mode ---
                 if (selection != null) {
-                    app.downloadAdapter.setCheckedNode(selection);
+                    app.downloadAdapter.setCheckedNodes(selection);
                     if (app.downloadAdapter.getCheckedItemCount() == 0) {
                         decideMenuVisible();
                         updateToolbar();
@@ -389,13 +394,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_start:
-                selection = app.downloadAdapter.getCheckedNode();
-                for (int i=0;  i < selection.length;  i++) {
-                    position = app.getDownloadNodePosition(selection[i]);
-                    if (position != -1)
-                        app.tryQueueNthDownload(position);
+                selection = app.downloadAdapter.getCheckedNodes();
+                if (selection != null) {
+                    for (int i=0;  i < selection.length;  i++) {
+                        position = app.getDownloadNodePosition(selection[i]);
+                        if (position != -1)
+                            app.tryQueueNthDownload(position);
+                    }
+                    app.downloadAdapter.setCheckedNodes(selection);
                 }
-                app.downloadAdapter.setCheckedNode(selection);
                 // --- selection mode ---
                 if (app.downloadAdapter.getCheckedItemCount() == 0) {
                     decideMenuVisible();
@@ -404,13 +411,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_pause:
-                selection = app.downloadAdapter.getCheckedNode();
-                for (int i=0;  i < selection.length;  i++) {
-                    position = app.getDownloadNodePosition(selection[i]);
-                    if (position != -1)
-                        app.pauseNthDownload(position);
+                selection = app.downloadAdapter.getCheckedNodes();
+                if (selection != null) {
+                    for (int i=0;  i < selection.length;  i++) {
+                        position = app.getDownloadNodePosition(selection[i]);
+                        if (position != -1)
+                            app.pauseNthDownload(position);
+                    }
+                    app.downloadAdapter.setCheckedNodes(selection);
                 }
-                app.downloadAdapter.setCheckedNode(selection);
                 // --- selection mode ---
                 if (app.downloadAdapter.getCheckedItemCount() == 0) {
                     decideMenuVisible();
@@ -426,16 +435,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_delete_recycle:
-                selection = app.downloadAdapter.getCheckedNode();
-                for (int i=0;  i < selection.length;  i++) {
-                    position = app.getDownloadNodePosition(selection[i]);
-                    if (position != -1) {
-                        // set selection[i] to 0 if current position was removed
-                        if (app.recycleNthDownload(position) == -1)
-                            selection[i] = 0;
+                selection = app.downloadAdapter.getCheckedNodes();
+                if (selection != null) {
+                    for (int i=0;  i < selection.length;  i++) {
+                        position = app.getDownloadNodePosition(selection[i]);
+                        if (position != -1) {
+                            // set selection[i] to 0 if current position was removed
+                            if (app.recycleNthDownload(position) == -1)
+                                selection[i] = 0;
+                        }
                     }
+                    app.downloadAdapter.setCheckedNodes(selection);
                 }
-                app.downloadAdapter.setCheckedNode(selection);
                 // --- selection mode ---
                 if (app.downloadAdapter.getCheckedItemCount() == 0) {
                     decideMenuVisible();
@@ -444,12 +455,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_delete_data:
-                selection = app.downloadAdapter.getCheckedNode();
-                for (int i=0;  i < selection.length;  i++) {
-                    position = app.getDownloadNodePosition(selection[i]);
-                    if (position != -1) {
-                        app.deleteNthDownload(position, false);
-                        app.downloadAdapter.selections.delete(position);
+                selection = app.downloadAdapter.getCheckedNodes();
+                if (selection != null) {
+                    for (int i=0;  i < selection.length;  i++) {
+                        position = app.getDownloadNodePosition(selection[i]);
+                        if (position != -1) {
+                            app.deleteNthDownload(position, false);
+                            app.downloadAdapter.selections.delete(position);
+                        }
                     }
                 }
                 // --- selection mode ---
@@ -669,22 +682,25 @@ public class MainActivity extends AppCompatActivity {
                                                  DownloadAdapter.OnItemLongClickListener
     {
         int  nDownloadSelectedLast = 0;
+
         @Override
         public void onItemClick(View view, int position) {
             int  nDownloadSelected = app.downloadAdapter.getCheckedItemCount();
             // --- selection mode ---
             if (nDownloadSelected != nDownloadSelectedLast) {
-                if (nDownloadSelected == 0)
+                // from 0 to 1  or  1 to 0.
+                if (nDownloadSelected == 0 || nDownloadSelectedLast == 0)
                     decideMenuVisible();
                 updateToolbar();
             }
-            // --- avoid popup menu when exiting selection mode ---
+            // --- avoid popup menu when exiting multiple selection mode ---
             if (nDownloadSelected == 0 && nDownloadSelectedLast != 1) {
+                app.downloadAdapter.singleSelection = true;
                 app.downloadAdapter.setItemChecked(position, true);
-                popupDownloadMenu(null, position);
+                showDownloadPopupMenu(null, position);
             }
             else
-                app.downloadAdapter.enableSelection = true;
+                app.downloadAdapter.singleSelection = false;
 
             nDownloadSelectedLast = nDownloadSelected;
         }
@@ -693,8 +709,10 @@ public class MainActivity extends AppCompatActivity {
         public boolean onItemLongClick(View view, int position) {
             int nDownloadSelected = app.downloadAdapter.getCheckedItemCount();
             // --- selection mode ---
+            app.downloadAdapter.singleSelection = false;
             if (nDownloadSelected != nDownloadSelectedLast) {
-                if (nDownloadSelected == 0)
+                // from 0 to 1  or  1 to 0.
+                if (nDownloadSelected == 0 || nDownloadSelectedLast == 0)
                     decideMenuVisible();
                 updateToolbar();
             }
@@ -738,158 +756,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ------------------------------------------------------------------------
-    // Download Menu
+    // Download Popup Menu
 
-    private void popupDownloadMenu(View view, int nthDownload) {
+    private void showDownloadPopupMenu(View view, int nthDownload) {
         if (view == null)
             view = findViewById(R.id.action_batch);
         if (view == null)
             view = findViewById(R.id.action_file);
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.main_popup);
+        PopupMenu downloadPopupMenu = new PopupMenu(this, view);
+        downloadPopupMenu.inflate(R.menu.main_popup);
 
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu popupMenu) {
-                // --- avoid menu popup twice
-                app.downloadAdapter.enableSelection = true;
-                // --- clear choice ---
-                app.downloadAdapter.clearChoices();
-                // --- show message if no download ---
-                decideContent();
-            }
-        });
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int    nthDownload;
-                long[] nodes = app.downloadAdapter.getCheckedNode();
-                if (nodes != null)
-                    nthDownload = app.getDownloadNodePosition(nodes[0]);
-                else
-                    return true;
-
-                switch (item.getItemId()) {
-                    case R.id.menu_download_open:
-                        File file = app.getDownloadedFile(nthDownload);
-                        if (file != null) {
-                            // create Intent for Activity
-                            try {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                Uri uri = Uri.fromFile(file);
-                                String url = uri.toString();
-
-                                // grab mime type
-                                String newMimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                                        MimeTypeMap.getFileExtensionFromUrl(url));
-
-                                intent.setDataAndType(uri, newMimeType);
-                                startActivity (intent);
-                            } catch (Exception e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                            // dialog.setTitle(R.string.menu_open);
-                            dialog.setIcon(android.R.drawable.ic_dialog_alert);
-                            dialog.setMessage(R.string.message_file_not_exist);
-                            dialog.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            dialog.show();
-                        }
-                        break;
-
-                    case R.id.menu_download_delete_recycle:
-                        nthDownload = app.recycleNthDownload(nthDownload);
-                        if (nthDownload > 0)
-                            downloadListView.smoothScrollToPosition(nthDownload);
-                        // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                        break;
-
-                    case R.id.menu_download_delete_data:
-                        app.deleteNthDownload(nthDownload, false);
-                        break;
-
-                    case R.id.menu_download_delete_file:
-                        if (app.setting.ui.confirmDelete)
-                            confirmDeleteDownloadFile();
-                        else
-                            deleteSelectedDownloadFile();
-                        break;
-
-                    case R.id.menu_download_force_start:
-                        nthDownload = app.activateNthDownload(nthDownload);
-                        if (nthDownload > 0)
-                            downloadListView.smoothScrollToPosition(nthDownload);
-                        // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                        break;
-
-                    case R.id.menu_download_start:
-                        nthDownload = app.tryQueueNthDownload(nthDownload);
-                        if (nthDownload > 0)
-                            downloadListView.smoothScrollToPosition(nthDownload);
-                        // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                        break;
-
-                    case R.id.menu_download_pause:
-                        nthDownload = app.pauseNthDownload(nthDownload);
-                        if (nthDownload >= 0)
-                            downloadListView.smoothScrollToPosition(nthDownload);
-                            // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                        break;
-
-                    case R.id.menu_download_move_up:
-                        if (app.moveNthDownload(nthDownload, nthDownload -1)) {
-                            nthDownload--;
-                            downloadListView.smoothScrollToPosition(nthDownload);
-                            // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                        }
-                        break;
-
-                    case R.id.menu_download_move_down:
-                        if (app.moveNthDownload(nthDownload, nthDownload +1)) {
-                            nthDownload++;
-                            downloadListView.smoothScrollToPosition(nthDownload);
-                            // app.downloadAdapter.setItemChecked(app.nthDownload, true);
-                        }
-                        break;
-
-                    case R.id.menu_download_priority_high:
-                        app.setNthDownloadPriority(nthDownload, Core.Priority.high);
-                        break;
-
-                    case R.id.menu_download_priority_normal:
-                        app.setNthDownloadPriority(nthDownload, Core.Priority.normal);
-                        break;
-
-                    case R.id.menu_download_priority_low:
-                        app.setNthDownloadPriority(nthDownload, Core.Priority.low);
-                        break;
-
-                    case R.id.menu_download_properties:
-                        long cnodePointer = app.downloadAdapter.pointer;
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("mode", NodeActivity.Mode.download_setting);
-                        bundle.putLong("nodePointer", Node.getNthChild(cnodePointer, nthDownload));
-                        intent.putExtras(bundle);
-                        intent.setClass(MainActivity.this, NodeActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-                // end of switch (item.getItemId())
-                return true;
-            }
-        });
-
-        Menu menu = popupMenu.getMenu();
+        Menu menu = downloadPopupMenu.getMenu();
         // Any Category/Status can't move download position if they were sorted.
         if (app.setting.sortBy > 0)
             menu.findItem(R.id.menu_download_move).setEnabled(false);
@@ -929,11 +806,181 @@ public class MainActivity extends AppCompatActivity {
         if (app.nthStatus > 2)
             menu.findItem(R.id.menu_download_pause).setEnabled(false);
 
-        popupMenu.show();
+        DownloadPopupMenuListener listener = new DownloadPopupMenuListener();
+        downloadPopupMenu.setOnDismissListener(listener);
+        downloadPopupMenu.setOnMenuItemClickListener(listener);
+        downloadPopupMenu.show();
+    }
+
+    public class DownloadPopupMenuListener implements PopupMenu.OnDismissListener,
+                                                      PopupMenu.OnMenuItemClickListener
+    {
+        boolean keepSelected = false;
+        // --- for Android <= 7.0 (API 24) --- click menu item will call onDismiss() even if this item has submenu.
+        boolean submenuClicked = false;
+
+        @Override
+        public void onDismiss(PopupMenu popupMenu) {
+            // --- for Android < 7.0 (API 24) --- click menu item will call onDismiss() even if this item has submenu.
+            if (submenuClicked) {
+                submenuClicked = false;
+                return;
+            }
+            // --- selection mode --- exit single selection mode when popupmenu dismiss.
+            app.downloadAdapter.singleSelection = false;
+            // --- clear choice ---
+            if (keepSelected == false)
+                app.downloadAdapter.clearChoices();
+            // --- show message if no download ---
+            decideContent();
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            // --- selection mode ---
+            app.downloadAdapter.singleSelection = false;
+
+            int nthDownload = app.downloadAdapter.getCheckedItemPosition();
+            if (nthDownload < 0)
+                return true;
+
+            switch (item.getItemId()) {
+                // --- for Android < 7.0 (API 24) --- click menu item will call onDismiss() even if this item has submenu.
+                case R.id.menu_download_move:
+                case R.id.menu_download_delete:
+                case R.id.menu_download_priority:
+                    // --- these items have submenu
+                    if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+                        submenuClicked = true;
+                    // --- selection mode ---
+                    app.downloadAdapter.singleSelection = true;
+                    return false;
+
+                case R.id.menu_download_open:
+                    File file = app.getDownloadedFile(nthDownload);
+                    if (file != null) {
+                        // create Intent for Activity
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Uri uri = Uri.fromFile(file);
+                            String url = uri.toString();
+
+                            // grab mime type
+                            String newMimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                                    MimeTypeMap.getFileExtensionFromUrl(url));
+
+                            intent.setDataAndType(uri, newMimeType);
+                            startActivity (intent);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                        // dialog.setTitle(R.string.menu_open);
+                        dialog.setIcon(android.R.drawable.ic_dialog_alert);
+                        dialog.setMessage(R.string.message_file_not_exist);
+                        dialog.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                    }
+                    break;
+
+                case R.id.menu_download_delete_recycle:
+                    nthDownload = app.recycleNthDownload(nthDownload);
+                    if (nthDownload > 0)
+                        downloadListView.smoothScrollToPosition(nthDownload);
+                    break;
+
+                case R.id.menu_download_delete_data:
+                    app.deleteNthDownload(nthDownload, false);
+                    return true;
+
+                case R.id.menu_download_delete_file:
+                    if (app.setting.ui.confirmDelete) {
+                        keepSelected = true;
+                        confirmDeleteDownloadFile();
+                    }
+                    else
+                        deleteSelectedDownloadFile();
+                    return true;
+
+                case R.id.menu_download_force_start:
+                    nthDownload = app.activateNthDownload(nthDownload);
+                    if (nthDownload > 0)
+                        downloadListView.smoothScrollToPosition(nthDownload);
+                    break;
+
+                case R.id.menu_download_start:
+                    nthDownload = app.tryQueueNthDownload(nthDownload);
+                    if (nthDownload > 0)
+                        downloadListView.smoothScrollToPosition(nthDownload);
+                    break;
+
+                case R.id.menu_download_pause:
+                    nthDownload = app.pauseNthDownload(nthDownload);
+                    if (nthDownload >= 0)
+                        downloadListView.smoothScrollToPosition(nthDownload);
+                    break;
+
+                case R.id.menu_download_move_up:
+                    if (app.moveNthDownload(nthDownload, nthDownload -1)) {
+                        nthDownload--;
+                        downloadListView.smoothScrollToPosition(nthDownload);
+                    }
+                    break;
+
+                case R.id.menu_download_move_down:
+                    if (app.moveNthDownload(nthDownload, nthDownload +1)) {
+                        nthDownload++;
+                        downloadListView.smoothScrollToPosition(nthDownload);
+                    }
+                    break;
+
+                case R.id.menu_download_priority_high:
+                    app.setNthDownloadPriority(nthDownload, Core.Priority.high);
+                    break;
+
+                case R.id.menu_download_priority_normal:
+                    app.setNthDownloadPriority(nthDownload, Core.Priority.normal);
+                    break;
+
+                case R.id.menu_download_priority_low:
+                    app.setNthDownloadPriority(nthDownload, Core.Priority.low);
+                    break;
+
+                case R.id.menu_download_properties:
+                    long cnodePointer = app.downloadAdapter.pointer;
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("mode", NodeActivity.Mode.download_setting);
+                    bundle.putLong("nodePointer", Node.getNthChild(cnodePointer, nthDownload));
+                    intent.putExtras(bundle);
+                    intent.setClass(MainActivity.this, NodeActivity.class);
+                    startActivity(intent);
+                    break;
+            }
+            // end of switch (item.getItemId())
+
+            // --- clear choice --- all selected position has changed.
+            if (nthDownload >= 0) {
+                app.downloadAdapter.selections.clear();
+                app.downloadAdapter.notifyItemChanged(nthDownload);
+            }
+            return true;
+        }
     }
 
     public void deleteSelectedDownloadFile() {
-        long[] selection = app.downloadAdapter.getCheckedNode();
+        long[] selection = app.downloadAdapter.getCheckedNodes();
+        if (selection == null)
+            return;
+
         for (int i=0;  i < selection.length;  i++) {
             int position = app.getDownloadNodePosition(selection[i]);
             if (position != -1)
@@ -943,6 +990,8 @@ public class MainActivity extends AppCompatActivity {
         // --- selection mode ---
         decideMenuVisible();
         updateToolbar();
+        // --- show message if no download item ---
+        decideContent();
     }
 
     public void confirmDeleteDownloadFile() {
@@ -959,6 +1008,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton(getResources().getString(android.R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                app.downloadAdapter.clearChoices();
                 dialog.dismiss();
             }
         });

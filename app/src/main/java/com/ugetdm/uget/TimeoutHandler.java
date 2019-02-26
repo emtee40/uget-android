@@ -72,7 +72,7 @@ public class TimeoutHandler {
         public void run() {
             queuingCounts++;
             int  nActive;
-            long checkedNode[] = null;
+            long checkedNodes[] = null;
 
             // Go offline if no WiFi connection
             if (app.setting.ui.noWifiGoOffline) {
@@ -95,7 +95,7 @@ public class TimeoutHandler {
 
             // --- reserve selected node ---
             if (app.downloadAdapter.getCheckedItemCount() > 0)
-                checkedNode = app.downloadAdapter.getCheckedNode();
+                checkedNodes = app.downloadAdapter.getCheckedNodes();
 
             nActive = app.core.grow(app.setting.offlineMode);
             if (nActiveLast != nActive) {
@@ -126,22 +126,25 @@ public class TimeoutHandler {
             // trim
             long[] deletedNodes = app.core.trim();
             // remove deleted node from checked node
-            if (deletedNodes != null) {
+            if (deletedNodes != null && checkedNodes != null) {
                 for (int deletedIndex = 0;  deletedIndex < deletedNodes.length;  deletedIndex++) {
-                    for (int checkedIndex = 0;  checkedIndex < checkedNode.length;  checkedIndex++) {
-                        if (checkedNode[checkedIndex] == deletedNodes[deletedIndex])
-                            checkedNode[checkedIndex] = 0;
+                    for (int checkedIndex = 0;  checkedIndex < checkedNodes.length;  checkedIndex++) {
+                        if (checkedNodes[checkedIndex] == deletedNodes[deletedIndex])
+                            checkedNodes[checkedIndex] = 0;
                     }
                 }
             }
 
             if (app.core.nMoved > 0 || app.core.nDeleted > 0) {
                 // --- restore selected node ---
-                app.downloadAdapter.setCheckedNode(checkedNode);
+                app.downloadAdapter.setCheckedNodes(checkedNodes);
                 // --- main activity
                 if (app.mainActivity != null) {
-                    app.mainActivity.decideMenuVisible();
-                    app.mainActivity.updateToolbar();
+                    // --- selection mode ---
+                    if (app.downloadAdapter.singleSelection == false) {
+                        app.mainActivity.decideMenuVisible();
+                        app.mainActivity.updateToolbar();
+                    }
                     // --- show message if no download ---
                     app.mainActivity.decideContent();
                 }
