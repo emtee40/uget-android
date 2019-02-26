@@ -78,23 +78,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/batch_seq_eg" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@android:color/darker_gray"
+            android:gravity="center_vertical"
+            android:labelFor="@+id/batch_seq_type1"
+            android:text="@string/batch_seq_wildcard_1"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            app:layout_constraintBottom_toBottomOf="@+id/batch_seq_type1" />
+
         <Spinner
             android:id="@+id/batch_seq_type1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintStart_toEndOf="@+id/batch_horizontal_center"
             app:layout_constraintTop_toBottomOf="@+id/view1" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:text="@string/batch_seq_wildcard_1"
-            android:background="@android:color/darker_gray"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view1" />
-
 
         <EditText
             android:id="@+id/batch_seq_from1"
@@ -174,23 +176,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/batch_seq_from1" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:labelFor="@+id/batch_seq_type2"
+            android:background="@android:color/darker_gray"
+            android:text="@string/batch_seq_wildcard_2"
+            android:textColor="@android:color/white"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:layout_constraintBottom_toBottomOf="@+id/batch_seq_type2" />
+
         <Spinner
             android:id="@+id/batch_seq_type2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintStart_toEndOf="@+id/batch_horizontal_center"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:background="@android:color/darker_gray"
-            android:text="@string/batch_seq_wildcard_2"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
-
 
         <EditText
             android:id="@+id/batch_seq_from2"
@@ -270,21 +274,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/batch_seq_from2" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:labelFor="@+id/batch_seq_type3"
+            android:background="@android:color/darker_gray"
+            android:text="@string/batch_seq_wildcard_3"
+            android:textColor="@android:color/white"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
+            app:layout_constraintTop_toBottomOf="@+id/view3"
+            app:layout_constraintBottom_toBottomOf="@+id/batch_seq_type3" />
+
         <Spinner
             android:id="@+id/batch_seq_type3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/batch_horizontal_center"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:background="@android:color/darker_gray"
-            android:text="@string/batch_seq_wildcard_3"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/batch_horizontal_center"
             app:layout_constraintTop_toBottomOf="@+id/view3" />
 
 
@@ -368,13 +375,14 @@
 
         <TextView
             android:id="@+id/batch_seq_preview_title"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
             android:background="@android:color/darker_gray"
             android:text="@string/batch_seq_preview"
+            android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view4" />
 
         <TextView
