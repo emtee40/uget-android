@@ -90,6 +90,12 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
         return stateNames.length;
     }
 
+    // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+    @Override
+    public long getItemId(int position) {
+        return Node.getNthChild(pointer, position);
+    }
+
     // ------------------------------------------------------------------------
     // ViewHolder
     public  class ViewHolder extends RecyclerView.ViewHolder {
@@ -170,6 +176,10 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
                 notifyItemChanged(position);
             }
         }
+    }
+
+    public int getCheckedItemPosition() {
+        return selectedPosition;
     }
 
     // ------------------------------------------------------------------------

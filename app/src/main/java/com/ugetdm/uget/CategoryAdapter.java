@@ -80,6 +80,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             return count + 1;
     }
 
+    // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+    @Override
+    public long getItemId(int position) {
+        return Node.getNthChild(pointer, position);
+    }
+
     // ------------------------------------------------------------------------
     // ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -160,6 +166,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 notifyItemChanged(position);
             }
         }
+    }
+
+    public int getCheckedItemPosition() {
+        return selectedPosition;
     }
 
     // ------------------------------------------------------------------------

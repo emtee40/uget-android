@@ -271,6 +271,12 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         return Node.nChildren(pointer);
     }
 
+    // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+    @Override
+    public long getItemId(int position) {
+        return Node.getNthChild(pointer, position);
+    }
+
     // ------------------------------------------------------------------------
     // ViewHolder
     public  class ViewHolder extends RecyclerView.ViewHolder {
