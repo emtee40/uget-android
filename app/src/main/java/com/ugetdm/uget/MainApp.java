@@ -38,7 +38,6 @@ public class MainApp extends Application {
     // position used by switchDownloadAdapter()
     public int     nthStatus   = 0;
     public int     nthCategory = 0;
-
     // scrolled position
 //    public int     downloadListScrolledX = 0;
 //    public int     downloadListScrolledY = 0;
@@ -398,7 +397,7 @@ public class MainApp extends Application {
 
 	    if (downloadAdapter.pointer != cnode) {
 	        downloadAdapter.pointer = cnode;
-            downloadAdapter.selections.clear();
+            downloadAdapter.clearChoices(false);
 	        downloadAdapter.notifyDataSetChanged();
 	    }
     }
@@ -759,7 +758,7 @@ public class MainApp extends Application {
         long curPointer;
         int  length;
 
-        curPointer = downloadAdapter.pointer;
+        curPointer = Node.base(downloadAdapter.pointer);
         curPointer = Node.getFakeByGroup(curPointer, Info.Group.active);
         length = Node.nChildren(curPointer);
         if (length == 0)

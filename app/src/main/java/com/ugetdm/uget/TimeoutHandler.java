@@ -73,6 +73,7 @@ public class TimeoutHandler {
             queuingCounts++;
             int  nActive;
             long checkedNodes[] = null;
+            boolean intoOfflineMode = false;
 
             // Go offline if no WiFi connection
             if (app.setting.ui.noWifiGoOffline) {
@@ -90,6 +91,7 @@ public class TimeoutHandler {
                 if (app.setting.offlineMode) {
                     app.core.stopCategories();
                     app.userAction = true;
+                    intoOfflineMode = true;
                 }
             }
 
@@ -135,7 +137,7 @@ public class TimeoutHandler {
                 }
             }
 
-            if (app.core.nMoved > 0 || app.core.nDeleted > 0) {
+            if (app.core.nMoved > 0 || app.core.nDeleted > 0 || intoOfflineMode) {
                 // --- restore selected node ---
                 app.downloadAdapter.setCheckedNodes(checkedNodes);
                 // --- main activity

@@ -22,15 +22,16 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     // C pointer to node
     protected long    pointer;
     // calculate minimum width of strings
-    protected int     percentMinWidth = 0;
-    protected int     retryMinWidth = 0;
-    protected int     speedMinWidth = 0;
-    protected int     sizeMinWidth = 0;
+    private   int     percentMinWidth = 0;
+    private   int     retryMinWidth = 0;
+    private   int     speedMinWidth = 0;
+    private   int     sizeMinWidth = 0;
     // resource
-    protected String  stringRetry;
-    protected String  stringLeft;
+    private   String  stringRetry;
+    private   String  stringLeft;
     // --- multiple choice ---
-    protected SparseBooleanArray selections;
+    private   SparseBooleanArray selections;
+    public    int     nSelectedLast;   // used by onItemClick and onItemLongClick
     // --- single choice ---
     public    boolean singleSelection;
 
@@ -272,11 +273,11 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         return Node.nChildren(pointer);
     }
 
-    // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
-    @Override
-    public long getItemId(int position) {
-        return Node.getNthChild(pointer, position);
-    }
+    // --- avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+    //@Override
+    //public long getItemId(int position) {
+    //    return Node.getNthChild(pointer, position);
+    //}
 
     // ------------------------------------------------------------------------
     // ViewHolder
@@ -380,15 +381,18 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     // ------------------------------------------------------------------------
     // Selection - implement ListView API
 
-    public void clearChoices() {
-        int  size = selections.size();
-        int  position;
-
-        for (int i = 0;  i < size;  i++) {
-            position = selections.keyAt(i);
-            notifyItemChanged(position);
+    public void clearChoices(boolean notification) {
+        if (notification) {
+            int  size = selections.size();
+            int  position;
+            for (int i = 0;  i < size;  i++) {
+                position = selections.keyAt(i);
+                notifyItemChanged(position);
+            }
         }
         selections.clear();
+        nSelectedLast = 0;
+        singleSelection = false;
     }
 
     public int getCheckedItemCount() {
@@ -419,6 +423,9 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             // --- notify ---
             notifyItemChanged(position);
         }
+        nSelectedLast = selections.size();
+        if (nSelectedLast == 0)
+            singleSelection = false;
     }
 
     // ------------------------------------------------------------------------
@@ -437,13 +444,13 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         return nodeArray;
     }
 
-    public void setCheckedNodes(long[] nodeArray) {
+    public int setCheckedNodes(long[] nodeArray) {
         int   position;
         long node;
 
-        clearChoices();   // clear selection
+        clearChoices(true);   // clear selection
         if (nodeArray == null)
-            return;
+            return 0;
 
         for (int i = 0;  i < nodeArray.length;  i++) {
             // --- if node was removed
@@ -459,6 +466,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             selections.put(position, true);
             notifyItemChanged(position);
         }
+        nSelectedLast = selections.size();
+        return nSelectedLast;
     }
 }
 

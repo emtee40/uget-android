@@ -123,16 +123,33 @@ public class MainActivity extends AppCompatActivity {
         // --- offline status
         app.saveStatus();
         // --- single selection mode ---
-        if (app.downloadAdapter.singleSelection) {
-            app.downloadAdapter.singleSelection = false;
-            app.downloadAdapter.selections.clear();
-        }
+        if (app.downloadAdapter.singleSelection)
+            app.downloadAdapter.clearChoices(false);
     }
 
     // ------------------------------------------------------------------------
     // Actvity Lifecycle when you rotate screen
     // onPause -> onSaveInstanceState -> onStop -> onDestroy
     // onCreate -> onStart -> onRestoreInstanceState -> onResume
+
+    /*
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState (Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        app.downloadAdapter.notifyDataSetChanged();
+    }
+    */
 
     // ------------------------------------------------------------------------
     // foreground lifetime
@@ -181,25 +198,6 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------------------------------------------------------
     // other
 
-    /*
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current game state
-
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState (Bundle savedInstanceState) {
-        // Always call the superclass so it can restore the view hierarchy
-        super.onRestoreInstanceState(savedInstanceState);
-
-        // Restore state members from saved instance
-        app.downloadAdapter.notifyDataSetChanged();
-    }
-    */
-
     public void processUriFromIntent() {
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -241,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (app.downloadAdapter.getCheckedItemCount() > 0) {
             // --- selection mode ---
-            app.downloadAdapter.clearChoices();
+            app.downloadAdapter.clearChoices(true);
             decideMenuVisible();
             updateToolbar();
         }
@@ -264,6 +262,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        // --- selection mode --- menu in single and multiple mode are difference.
+        decideMenuVisible();
         return true;
     }
 
@@ -348,8 +349,8 @@ public class MainActivity extends AppCompatActivity {
                 app.downloadAdapter.notifyDataSetChanged();
                 // --- selection mode ---
                 if (selection != null) {
-                    app.downloadAdapter.setCheckedNodes(selection);
-                    if (app.downloadAdapter.getCheckedItemCount() == 0) {
+                    int nChecked = app.downloadAdapter.setCheckedNodes(selection);
+                    if (nChecked == 0) {
                         decideMenuVisible();
                         updateToolbar();
                     }
@@ -362,8 +363,8 @@ public class MainActivity extends AppCompatActivity {
                 app.downloadAdapter.notifyDataSetChanged();
                 // --- selection mode ---
                 if (selection != null) {
-                    app.downloadAdapter.setCheckedNodes(selection);
-                    if (app.downloadAdapter.getCheckedItemCount() == 0) {
+                    int nChecked = app.downloadAdapter.setCheckedNodes(selection);
+                    if (nChecked == 0) {
                         decideMenuVisible();
                         updateToolbar();
                     }
@@ -461,9 +462,11 @@ public class MainActivity extends AppCompatActivity {
                         position = app.getDownloadNodePosition(selection[i]);
                         if (position != -1) {
                             app.deleteNthDownload(position, false);
-                            app.downloadAdapter.selections.delete(position);
+                            // set selection[i] to 0 if current position was removed
+                            selection[i] = 0;
                         }
                     }
+                    app.downloadAdapter.setCheckedNodes(selection);
                 }
                 // --- selection mode ---
                 decideMenuVisible();
@@ -478,7 +481,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             default:
-                return false;
+                break;
         }
 
         // --- show message if no download ---
@@ -607,44 +610,22 @@ public class MainActivity extends AppCompatActivity {
         stateListView.setAdapter(app.stateAdapter);
         stateListView.setHasFixedSize(true);
 
-        DownloadItemListener listener = new DownloadItemListener();
-        app.downloadAdapter.setOnItemClickListener(listener);
-        app.downloadAdapter.setOnItemLongClickListener(listener);
+        DownloadItemListener downloadItemListener = new DownloadItemListener();
+        app.downloadAdapter.setOnItemClickListener(downloadItemListener);
+        app.downloadAdapter.setOnItemLongClickListener(downloadItemListener);
 
-        app.categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                onCategoryItemClick(position);
-            }
-        });
-
-        app.categoryAdapter.setOnItemLongClickListener(new CategoryAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                onCategoryItemClick(position);
-                app.categoryAdapter.setItemChecked(position, true);
-                // --- popupmenu ---
-                PopupMenu popupMenu = new PopupMenu(MainActivity.this, findViewById(R.id.status_listview_label));
-                popupMenu.inflate(R.menu.main_category);
-                popupMenu.getMenu().findItem(R.id.action_category_delete).setEnabled(app.nthCategory > 0);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        onOptionsItemSelected(item);
-                        return true;
-                    }
-                });
-                popupMenu.show();
-
-                return true;
-            }
-        });
+        CategoryItemListener categoryItemListener = new CategoryItemListener();
+        app.categoryAdapter.setOnItemClickListener(categoryItemListener);
+        app.categoryAdapter.setOnItemLongClickListener(categoryItemListener);
 
         app.stateAdapter.setOnItemClickListener(new StateAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 app.nthStatus = position;
                 app.switchDownloadAdapter();
+                // --- selection mode ---
+                decideMenuVisible();
+                updateToolbar();
                 // --- show message if no download ---
                 decideContent();
             }
@@ -681,28 +662,24 @@ public class MainActivity extends AppCompatActivity {
     public class DownloadItemListener implements DownloadAdapter.OnItemClickListener,
                                                  DownloadAdapter.OnItemLongClickListener
     {
-        int  nDownloadSelectedLast = 0;
-
         @Override
         public void onItemClick(View view, int position) {
             int  nDownloadSelected = app.downloadAdapter.getCheckedItemCount();
-            // --- selection mode ---
-            if (nDownloadSelected != nDownloadSelectedLast) {
-                // from 0 to 1  or  1 to 0.
-                if (nDownloadSelected == 0 || nDownloadSelectedLast == 0)
+            // --- avoid popup menu when exiting multiple selection mode --- only from 0 to 1
+            if (nDownloadSelected == 0 && app.downloadAdapter.nSelectedLast != 1) {
+                app.downloadAdapter.singleSelection = true;
+                app.downloadAdapter.setItemChecked(position, true);
+                if (showDownloadPopupMenu(null, position) == false)
+                    app.downloadAdapter.setItemChecked(position, false);
+            }
+            else {
+                app.downloadAdapter.singleSelection = false;
+                // --- selection mode --- only from 1 to 0
+                if (nDownloadSelected == 0 && app.downloadAdapter.nSelectedLast == 1)
                     decideMenuVisible();
                 updateToolbar();
             }
-            // --- avoid popup menu when exiting multiple selection mode ---
-            if (nDownloadSelected == 0 && nDownloadSelectedLast != 1) {
-                app.downloadAdapter.singleSelection = true;
-                app.downloadAdapter.setItemChecked(position, true);
-                showDownloadPopupMenu(null, position);
-            }
-            else
-                app.downloadAdapter.singleSelection = false;
-
-            nDownloadSelectedLast = nDownloadSelected;
+            app.downloadAdapter.nSelectedLast = nDownloadSelected;
         }
 
         @Override
@@ -710,26 +687,51 @@ public class MainActivity extends AppCompatActivity {
             int nDownloadSelected = app.downloadAdapter.getCheckedItemCount();
             // --- selection mode ---
             app.downloadAdapter.singleSelection = false;
-            if (nDownloadSelected != nDownloadSelectedLast) {
-                // from 0 to 1  or  1 to 0.
-                if (nDownloadSelected == 0 || nDownloadSelectedLast == 0)
-                    decideMenuVisible();
-                updateToolbar();
-            }
-            nDownloadSelectedLast = nDownloadSelected;
+            // from 0 to 1  or  1 to 0.
+            if (nDownloadSelected == 0 || app.downloadAdapter.nSelectedLast == 0)
+                decideMenuVisible();
+            updateToolbar();
+            app.downloadAdapter.nSelectedLast = nDownloadSelected;
             return true;
         }
     }
 
-    public void onCategoryItemClick(int position) {
-        app.nthCategory = position;
-        app.switchDownloadAdapter();
-        // --- category menu ---
-        invalidateOptionsMenu();    // this will call onPrepareOptionsMenu()
-        // --- category button up/down ---
-        decideCategoryButtonEnable();
-        // --- show message if no download ---
-        decideContent();
+    public class CategoryItemListener implements CategoryAdapter.OnItemClickListener,
+                                                 CategoryAdapter.OnItemLongClickListener
+    {
+        @Override
+        public void onItemClick(View view, int position) {
+            app.nthCategory = position;
+            app.switchDownloadAdapter();
+            // --- selection mode ---
+            decideMenuVisible();
+            updateToolbar();
+            // --- category menu ---
+            invalidateOptionsMenu();    // this will call onPrepareOptionsMenu()
+            // --- category button up/down ---
+            decideCategoryButtonEnable();
+            // --- show message if no download ---
+            decideContent();
+        }
+
+        @Override
+        public boolean onItemLongClick(View view, int position) {
+            onItemClick(view, position);
+            app.categoryAdapter.setItemChecked(position, true);
+
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, findViewById(R.id.status_listview_label));
+            popupMenu.inflate(R.menu.main_category);
+            popupMenu.getMenu().findItem(R.id.action_category_delete).setEnabled(app.nthCategory > 0);
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    onOptionsItemSelected(item);
+                    return true;
+                }
+            });
+            popupMenu.show();
+            return true;
+        }
     }
 
     // --- category button up/down ---
@@ -758,11 +760,14 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------------------------------------------------------
     // Download Popup Menu
 
-    private void showDownloadPopupMenu(View view, int nthDownload) {
+    private boolean showDownloadPopupMenu(View view, int nthDownload) {
         if (view == null)
             view = findViewById(R.id.action_batch);
         if (view == null)
             view = findViewById(R.id.action_file);
+        if (view == null)
+            return false;
+
         PopupMenu downloadPopupMenu = new PopupMenu(this, view);
         downloadPopupMenu.inflate(R.menu.main_popup);
 
@@ -810,13 +815,14 @@ public class MainActivity extends AppCompatActivity {
         downloadPopupMenu.setOnDismissListener(listener);
         downloadPopupMenu.setOnMenuItemClickListener(listener);
         downloadPopupMenu.show();
+        return true;
     }
 
     public class DownloadPopupMenuListener implements PopupMenu.OnDismissListener,
                                                       PopupMenu.OnMenuItemClickListener
     {
         boolean keepSelected = false;
-        // --- for Android <= 7.0 (API 24) --- click menu item will call onDismiss() even if this item has submenu.
+        // --- for Android < 7.0 (API 24) --- click menu item will call onDismiss() even if this item has submenu.
         boolean submenuClicked = false;
 
         @Override
@@ -826,11 +832,9 @@ public class MainActivity extends AppCompatActivity {
                 submenuClicked = false;
                 return;
             }
-            // --- selection mode --- exit single selection mode when popupmenu dismiss.
-            app.downloadAdapter.singleSelection = false;
-            // --- clear choice ---
+            // --- clear choice --- used by menu item - "Delete Entry and File"
             if (keepSelected == false)
-                app.downloadAdapter.clearChoices();
+                app.downloadAdapter.clearChoices(true);
             // --- show message if no download ---
             decideContent();
         }
@@ -904,6 +908,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.menu_download_delete_file:
                     if (app.setting.ui.confirmDelete) {
                         keepSelected = true;
+                        app.downloadAdapter.singleSelection = true;
                         confirmDeleteDownloadFile();
                     }
                     else
@@ -969,7 +974,7 @@ public class MainActivity extends AppCompatActivity {
 
             // --- clear choice --- all selected position has changed.
             if (nthDownload >= 0) {
-                app.downloadAdapter.selections.clear();
+                app.downloadAdapter.clearChoices(false);
                 app.downloadAdapter.notifyItemChanged(nthDownload);
             }
             return true;
@@ -986,7 +991,7 @@ public class MainActivity extends AppCompatActivity {
             if (position != -1)
                 app.deleteNthDownload(position, true);
         }
-        app.downloadAdapter.selections.clear();
+        app.downloadAdapter.clearChoices(false);
         // --- selection mode ---
         decideMenuVisible();
         updateToolbar();
@@ -1008,7 +1013,9 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton(getResources().getString(android.R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                app.downloadAdapter.clearChoices();
+                // --- selection mode ---
+                if (app.downloadAdapter.singleSelection)
+                    app.downloadAdapter.clearChoices(true);
                 dialog.dismiss();
             }
         });
