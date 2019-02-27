@@ -7,7 +7,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 40
-        versionName "2.0"
+        versionName '2.0.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -38,7 +38,7 @@ android {
         ads {
             dimension 'tier'
             applicationId = "com.ugetdm.uget"
-            resValue "string", "app_label", "uGet free"
+            resValue "string", "app_label", "uGet adv"
             buildConfigField "boolean", "HAVE_ADS", "true"
         }
     }
