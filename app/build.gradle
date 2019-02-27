@@ -38,7 +38,7 @@ android {
         ads {
             dimension 'tier'
             applicationId = "com.ugetdm.uget"
-            resValue "string", "app_label", "uGet adv"
+            resValue "string", "app_label", "uGet ads"
             buildConfigField "boolean", "HAVE_ADS", "true"
         }
     }

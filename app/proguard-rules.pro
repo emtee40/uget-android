@@ -21,4 +21,12 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.ugetdm.uget.lib.** {*;}
-#-keep class com.google.android.gms.internal.** { *; }
+
+#-dontwarn com.google.android.gms.ads.**
+-keep public class com.google.android.gms.ads.**{
+	public *;
+}
+
+#-keep public class com.google.ads.** {
+#   public *;
+#}
