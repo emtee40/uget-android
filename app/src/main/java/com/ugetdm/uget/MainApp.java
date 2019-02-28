@@ -379,19 +379,19 @@ public class MainApp extends Application {
             break;
 
         case 1:
-            cnode = Node.getFakeByGroup(cnode, Node.Group.active);
+            cnode = Node.getFakeByGroup(cnode, Info.Group.active);
             break;
 
         case 2:
-            cnode = Node.getFakeByGroup(cnode, Node.Group.queuing);
+            cnode = Node.getFakeByGroup(cnode, Info.Group.queuing);
             break;
 
         case 3:
-            cnode = Node.getFakeByGroup(cnode, Node.Group.finished);
+            cnode = Node.getFakeByGroup(cnode, Info.Group.finished);
             break;
 
         case 4:
-            cnode = Node.getFakeByGroup(cnode, Node.Group.recycled);
+            cnode = Node.getFakeByGroup(cnode, Info.Group.recycled);
             break;
         }
 
@@ -526,7 +526,7 @@ public class MainApp extends Application {
         return file;
     }
 
-    public void addDownloadNode(long dNodePointer, int toNthCategory) {
+    public int addDownloadNode(long dNodePointer, int toNthCategory) {
         int toNthCategoryReal = toNthCategory - 1;
         if (toNthCategoryReal < 0)
             toNthCategoryReal = 0;
@@ -537,6 +537,7 @@ public class MainApp extends Application {
 
         categoryAdapter.notifyItemChanged(toNthCategory);
         downloadAdapter.notifyItemInserted(position);
+        return position;
     }
 
     public void deleteNthDownload(int nth, boolean deleteFiles)
@@ -587,23 +588,25 @@ public class MainApp extends Application {
         return nth;
     }
 
-    public boolean moveNthDownload(int from_nth, int to_nth)
+    public int moveNthDownload(int from_nth, int to_nth)
     {
         long    cNodePointer;
         long    dNodePointer1;
         long    dNodePointer2;
-        boolean result;
 
         cNodePointer  = downloadAdapter.pointer;
         dNodePointer1 = Node.getNthChild(cNodePointer, from_nth);
         dNodePointer2 = Node.getNthChild(cNodePointer, to_nth);
         if (dNodePointer1 == 0)
-            return false;
+            return -1;
 
-        result = core.moveDownload(dNodePointer1, dNodePointer2);
-        downloadAdapter.notifyItemMoved(from_nth, to_nth);
+        if (core.moveDownload(dNodePointer1, dNodePointer2)) {
+            to_nth = getDownloadNodePosition(dNodePointer1);
+            downloadAdapter.notifyItemMoved(from_nth, to_nth);
+            return to_nth;
+        }
 
-        return result;
+        return -1;
     }
 
     public int activateNthDownload(int nth)

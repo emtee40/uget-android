@@ -934,17 +934,15 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.menu_download_move_up:
-                    if (app.moveNthDownload(nthDownload, nthDownload -1)) {
-                        nthDownload--;
+                    nthDownload = app.moveNthDownload(nthDownload, nthDownload -1);
+                    if (nthDownload >= 0)
                         downloadListView.smoothScrollToPosition(nthDownload);
-                    }
                     break;
 
                 case R.id.menu_download_move_down:
-                    if (app.moveNthDownload(nthDownload, nthDownload +1)) {
-                        nthDownload++;
+                    nthDownload = app.moveNthDownload(nthDownload, nthDownload +1);
+                    if (nthDownload >= 0)
                         downloadListView.smoothScrollToPosition(nthDownload);
-                    }
                     break;
 
                 case R.id.menu_download_priority_high:
