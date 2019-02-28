@@ -100,13 +100,18 @@ public class TimeoutHandler {
                 checkedNodes = app.downloadAdapter.getCheckedNodes();
 
             nActive = app.core.grow(app.setting.offlineMode);
-            if (nActiveLast != nActive) {
+            // --- show speed in notification ---
+            if (nActive > 0)
+                app.notifyActiveSpeed(nActive);
+
+            if (nActive != nActiveLast) {
 //                  Log.v ("uGet", "Core.grow() nActive = " + nActive);
                 app.stateAdapter.notifyDataSetChanged();
                 app.categoryAdapter.notifyDataSetChanged();
+                // --- start or stop ---
                 if (nActive > 0 && nActiveLast == 0) {
                     app.acquireWakeLock();
-                    app.notifyStarting();
+                    app.core.nError = 0;
                 }
                 else if (nActive == 0 && nActiveLast > 0) {
                     if (app.userAction)
@@ -122,12 +127,12 @@ public class TimeoutHandler {
                 }
             }
 
-            // speed
+            // --- adjust speed ---
             if (nActive > 0 && (queuingCounts & 1) == 1)
                 app.core.adjustSpeed();
-            // trim
+            // --- trim ---
             long[] deletedNodes = app.core.trim();
-            // remove deleted node from checked node
+            // --- remove deleted node from checked node
             if (deletedNodes != null && checkedNodes != null) {
                 for (int deletedIndex = 0;  deletedIndex < deletedNodes.length;  deletedIndex++) {
                     for (int checkedIndex = 0;  checkedIndex < checkedNodes.length;  checkedIndex++) {

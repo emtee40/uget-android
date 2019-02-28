@@ -1244,8 +1244,9 @@ public class MainApp extends Application {
 
     // ------------------------------------------------------------------------
     // Notification
-    NotificationManager notificationManager = null;
-    NotificationChannel notificationChannel = null;
+    NotificationManager  notificationManager = null;
+    NotificationChannel  notificationChannel = null;
+    Notification.Builder notificationBuilder = null;
     String       channelId = "uget_channel_01";  // The id of the channel.
     CharSequence channelName = "uGet";  // The user-visible name of the channel.
     final private int notificationId = 0 ;
@@ -1259,13 +1260,15 @@ public class MainApp extends Application {
                 notificationChannel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+
+        notificationBuilder = new Notification.Builder(getApplicationContext());
     }
 
     public void cancelNotification() {
         notificationManager.cancel(notificationId);
     }
 
-    public void notifyMessage(int titleId, int contentId, int flags) {
+    public void notifyMessage(String title, String content, int flags) {
         Intent notifyIntent = new Intent(MainApp.this, MainActivity.class);
         Context  context;
 
@@ -1276,22 +1279,31 @@ public class MainApp extends Application {
         context = getApplicationContext();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, 0);
 
-        Notification.Builder builder = new Notification.Builder(context)
-                .setTicker(getString(contentId))
+        notificationBuilder
+                .setTicker(content)
                 .setContentIntent(pendingIntent)
-                .setContentTitle(getString(titleId))
-                .setContentText(getString(contentId))
+                .setContentTitle(title)
+                .setContentText(content)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setDefaults(flags)
                 .setSmallIcon(R.mipmap.ic_notification)
-                .setColor(Color.GREEN - 0x6600);  // 0xff00ff00 - 0x6600
+                .setColor(getResources().getColor(R.color.colorPrimary));
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            builder.setChannelId(channelId);
-        Notification notification = builder.build();
+            notificationBuilder.setChannelId(channelId);
+        Notification notification = notificationBuilder.build();
 
         notificationManager.notify(notificationId, notification);
+    }
+
+    public void notifyActiveSpeed(int nActive) {
+        if (setting.ui.startNotification == false)
+            return;
+
+        String string   = "↓ " + Util.stringFromIntUnit(core.downloadSpeed, 1);
+        string += " , " + "↑ " + Util.stringFromIntUnit(core.uploadSpeed, 1);
+        notifyMessage(getString(R.string.notification_active_title) + " : " + nActive, string, 0);
     }
 
     public void notifyError() {
@@ -1301,17 +1313,9 @@ public class MainApp extends Application {
             flags = Notification.DEFAULT_SOUND;
         if (setting.ui.vibrateNotification)
             flags |= Notification.DEFAULT_VIBRATE;
-        notifyMessage(R.string.notification_error_title,
-                R.string.notification_error_content,
+        notifyMessage(getString(R.string.notification_error_title),
+                getString(R.string.notification_error_content),
                 flags);
-    }
-
-    public void notifyStarting() {
-        if (setting.ui.startNotification == false)
-            return;
-        notifyMessage(R.string.notification_starting_title,
-                R.string.notification_starting_content,
-                0);
     }
 
     public void notifyCompleted() {
@@ -1321,8 +1325,8 @@ public class MainApp extends Application {
             flags |= Notification.DEFAULT_SOUND;
         if (setting.ui.vibrateNotification)
             flags |= Notification.DEFAULT_VIBRATE;
-        notifyMessage(R.string.notification_completed_title,
-                R.string.notification_completed_content,
+        notifyMessage(getString(R.string.notification_completed_title),
+                getString(R.string.notification_completed_content),
                 flags);
     }
 

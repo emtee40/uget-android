@@ -5,10 +5,9 @@
     <!-- Don't translate above 2 message -->
 
     <!-- MainApp.java -->
+    <string name="notification_active_title">Active</string>
     <string name="notification_error_title">Error Occurred</string>
     <string name="notification_error_content">Error occurred when downloading.</string>
-    <string name="notification_starting_title">Download Starting</string>
-    <string name="notification_starting_content">Starting download queue.</string>
     <string name="notification_completed_title">Download Completed</string>
     <string name="notification_completed_content">All queuing downloads have been completed.</string>
 
