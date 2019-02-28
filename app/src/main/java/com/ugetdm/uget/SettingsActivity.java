@@ -265,6 +265,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         private void updatePreferenceSummary() {
             Preference preference;
+            String     summary;
             String     myVerName;
             int        myVerCode;
 
@@ -274,14 +275,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 myVerCode = packageInfo.versionCode;
                 myVerName = packageInfo.versionName;
             } catch (Exception e) {
-                myVerName = "unknow version";
-                myVerCode = 0;
+                myVerName = "?";
+                myVerCode = -1;
                 e.printStackTrace();
             }
 
             preference = findPreference("pref_about_version");
-            preference.setSummary(
-                    getString(R.string.app_label) + " for Android " + myVerName + "\n\n" + "Code " + myVerCode);
+            summary = getString(R.string.app_name) + " " + myVerName + " for Android" + "\n";
+            if (BuildConfig.HAVE_ADS)
+                summary += "Ads version" + "\n";
+            else
+                summary += "\n";
+            summary += "Code " + myVerCode;
+            preference.setSummary(summary);
         }
     }
 
