@@ -135,21 +135,21 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         }
 
         // status icon
-        if ((state & Node.Group.finished) > 0)
+        if ((state & Info.Group.finished) > 0)
             holder.image.setImageResource(android.R.drawable.ic_media_next);
-        else if ((state & Node.Group.recycled) > 0)
+        else if ((state & Info.Group.recycled) > 0)
             holder.image.setImageResource(android.R.drawable.ic_menu_delete);
-        else if ((state & Node.Group.pause) > 0)
+        else if ((state & Info.Group.pause) > 0)
             holder.image.setImageResource(android.R.drawable.ic_media_pause);
-        else if ((state & Node.Group.error) > 0)
+        else if ((state & Info.Group.error) > 0)
             holder.image.setImageResource(R.drawable.ic_error);
-        else if ((state & Node.Group.upload) > 0)
+        else if ((state & Info.Group.upload) > 0)
             holder.image.setImageResource(android.R.drawable.ic_menu_upload);
-        else if ((state & Node.Group.queuing) > 0)
+        else if ((state & Info.Group.queuing) > 0)
             holder.image.setImageResource(android.R.drawable.presence_invisible);
-        else if ((state & Node.Group.active) > 0)
+        else if ((state & Info.Group.active) > 0)
             holder.image.setImageResource(android.R.drawable.ic_media_play);
-        else //  if (state == 0)    //  == Node.Group.queuing
+        else //  if (state == 0)    //  == Info.Group.queuing
             holder.image.setImageResource(android.R.drawable.presence_invisible);
         // else
         //     holder.image.setImageResource(0);
@@ -195,7 +195,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         // ------------------------------------------------
         // line 3: (message + size) or (speed + time left + size)
 
-        if ((state & Node.Group.active) == 0) {
+        if ((state & Info.Group.active) == 0) {
             holder.speed.setVisibility(View.GONE);
             holder.left.setVisibility(View.GONE);
             if (message == null)
@@ -203,7 +203,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             else {
                 holder.message.setText(message);
                 holder.message.setVisibility(View.VISIBLE);
-                if ((state & Node.Group.error) == 0)
+                if ((state & Info.Group.error) == 0)
                     holder.message.setTextColor(holder.message.getResources().getColor(android.R.color.tab_indicator_text));
                 else
                     holder.message.setTextColor(holder.message.getResources().getColor(android.R.color.holo_red_dark));

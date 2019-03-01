@@ -7,17 +7,6 @@
 package com.ugetdm.uget.lib;
 
 public class Node {
-    public static final class Group {
-        public static final int queuing   = 1 << 0;
-        public static final int pause     = 1 << 1;
-        public static final int active    = 1 << 2;
-        public static final int completed = 1 << 3;
-        public static final int upload    = 1 << 4;
-        public static final int error     = 1 << 5;
-        public static final int finished  = 1 << 6;
-        public static final int recycled  = 1 << 7;
-    }
-
     // JNI wrap functions
     public native static long    create();
     public native static void    free(long nodePointer);

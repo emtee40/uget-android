@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ugetdm.uget.lib.Info;
 import com.ugetdm.uget.lib.Node;
 
 public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> {
@@ -30,10 +31,10 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
 
     protected static int[]  stateGroups = {
             0,
-            Node.Group.active,
-            Node.Group.queuing,
-            Node.Group.finished,
-            Node.Group.recycled,
+            Info.Group.active,
+            Info.Group.queuing,
+            Info.Group.finished,
+            Info.Group.recycled,
     };
 
     StateAdapter(Context context, long nodePointer) {
