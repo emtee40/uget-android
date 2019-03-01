@@ -73,6 +73,7 @@ public class TimeoutHandler {
             queuingCounts++;
             int  nActive;
             long checkedNodes[] = null;
+            long deletedNodes[];
             boolean intoOfflineMode = false;
 
             // Go offline if no WiFi connection
@@ -95,23 +96,25 @@ public class TimeoutHandler {
                 }
             }
 
-            // --- reserve selected node ---
+            // --- reserve selected node --- restore them after app.core.trim()
             if (app.downloadAdapter.getCheckedItemCount() > 0)
                 checkedNodes = app.downloadAdapter.getCheckedNodes();
 
             nActive = app.core.grow(app.setting.offlineMode);
-            // --- show speed in notification ---
-            if (nActive > 0)
+
+            if (nActive > 0) {
+                // --- show speed in notification ---
                 app.notifyActiveSpeed(nActive);
+                // --- adjust speed ---
+                if ((queuingCounts & 1) == 1)
+                    app.core.adjustSpeed();
+            }
 
             if (nActive != nActiveLast) {
-//                  Log.v ("uGet", "Core.grow() nActive = " + nActive);
-                app.stateAdapter.notifyDataSetChanged();
-                app.categoryAdapter.notifyDataSetChanged();
                 // --- start or stop ---
                 if (nActive > 0 && nActiveLast == 0) {
                     app.acquireWakeLock();
-                    app.core.nError = 0;
+                    app.core.nError = 0;    // reset  "app.core.nError"  when starting
                 }
                 else if (nActive == 0 && nActiveLast > 0) {
                     if (app.userAction)
@@ -127,22 +130,20 @@ public class TimeoutHandler {
                 }
             }
 
-            // --- adjust speed ---
-            if (nActive > 0 && (queuingCounts & 1) == 1)
-                app.core.adjustSpeed();
             // --- trim ---
-            long[] deletedNodes = app.core.trim();
-            // --- remove deleted node from checked node
-            if (deletedNodes != null && checkedNodes != null) {
-                for (int deletedIndex = 0;  deletedIndex < deletedNodes.length;  deletedIndex++) {
-                    for (int checkedIndex = 0;  checkedIndex < checkedNodes.length;  checkedIndex++) {
-                        if (checkedNodes[checkedIndex] == deletedNodes[deletedIndex])
-                            checkedNodes[checkedIndex] = 0;
+            deletedNodes = app.core.trim();
+
+            // --- restore selections & notify changed
+            if (app.core.nMoved > 0 || app.core.nDeleted > 0 || intoOfflineMode) {
+                // --- remove deleted nodes from checked nodes
+                if (deletedNodes != null && checkedNodes != null) {
+                    for (int deletedIndex = 0;  deletedIndex < deletedNodes.length;  deletedIndex++) {
+                        for (int checkedIndex = 0;  checkedIndex < checkedNodes.length;  checkedIndex++) {
+                            if (checkedNodes[checkedIndex] == deletedNodes[deletedIndex])
+                                checkedNodes[checkedIndex] = 0;
+                        }
                     }
                 }
-            }
-
-            if (app.core.nMoved > 0 || app.core.nDeleted > 0 || intoOfflineMode) {
                 // --- restore selected node ---
                 app.downloadAdapter.setCheckedNodes(checkedNodes);
                 // --- main activity

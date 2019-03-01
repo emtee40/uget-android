@@ -218,7 +218,7 @@ Java_com_ugetdm_uget_lib_Core_grow (JNIEnv* env, jobject thiz, jboolean no_queui
 
 	// reset counter
 	app->n_moved = 0;
-	app->n_error = 0;
+//	app->n_error = 0;
 	app->n_deleted = 0;
 	app->n_completed = 0;
 	// grow
