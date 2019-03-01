@@ -24,6 +24,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         // if pointerMix == 0, CategoryAdapter will remove first item - "All Category"
         pointer = nodePointer;
         pointerMix = nodeMix;
+
+        // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -80,7 +83,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             return count + 1;
     }
 
-    // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+    // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
     @Override
     public long getItemId(int position) {
         return Node.getNthChild(pointer, position);

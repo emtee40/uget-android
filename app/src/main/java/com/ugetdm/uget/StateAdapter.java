@@ -22,7 +22,7 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
     protected View      selectedView;    // to speed up redrawing of view on selection changed
 
     protected static int[]  imageIds = {
-            android.R.drawable.btn_star,                 // all    // android.R.drawable.star_off
+            android.R.drawable.btn_star,                // all
             android.R.drawable.ic_media_play,           // active
             android.R.drawable.ic_media_pause,          // queuing
             android.R.drawable.ic_media_next,           // finished
@@ -40,6 +40,9 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
     StateAdapter(Context context, long nodePointer) {
         pointer = nodePointer;
         stateNames = context.getResources().getStringArray(R.array.cnode_state);
+
+        // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -91,7 +94,7 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
         return stateNames.length;
     }
 
-    // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+    // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
     @Override
     public long getItemId(int position) {
         return Node.getNthChild(pointer, position);

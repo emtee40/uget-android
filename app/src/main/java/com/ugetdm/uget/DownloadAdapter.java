@@ -39,6 +39,9 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     public DownloadAdapter(long nodePointer) {
         pointer = nodePointer;
         selections = new SparseBooleanArray(100);
+
+        // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
+        setHasStableIds(true);
     }
 
     public int calcTextWidth(TextView textView, String text) {
@@ -273,11 +276,11 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         return Node.nChildren(pointer);
     }
 
-    // --- avoid that RecyclerView's views are blinking when notifyDataSetChanged()
-    //@Override
-    //public long getItemId(int position) {
-    //    return Node.getNthChild(pointer, position);
-    //}
+    // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
+    @Override
+    public long getItemId(int position) {
+        return Node.getNthChild(pointer, position);
+    }
 
     // ------------------------------------------------------------------------
     // ViewHolder
