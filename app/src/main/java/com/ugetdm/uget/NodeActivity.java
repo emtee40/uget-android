@@ -552,7 +552,10 @@ public class NodeActivity extends AppCompatActivity {
         String string;
 
         switchWidget = downloadForm.findViewById(R.id.dnode_startup_switch);
-        downloadProp.group = (switchWidget.isChecked()) ? Info.Group.queuing : Info.Group.pause;
+        if (switchWidget.isChecked())
+            downloadProp.group &= ~Info.Group.pause;
+        else
+            downloadProp.group |= Info.Group.pause;
         if (multiple == false) {
             editText = (EditText) downloadForm.findViewById(R.id.dnode_uri_editor);
             downloadProp.uri = editText.getText().toString();
@@ -612,7 +615,7 @@ public class NodeActivity extends AppCompatActivity {
         Switch switchWidget;
 
         switchWidget = downloadForm.findViewById(R.id.dnode_startup_switch);
-        switchWidget.setChecked(downloadProp.group == Info.Group.queuing);
+        switchWidget.setChecked((downloadProp.group & Info.Group.pause) == 0);
         if (multiple == false) {
             editText = (EditText) downloadForm.findViewById(R.id.dnode_uri_editor);
             editText.setText(downloadProp.uri);
@@ -674,14 +677,21 @@ public class NodeActivity extends AppCompatActivity {
         switchWidget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton button, boolean isChecked) {
-                TextView  textView = NodeActivity.this.downloadForm.findViewById(R.id.dnode_startup_mode);
-                if (isChecked)
-                    textView.setText(R.string.dnode_startup_auto);
-                else
-                    textView.setText(R.string.dnode_startup_manually);
+                decideStartupModeString(NodeActivity.this.downloadForm, isChecked);
             }
         });
-        switchWidget.setChecked(categoryProp.group == Info.Group.queuing);
+
+        decideStartupModeString(downloadForm, (categoryProp.group & Info.Group.queuing) > 0);
+    }
+
+    public void decideStartupModeString(View downloadForm, boolean isChecked) {
+        Switch    switchWidget = downloadForm.findViewById(R.id.dnode_startup_switch);
+        TextView  textView = downloadForm.findViewById(R.id.dnode_startup_mode);
+
+        if (switchWidget.isChecked())
+            textView.setText(R.string.dnode_startup_auto);
+        else
+            textView.setText(R.string.dnode_startup_manually);
     }
 
     // ------------------------------------------------------------------------
