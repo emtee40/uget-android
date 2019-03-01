@@ -595,6 +595,8 @@ public class MainActivity extends AppCompatActivity {
         downloadListView.setLayoutManager(layoutManager);
         downloadListView.setAdapter(app.downloadAdapter);
         downloadListView.setHasFixedSize(true);
+        // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+        downloadListView.getItemAnimator().setChangeDuration(0);
         // add divider for downloadListView
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(downloadListView.getContext(),
                 layoutManager.getOrientation());
@@ -604,11 +606,15 @@ public class MainActivity extends AppCompatActivity {
         categoryListView.setLayoutManager(new LinearLayoutManager(this));
         categoryListView.setAdapter(app.categoryAdapter);
         categoryListView.setHasFixedSize(true);
+        // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+        categoryListView.getItemAnimator().setChangeDuration(0);
 
         stateListView = findViewById(R.id.state_listview);
         stateListView.setLayoutManager(new LinearLayoutManager(this));
         stateListView.setAdapter(app.stateAdapter);
         stateListView.setHasFixedSize(true);
+        // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
+        stateListView.getItemAnimator().setChangeDuration(0);
 
         DownloadItemListener downloadItemListener = new DownloadItemListener();
         app.downloadAdapter.setOnItemClickListener(downloadItemListener);
