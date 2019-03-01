@@ -1258,16 +1258,10 @@ public class MainActivity extends AppCompatActivity {
             if (app.core.downloadSpeed == 0 && app.core.uploadSpeed == 0)
                 toolbar.setSubtitle(null);
             else {
-                String string = "";
-                if (app.core.downloadSpeed > 0)
-                    string += "↓ " + Util.stringFromIntUnit(app.core.downloadSpeed, 1);
-                if (app.core.uploadSpeed > 0) {
-                    if (app.core.downloadSpeed > 0)
-                        string += " , ";
-                    string += "↑ " + Util.stringFromIntUnit(app.core.uploadSpeed, 1);
-                }
+                String string = Util.stringFromIntUnit(app.core.downloadSpeed, 1) + " ↓ ";
+                if (app.core.uploadSpeed > 0)
+                    string +=   Util.stringFromIntUnit(app.core.uploadSpeed, 1)   + " ↑";
                 toolbar.setSubtitle(string);
-                string = null;
             }
             downloadSpeedLast = app.core.downloadSpeed;
             uploadSpeedLast = app.core.uploadSpeed;

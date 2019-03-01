@@ -1262,7 +1262,11 @@ public class MainApp extends Application {
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
-        notificationBuilder = new Notification.Builder(getApplicationContext());
+        // --- must set channel ID in Android O ---
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            notificationBuilder = new Notification.Builder(getApplicationContext(), channelId);
+        else
+            notificationBuilder = new Notification.Builder(getApplicationContext());
     }
 
     public void cancelNotification() {
@@ -1291,10 +1295,7 @@ public class MainApp extends Application {
                 .setSmallIcon(R.mipmap.ic_notification)
                 .setColor(getResources().getColor(R.color.colorPrimary));
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            notificationBuilder.setChannelId(channelId);
         Notification notification = notificationBuilder.build();
-
         notificationManager.notify(notificationId, notification);
     }
 
@@ -1302,9 +1303,19 @@ public class MainApp extends Application {
         if (setting.ui.startNotification == false)
             return;
 
-        String string   = "↓ " + Util.stringFromIntUnit(core.downloadSpeed, 1);
-        string += " , " + "↑ " + Util.stringFromIntUnit(core.uploadSpeed, 1);
-        notifyMessage(getString(R.string.notification_active_title) + " : " + nActive, string, 0);
+        String title = Util.stringFromIntUnit(core.downloadSpeed, 1) + " ↓ ";
+        if (core.uploadSpeed > 0)
+            title +=   Util.stringFromIntUnit(core.uploadSpeed, 1)   + " ↑";
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+            title = getString(R.string.app_name) + " · " + title;
+        String subText = getString(R.string.notification_active_title) + " : " + nActive;
+
+        notificationBuilder.setShowWhen(false);
+        notificationBuilder.setOngoing(true);
+        notificationBuilder.setOnlyAlertOnce(true);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            notificationBuilder.setSubText(subText);
+        notifyMessage(title, subText, 0);
     }
 
     public void notifyError() {
@@ -1314,7 +1325,17 @@ public class MainApp extends Application {
             flags = Notification.DEFAULT_SOUND;
         if (setting.ui.vibrateNotification)
             flags |= Notification.DEFAULT_VIBRATE;
-        notifyMessage(getString(R.string.notification_error_title),
+
+        notificationBuilder.setShowWhen(true);    // --- show time in notification ---
+        notificationBuilder.setOngoing(false);
+        notificationBuilder.setOnlyAlertOnce(false);
+        notificationBuilder.setSubText(null);
+		
+		String title = getString(R.string.notification_error_title);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+            title = getString(R.string.app_name) + " · " + title;
+		
+        notifyMessage(title,
                 getString(R.string.notification_error_content),
                 flags);
     }
@@ -1326,7 +1347,17 @@ public class MainApp extends Application {
             flags |= Notification.DEFAULT_SOUND;
         if (setting.ui.vibrateNotification)
             flags |= Notification.DEFAULT_VIBRATE;
-        notifyMessage(getString(R.string.notification_completed_title),
+
+        notificationBuilder.setShowWhen(true);    // --- show time in notification ---
+        notificationBuilder.setOngoing(false);
+        notificationBuilder.setOnlyAlertOnce(false);
+        notificationBuilder.setSubText(null);
+		
+		String title = getString(R.string.notification_completed_title); 
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+            title = getString(R.string.app_name) + " · " + title;
+		
+        notifyMessage(title,
                 getString(R.string.notification_completed_content),
                 flags);
     }
