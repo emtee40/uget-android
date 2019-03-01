@@ -30,6 +30,8 @@ import java.util.List;
 public class SettingsActivity extends AppCompatPreferenceActivity {
     // Application data
     public static MainApp app = null;
+    public static boolean aria2Changed = false;
+    public static boolean sortChanged = false;
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -51,7 +53,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onPause() {
         app.getSettingFromPreferences();
-        app.applySetting();
+        app.applySetting(aria2Changed, sortChanged);
         super.onPause();
     }
 
@@ -176,7 +178,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     // TODO Auto-generated method stub
-                    app.preferenceAria2Changed = true;
+                    SettingsActivity.aria2Changed = true;
                     return false;
                 }
             };
@@ -247,6 +249,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_other);
+
+            Preference.OnPreferenceClickListener clickListener;
+            clickListener = new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    // TODO Auto-generated method stub
+                    SettingsActivity.sortChanged = true;
+                    return false;
+                }
+            };
+
+            Preference preference;
+            preference = findPreference("pref_sort");
+            preference.setOnPreferenceClickListener(clickListener);
         }
     }
 

@@ -782,7 +782,6 @@ public class MainApp extends Application {
 
     Setting           setting;
     SharedPreferences preferences;
-    boolean           preferenceAria2Changed = true;
     // Make a global variable which keeps a hard reference to the listener.
     // It may be freed by garbage collector if you don't use global variable.
     SharedPreferences.OnSharedPreferenceChangeListener  changeListener;
@@ -792,7 +791,7 @@ public class MainApp extends Application {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 //      preferences = getSharedPreferences("preferences", MODE_PRIVATE);
         getSettingFromPreferences();
-        applySetting();
+        applySetting(true, false);
     }
 
     public void getSettingFromPreferences() {
@@ -991,16 +990,18 @@ public class MainApp extends Application {
         preferencesEditor.apply();
     }
 
-    public void applySetting() {
+    public void applySetting(boolean aria2Changed, boolean sortChanged) {
 //      Log.v("uGet", "App.applySetting() call setSorting(" + setting.sort_by + ")");
-        core.setSorting(setting.sortBy);
+        if (sortChanged) {
+            core.setSorting(setting.sortBy);
+            downloadAdapter.notifyDataSetChanged();
+        }
         core.setPluginOrder(setting.pluginOrder);
         core.setMediaMatchMode(setting.plugin.media.matchMode);
         core.setMediaQuality(setting.plugin.media.quality);
         core.setMediaType(setting.plugin.media.type);
         core.setSpeedLimit(setting.speedDownload, setting.speedUpload);
-        if (preferenceAria2Changed) {
-            preferenceAria2Changed = false;
+        if (aria2Changed) {
             core.setPluginSetting(setting.plugin);
 
             if (setting.plugin.aria2.launch && setting.plugin.aria2.local &&
@@ -1167,7 +1168,7 @@ public class MainApp extends Application {
         try {
             /*
             FileInputStream  fis;
-			fis = new FileInputStream(getFilesDir().getAbsolutePath() +
+            fis = new FileInputStream(getFilesDir().getAbsolutePath() +
                     File.separator + "folder-history.txt");
             bufReader = new BufferedReader(
                     new InputStreamReader(fis, Charset.forName("UTF-8")));
