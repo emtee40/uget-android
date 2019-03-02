@@ -297,12 +297,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
 
             preference = findPreference("pref_about_version");
-            summary = getString(R.string.app_name) + " " + myVerName + " for Android" + "\n";
-            if (BuildConfig.HAVE_ADS)
-                summary += "Ads version" + "\n";
-            else
-                summary += "\n";
-            summary += "Code " + myVerCode;
+            summary = getString(R.string.app_name) + " " + myVerName + " for Android" + "\n" +
+                      getString(R.string.app_flavor_name) + "\n" +
+                      "Code " + myVerCode;
             preference.setSummary(summary);
         }
     }

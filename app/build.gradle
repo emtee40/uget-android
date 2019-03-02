@@ -32,13 +32,13 @@ android {
         noads {
             dimension 'tier'
             applicationId = "com.ugetdm.uget.noads"
-            resValue "string", "app_label", "uGet"
+            resValue "string", "app_flavor_name", "No Ads version"
             buildConfigField "boolean", "HAVE_ADS", "false"
         }
         ads {
             dimension 'tier'
             applicationId = "com.ugetdm.uget"
-            resValue "string", "app_label", "uGet ads"
+            resValue "string", "app_flavor_name", "Ads version"
             buildConfigField "boolean", "HAVE_ADS", "true"
         }
     }
