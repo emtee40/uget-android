@@ -296,6 +296,6 @@
     <string name="message_permission_folder">Permission to access this folder is required. Please pick this folder to get write permission.</string>
     <string name="message_permission_folder_get">Get folder permission until reboot.</string>
     <string name="message_no_download_1">If you want to add new download, you can copy link to clipboard or share link to uGet.</string>
-    <string name="message_no_download_2">If you want change default download settings or number of active downloads, you can edit category properties. (press FILE in toolbar and select Edit category)</string>
+    <string name="message_no_download_2">If you want change default download settings or number of active downloads, you can edit category properties. (press \'FILE\' in toolbar and select \'Edit category\')</string>
 
 </resources>

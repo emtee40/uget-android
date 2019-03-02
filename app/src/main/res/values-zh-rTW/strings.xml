@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">uGet</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- MainApp.java -->
+    <string name="notification_active_title">啟動</string>
+    <string name="notification_error_title">發生錯誤</string>
+    <string name="notification_error_content">下載期間發生錯誤。</string>
+    <string name="notification_completed_title">下載完成</string>
+    <string name="notification_completed_content">所有排隊中的檔案下載完成。</string>
+
+    <!-- Category preferences -->
+    <string name="cnode_name">名稱</string>
+    <string name="cnode_name_not_set">未指定分類名稱。</string>
+    <string name="cnode_active_limit">啟動下載數量</string>
+    <string name="cnode_finished_limit">已結束的容量</string>
+    <string name="cnode_recycled_limit">回收區的容量</string>
+    <string name="cnode_hosts">匹配主機</string>
+    <string name="cnode_schemes">匹配協定</string>
+    <string name="cnode_file_types">匹配文件類型</string>
+    <string name="cnode_total">所有分類</string>       <!-- CategoryAdapter.java -->
+    <string name="cnode_copy">複製</string>                <!-- NodeActivity.java -->
+    <string name="cnode_default_new_name">新分類</string>     <!-- MainApp.java -->
+    <string-array name="cnode_state">                      <!-- StateAdapter.java -->
+        <item>所有狀態</item>
+        <item>活躍的</item>
+        <item>排隊中</item>
+        <item>已結束</item>
+        <item>回收區</item>
+    </string-array>
+
+    <!-- Download preferences -->
+    <string name="dnode_startup">啟動</string>
+    <string name="dnode_startup_auto">自動開始</string>
+    <string name="dnode_startup_manually">手動開始</string>
+    <string name="dnode_uri">網址</string>
+    <string name="dnode_uri_not_set">請指定網址。</string>
+    <string name="dnode_mirrors">鏡像</string>
+    <string name="dnode_file">檔名</string>
+    <string name="dnode_file_placeholder">保持空白以使用預設檔名…</string>    <!-- NodeActivity.java -->
+    <string name="dnode_folder">目錄</string>
+    <string name="dnode_user">用戶</string>
+    <string name="dnode_password">密碼</string>
+    <string name="dnode_connections">最大連線數</string>
+    <string name="dnode_left">剩餘</string>                <!-- DownloadAdapter.java -->
+    <string name="dnode_retry">重試</string>              <!-- DownloadAdapter.java -->
+    <string name="dnode_retry_limit">重試限制</string>
+    <string name="dnode_referrer">參照位址</string>
+    <string name="dnode_proxy_type">代理伺服器</string>
+    <string name="dnode_proxy_host">主機</string>
+    <string name="dnode_proxy_port">埠號</string>
+    <string name="dnode_proxy_user">用戶</string>
+    <string name="dnode_proxy_password">密碼</string>
+    <string-array name="dnode_proxy_type">
+        <item>不使用</item>
+        <item>預設</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Batch -->
+    <string name="batch_remaining">剩餘</string>
+    <string name="batch_total_counts">總計</string>
+    <string name="batch_hints">如果您產生大量下載，uGet可能會花費很多時間來處理。</string>
+    <!-- Sequence Batch -->
+    <string name="batch_seq_wildcard_1">第一個萬用字元(*)</string>
+    <string name="batch_seq_wildcard_2">第二個萬用字元(*)</string>
+    <string name="batch_seq_wildcard_3">第三個萬用字元(*)</string>
+    <string name="batch_seq_eg">範例</string>
+    <string name="batch_seq_to">到</string>
+    <string name="batch_seq_digits">位數</string>
+    <string name="batch_seq_case_sensitive">大小寫不同</string>
+    <string name="batch_seq_msg_no_wildcard">網址項目裡沒有萬用字元(*)。</string>
+    <string name="batch_seq_msg_no_from_to">\'從\'或\'到\'的項目裡沒有資料。</string>
+    <string name="batch_seq_msg_uri_not_valid">不合法的網址。</string>
+    <string name="batch_seq_preview">預覽</string>
+    <string-array name="batch_seq_type">
+        <item>無</item>
+        <item>數字</item>
+        <item>字元</item>
+    </string-array>
+
+    <!-- NodeActivity.java -->
+    <string name="category_creation">新增分類</string>
+    <string name="category_setting">分類屬性</string>
+    <string name="download_creation">新增下載</string>
+    <string name="download_setting">下載屬性</string>
+    <string name="download_default">下載預設值</string>
+    <string name="download_creation_hints">選一個分類以放置新建的下載並套用所選類別中的屬性。</string>
+
+    <!-- traveler_main.xml -->
+    <string name="category_title">分類</string>
+    <string name="status_title">狀態</string>
+
+    <!-- ActionBar / Toolbar / Menu -->
+    <!-- MainActivity.java Selection mode -->
+    <string name="action_start">啟動</string>
+    <string name="action_pause">暫停</string>
+    <!-- MainActivity.java -->
+    <string name="action_file">檔案</string>
+    <string name="action_category_new">新增分類…</string>
+    <string name="action_category_import">匯入分類…</string>
+    <string name="action_category_edit">編輯分類…</string>
+    <string name="action_category_export">匯出分類…</string>
+    <string name="action_save_all">儲存全部資料</string>
+    <string name="action_category_delete">刪除分類</string>
+    <string name="action_batch">批次</string>
+    <string name="action_batch_sequence">網址序列下載</string>
+    <string name="action_resume_all">恢復所有下載</string>
+    <string name="action_pause_all">暫停所有下載</string>
+    <string name="action_offline">離線</string>
+    <string name="action_settings">設定</string>
+    <string name="action_exit">離開</string>
+
+    <string name="menu_delete">刪除</string>
+    <string name="menu_properties">屬性…</string>
+
+    <string name="menu_download_open">開啟</string>
+    <string name="menu_download_move">搬移</string>
+    <string name="menu_download_move_up">上移</string>
+    <string name="menu_download_move_down">下移</string>
+    <string name="menu_download_delete_recycle">刪除 (回收)</string>
+    <string name="menu_download_delete_data">刪除資料</string>
+    <string name="menu_download_delete_file">刪除檔案與資料</string>
+    <string name="menu_download_force_start">強制開始</string>
+    <string name="menu_download_priority">優先權</string>
+    <string name="menu_download_priority_high">高</string>
+    <string name="menu_download_priority_normal">一般</string>
+    <string name="menu_download_priority_low">低</string>
+    <!-- NodeActivity.java -->
+    <string name="menu_select_folder">選擇資料夾…</string>
+
+    <!-- xml/pref_xxx.xml-->
+    <string name="pref_ui">使用者界面</string>
+    <string name="pref_sort">下載排序方式…</string>
+    <string name="pref_sort_summary">選擇"所有分類"或"所有狀態"時，下載的排序方式…</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>不排序</item>
+        <item>按名稱排序</item>
+        <item>按加入時間排序</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">刪除確認</string>
+    <string name="pref_ui_confirm_delete_summary">刪除檔案時確認</string>
+    <string name="pref_ui_confirm_exit">離開確認</string>
+    <string name="pref_ui_confirm_exit_summary">離開時顯示確認對話框</string>
+    <string name="pref_ui_exit_on_back">按返回鈕時離開</string>
+    <string name="pref_ui_exit_on_back_summary">當使用者按返回鈕時離開 uGet。</string>
+    <string name="pref_ui_notification_starting">開始下載時通知</string>
+    <string name="pref_ui_notification_starting_summary">當下載開始時顯示通知。</string>
+    <string name="pref_ui_notification_sound">下載完成時發出聲音</string>
+    <string name="pref_ui_notification_sound_summary">當下載完成或發生錯誤時發出聲音。</string>
+    <string name="pref_ui_notification_vibrate">下載完成時振動</string>
+    <string name="pref_ui_notification_vibrate_summary">當下載完成或發生錯誤時振動。</string>
+    <string name="pref_ui_no_wifi_go_offline">沒有 WiFi 連線時離線</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">WiFi 斷線/連線時程式啟動/關閉離線模式。</string>
+    <string name="pref_ui_skip_existing_uri">跳過已有的網址</string>
+
+    <string name="pref_clipboard">剪貼簿</string>
+    <string name="pref_clipboard_monitor">剪貼簿監視器</string>
+    <string name="pref_clipboard_monitor_summary">開啟/關閉剪貼簿監視器</string>
+    <string name="pref_clipboard_media_website">監控媒體網站網址</string>
+    <string name="pref_clipboard_media_website_summary">監控媒體網站網址，如果 uGet 支持這個網站。</string>
+    <string name="pref_clipboard_type">文件類型</string>
+    <string name="pref_clipboard_type_summary">監視剪貼簿文件類型 (支援 Regular Expression)</string>
+    <string name="pref_clipboard_type_error_title">剪貼簿文件類型</string>
+    <string name="pref_clipboard_type_error_message">Regular Expression 語法錯誤</string>
+    <string name="pref_clipboard_index">預設分類索引</string>
+    <string name="pref_clipboard_index_summary">如果沒有符合的分類，就加入第幾個分類。</string>
+    <string name="pref_clipboard_clear_at_exit">離開時清除剪貼簿</string>
+    <string name="pref_clipboard_clear_at_exit_summary">離開時清除剪貼簿內的資料。</string>
+    <string name="pref_clipboard_clear_after_accepting">接受網址後清除剪貼簿</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">uGet 接受下載網址後清除剪貼簿。</string>
+
+    <string name="pref_speed">速度限制</string>
+    <string name="pref_speed_download">下載速度限制</string>
+    <string name="pref_speed_download_summary">設定下載速度限制 (KiB/s)</string>
+    <string name="pref_speed_upload">上傳速度限制</string>
+    <string name="pref_speed_upload_summary">設定上傳速度限制 (KiB/s)</string>
+
+    <string name="pref_plugin_order">外掛程式配對順序…</string>
+    <string name="pref_plugin_order_summary">選擇主要和次要的外掛程式。</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Aria2 外掛程式選項</string>
+    <string name="pref_aria2_uri">網址</string>
+    <string name="pref_aria2_uri_summary">設定 aria2 JSON 遠端呼叫網址</string>
+    <string name="pref_aria2_token">遠程呼叫授權密碼</string>
+    <string name="pref_aria2_token_summary">不知道這是什麼的話就別修改，需配合 aria2 參數 --rpc-secret</string>
+    <string name="pref_aria2_local">在這台裝置執行 aria2</string>
+    <string name="pref_aria2_local_summary">在這台裝置啟動 aria2 伺服器，您必須自行安裝 aria2c。</string>
+    <string name="pref_aria2_speed_download">Aria2 下載速度限制</string>
+    <string name="pref_aria2_speed_download_summary">下載速度限制 (KiB/s)，這裡只會影響 aria2 外掛程式。</string>
+    <string name="pref_aria2_speed_upload">Aria2 上傳速度限制</string>
+    <string name="pref_aria2_speed_upload_summary">上傳速度限制 (KiB/s)，這裡只會影響 aria2 外掛程式。</string>
+    <string name="pref_aria2_launch">啟動 aria2</string>
+    <string name="pref_aria2_launch_summary">當程式開始時啟動 aria2</string>
+    <string name="pref_aria2_shutdown">關閉 aria2</string>
+    <string name="pref_aria2_shutdown_summary">當程式離開時關閉 aria2</string>
+    <string name="pref_aria2_path">路徑</string>
+    <string name="pref_aria2_path_summary">aria2 程式的完整路徑</string>
+    <string name="pref_aria2_args">參數</string>
+    <string name="pref_aria2_args_summary">傳遞參數給 aria2</string>
+
+    <string name="pref_media">媒體網站選項</string>
+    <string name="pref_media_match_mode">媒體匹配模式</string>
+    <string name="pref_media_match_mode_summary">設定媒體匹配模式</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>"不做任何匹配"</item>
+        <item>"符合一個條件"</item>
+        <item>"符合二個條件"</item>
+        <item>"近似品質"</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">媒體品質</string>
+    <string name="pref_media_quality_summary">設定媒體匹配條件 - 品質</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">媒體格式</string>
+    <string name="pref_media_type_summary">設定媒體匹配條件 - 格式</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_other">其他</string>
+    <string name="pref_autosave_interval">自動存檔間隔</string>
+    <string name="pref_autosave_interval_summary">每隔多少分鐘就儲存全部資料。</string>
+
+    <string name="pref_about">關於 uGet</string>
+    <string name="pref_about_version">版本資訊</string>
+
+    <!-- MainActivity / NodeActivity messages -->
+    <string name="message_exit_title">真的要退出？</string>
+    <string name="message_exit">您確定要退出 uGet 嗎？</string>
+    <string name="message_delete_category_title">真的要刪除分類？</string>
+    <string name="message_delete_category">您確定要刪除目前的分類嗎？</string>
+    <string name="message_delete_title">真的要刪除檔案？</string>
+    <string name="message_delete_file">您確定要刪除檔案嗎？</string>
+    <string name="message_file_not_exist">檔案不存在</string>
+    <string name="message_file_load_ok">檔案已載入</string>
+    <string name="message_file_load_fail">檔案載入失敗</string>
+    <string name="message_file_save_ok">檔案已儲存</string>
+    <string name="message_file_save_fail">檔案儲存失敗</string>
+    <string name="message_permission_required">要求權限</string>
+    <string name="message_permission_sd_card">此應用程式下載檔案需要存取 SD Card 的權限。</string>
+    <string name="message_permission_folder">需要存取目錄的權限。請選擇此目錄以獲得寫入權限。</string>
+    <string name="message_permission_folder_get">獲得目錄權限直到重新啟動裝置為止。</string>
+    <string name="message_no_download_1">如果要增加新下載，可以將連結複製到剪貼簿或分享連結至 uGet。</string>
+    <string name="message_no_download_2">如果要更改預設下載設定或同時啟動下載數，可以編輯分類屬性。（按工具列中的 \'檔案\' 並選擇 \'編輯分類\'）</string>
+
+</resources>
