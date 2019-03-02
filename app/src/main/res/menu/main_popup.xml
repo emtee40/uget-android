@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_download_open"
-        android:title="@string/menu_open" />
+        android:title="@string/menu_download_open" />
 
     <item
         android:id="@+id/menu_download_delete"
@@ -36,15 +36,15 @@
 
     <item
         android:id="@+id/menu_download_move"
-        android:title="@string/menu_move" >
+        android:title="@string/menu_download_move" >
         <menu>
             <item
                 android:id="@+id/menu_download_move_up"
-                android:title="@string/menu_move_up" />
+                android:title="@string/menu_download_move_up" />
 
             <item
                 android:id="@+id/menu_download_move_down"
-                android:title="@string/menu_move_down" />
+                android:title="@string/menu_download_move_down" />
         </menu>
     </item>
 

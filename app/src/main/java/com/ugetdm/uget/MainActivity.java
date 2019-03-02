@@ -889,7 +889,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                        // dialog.setTitle(R.string.menu_open);
+                        // dialog.setTitle(R.string.menu_download_open);
                         dialog.setIcon(android.R.drawable.ic_dialog_alert);
                         dialog.setMessage(R.string.message_file_not_exist);
                         dialog.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

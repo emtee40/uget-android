@@ -2,7 +2,6 @@
     <string name="app_name">uGet</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <!-- Don't translate above 2 message -->
 
     <!-- MainApp.java -->
     <string name="notification_active_title">Active</string>
@@ -17,7 +16,6 @@
     <string name="cnode_active_limit">Active downloads</string>
     <string name="cnode_finished_limit">Capacity of Finished</string>
     <string name="cnode_recycled_limit">Capacity of Recycled</string>
-    <string name="cnode_matching">URI Matching conditions</string>
     <string name="cnode_hosts">Matched hosts</string>
     <string name="cnode_schemes">Matched schemes</string>
     <string name="cnode_file_types">Matched types</string>
@@ -74,9 +72,6 @@
     <string name="batch_seq_to">To:</string>
     <string name="batch_seq_digits">digits:</string>
     <string name="batch_seq_case_sensitive">case-sensitive</string>
-    <string name="batch_seq_type_number">Number</string>
-    <string name="batch_seq_type_char">Character</string>
-    <string name="batch_seq_type_none">None</string>
     <string name="batch_seq_msg_no_wildcard">No wildcard(*) character in URI entry.</string>
     <string name="batch_seq_msg_no_from_to">No character in \'From\' or \'To\' entry.</string>
     <string name="batch_seq_msg_uri_not_valid">URI is not valid.</string>
@@ -93,7 +88,7 @@
     <string name="download_creation">New Download</string>
     <string name="download_setting">Download properties</string>
     <string name="download_default">Download default</string>
-    <string name="download_creation_hints">Choose a category to place new download and apply properties from selected one.</string>
+    <string name="download_creation_hints">Choose a category to place new download and apply properties from selected category.</string>
 
     <!-- traveler_main.xml -->
     <string name="category_title">Category</string>
@@ -119,13 +114,13 @@
     <string name="action_settings">Settings</string>
     <string name="action_exit">Exit</string>
 
-    <string name="menu_open">Open</string>
     <string name="menu_delete">Delete</string>
-    <string name="menu_move">Move</string>
-    <string name="menu_move_up">Move Up</string>
-    <string name="menu_move_down">Move Down</string>
     <string name="menu_properties">Properties…</string>
 
+    <string name="menu_download_open">Open</string>
+    <string name="menu_download_move">Move</string>
+    <string name="menu_download_move_up">Move Up</string>
+    <string name="menu_download_move_down">Move Down</string>
     <string name="menu_download_delete_recycle">Delete (Recycle)</string>
     <string name="menu_download_delete_data">Delete Entry</string>
     <string name="menu_download_delete_file">Delete Entry and File</string>
@@ -286,18 +281,18 @@
 
     <!-- MainActivity / NodeActivity messages -->
     <string name="message_exit_title">Really Quit?</string>
-    <string name="message_exit">Are you sure you want to quit?</string>
+    <string name="message_exit">Are you sure you want to quit uGet?</string>
     <string name="message_delete_category_title">Really delete category?</string>
     <string name="message_delete_category">Are you sure you want to delete current category?</string>
     <string name="message_delete_title">Really delete?</string>
     <string name="message_delete_file">Are you sure you want to delete files?</string>
-    <string name="message_file_not_exist">File does not exist.</string>
+    <string name="message_file_not_exist">File does not exist</string>
     <string name="message_file_load_ok">File loaded</string>
     <string name="message_file_load_fail">Failed to load file</string>
     <string name="message_file_save_ok">File saved</string>
     <string name="message_file_save_fail">Failed to save file</string>
     <string name="message_permission_required">Permission required</string>
-    <string name="message_permission_sd_card">Permission to access the SD-CARD is required for this app to Download files.</string>
+    <string name="message_permission_sd_card">Permission to access the SD Card is required for this app to Download files.</string>
     <string name="message_permission_folder">Permission to access this folder is required. Please pick this folder to get write permission.</string>
     <string name="message_permission_folder_get">Get folder permission until reboot.</string>
     <string name="message_no_download_1">If you want to add new download, you can copy link to clipboard or share link to uGet.</string>
