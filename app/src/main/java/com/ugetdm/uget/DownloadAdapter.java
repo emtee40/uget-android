@@ -41,7 +41,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         selections = new SparseBooleanArray(100);
 
         // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
-        setHasStableIds(true);
+        //setHasStableIds(true);
     }
 
     public int calcTextWidth(TextView textView, String text) {
@@ -277,10 +277,10 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     }
 
     // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
-    @Override
-    public long getItemId(int position) {
-        return Node.getNthChild(pointer, position);
-    }
+    //@Override
+    //public long getItemId(int position) {
+    //    return Node.getNthChild(pointer, position);
+    //}
 
     // ------------------------------------------------------------------------
     // ViewHolder

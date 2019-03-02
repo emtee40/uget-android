@@ -42,7 +42,7 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
         stateNames = context.getResources().getStringArray(R.array.cnode_state);
 
         // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
-        setHasStableIds(true);
+        //setHasStableIds(true);
     }
 
     @NonNull
@@ -95,10 +95,10 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
     }
 
     // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
-    @Override
-    public long getItemId(int position) {
-        return Node.getNthChild(pointer, position);
-    }
+    //@Override
+    //public long getItemId(int position) {
+    //    return Node.getNthChild(pointer, position);
+    //}
 
     // ------------------------------------------------------------------------
     // ViewHolder

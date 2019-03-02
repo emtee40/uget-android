@@ -26,7 +26,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         pointerMix = nodeMix;
 
         // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
-        setHasStableIds(true);
+        //setHasStableIds(true);
     }
 
     @NonNull
@@ -84,10 +84,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     // --- avoid losing focus ---  override getItemId() and call setHasStableIds(true)
-    @Override
-    public long getItemId(int position) {
-        return Node.getNthChild(pointer, position);
-    }
+    //@Override
+    //public long getItemId(int position) {
+    //    return Node.getNthChild(pointer, position);
+    //}
 
     // ------------------------------------------------------------------------
     // ViewHolder
