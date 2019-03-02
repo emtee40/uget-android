@@ -370,8 +370,10 @@ public class MainApp extends Application {
         else
             cnode = Node.getNthChild (core.nodeSorted, nthCategory - 1);
 
-        stateAdapter.pointer = cnode;
-        stateAdapter.notifyDataSetChanged();
+        if (stateAdapter.pointer != cnode) {
+            stateAdapter.pointer = cnode;
+            stateAdapter.notifyDataSetChanged();
+        }
 
         switch (nthStatus) {
         default:
