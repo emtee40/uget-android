@@ -369,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
                         updateToolbar();
                     }
                 }
+                app.userAction = true;
                 break;
 
             case R.id.action_offline:

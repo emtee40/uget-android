@@ -164,7 +164,7 @@ public class TimeoutHandler {
                 long nodeArray[] = app.getActiveDownloadNode();
                 if (nodeArray != null) {
                     for (int i = 0;  i < nodeArray.length;  i++) {
-                        int  position = app.getDownloadNodePosition(nodeArray[i]);
+                        int position = app.getDownloadNodePosition(nodeArray[i]);
                         if (position >= 0)
                             app.downloadAdapter.notifyItemChanged(position);
                     }
