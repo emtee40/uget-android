@@ -289,7 +289,10 @@
             android:layout_marginBottom="8dp"
             android:background="@android:color/darker_gray" />
 
-        <TableRow
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -307,8 +310,10 @@
                 android:id="@+id/dnode_proxy_type_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_gravity="start"/>
-        </TableRow>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
