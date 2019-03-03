@@ -25,6 +25,8 @@ public class TimeoutHandler {
 
     private MainApp  app;
     private Handler  handler;
+    // used by queuingRunnable
+    private ConnectivityManager connectivityManager;
 
     private boolean  handlerStarted = false;
     private boolean  offlineModeLast = false;
@@ -42,12 +44,12 @@ public class TimeoutHandler {
         // Get a handler that can be used to post to the main thread
         // handler = new Handler();    // call this in main thread
         handler = new Handler(Looper.getMainLooper());    // context.getMainLooper()
-//        handler = new Handler();
     }
 
     public void startHandler() {
         if (handlerStarted == true)
             return;
+        connectivityManager = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         handlerStarted = true;
         handler.postDelayed(queuingRunnable, queuingInterval);
@@ -78,8 +80,6 @@ public class TimeoutHandler {
 
             // Go offline if no WiFi connection
             if (app.setting.ui.noWifiGoOffline) {
-                ConnectivityManager connectivityManager;
-                connectivityManager = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
                 if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected())
                     app.setting.offlineMode = false;
                 else
@@ -94,6 +94,8 @@ public class TimeoutHandler {
                     app.userAction = true;
                     intoOfflineMode = true;
                 }
+                else if (app.mainActivity != null)
+                    app.mainActivity.decideTitle();
             }
 
             // --- reserve selected node --- restore them after app.core.trim()

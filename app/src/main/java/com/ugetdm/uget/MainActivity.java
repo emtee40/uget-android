@@ -289,6 +289,8 @@ public class MainActivity extends AppCompatActivity {
         item.setChecked(app.setting.offlineMode);
         if (app.setting.ui.noWifiGoOffline)
             item.setEnabled(false);
+        else
+            item.setEnabled(true);
         // --- category menu ---
         item = menu.findItem((R.id.action_category_delete));
         item.setEnabled(app.nthCategory > 0);
