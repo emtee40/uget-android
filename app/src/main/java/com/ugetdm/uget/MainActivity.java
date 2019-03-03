@@ -56,11 +56,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // --- init MainApp start ---
+        // --- init MainApp ---
         app = (MainApp)getApplicationContext();
         app.startRunning();
-        app.mainActivity = this;
-        // --- init MainApp end ---
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
         updateToolbar();
         initTraveler();
         initTimeoutHandler();
+        // --- handle URI from "Share Link" ---
+        processUriFromIntent();
+
+        // --- MainActivity is ready ---
+        app.mainActivity = this;
     }
 
     @Override
@@ -206,16 +209,26 @@ public class MainActivity extends AppCompatActivity {
             String uri = intent.getStringExtra(Intent.EXTRA_TEXT);
             // clear processed intent
             intent.removeExtra(Intent.EXTRA_TEXT);
+            intent.setAction("");
 
             if (uri != null) {
-                if (app.setting.ui.skipExistingUri && app.core.isUriExist(uri.toString()) == true)
+                if (app.setting.ui.skipExistingUri && app.core.isUriExist(uri.toString())) {
+                    Snackbar.make(findViewById(R.id.fab),
+                            getString(R.string.pref_ui_skip_existing_uri),Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                     return;
+                }
                 // match
                 long cnode = app.core.matchCategory(uri.toString(), null);
                 if (cnode == 0)
                     cnode = Node.getNthChild(app.core.nodeReal, 0);
                 if (cnode != 0)
                     app.core.addDownloadByUri(uri.toString(), cnode, true);
+                // --- notify ---
+                app.stateAdapter.notifyDataSetChanged();
+                app.categoryAdapter.notifyDataSetChanged();
+                app.downloadAdapter.notifyDataSetChanged();
+
                 // moveTaskToBack(true);
             }
         }
@@ -1194,7 +1207,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String filename = DocumentFile.fromSingleUri(this, treeUri).getName();
-        if (parcelFD != null && app.saveNthCategory(app.nthCategory, parcelFD.detachFd()) != false) {
+        if (parcelFD != null && app.saveNthCategory(app.nthCategory, parcelFD.detachFd())) {
             // --- Snackbar ---
             Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_save_ok) +
                     " - " + filename, Snackbar.LENGTH_LONG)
