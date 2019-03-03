@@ -11,6 +11,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
+        <!-- Line 1 : URI entry -->
         <TextView
             android:id="@+id/batch_seq_uri"
             android:layout_width="wrap_content"
@@ -33,7 +34,7 @@
             app:layout_constraintStart_toEndOf="@+id/batch_seq_uri"
             app:layout_constraintTop_toTopOf="parent" />
 
-
+        <!-- Line 2 : e.g. -->
         <TextView
             android:id="@+id/batch_seq_eg"
             android:layout_width="wrap_content"
@@ -46,6 +47,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="http://for.example/path/pre*.jpg"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textIsSelectable="true"
@@ -60,6 +63,7 @@
             android:id="@+id/batch_horizontal_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
