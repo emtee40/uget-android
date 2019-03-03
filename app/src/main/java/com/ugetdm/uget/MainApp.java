@@ -413,8 +413,10 @@ public class MainApp extends Application {
 
         core.addCategory(cNodePointer);
         position = Node.getPosition(core.nodeReal, cNodePointer);
-        if (categoryAdapter != null)
+        if (categoryAdapter != null) {
             categoryAdapter.notifyItemInserted(position);
+            categoryAdapter.notifyItemChanged(0);    // "All Category" getItemCount() changed
+        }
         if (stateAdapter != null)
             stateAdapter.notifyDataSetChanged();
     }
@@ -428,6 +430,7 @@ public class MainApp extends Application {
             if (cNodePointer != 0) {
                 core.deleteCategory(cNodePointer);
                 categoryAdapter.notifyItemRemoved(nth);
+                categoryAdapter.notifyItemChanged(0);    // "All Category" getItemCount() changed
             }
         }
 
@@ -537,7 +540,8 @@ public class MainApp extends Application {
         core.addDownload(dNodePointer, cNodePointer, false);
         int  position = Node.getPosition(cNodePointer, dNodePointer);
 
-        categoryAdapter.notifyItemChanged(toNthCategory);
+        stateAdapter.notifyDataSetChanged();
+        categoryAdapter.notifyDataSetChanged();
         downloadAdapter.notifyItemInserted(position);
         return position;
     }
@@ -633,7 +637,6 @@ public class MainApp extends Application {
                     downloadAdapter.notifyItemMoved(nthLast, nth);
                 }
                 stateAdapter.notifyDataSetChanged();
-                // categoryAdapter.notifyDataSetChanged();
             }
         }
 
@@ -663,7 +666,6 @@ public class MainApp extends Application {
                     downloadAdapter.notifyItemMoved(nthLast, nth);
                 }
                 stateAdapter.notifyDataSetChanged();
-                // categoryAdapter.notifyDataSetChanged();
             }
         }
 
@@ -693,7 +695,6 @@ public class MainApp extends Application {
                     downloadAdapter.notifyItemMoved(nthLast, nth);
                 }
                 stateAdapter.notifyDataSetChanged();
-                // categoryAdapter.notifyDataSetChanged();
             }
         }
 

@@ -258,7 +258,7 @@ public class TimeoutHandler {
                 app.core.addDownloadByUri(text, cNodePointer, true);
                 if (app.setting.clipboard.clearAfterAccepting)
                     app.clearClipboard();
-                // notify
+                // --- notify ---
                 app.stateAdapter.notifyDataSetChanged();
                 app.categoryAdapter.notifyDataSetChanged();
                 app.downloadAdapter.notifyDataSetChanged();
