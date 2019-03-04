@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Nicht verbunden</string>
+
+    <string name="menu_action_main">Menü</string>
+    <string name="menu_action_category">Kategorie</string>
+    <string name="menu_action_download">Übertragung</string>
+    <string name="menu_save_all">Alle Daten speichern</string>
+
+    <string name="menu_category">Kategorie …</string>
+    <string name="menu_download">Übertragung …</string>
+    <string name="menu_settings">Einstellungen …</string>
+    <string name="menu_offline_mode">Getrennter Modus</string>
+    <string name="menu_about">Über</string>
+    <string name="menu_exit">Beenden</string>
+
+    <string name="menu_download_start_auto">Automatischer Start</string>
+    <string name="menu_download_start_manually">Manueller Start</string>
+
+    <string name="menu_category_new">Neu …</string>
+    <string name="menu_delete">Löschen</string>
+    <string name="menu_category_preferences">Einstellungen …</string>
+    <string name="menu_category_move_up">hoch</string>
+    <string name="menu_category_move_down">runter</string>
+
+    <string name="menu_download_open">Öffnen …</string>
+    <string name="menu_download_delete">Löschen …</string>
+    <string name="menu_download_delete_recycle">Löschen (Recyceln)</string>
+    <string name="menu_download_delete_data">Eintrag löschen</string>
+    <string name="menu_download_delete_file">Eintrag und Datei löschen</string>
+    <string name="menu_download_force_start">Start erzwingen</string>
+    <string name="menu_download_runnable">Ausführbar</string>
+    <string name="menu_download_pause">Pause</string>
+    <string name="menu_download_move">Verschieben …</string>
+    <string name="menu_download_priority">Priorität …</string>
+    <string name="menu_download_priority_high">Hoch</string>
+    <string name="menu_download_priority_normal">Normal</string>
+    <string name="menu_download_priority_low">Niedrig</string>
+
+    <string name="menu_context">Kontextmenü</string>
+    <string name="menu_context_new_download">Neue Übertragung …</string>
+    <string name="menu_context_new_category">Neue Kategorie …</string>
+
+    <string name="message_exit_title">Wirklich beenden?</string>
+    <string name="message_exit">Wollen Sie wirklich beenden?</string>
+    <string name="message_delete_file_title">Dateien wirklich löschen?</string>
+    <string name="message_delete_file">Wollen Sie die Dateien wirklich löschen?</string>
+    <string name="message_delete_file_category_title">Kategorie wirklich entfernen?</string>
+    <string name="message_delete_file_category">Sind Sie sicher, dass Sie die Kategorie entfernen wollen?</string>
+
+    <string name="notification_error_title">Fehler aufgetreten</string>
+    <string name="notification_error_content">Es ist ein Fehler beim Herunterladen aufgetreten.</string>
+    <string name="notification_starting_title">Übertragung beginnt</string>
+    <string name="notification_starting_content">Herunterladewarteschlange wird abgearbeitet</string>
+    <string name="notification_completed_title">Übertragung fertiggestellt</string>
+    <string name="notification_completed_content">Alle Übertragungen in der Warteschlange wurden fertiggestellt.</string>
+
+    <string name="pref_ui_summary">Benutzerschnittstelle konfigurieren</string>
+    <string name="pref_sort">Übertragungssortierung</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Sortierung aufheben</item>
+        <item>Sortierung nach Namen</item>
+        <item>Sortierung nach zusätzlicher Zeit</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Löschen bestätigen</string>
+    <string name="pref_ui_confirm_delete_summary">Bestätigen beim Löschen von Dateien</string>
+    <string name="pref_ui_confirm_exit">Beenden bestätigen</string>
+    <string name="pref_ui_confirm_exit_summary">Bestätigungsdialog beim Beenden anzeigen</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2_uri">Adresse</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Medientyp</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="dnode_uri">Adresse</string>
+    <string-array name="dnode_proxy_type">
+        <item>Vorgabe</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">Aktueller Status</string>
+    <string name="cnode_image_description">Aktueller Status</string>
+
+    <string name="cnode_name">Name: </string>
+    <string name="cnode_active_limit">Aktive Übertragungen</string>
+    <string name="cnode_default_new_name">Neu</string>
+    <string-array name="cnode_state">
+        <item>Jeder Status</item>
+        <item>Aktiv</item>
+    </string-array>
+
+    </resources>

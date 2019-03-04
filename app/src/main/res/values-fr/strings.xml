@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Hors ligne</string>
+
+    <string name="menu_save_all">Sauvegarder tous les fichiers</string>
+
+    <string name="menu_category">Catégorie...</string>
+    <string name="menu_download">Télécharger...</string>
+    <string name="menu_settings">Configurations...</string>
+    <string name="menu_offline_mode">Mode Hors-ligne</string>
+    <string name="menu_about">À propos</string>
+    <string name="menu_exit">Quitter</string>
+
+    <string name="menu_download_startup_mode">Mode de démarrage…</string>
+    <string name="menu_download_start_auto">Démarrage automatique</string>
+    <string name="menu_download_start_manually">Démarrage manuel</string>
+
+    <string name="menu_category_new">Nouveau...</string>
+    <string name="menu_delete">Supprimer</string>
+    <string name="menu_category_preferences">Préférences...</string>
+    <string name="menu_category_move_up">Déplacer vers le haut</string>
+    <string name="menu_category_move_down">Déplacer vers le bas</string>
+
+    <string name="menu_download_open">Ouvrir...</string>
+    <string name="menu_download_delete">Supprimer...</string>
+    <string name="menu_download_delete_recycle">Supprimer (Recycler)</string>
+    <string name="menu_download_delete_data">Supprimer entrée</string>
+    <string name="menu_download_delete_file">Supprimer entrée et fichier</string>
+    <string name="menu_download_force_start">Forcer le démarrage</string>
+    <string name="menu_download_runnable">Exécutable</string>
+    <string name="menu_download_pause">Pause</string>
+    <string name="menu_download_move">Déplacer...</string>
+    <string name="menu_download_priority">Priorité...</string>
+    <string name="menu_download_priority_high">Haute</string>
+    <string name="menu_download_priority_normal">Normal</string>
+    <string name="menu_download_priority_low">Basse</string>
+
+    <string name="menu_context">Menu contextuel</string>
+    <string name="menu_context_new_download">Nouveau téléchargement...</string>
+    <string name="menu_context_new_category">Nouvelle catégorie...</string>
+
+    <string name="message_exit_title">Quitter Vraiment ?</string>
+    <string name="message_exit">Êtes-vous sûr de vouloir quitter ? </string>
+    <string name="message_delete_file_title">Supprimer vraiment les fichiers ?</string>
+    <string name="message_delete_file">Êtes-vous sûr de vouloir supprimer les fichiers ?</string>
+    <string name="message_delete_file_category_title">Supprimer vraiment la catégorie ?</string>
+    <string name="message_delete_file_category">Êtes-vous sûr de vouloir supprimer la catégorie ?</string>
+
+    <string name="notification_error_title">Une erreur s\'est produite</string>
+    <string name="notification_error_content">Une erreur s\'est produite pendant le téléchargement.</string>
+    <string name="notification_starting_title">Démarrage du téléchargement</string>
+    <string name="notification_starting_content">Démarrer le téléchargement en fil d\'attente.</string>
+    <string name="notification_completed_title">Téléchargement terminé</string>
+    <string name="notification_completed_content">Tous les téléchargements en fil d\'attente sont completés.</string>
+
+    <string name="pref_ui">Interface utilisateur</string>
+    <string name="pref_sort">Triage du téléchargement...</string>
+    <string name="pref_sort_summary">Si l\'utilisateur choisi « Toutes les catégories » ou « Tous les statuts », trier les téléchargements par...</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Non trié</item>
+        <item>Trier par nom</item>
+        <item>Classer par moment de l\'ajout</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Confirmer la suppression</string>
+    <string name="pref_ui_confirm_delete_summary">Confirmer lors de la suppression de fichiers</string>
+    <string name="pref_ui_confirm_exit">Confirmer la sortie</string>
+    <string name="pref_ui_confirm_exit_summary">Afficher la boite de dialogue de confirmation lors de la sortie</string>
+    <string name="pref_ui_exit_on_back">Quitter par la touche retour</string>
+    <string name="pref_ui_exit_on_back_summary">Quitter uGet quand l\'utilisateur appui sur le bouton retour.</string>
+    <string name="pref_ui_notification_starting">Notification de démarrage de téléchargement</string>
+    <string name="pref_ui_notification_starting_summary">Afficher une notification quand le téléchargement démarre.</string>
+    <string name="pref_ui_notification_sound">Jouer un son quand le téléchargement est fini</string>
+    <string name="pref_ui_notification_sound_summary">Jouer un son quand le téléchargement est fini ou quand une erreur s\'est produite.</string>
+    <string name="pref_ui_notification_vibrate">Vibrer quand le téléchargement est fini</string>
+    <string name="pref_ui_notification_vibrate_summary">Vibrer quand le téléchargement est fini ou quand une erreur s\'est produite.</string>
+    <string name="pref_ui_no_wifi_go_offline">Se mettre hors-ligne si aucune connexion WiFI</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">Le programme va activer/désactiver le mode hors-ligne si la connexion WifFi est déconnectée/connectée.</string>
+
+    <string name="pref_clipboard">Presse-papiers</string>
+    <string name="pref_clipboard_monitor">Moniteur du presse-papiers</string>
+    <string name="pref_clipboard_monitor_summary">Activer/Désactiver le moniteur du presse-papiers</string>
+    <string name="pref_clipboard_media_website">Surveiller URL site Web média</string>
+    <string name="pref_clipboard_media_website_summary">Surveiller URL site Web média si uGet supporte ce site.</string>
+    <string name="pref_clipboard_type">Types de fichier</string>
+    <string name="pref_clipboard_type_summary">Surveiller le presse-papiers pour les types de fichiers spécifiés (supporte les expressions régulières)</string>
+    <string name="pref_clipboard_type_error_title">Types de fichier du presse-papiers</string>
+    <string name="pref_clipboard_type_error_message">Erreur de syntaxe dans l\'expression régulière</string>
+    <string name="pref_clipboard_index">Index de catégorie par défaut</string>
+    <string name="pref_clipboard_index_summary">Ajouter URL à la énième catégorie si aucune catégorie appariée.</string>
+    <string name="pref_clipboard_clear_at_exit">Nettoyer le presse-papiers en quittant</string>
+    <string name="pref_clipboard_clear_at_exit_summary">Nettoyer les données du presse-papiers en quittant</string>
+    <string name="pref_clipboard_clear_after_accepting">Nettoyer le presse-papiers après avoir accepté une URL</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">Nettoyer les données du presse-papiers après qu\'uGet accepte une URL téléchargable.</string>
+
+    <string name="pref_speed">Limite de vitesse</string>
+    <string name="pref_speed_download">Limite de vitesse de téléchargement - DL</string>
+    <string name="pref_speed_download_summary">Configurer la limite de vitesse de téléchargement - DL (KiB/s)</string>
+    <string name="pref_speed_upload">Limite de vitesse de téléchargement - UL</string>
+    <string name="pref_speed_upload_summary">Configurer la limite de vitesse de téléchargement - UL (KiB/s)</string>
+
+    <string name="pref_plugin_order">Ordre de correspondance du greffon...</string>
+    <string name="pref_plugin_order_summary">Sélectionner le greffon primaire et secondaire.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Option du greffon Aria2</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">Configurer URI pour aria2 JSON-RPC</string>
+    <string name="pref_aria2_token">Autorisation jeton secret RPC</string>
+    <string name="pref_aria2_token_summary">Ne pas changer si vous ne savez ce que c\'est. Utilisez avec l\'argument aria2 --rpc-secret</string>
+    <string name="pref_aria2_local">Exécuter aria2 sur ce périphérique</string>
+    <string name="pref_aria2_local_summary">Lancer le serveur aria2 sur ce périphérique. Vous devez installer aria2c vous même.</string>
+    <string name="pref_aria2_speed_download">Limite de vitesse de téléchargement pour aria2 -DL</string>
+    <string name="pref_aria2_speed_download_summary">Configurer la limite de vitesse de téléchargement (KiB/s) - DL, cela affecte seulement le greffon aria2.</string>
+    <string name="pref_aria2_speed_upload">Limite de vitesse de téléchargement pour aria2 - UL</string>
+    <string name="pref_aria2_speed_upload_summary">Configurer la limite de vitesse de téléchargement UL (KiB/s), cela affecte seulement le greffon aria2.</string>
+    <string name="pref_aria2_launch">Lancer aria2</string>
+    <string name="pref_aria2_launch_summary">Lancer aria2 au démarrage</string>
+    <string name="pref_aria2_shutdown">Fermer aria2</string>
+    <string name="pref_aria2_shutdown_summary">Fermer aria2 en quittant</string>
+    <string name="pref_aria2_path">Chemin</string>
+    <string name="pref_aria2_path_summary">Chemin complet du programme aria2</string>
+    <string name="pref_aria2_args">Arguments</string>
+    <string name="pref_aria2_args_summary">Passage d\'arguments à aria2</string>
+
+    <string name="pref_media">Options site Web média</string>
+    <string name="pref_media_match_mode">Mode de correspondance média</string>
+    <string name="pref_media_match_mode_summary">Configurer le mode de correspondance de média</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>Ne correspond pas</item>
+        <item>Condition de correspondance 1 </item>
+        <item>Condition de correspondance 2 </item>
+        <item>Qualité proche</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">Qualité du média</string>
+    <string name="pref_media_quality_summary">Configurer la condition de correspondance de média -Qualité</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Type de média</string>
+    <string name="pref_media_type_summary">Configurer la condition de correspondance de média - Type</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">Intervalle de sauvegarde automatique</string>
+    <string name="pref_autosave_interval_summary">Sauvegarder toutes les données tout les N minutes.</string>
+
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">Miroirs</string>
+    <string name="dnode_file">Fichier</string>
+    <string name="dnode_folder">Répertoire</string>
+    <string name="dnode_user">Utilisateur</string>
+    <string name="dnode_password">Mot de passe</string>
+    <string name="dnode_connections">Connections max</string>
+    <string name="dnode_left">gauche</string>
+    <string name="dnode_retry">Recommencer</string>
+    <string name="dnode_retry_limit">Limite des ré-essais</string>
+    <string name="dnode_referrer">Référent</string>
+    <string name="dnode_proxy_type">Proxy</string>
+    <string name="dnode_proxy_host">Hôte</string>
+    <string name="dnode_proxy_port">Port</string>
+    <string name="dnode_proxy_user">Utilisateur</string>
+    <string name="dnode_proxy_password">Mot de passe</string>
+    <string-array name="dnode_proxy_type">
+        <item>Ne pas utiliser</item>
+        <item>Défaut </item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">Statuts actuels</string>
+    <string name="cnode_image_description">Statuts actuels</string>
+
+    <string name="cnode_name">Nom :</string>
+    <string name="cnode_active_limit">Téléchargements actifs</string>
+    <string name="cnode_finished_limit">Capacité des finis</string>
+    <string name="cnode_recycled_limit">Capacité des supprimés</string>
+    <string name="cnode_hosts">Hôtes correspondants</string>
+    <string name="cnode_schemes">Schémas correspondants :</string>
+    <string name="cnode_file_types">Types correspondants :</string>
+
+    <string name="category_creation">Nouvelle Catégorie</string>
+    <string name="category_setting">Préférences de catégorie</string>
+    <string name="download_creation">Nouveau téléchargement</string>
+    <string name="download_setting">Préférences téléchargement</string>
+    <string name="download_default">Téléchargement par défaut</string>
+
+    <string name="cnode_total">Toutes les Catégories</string>
+    <string name="cnode_default_new_name">Nouveau</string>
+    <string-array name="cnode_state">
+        <item>Tous les Statuts</item>
+        <item>Actif</item>
+        <item>File d\'attente</item>
+        <item>Fini</item>
+        <item>Supprimé</item>
+    </string-array>
+
+    <string name="batch_seq_eg">ex :</string>
+    <string name="batch_seq_to">Vers :</string>
+    <string name="batch_seq_digits">Nb :</string>
+    <string name="batch_seq_case_sensitive">sensible à la casse</string>
+    <string name="batch_seq_type_number">0-9</string>
+    <string name="batch_seq_type_char">a-z</string>
+    <string name="batch_seq_type_none">X</string>
+    <string name="batch_seq_msg_no_wildcard">Pas de caractère joker (*) dans l\'URI.</string>
+    <string name="batch_seq_msg_no_from_to">Pas de caractère dans les entrées « De » ou « Pour ».</string>
+    <string name="batch_seq_msg_uri_not_valid">L\'URI est invalide.</string>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">Pas d\'URI, s\'il-vous-plaît assignez en une.</string>
+    <string name="message_file_not_exist">Le fichier n\'existe pas.</string>
+    <string name="menu_action_button_batch_sequence">Lot de séquence URL</string>
+    <string name="menu_action_button_open_category">Catégorie Open …</string>
+    <string name="menu_action_button_save_category">Enregistrer catégorie que …</string>
+    <string name="menu_select_folder">Sélectionner le dossier…</string>
+    <string name="pref_ui_skip_existing_uri">Passer URI existant</string>
+
+</resources>

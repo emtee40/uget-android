@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Не в сети</string>
+
+    <string name="menu_action_main">Меню</string>
+    <string name="menu_action_category">Категория</string>
+    <string name="menu_action_download">Загрузка</string>
+    <string name="menu_save_all">Сохранить все данные</string>
+
+    <string name="menu_category">Категория...</string>
+    <string name="menu_download">Загрузить…</string>
+    <string name="menu_settings">Настройки...</string>
+    <string name="menu_offline_mode">Режим оффлайн</string>
+    <string name="menu_about">О программе</string>
+    <string name="menu_exit">Выход</string>
+
+    <string name="menu_download_start_auto">Автоматический запуск</string>
+    <string name="menu_download_start_manually">Ручной запуск</string>
+
+    <string name="menu_category_new">Новый...</string>
+    <string name="menu_delete">Удалить</string>
+    <string name="menu_category_preferences">Настройки...</string>
+    <string name="menu_category_move_up">Переместить Вверх</string>
+    <string name="menu_category_move_down">Переместить Вниз</string>
+
+    <string name="menu_download_open">Открыть...</string>
+    <string name="menu_download_delete">Удалить...</string>
+    <string name="menu_download_delete_recycle">Удалить (Повторно)</string>
+    <string name="menu_download_delete_data">Удалить Запись</string>
+    <string name="menu_download_delete_file">Удалить Запись и Файл</string>
+    <string name="menu_download_force_start">Принудительный Запуск</string>
+    <string name="menu_download_runnable">Запустить</string>
+    <string name="menu_download_pause">Пауза</string>
+    <string name="menu_download_move">Переместить...</string>
+    <string name="menu_download_priority">Приоритет...</string>
+    <string name="menu_download_priority_high">Высокий</string>
+    <string name="menu_download_priority_normal">Нормальный</string>
+    <string name="menu_download_priority_low">Низкий</string>
+
+    <string name="menu_context">Контекстное Меню</string>
+    <string name="menu_context_new_download">Новая Загрузка...</string>
+    <string name="menu_context_new_category">Новая Категория...</string>
+
+    <string name="message_exit_title">Действительно выйти?</string>
+    <string name="message_exit">Вы уверены, что хотите выйти?</string>
+    <string name="message_delete_file_title">Действительно удалить файлы?</string>
+    <string name="message_delete_file">Вы уверены, что хотите удалить файлы?</string>
+    <string name="message_delete_file_category_title">Действительно удалить категорию?</string>
+    <string name="message_delete_file_category">Вы уверены, что хотите удалить категорию?</string>
+
+    <string name="notification_error_title">Произошла ошибка</string>
+    <string name="notification_error_content">Во время загрузки произошла ошибка.</string>
+    <string name="notification_starting_title">Загрузка начинается</string>
+    <string name="notification_starting_content">Запуск очереди загрузки.</string>
+    <string name="notification_completed_title">Загрузка завершена</string>
+    <string name="notification_completed_content">Все загрузки очереди завершены.</string>
+
+    <string name="pref_ui">Интерфейс пользователя</string>
+    <string name="pref_ui_summary">Настроить интерфейс пользователя</string>
+    <string name="pref_sort">Сортировать Загрузку...</string>
+    <string name="pref_sort_summary">Если выбрать \"Все Категории\" или \"Все Состояния\", то сортировать загрузки...</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Нерассортированы</item>
+        <item>Сортировать по имени</item>
+        <item>Сортировать по дате добавления</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Подтвердить удаление</string>
+    <string name="pref_ui_confirm_delete_summary">Подтверждение при удалении файлов</string>
+    <string name="pref_ui_confirm_exit">Подтвердить выход</string>
+    <string name="pref_ui_confirm_exit_summary">Показывать окно подтверждения при выходе</string>
+    <string name="pref_ui_exit_on_back">Выход при нажатии назад</string>
+    <string name="pref_ui_exit_on_back_summary">Выход из uGet при нажатии пользователем кнопки назад.</string>
+    <string name="pref_ui_notification_starting"> Уведомление при запуске загрузки</string>
+    <string name="pref_ui_notification_starting_summary">Показывать уведомление о начале загрузки.</string>
+    <string name="pref_ui_notification_sound">Звуковое уведомление по окончании</string>
+    <string name="pref_ui_notification_sound_summary">Звуковое уведомление по окончании загрузки или ошибке.</string>
+    <string name="pref_ui_notification_vibrate">Вибрация при завершении загрузки</string>
+    <string name="pref_ui_notification_vibrate_summary">Вибрация при завершении загрузки или ошибке.</string>
+    <string name="pref_ui_no_wifi_go_offline">Перейти в автономный режим, если нет подключения WiFi</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">Программа будет включать/отключать автономный режим, если WiFi отключен/подключен.</string>
+
+    <string name="pref_clipboard">Буфер обмена</string>
+    <string name="pref_clipboard_summary">Установка clipboard monitor</string>
+    <string name="pref_clipboard_monitor">Clipboard monitor</string>
+    <string name="pref_clipboard_monitor_summary">Включить/Отключить clipboard monitor</string>
+    <string name="pref_clipboard_media_website">Мониторинг URL вебсайта</string>
+    <string name="pref_clipboard_media_website_summary">Контролирует URL сайта, если uGet поддерживает этот сайт.</string>
+    <string name="pref_clipboard_type">Тип файла</string>
+    <string name="pref_clipboard_type_summary">Мониторинг буфера обмена для определенных типов файлов (поддержка Регулярного Выражения)</string>
+    <string name="pref_clipboard_type_error_title">Типы файлов буфера обмена</string>
+    <string name="pref_clipboard_type_error_message">Ошибка синтаксиса в регулярном выражении</string>
+    <string name="pref_clipboard_index">Запустить aria2</string>
+    <string name="pref_clipboard_index_summary">Добавление URL в Nую категорию, если никакая категория не соответствует</string>
+    <string name="pref_clipboard_clear_at_exit">Очистка буфера обмена при выходе</string>
+    <string name="pref_clipboard_clear_at_exit_summary">Очистить данные буфера обмена при выходе</string>
+    <string name="pref_clipboard_clear_after_accepting">Очистить буфер обмена после получения URL</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">Очистить буфер обмена после того, как uGet примет загружаемый URL.</string>
+
+    <string name="pref_speed">Ограничение скорости</string>
+    <string name="pref_speed_summary">Настроить ограничение скорости, это повлияет на все подключаемые модули.</string>
+    <string name="pref_speed_download">Ограничение скорости загрузки</string>
+    <string name="pref_speed_download_summary">Ограничение скорости загрузки (KiB/s)</string>
+    <string name="pref_speed_upload">Ограничение скорости отправки</string>
+    <string name="pref_speed_upload_summary">Ограничение скорости отправки (KiB/s)</string>
+
+    <string name="pref_plugin_order">Порядок распознавания плагинов...</string>
+    <string name="pref_plugin_order_summary">Выбор основного и дополнительного плагина.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Опции плагина Aria2</string>
+    <string name="pref_aria2_summary">Установить опции плагина Aria2</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">Настройка URI для aria2 JSON-RPC</string>
+    <string name="pref_aria2_token">Секретный токен авторизации RPC</string>
+    <string name="pref_aria2_token_summary">Не менять, если вы не знаете, что это такое! Использовать aria2 с аргументом --rpc-secret</string>
+    <string name="pref_aria2_local">Запуск aria2 на этом устройстве</string>
+    <string name="pref_aria2_local_summary">Запуск сервера aria2 на этом устройстве. Вы должны установить aria2 самостоятельно.</string>
+    <string name="pref_aria2_speed_download">Ограничение скорости загрузки для aria2</string>
+    <string name="pref_aria2_speed_download_summary">Настройка ограничения скорости загрузки (KiB/s), влияет только на плагин aria2.</string>
+    <string name="pref_aria2_speed_upload">Ограничение скорости отправки для aria2</string>
+    <string name="pref_aria2_speed_upload_summary">Настройка ограничения скорости отправки (KiB/s), только для плагина aria2</string>
+    <string name="pref_aria2_launch">Включение aria2</string>
+    <string name="pref_aria2_launch_summary">Включить aria2 при запуске</string>
+    <string name="pref_aria2_shutdown">Выключение aria2</string>
+    <string name="pref_aria2_shutdown_summary">Выключение aria2 при выходе</string>
+    <string name="pref_aria2_path">Путь</string>
+    <string name="pref_aria2_path_summary">Полный путь из aria2</string>
+    <string name="pref_aria2_args">Аргументы</string>
+    <string name="pref_aria2_args_summary">Передача параметров в aria2</string>
+
+    <string name="pref_media">Опции веб-узла</string>
+    <string name="pref_media_summary">Настройка опций веб-узла</string>
+    <string name="pref_media_match_mode">Режим соответствия</string>
+    <string name="pref_media_match_mode_summary">Настройка режима соответствия</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>Без совпадений</item>
+        <item>Совпадение 1 параметра</item>
+        <item>Совпадение 2 параметров</item>
+        <item>Близкое качество</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">Качество</string>
+    <string name="pref_media_quality_summary">Настройка условий соответствия - Качество</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Тип носителя</string>
+    <string name="pref_media_type_summary">Настройка условий соответствия -  Тип</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">Интервал автосохранения</string>
+    <string name="pref_autosave_interval_summary">Сохранять все данные каждые N минут.</string>
+
+    <string name="dnode_uri">URL</string>
+    <string name="dnode_mirrors">Зеркала</string>
+    <string name="dnode_file">Файл</string>
+    <string name="dnode_folder">Каталог</string>
+    <string name="dnode_user">Пользователь</string>
+    <string name="dnode_password">Пароль</string>
+    <string name="dnode_connections">Максимальное количество соединений</string>
+    <string name="dnode_left">осталось</string>
+    <string name="dnode_retry">Повторить</string>
+    <string name="dnode_retry_limit">Лимит повторений</string>
+    <string name="dnode_referrer">Реферер</string>
+    <string name="dnode_proxy_type">Прокси</string>
+    <string name="dnode_proxy_host">Хост</string>
+    <string name="dnode_proxy_port">Порт</string>
+    <string name="dnode_proxy_user">Пользователь</string>
+    <string name="dnode_proxy_password">Пароль</string>
+    <string-array name="dnode_proxy_type">
+        <item>Не использовать</item>
+        <item> По умолчанию</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">Текущее состояние</string>
+    <string name="cnode_image_description">Текущее состояние</string>
+
+    <string name="cnode_name">Имя:</string>
+    <string name="cnode_active_limit">Активные загрузки</string>
+    <string name="cnode_finished_limit">Количество завершенных</string>
+    <string name="cnode_recycled_limit">Количество удаленных</string>
+    <string name="cnode_hosts">Распознавать хосты : </string>
+    <string name="cnode_schemes">Распознавать схемы : </string>
+    <string name="cnode_file_types">Распознавать типы : </string>
+
+    <string name="category_creation">Новая Категория</string>
+    <string name="category_setting">Настройки Категории</string>
+    <string name="download_creation">Новая Загрузка</string>
+    <string name="download_setting">Свойства Загрузки</string>
+    <string name="download_default">Загрузка по умолчанию</string>
+
+    <string name="cnode_total"> Все Категории</string>
+    <string name="cnode_default_new_name">Новая</string>
+    <string-array name="cnode_state">
+        <item>Все Состояния</item>
+        <item>Активно</item>
+        <item>В очереди</item>
+        <item>Завершено</item>
+        <item>Восстановлено</item>
+    </string-array>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">Нет URI, пожалуйста, назначьте его.</string>
+    <string name="message_file_not_exist">Файл не существует.</string>
+
+</resources>

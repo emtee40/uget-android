@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Offline</string>
+
+    <string name="menu_action_main">Menu</string>
+    <string name="menu_action_category">Kategori</string>
+    <string name="menu_action_download">Download</string>
+    <string name="menu_save_all">Gem al data</string>
+
+    <string name="menu_category">Kategori…</string>
+    <string name="menu_download">Download…</string>
+    <string name="menu_settings">Indstillinger…</string>
+    <string name="menu_offline_mode">Offline-tilstand</string>
+    <string name="menu_about">Om</string>
+    <string name="menu_exit">Afslut</string>
+
+    <string name="menu_download_start_auto">Automatisk start</string>
+    <string name="menu_download_start_manually">Manuel start</string>
+
+    <string name="menu_category_new">Ny…</string>
+    <string name="menu_delete">Slet</string>
+    <string name="menu_category_preferences">Præferencer…</string>
+    <string name="menu_category_move_up">Flyt op</string>
+    <string name="menu_category_move_down">Flyt ned</string>
+
+    <string name="menu_download_open">Åbn…</string>
+    <string name="menu_download_delete">Slet…</string>
+    <string name="menu_download_delete_recycle">Slet (papirkurv)</string>
+    <string name="menu_download_delete_data">Slet post</string>
+    <string name="menu_download_delete_file">Slet post og fil</string>
+    <string name="menu_download_force_start">Tving start</string>
+    <string name="menu_download_runnable">Kørende</string>
+    <string name="menu_download_pause">Pause</string>
+    <string name="menu_download_move">Flyt…</string>
+    <string name="menu_download_priority">Prioritet…</string>
+    <string name="menu_download_priority_high">Høj</string>
+    <string name="menu_download_priority_normal">Normal</string>
+    <string name="menu_download_priority_low">Lav</string>
+
+    <string name="menu_context">Genvejsmenu</string>
+    <string name="menu_context_new_download">Ny download…</string>
+    <string name="menu_context_new_category">Ny kategori…</string>
+
+    <string name="message_exit_title">Vil du virkelig afslutte?</string>
+    <string name="message_exit">Er du sikker på, at du vil afslutte?</string>
+    <string name="message_delete_file_title">Vil du virkelig slette filerne?</string>
+    <string name="message_delete_file">Er du sikker på, at du vil slette filerne?</string>
+    <string name="message_delete_file_category_title">Vil du virkelig slette kategorien?Virgin Islands</string>
+    <string name="message_delete_file_category">Er du sikker på, at du vil slette kategorien?</string>
+
+    <string name="notification_error_title">Der opstod fejl</string>
+    <string name="notification_error_content">Der opstod fejl under download.</string>
+    <string name="notification_starting_title">Download starter</string>
+    <string name="notification_starting_content">Starter downloadkø.</string>
+    <string name="notification_completed_title">Download fuldført</string>
+    <string name="notification_completed_content">Alle downloads i køen er fuldførte.</string>
+
+    <string name="pref_ui">Brugergrænseflade</string>
+    <string name="pref_ui_summary">Opsæt brugergrænseflade</string>
+    <string name="pref_sort">Sortering af downloads…</string>
+    <string name="pref_sort_summary">Hvis brugeren vælger \"Alle kategorier\" eller \"Al status\", så sorteres downloads efter…</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Afsortér</item>
+        <item>Sortér efter navn</item>
+        <item>Sortér efter tilføjet tidspunkt</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Bekræft sletning</string>
+    <string name="pref_ui_confirm_delete_summary">Bekræft ved sletning af filer</string>
+    <string name="pref_ui_confirm_exit">Bekræft afslutning</string>
+    <string name="pref_ui_confirm_exit_summary">Vis bekræftelsesdialog ved afslutning</string>
+    <string name="pref_ui_exit_on_back">Afslut når der trykkes på tilbage</string>
+    <string name="pref_ui_exit_on_back_summary">Afslutter uGet når brugeren trykker på tilbage-knappen.</string>
+    <string name="pref_ui_notification_starting">Notifikation ved start af download</string>
+    <string name="pref_ui_notification_starting_summary">Vis notifikation når download starter.</string>
+    <string name="pref_ui_notification_sound">Lyd når download er fuldført</string>
+    <string name="pref_ui_notification_sound_summary">Lyd når download er fuldført eller der opstod fejl.</string>
+    <string name="pref_ui_notification_vibrate">Vibrer når download er færdig</string>
+    <string name="pref_ui_notification_vibrate_summary">Vibrer når download er færdig eller der opstod fejl.</string>
+    <string name="pref_ui_no_wifi_go_offline">Gå offline hvis der ikke er nogen WiFi-forbindelse</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">Program vil aktivere/deaktivere offline-tilstand hvis WiFi har afbrudt/oprettet forbindelse.</string>
+
+    <string name="pref_clipboard">Udklipsholder</string>
+    <string name="pref_clipboard_summary">Opsæt overvågning af udklipsholder</string>
+    <string name="pref_clipboard_monitor">Overvågning af udklipsholder</string>
+    <string name="pref_clipboard_monitor_summary">Aktivér/deaktivér overvågning af udklipsholder</string>
+    <string name="pref_clipboard_media_website">Overvåg URL af mediets websted</string>
+    <string name="pref_clipboard_media_website_summary">Overvåg URL af mediets websted hvis uGet understøtter dette sted.</string>
+    <string name="pref_clipboard_type">Filtyper</string>
+    <string name="pref_clipboard_type_summary">Overvåg udklipsholder for bestemte filtyper (understøtter regulære udtryk)</string>
+    <string name="pref_clipboard_type_error_title">Filtyper for udklipsholder</string>
+    <string name="pref_clipboard_type_error_message">Syntaksfejl i regulære udtryk</string>
+    <string name="pref_clipboard_index">Standardkategoriindeks</string>
+    <string name="pref_clipboard_index_summary">Tilføjer URL til X. kategori hvis ingen kategori matchede</string>
+    <string name="pref_clipboard_clear_at_exit">Ryd udklipsholder ved afslutning</string>
+    <string name="pref_clipboard_clear_at_exit_summary">Ryd udklipsholderens data ved afslutning</string>
+    <string name="pref_clipboard_clear_after_accepting">Ryd udklipsholder efter URL er accepteret</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">Ryd udklipsholderens data efter uGet acceptere en URL som kan downloades.</string>
+
+    <string name="pref_speed">Hastighedsbegræsning</string>
+    <string name="pref_speed_summary">Opsæt hastighedsbegrænsning - dette påvirker alle plugins.</string>
+    <string name="pref_speed_download">Hastighedsbegræsning ved download</string>
+    <string name="pref_speed_download_summary">Opsæt hastighedsbegræsning ved download (KiB/s)</string>
+    <string name="pref_speed_upload">Hastighedsbegræsning ved upload</string>
+    <string name="pref_speed_upload_summary">Opsæt hastighedsbegræsning ved upload (KiB/s)</string>
+
+    <string name="pref_plugin_order">Matchende rækkefølge for plugin…</string>
+    <string name="pref_plugin_order_summary">Vælg primært og sekundært plugin.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Valgmuligheder for aria2-plugin</string>
+    <string name="pref_aria2_summary">Opsæt valgmuligheder for aria2-plugin</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">Opsæt URI for aria2 JSON-RPC</string>
+    <string name="pref_aria2_token">RPC-autorisation hemmelig token</string>
+    <string name="pref_aria2_token_summary">Skift den ikke hvis du ikke ved hvad den er til. Brug med aria2-argumenttet --rpc-secret</string>
+    <string name="pref_aria2_local">Kør aria2 på denne enhed</string>
+    <string name="pref_aria2_local_summary">Start aria2-server på denne enhed. Du skal selv installere aria2c.</string>
+    <string name="pref_aria2_speed_download">Hastighedsbegræsning ved download for aria2</string>
+    <string name="pref_aria2_speed_download_summary">Opsæt hastighedsbegræsning ved download (KiB/s) - det påvirker kun aria2-pluginet.</string>
+    <string name="pref_aria2_speed_upload">Hastighedsbegræsning ved upload for aria2</string>
+    <string name="pref_aria2_speed_upload_summary">Opsæt hastighedsbegræsning ved upload (KiB/s) - det påvirker kun aria2-pluginet.</string>
+    <string name="pref_aria2_launch">Start aria2</string>
+    <string name="pref_aria2_launch_summary">Start aria2 ved opstart</string>
+    <string name="pref_aria2_shutdown">Luk aria2</string>
+    <string name="pref_aria2_shutdown_summary">Luk aria2 ved afslutning</string>
+    <string name="pref_aria2_path">Sti</string>
+    <string name="pref_aria2_path_summary">Fuld sti til aria2-programmet</string>
+    <string name="pref_aria2_args">Argumenter</string>
+    <string name="pref_aria2_args_summary">Videregiver argumenter til aria2</string>
+
+    <string name="pref_media">Valgmuligheder for mediets websted</string>
+    <string name="pref_media_summary">Opsæt valgmuligheder for mediets websted</string>
+    <string name="pref_media_match_mode">Matchtilstand for medie</string>
+    <string name="pref_media_match_mode_summary">Opsæt matchtilstand for medie</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>Match ikke</item>
+        <item>Match 1 betingelse</item>
+        <item>Match 2 betingelse</item>
+        <item>Nær kvalitet</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">Mediekvalitet</string>
+    <string name="pref_media_quality_summary">Opsæt betingelse af matchtilstand for medie - Kvalitet</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Medietype</string>
+    <string name="pref_media_type_summary">Opsæt betingelse af matchtilstand for medie - Type</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">Interval for automatisk gem</string>
+    <string name="pref_autosave_interval_summary">Gem al data hvert X minutter.</string>
+
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">Mirrors</string>
+    <string name="dnode_file">Fil</string>
+    <string name="dnode_folder">Mappe</string>
+    <string name="dnode_user">Bruger</string>
+    <string name="dnode_password">Adgangskode</string>
+    <string name="dnode_connections">Maks. forbindelser</string>
+    <string name="dnode_left">tilbage</string>
+    <string name="dnode_retry">Prøv igen</string>
+    <string name="dnode_retry_limit">Forsøgsgrænse</string>
+    <string name="dnode_referrer">Henviser</string>
+    <string name="dnode_proxy_type">Proxy</string>
+    <string name="dnode_proxy_host">Vært</string>
+    <string name="dnode_proxy_port">Port</string>
+    <string name="dnode_proxy_user">Bruger</string>
+    <string name="dnode_proxy_password">Adgangskode</string>
+    <string-array name="dnode_proxy_type">
+        <item>Brug ikke</item>
+        <item>Standard</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">Nuværende status</string>
+    <string name="cnode_image_description">Nuværende status</string>
+
+    <string name="cnode_name">Navn:</string>
+    <string name="cnode_active_limit">Aktive downloads</string>
+    <string name="cnode_finished_limit">Kapacitet af færdige</string>
+    <string name="cnode_recycled_limit">Kapacitet af papirkurv</string>
+    <string name="cnode_hosts">Matchet værter :</string>
+    <string name="cnode_schemes">Matchet skemaer :</string>
+    <string name="cnode_file_types">Matchet typer :</string>
+
+    <string name="category_creation">Ny kategori</string>
+    <string name="category_setting">Præferencer for kategori</string>
+    <string name="download_creation">Ny download</string>
+    <string name="download_setting">Præferencer for download</string>
+    <string name="download_default">Downloadstandard</string>
+
+    <string name="cnode_total">Alle kategorier</string>
+    <string name="cnode_default_new_name">Ny</string>
+    <string-array name="cnode_state">
+        <item>Al status</item>
+        <item>Aktive</item>
+        <item>I kø</item>
+        <item>Færdige</item>
+        <item>Papirkurv</item>
+    </string-array>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">Ingen URI, tildel den venligst.</string>
+    <string name="message_file_not_exist">Filen findes ikke.</string>
+
+</resources>

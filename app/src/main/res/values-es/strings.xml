@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Desconectado</string>
+
+    <string name="menu_action_main">Menú</string>
+    <string name="menu_action_category">Categoría</string>
+    <string name="menu_action_download">Descarga</string>
+    <string name="menu_save_all">Guardar todo</string>
+
+    <string name="menu_category">Categoría...</string>
+    <string name="menu_download">Descarga...</string>
+    <string name="menu_settings">Ajustes...</string>
+    <string name="menu_offline_mode">Modo sin conexión</string>
+    <string name="menu_about">Acerca de</string>
+    <string name="menu_exit">Salir</string>
+
+    <string name="menu_download_start_auto">Iniciar automáticamente</string>
+    <string name="menu_download_start_manually">Iniciar manualmente</string>
+
+    <string name="menu_category_new">Nuevo...</string>
+    <string name="menu_delete">Eliminar</string>
+    <string name="menu_category_preferences">Preferencias...</string>
+    <string name="menu_category_move_up">Mover arriba</string>
+    <string name="menu_category_move_down">Mover abajo</string>
+
+    <string name="menu_download_open">Abrir...</string>
+    <string name="menu_download_delete">Eliminar...</string>
+    <string name="menu_download_delete_recycle">Eliminar (Reciclar)</string>
+    <string name="menu_download_delete_data">Eliminar entrada</string>
+    <string name="menu_download_delete_file">Eliminar entrada y archivo</string>
+    <string name="menu_download_force_start">Forzar inicio</string>
+    <string name="menu_download_runnable">Ejecutable</string>
+    <string name="menu_download_pause">Pausa</string>
+    <string name="menu_download_move">Mover...</string>
+    <string name="menu_download_priority">Prioridad...</string>
+    <string name="menu_download_priority_high">Alta</string>
+    <string name="menu_download_priority_normal">Normal</string>
+    <string name="menu_download_priority_low">Baja</string>
+
+    <string name="menu_context">Menú Contextual</string>
+    <string name="menu_context_new_download">Nueva Descarga</string>
+    <string name="menu_context_new_category">Nueva Categoría...</string>
+
+    <string name="message_exit_title">¿Salir realmente?</string>
+    <string name="message_exit">¿Está seguro de querer salir?</string>
+    <string name="message_delete_file_title">¿Borrar archivos realmente?</string>
+    <string name="message_delete_file">¿Está seguro que quiere eliminar los archivos?</string>
+    <string name="message_delete_file_category_title">¿Realmente eliminar la categoría?</string>
+    <string name="message_delete_file_category">¿Está seguro de que desea eliminar la categoría?</string>
+
+    <string name="notification_error_title">Ocurrió un error</string>
+    <string name="pref_ui_confirm_delete">Confirmar borrado</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>No coinciden</item>
+    </string-array>
+    <string-array name="cnode_state">
+        <item>Todos</item>
+    </string-array>
+
+    </resources>

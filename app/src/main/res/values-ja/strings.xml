@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">オフライン</string>
+
+    <string name="menu_save_all">すべてのデータを保存</string>
+
+    <string name="menu_category">カテゴリー…</string>
+    <string name="menu_download">ダウンロード…</string>
+    <string name="menu_settings">設定…</string>
+    <string name="menu_offline_mode">オフラインモード</string>
+    <string name="menu_about">アプリについて</string>
+    <string name="menu_exit">終了</string>
+
+    <string name="menu_download_start_auto">自動開始</string>
+    <string name="menu_download_start_manually">手動開始</string>
+
+    <string name="menu_category_new">新規…</string>
+    <string name="menu_delete">削除</string>
+    <string name="menu_category_preferences">プリファレンス…</string>
+    <string name="menu_category_move_up">上に移動</string>
+    <string name="menu_category_move_down">下に移動</string>
+
+    <string name="menu_download_open">開く…</string>
+    <string name="menu_download_delete">削除…</string>
+    <string name="menu_download_delete_recycle">削除 (リサイクル)</string>
+    <string name="menu_download_delete_data">エントリを削除</string>
+    <string name="menu_download_delete_file">エントリとファイルを削除</string>
+    <string name="menu_download_force_start">強制開始</string>
+    <string name="menu_download_runnable">実行可能</string>
+    <string name="menu_download_pause">一時停止</string>
+    <string name="menu_download_move">移動…</string>
+    <string name="menu_download_priority">優先度…</string>
+    <string name="menu_download_priority_high">高</string>
+    <string name="menu_download_priority_normal">通常</string>
+    <string name="menu_download_priority_low">低</string>
+
+    <string name="menu_context">コンテキストメニュー</string>
+    <string name="menu_context_new_download">新規ダウンロード…</string>
+    <string name="menu_context_new_category">新規カテゴリー…</string>
+
+    <string name="message_exit_title">本当に終了しますか?</string>
+    <string name="message_exit">終了してもよろしいですか?</string>
+    <string name="message_delete_file_title">本当にファイルを削除しますか?</string>
+    <string name="message_delete_file">ファイルを削除してもよろしいですか?</string>
+    <string name="message_delete_file_category_title">本当にカテゴリーを削除しますか?</string>
+    <string name="message_delete_file_category">カテゴリーを削除してもよろしいですか?</string>
+
+    <string name="notification_error_title">エラーが発生しました</string>
+    <string name="notification_error_content">ダウンロード中にエラーが発生しました。</string>
+    <string name="notification_starting_title">ダウンロードを開始しました</string>
+    <string name="notification_starting_content">ダウンロードキューを開始しています。</string>
+    <string name="notification_completed_title">ダウロード完了</string>
+    <string name="notification_completed_content">すべてのキューのダウンロードが完了しました。</string>
+
+    <string name="pref_ui">ユーザーインターフェース</string>
+    <string name="pref_sort">ダウンロードのソート…</string>
+    <string name="pref_sort_summary">ユーザーが \"すべてのカテゴリー\" または \"すべてのステータス\" を選択した場合、ダウンロードのソート…</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>未ソート</item>
+        <item>名前でソート</item>
+        <item>追加した時間でソート</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">削除の確認</string>
+    <string name="pref_ui_confirm_delete_summary">ファイルを削除するときに確認します</string>
+    <string name="pref_ui_confirm_exit">終了の確認</string>
+    <string name="pref_ui_confirm_exit_summary">終了時に確認ダイアログを表示します</string>
+    <string name="pref_ui_exit_on_back">戻るを押したときに終了</string>
+    <string name="pref_ui_exit_on_back_summary">ユーザーが戻るボタンを押したときに uGet を終了します。</string>
+    <string name="pref_ui_notification_starting">ダウンロード開始通知</string>
+    <string name="pref_ui_notification_starting_summary">ダウンロード開始時に通知を表示します。</string>
+    <string name="pref_ui_notification_sound">ダウンロード完了時にサウンド</string>
+    <string name="pref_ui_notification_sound_summary">ダウンロード完了またはエラーが発生したときにサウンドを鳴らします。</string>
+    <string name="pref_ui_notification_vibrate">ダウンロード完了時に振動</string>
+    <string name="pref_ui_notification_vibrate_summary">ダウンロード完了またはエラーが発生したときに振動します。</string>
+    <string name="pref_ui_no_wifi_go_offline">WiFi 接続がない場合はオフラインにする</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">WiFi が切断/接続された場合に、プログラムがオフラインモードを有効/無効にします。</string>
+
+    <string name="pref_clipboard">クリップボード</string>
+    <string name="pref_clipboard_monitor">クリップボードモニター</string>
+    <string name="pref_clipboard_monitor_summary">クリップボードモニターを有効/無効にします</string>
+    <string name="pref_clipboard_media_website">メディアウェブサイトの URL をモニター</string>
+    <string name="pref_clipboard_media_website_summary">uGet がこのサイトをサポートしている場合、メディアウェブサイトの URL をモニターします。</string>
+    <string name="pref_clipboard_type">ファイルタイプ</string>
+    <string name="pref_clipboard_type_summary">指定したファイルタイプのクリップボードをモニターします (正規表現をサポート)</string>
+    <string name="pref_clipboard_type_error_title">クリップボード ファイルタイプ</string>
+    <string name="pref_clipboard_type_error_message">正規表現の構文エラー</string>
+    <string name="pref_clipboard_index">デフォルトのカテゴリーインデックス</string>
+    <string name="pref_clipboard_index_summary">カテゴリーが一致しない場合、N番目のカテゴリーに URL を追加します</string>
+    <string name="pref_clipboard_clear_at_exit">終了時にクリップボードをクリア</string>
+    <string name="pref_clipboard_clear_at_exit_summary">終了時にクリップボードのデータをクリアします</string>
+    <string name="pref_clipboard_clear_after_accepting">URL を受け入れた後にクリップボードをクリア</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">uGet がダウンロード可能な URL を受け入れた後、クリップボードのデータをクリアします。</string>
+
+    <string name="pref_speed">速度制限</string>
+    <string name="pref_speed_download">ダウンロード速度の制限</string>
+    <string name="pref_speed_download_summary">ダウンロード速度制限をセットアップ (KiB/s)</string>
+    <string name="pref_speed_upload">アップロード速度の制限</string>
+    <string name="pref_speed_upload_summary">アップロード速度制限をセットアップ (KiB/s)</string>
+
+    <string name="pref_plugin_order">プラグインの一致順序…</string>
+    <string name="pref_plugin_order_summary">プライマリとセカンダリのプラグインを選択します。</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Aria2 プラグインオプション</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">aria2 JSON-RPC の URI をセットアップします</string>
+    <string name="pref_aria2_token">RPC 認証の秘密トークン</string>
+    <string name="pref_aria2_token_summary">これが何であるかわからない場合は変更しないでください。 aria2 で使用する引数 --rpc-secret</string>
+    <string name="pref_aria2_local">このデバイスで aria2 を実行する</string>
+    <string name="pref_aria2_local_summary">このデバイスで aria2 サーバーを起動します。 あなた自身で aria2c をインストールする必要があります。</string>
+    <string name="pref_aria2_speed_download">aria2 のダウンロード速度制限</string>
+    <string name="pref_aria2_speed_download_summary">ダウンロード速度制限のセットアップ (KiB/s)。 aria2 プラグインにのみ影響します。</string>
+    <string name="pref_aria2_speed_upload">aria2 のアップロード速度制限</string>
+    <string name="pref_aria2_speed_upload_summary">アップロード速度制限のセットアップ (KiB/s)。 aria2 プラグインにのみ影響します。</string>
+    <string name="pref_aria2_launch">aria2 を起動</string>
+    <string name="pref_aria2_launch_summary">起動時に aria2 を起動します</string>
+    <string name="pref_aria2_shutdown">aria2 をシャットダウン</string>
+    <string name="pref_aria2_shutdown_summary">終了時に aria2 をシャットダウンします</string>
+    <string name="pref_aria2_path">パス</string>
+    <string name="pref_aria2_path_summary">aria2 プログラムのフルパス</string>
+    <string name="pref_aria2_args">引数</string>
+    <string name="pref_aria2_args_summary">aria2 に渡す引数</string>
+
+    <string name="pref_media">メディアウェブサイト オプション</string>
+    <string name="pref_media_match_mode">メディア一致モード</string>
+    <string name="pref_media_match_mode_summary">メディア一致モードをセットアップします</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>一致しない</item>
+        <item>1 の条件に一致</item>
+        <item>2 の条件に一致</item>
+        <item>近い品質</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">メディア品質</string>
+    <string name="pref_media_quality_summary">メディア一致条件の設定 - 品質</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">メディアタイプ</string>
+    <string name="pref_media_type_summary">メディア一致条件の設定 - タイプ</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">自動保存間隔</string>
+    <string name="pref_autosave_interval_summary">N 分ごとにすべてのデータを保存します。</string>
+
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">ミラー</string>
+    <string name="dnode_file">ファイル</string>
+    <string name="dnode_folder">フォルダー</string>
+    <string name="dnode_user">ユーザー</string>
+    <string name="dnode_password">パスワード</string>
+    <string name="dnode_connections">最大接続数</string>
+    <string name="dnode_left">残り</string>
+    <string name="dnode_retry">リトライ</string>
+    <string name="dnode_retry_limit">リトライ限度</string>
+    <string name="dnode_referrer">リファラー</string>
+    <string name="dnode_proxy_type">プロキシ</string>
+    <string name="dnode_proxy_host">ホスト</string>
+    <string name="dnode_proxy_port">ポート</string>
+    <string name="dnode_proxy_user">ユーザー</string>
+    <string name="dnode_proxy_password">パスワード</string>
+    <string-array name="dnode_proxy_type">
+        <item>使用しない</item>
+        <item>デフォルト</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">現在のステータス</string>
+    <string name="cnode_image_description">現在のステータス</string>
+
+    <string name="cnode_name">名前 : </string>
+    <string name="cnode_active_limit">アクティブなダウンロード数</string>
+    <string name="cnode_finished_limit">完了した容量</string>
+    <string name="cnode_recycled_limit">リサイクルの容量</string>
+    <string name="cnode_hosts">一致したホスト : </string>
+    <string name="cnode_schemes">一致したスキーマ : </string>
+    <string name="cnode_file_types">一致したタイプ : </string>
+
+    <string name="category_creation">新規カテゴリー</string>
+    <string name="category_setting">カテゴリープリファレンス</string>
+    <string name="download_creation">新規ダウンロード</string>
+    <string name="download_setting">ダウンロードプリファレンス</string>
+    <string name="download_default">ダウンロードデフォルト</string>
+
+    <string name="cnode_total">すべてのカテゴリー</string>
+    <string name="cnode_default_new_name">新規</string>
+    <string-array name="cnode_state">
+        <item>すべてのステータス</item>
+        <item>アクティブ</item>
+        <item>キュー中</item>
+        <item>完了</item>
+        <item>リサイクル</item>
+    </string-array>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">URI がありません。割り当ててください。</string>
+    <string name="message_file_not_exist">ファイルが存在しません。</string>
+
+</resources>

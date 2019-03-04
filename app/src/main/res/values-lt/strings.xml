@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Atsijungęs</string>
+
+    <string name="menu_action_main">Meniu</string>
+    <string name="menu_action_category">Kategorija</string>
+    <string name="menu_action_download">Atsisiųsti</string>
+    <string name="menu_save_all">Įrašyti visus duomenis</string>
+
+    <string name="menu_category">Kategorija…</string>
+    <string name="menu_download">Atsisiųsti…</string>
+    <string name="menu_settings">Nustatymai…</string>
+    <string name="menu_offline_mode">Autonominė veiksena</string>
+    <string name="menu_about">Apie</string>
+    <string name="menu_exit">Išeiti</string>
+
+    <string name="menu_download_start_auto">Automatinis paleidimas</string>
+    <string name="menu_download_start_manually">Paleisti rankiniu būdu</string>
+
+    <string name="menu_category_new">Naujas…</string>
+    <string name="menu_delete">Ištrinti</string>
+    <string name="menu_category_preferences">Nuostatos…</string>
+    <string name="menu_category_move_up">Pakelti</string>
+    <string name="menu_category_move_down">Nuleisti</string>
+
+    <string name="menu_download_open">Atverti…</string>
+    <string name="menu_download_delete">Ištrinti…</string>
+    <string name="menu_download_delete_recycle">Ištrinti (į šiukšlinę)</string>
+    <string name="menu_download_delete_data">Ištrinti įrašą</string>
+    <string name="menu_download_delete_file">Ištrinti įrašą ir failą</string>
+    <string name="menu_download_force_start">Priverstinai pradėti</string>
+    <string name="menu_download_runnable">Paleisti</string>
+    <string name="menu_download_pause">Pristabdyti</string>
+    <string name="menu_download_move">Perkelti…</string>
+    <string name="menu_download_priority">Pirmenybė…</string>
+    <string name="menu_download_priority_high">Aukšta</string>
+    <string name="menu_download_priority_normal">Įprasta</string>
+    <string name="menu_download_priority_low">Žema</string>
+
+    <string name="menu_context">Kontekstinis meniu</string>
+    <string name="menu_context_new_download">Naujas atsiuntimas…</string>
+    <string name="menu_context_new_category">Nauja kategorija…</string>
+
+    <string name="message_exit_title">Tikrai išeiti?</string>
+    <string name="message_exit">Ar tikrai norite išeiti?</string>
+    <string name="message_delete_file_title">Tikrai ištrinti failus?</string>
+    <string name="message_delete_file">Ar tikrai norite ištrinti failus?</string>
+    <string name="message_delete_file_category_title">Tikrai ištrinti kategoriją?</string>
+    <string name="message_delete_file_category">Ar tikrai norite ištrinti kategoriją?</string>
+
+    <string name="notification_error_title">Įvyko klaida</string>
+    <string name="notification_error_content">Atsiunčiant, įvyko klaida.</string>
+    <string name="notification_starting_title">Atsiuntimas pradedamas</string>
+    <string name="notification_starting_content">Pradedama atsiuntimų eilė.</string>
+    <string name="notification_completed_title">Atsiuntimas užbaigtas</string>
+    <string name="notification_completed_content">Visi atsiuntimai eilėje yra užbaigti.</string>
+
+    <string name="pref_ui">Naudotojo sąsaja</string>
+    <string name="pref_ui_summary">Nustatyti naudotojo sąsają</string>
+    <string name="pref_sort">Atsiuntimų rikiavimas…</string>
+    <string name="pref_sort_summary">Jei naudotojas pasirinks \"Visos kategorijos\" ar \"Visos būsenos\", rikiuoti atsiuntimus pagal…</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Nerikiuoti</item>
+        <item>Rikiuoti pagal pavadinimą</item>
+        <item>Rikiuoti pagal pridėjimo laiką</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Patvirtinti ištrynimą</string>
+    <string name="pref_ui_confirm_delete_summary">Ištrinant failus, klausti patvirtinimo</string>
+    <string name="pref_ui_confirm_exit">Patvirtinti išėjimą</string>
+    <string name="pref_ui_confirm_exit_summary">Išeinant, rodyti patvirtinimo dialogą</string>
+    <string name="pref_ui_exit_on_back">Išeiti, paspaudus grįžimo mygtuką</string>
+    <string name="pref_ui_exit_on_back_summary">Naudotojui paspaudus grįžimo mygtuką, išeiti iš uGet.</string>
+    <string name="pref_ui_notification_starting">Pranešimas apie pradedamą atsiuntimą</string>
+    <string name="pref_ui_notification_starting_summary">Pradedant atsiuntimą, rodyti pranešimą.</string>
+    <string name="pref_ui_notification_sound">Užbaigus atsiuntimą, groti garsą</string>
+    <string name="pref_ui_notification_sound_summary">Užbaigus atsiuntimą ar atsiradus klaidai, groti garsą</string>
+    <string name="pref_ui_notification_vibrate">Vibruoti užbaigus atsiuntimą</string>
+    <string name="pref_ui_notification_vibrate_summary">Vibruoti užbaigus atsiuntimą ar atsiradus klaidai</string>
+    <string name="pref_ui_no_wifi_go_offline">Atsijungti, jei nėra belaidžio (WiFi) ryšio</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">Programa įjungs/išjungs autonominę veikseną, jei nuo belaidžio (WiFi) ryšio buvo atsijungta/prisijungta.</string>
+
+    <string name="pref_clipboard">Iškarpinė</string>
+    <string name="pref_clipboard_summary">Nustatyti iškarpinės prižiūryklę</string>
+    <string name="pref_clipboard_monitor">Iškarpinės prižiūryklė</string>
+    <string name="pref_clipboard_monitor_summary">Įjungti/išjungti iškarpinės prižiūryklę</string>
+    <string name="pref_clipboard_media_website">Stebėti medijos svetainių URL</string>
+    <string name="pref_clipboard_media_website_summary">Stebėti medijos svetainių URL, jei uGet palaiko tas svetaines.</string>
+    <string name="pref_clipboard_type">Failo tipai</string>
+    <string name="pref_clipboard_type_summary">Iškarpinėje stebėti nurodytus failų tipus (palaiko reguliariuosius reiškinius)</string>
+    <string name="pref_clipboard_type_error_title">Iškarpinės failo tipai</string>
+    <string name="pref_clipboard_type_error_message">Sintaksės klaida reguliariajame reiškinyje</string>
+    <string name="pref_clipboard_index">Numatytoji kategorijos rodyklė</string>
+    <string name="pref_clipboard_index_summary">Jei nėra atitinkamos kategorijos, pridedama į N-tą kategorija</string>
+    <string name="pref_clipboard_clear_at_exit">Išeinant, išvalyti iškarpinę</string>
+    <string name="pref_clipboard_clear_at_exit_summary">Išeinant, išvalyti iškarpinės duomenis</string>
+    <string name="pref_clipboard_clear_after_accepting">Priėmus URL, išvalyti iškarpinę</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">Išvalyti iškarpinės duomenis po to, kai uGet priima atsiunčiamą URL.</string>
+
+    <string name="pref_speed">Spartos apribojimai</string>
+    <string name="pref_speed_summary">Nustatyti spartos apribojimus, tai paveiks visus įskiepius.</string>
+    <string name="pref_speed_download">Atsiuntimo spartos apribojimas</string>
+    <string name="pref_speed_download_summary">Nustatyti atsiuntimo spartos apribojimą (KiB/s)</string>
+    <string name="pref_speed_upload">Išsiuntimo spartos apribojimas</string>
+    <string name="pref_speed_upload_summary">Nustatyti išsiuntimo spartos apribojimą (KiB/s)</string>
+
+    <string name="pref_plugin_order">Įskiepio atitikimo tvarka…</string>
+    <string name="pref_plugin_order_summary">Pasirinkti pirminį ir antrinį įskiepį.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Aria2 įskiepio parametrai</string>
+    <string name="pref_aria2_summary">Nustatyti aria2 įskiepio parametrus</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">Nustatyti URI, skirtą aria2 JSON-RPC</string>
+    <string name="pref_aria2_token">Slaptas RPC prieigos teisių prieigos raktas</string>
+    <string name="pref_aria2_token_summary">Nekeiskite, jei nežinote kas tai yra. Naudokite su aria2 argumentu --rpc-secret</string>
+    <string name="pref_aria2_local">Paleisti aria2 šiame įrenginyje</string>
+    <string name="pref_aria2_local_summary">Paleisti šiame įrenginyje aria2 serverį. Privalote patys įsidiegti aria2c.</string>
+    <string name="pref_aria2_speed_download">Atsiuntimo spartos apribojimas, skirtas aria2</string>
+    <string name="pref_aria2_speed_download_summary">Nustatyti atsiuntimo spartos apribojimą (KiB/s), tai paveikia tik aria2 įskiepį.</string>
+    <string name="pref_aria2_speed_upload">Išsiuntimo spartos apribojimas, skirtas aria2</string>
+    <string name="pref_aria2_speed_upload_summary">Nustatyti išsiuntimo spartos apribojimą (KiB/s), tai paveikia tik aria2 įskiepį.</string>
+    <string name="pref_aria2_launch">Paleisti aria2</string>
+    <string name="pref_aria2_launch_summary">Paleidimo metu, paleisti aria2</string>
+    <string name="pref_aria2_shutdown">Išjungti aria2</string>
+    <string name="pref_aria2_shutdown_summary">Išeinant, išjungti aria2</string>
+    <string name="pref_aria2_path">Kelias</string>
+    <string name="pref_aria2_path_summary">Pilnas aria2 programos kelias</string>
+    <string name="pref_aria2_args">Argumentai</string>
+    <string name="pref_aria2_args_summary">Argumentų perdavimas į aria2</string>
+
+    <string name="pref_media">Medijos svetainių parametrai</string>
+    <string name="pref_media_summary">Nustatyti medijos svetainių parametrus</string>
+    <string name="pref_media_match_mode">Medijos atitikimo veiksena</string>
+    <string name="pref_media_match_mode_summary">Nustatyti medijos atitikimo veikseną</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>Neatitinka</item>
+        <item>Atitinka 1 sąlygą</item>
+        <item>Atitinka 2 sąlygas</item>
+        <item>Panaši kokybė</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">Medijos kokybė</string>
+    <string name="pref_media_quality_summary">Nustatyti medijos atitikimo sąlygą - Kokybė</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Medijos tipas</string>
+    <string name="pref_media_type_summary">Nustatyti medijos atitikimo sąlygą - Tipas</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">Automatinio įrašymo intervalas</string>
+    <string name="pref_autosave_interval_summary">Įrašyti duomenis kas N minučių.</string>
+
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">Tinklavietės</string>
+    <string name="dnode_file">Failas</string>
+    <string name="dnode_folder">Aplankas</string>
+    <string name="dnode_user">Naudotojas</string>
+    <string name="dnode_password">Slaptažodis</string>
+    <string name="dnode_connections">Daugiausia sujungimų</string>
+    <string name="dnode_left">liko</string>
+    <string name="dnode_retry">Bandyti dar kartą</string>
+    <string name="dnode_retry_limit">Bandymų iš naujo riba</string>
+    <string name="dnode_referrer">Nukreipėjas</string>
+    <string name="dnode_proxy_type">Įgaliotasis serveris</string>
+    <string name="dnode_proxy_host">Serveris</string>
+    <string name="dnode_proxy_port">Prievadas</string>
+    <string name="dnode_proxy_user">Naudotojas</string>
+    <string name="dnode_proxy_password">Slaptažodis</string>
+    <string-array name="dnode_proxy_type">
+        <item>Nenaudoti</item>
+        <item>Numatytasis</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">Dabartinė būsena</string>
+    <string name="cnode_image_description">Dabartinė būsena</string>
+
+    <string name="cnode_name">Pavadinimas : </string>
+    <string name="cnode_active_limit">Aktyvūs atsiuntimai</string>
+    <string name="cnode_finished_limit">Užbaigtų talpa</string>
+    <string name="cnode_recycled_limit">Šiukšlinės talpa</string>
+    <string name="cnode_hosts">Atitinkantys serveriai : </string>
+    <string name="cnode_schemes">Atitinkančios schemos : </string>
+    <string name="cnode_file_types">Atitinkantys tipai : </string>
+
+    <string name="category_creation">Nauja kategorija</string>
+    <string name="category_setting">Kategorijos nuostatos</string>
+    <string name="download_creation">Naujas atsiuntimas</string>
+    <string name="download_setting">Atsiuntimo nuostatos</string>
+    <string name="download_default">Numatytasis atsiuntimas</string>
+
+    <string name="cnode_total">Visos kategorijos</string>
+    <string name="cnode_default_new_name">Naujas</string>
+    <string-array name="cnode_state">
+        <item>Visos būsenos</item>
+        <item>Aktyvūs</item>
+        <item>Eilėje</item>
+        <item>Užbaigta</item>
+        <item>Šiukšlinėje</item>
+    </string-array>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">Nėra URI, priskirkite jį.</string>
+    <string name="message_file_not_exist">Failo nėra.</string>
+
+</resources>

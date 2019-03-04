@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Kapcsolat nélküli</string>
+
+    <string name="menu_save_all">Összes adat mentése</string>
+
+    <string name="menu_category">Kategória...</string>
+    <string name="menu_download">Letöltés...</string>
+    <string name="menu_settings">Beállítások...</string>
+    <string name="menu_offline_mode">Kapcsolat nélküli mód</string>
+    <string name="menu_exit">Kilépés</string>
+
+    <string name="menu_download_start_auto">Automatikus indítás</string>
+    <string name="menu_download_start_manually">Kézi indítás</string>
+
+    <string name="menu_category_new">Új...</string>
+    <string name="menu_delete">Törlés</string>
+    <string name="menu_category_preferences">Beállítások...</string>
+    <string name="menu_category_move_up">Felfelé</string>
+    <string name="menu_category_move_down">Lefelé</string>
+
+    <string name="menu_download_open">Megnyitás...</string>
+    <string name="menu_download_delete">Törlés...</string>
+    <string name="menu_download_delete_recycle">Törlés (Lomtárba)</string>
+    <string name="menu_download_delete_data">Hivatkozás törlése</string>
+    <string name="menu_download_delete_file">A hivatkozás és a fájl törlése</string>
+    <string name="menu_download_force_start">Kényszerített indítás</string>
+    <string name="menu_download_runnable">Futtatható</string>
+    <string name="menu_download_pause">Megállít</string>
+    <string name="menu_download_priority_high">Magas</string>
+    <string name="menu_download_priority_normal">Normál</string>
+    <string name="menu_download_priority_low">Alacsony</string>
+
+    <string name="menu_context_new_download">Új letöltés...</string>
+    <string name="menu_context_new_category">Új kategória...</string>
+
+    <string name="message_exit_title">Biztosan kilép?</string>
+    <string name="message_exit">Tényleg kilépsz?</string>
+    <string name="message_delete_file_title">Tényleg törlöd a fájlokat?</string>
+    <string name="message_delete_file">Tényleg törlöd a fájlokat?</string>
+    <string name="notification_error_title">Hiba történt</string>
+    <string name="notification_starting_title">Letöltés indítása</string>
+    <string name="notification_completed_title">A letöltés kész.</string>
+    <string name="pref_ui">Felhasználói felület</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Rendezetlen</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_clipboard">Vágólap</string>
+    <string name="pref_clipboard_monitor">Vágólap figyelő</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="dnode_file">Fájl</string>
+    <string name="dnode_folder">Mappa</string>
+    <string name="dnode_user">Felhasználó</string>
+    <string name="dnode_password">Jelszó</string>
+    <string name="dnode_retry">Újra</string>
+    <string name="dnode_proxy_type">Proxy</string>
+    <string name="dnode_proxy_user">Felhasználó</string>
+    <string name="dnode_proxy_password">Jelszó</string>
+    <string-array name="dnode_proxy_type">
+        <item>Don\'t use</item>
+        <item>Default</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <string name="cnode_name">Név:</string>
+    <string name="download_creation">Új letöltés</string>
+    <string name="cnode_default_new_name">Új</string>
+
+    <string name="message_file_not_exist">A fájl nem létezik.</string>
+
+</resources>

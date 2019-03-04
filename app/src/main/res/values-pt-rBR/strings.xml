@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Offline</string>
+
+    <string name="menu_save_all">Salvar todos os dados</string>
+
+    <string name="menu_category">Categoria...</string>
+    <string name="menu_download">Download…</string>
+    <string name="menu_settings">Configurações...</string>
+    <string name="menu_offline_mode">Modo offline</string>
+    <string name="menu_about">Sobre</string>
+    <string name="menu_exit">Sair</string>
+
+    <string name="menu_download_start_auto">Início automático</string>
+    <string name="menu_download_start_manually">Início manual</string>
+
+    <string name="menu_category_new">Novo...</string>
+    <string name="menu_delete">Excluir</string>
+    <string name="menu_category_preferences">Preferências…</string>
+    <string name="menu_category_move_up">Mover para cima</string>
+    <string name="menu_category_move_down">Mover para baixo</string>
+
+    <string name="menu_download_open">Abrir...</string>
+    <string name="menu_download_delete">Excluir...</string>
+    <string name="menu_download_delete_recycle">Excluir (reciclar)</string>
+    <string name="menu_download_delete_data">Excluir entrada</string>
+    <string name="menu_download_delete_file">Excluir entrada e arquivo</string>
+    <string name="menu_download_force_start">Forçar início</string>
+    <string name="menu_download_runnable">Executável</string>
+    <string name="menu_download_pause">Pausar</string>
+    <string name="menu_download_move">Mover…</string>
+    <string name="menu_download_priority">Prioridade...</string>
+    <string name="menu_download_priority_high">Alta</string>
+    <string name="menu_download_priority_normal">Normal</string>
+    <string name="menu_download_priority_low">Baixa</string>
+
+    <string name="menu_context">Menu de contexto</string>
+    <string name="menu_context_new_download">Novo download...</string>
+    <string name="menu_context_new_category">Nova categoria...</string>
+
+    <string name="message_exit_title">Realmente sair?</string>
+    <string name="message_exit">Tem certeza que deseja sair?</string>
+    <string name="message_delete_file_title">Realmente excluir arquivos?</string>
+    <string name="message_delete_file">Tem certeza que deseja excluir os arquivos?</string>
+    <string name="message_delete_file_category_title">Realmente excluir a categoria?</string>
+    <string name="message_delete_file_category">Tem certeza que deseja excluir a categoria?</string>
+
+    <string name="notification_error_title">Ocorreu um erro</string>
+    <string name="notification_error_content">Ocorreu um erro ao baixar.</string>
+    <string name="notification_starting_title">Download começando</string>
+    <string name="notification_starting_content">Começando a fila de downloads.</string>
+    <string name="notification_completed_title">Download concluído</string>
+    <string name="notification_completed_content">Todos os downloads da fila foram concluídos.</string>
+
+    <string name="pref_ui">Interface de usuário</string>
+    <string name="pref_sort">Ordenar downloads...</string>
+    <string name="pref_sort_summary">Se o usuário escolher \"Todas as categorias\" ou \"Todos os status\", ordenar os downloads por...</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Desordenar</item>
+        <item>Ordenar pelo nome</item>
+        <item>Ordenar por data</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Confirmar exclusão</string>
+    <string name="pref_ui_confirm_delete_summary">Confirmar ao excluir arquivos</string>
+    <string name="pref_ui_confirm_exit">Confirmar saída</string>
+    <string name="pref_ui_confirm_exit_summary">Exibir diálogo de confirmação ao sair</string>
+    <string name="pref_ui_exit_on_back">Sair ao clicar em voltar</string>
+    <string name="pref_ui_exit_on_back_summary">Sair do uGet quando o usuário clicar no botão voltar.</string>
+    <string name="pref_ui_notification_starting">Notificação de início de download</string>
+    <string name="pref_ui_notification_starting_summary">Exibir uma notificação ao iniciar o download.</string>
+    <string name="pref_ui_notification_sound">Produzir som ao término do download</string>
+    <string name="pref_ui_notification_sound_summary">Notificação sonora ao terminar o download ou ocorrer um erro.</string>
+    <string name="pref_ui_notification_vibrate">Vibrar ao término do download</string>
+    <string name="pref_ui_notification_vibrate_summary">Vibrar ao terminar o download ou ocorrer um erro.</string>
+    <string name="pref_ui_no_wifi_go_offline">Ficar offline senão houver conexão WiFi</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">O programa habilitará/desabilitará o modo offline se o WiFi for desconectado/conectado.</string>
+
+    <string name="pref_clipboard">Área de transferência</string>
+    <string name="pref_clipboard_monitor">Monitor de área de transferência</string>
+    <string name="pref_clipboard_monitor_summary">Habilitar/desabilitar o monitor da área de transferência</string>
+    <string name="pref_clipboard_media_website">Monitorar URL do site de mídias</string>
+    <string name="pref_clipboard_media_website_summary">Monitorar URL do site de mídias caso o uGet suporte esse site.</string>
+    <string name="pref_clipboard_type">Tipos de arquivo</string>
+    <string name="pref_clipboard_type_summary">Monitorar a área de transferência por tipos de arquivo específicos (suporta Expressões Regulares)</string>
+    <string name="pref_clipboard_type_error_title">Tipos de arquivo da área de transferência</string>
+    <string name="pref_clipboard_type_error_message">Erro de sintaxe na expressão regular</string>
+    <string name="pref_clipboard_index">Índice de categoria padrão</string>
+    <string name="pref_clipboard_index_summary">Adicionar URL à Nª categoria se não houver categoria correspondente.</string>
+    <string name="pref_clipboard_clear_at_exit">Limpar a área de transferência ao sair</string>
+    <string name="pref_clipboard_clear_at_exit_summary">Limpar os dados da área de transferência ao sair</string>
+    <string name="pref_clipboard_clear_after_accepting">Limpar a área de transferência após aceitar a URL</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">Limpar os dados da área de transferência após o uGet aceitar uma URL transferível.</string>
+
+    <string name="pref_speed">Limite de velocidade</string>
+    <string name="pref_speed_download">Limite de velocidade de download</string>
+    <string name="pref_speed_download_summary">Configure o limite de velocidade de download (KiB/s)</string>
+    <string name="pref_speed_upload">Limite de velocidade de envio</string>
+    <string name="pref_speed_upload_summary">Configure o limite de velocidade de envio (KiB/s)</string>
+
+    <string name="pref_plugin_order">Ordem de correspondência de plugin...</string>
+    <string name="pref_plugin_order_summary">Selecione o plugin primário e secundário.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Opções do plugin Aria2</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">Configure URI para aria2 JSON-RPC</string>
+    <string name="pref_aria2_token">Token secreto de autorização RPC</string>
+    <string name="pref_aria2_token_summary">Não altere se não souber o que é isso. Use com o argumento --rpc-secret do aria2</string>
+    <string name="pref_aria2_local">Executar o aria2 nesse dispositivo</string>
+    <string name="pref_aria2_local_summary">Executar o servidor aria2 nesse dispositivo. Você deve instalar o aria2 sozinho.</string>
+    <string name="pref_aria2_speed_download">Limite de velocidade de download para o aria2</string>
+    <string name="pref_aria2_speed_download_summary">Configure o limite de velocidade de download (KiB/s), afetará apenas o plugin aria2.</string>
+    <string name="pref_aria2_speed_upload">Limite de velocidade de envio para o aria2</string>
+    <string name="pref_aria2_speed_upload_summary">Configure o limite de velocidade de envio (KiB/s), afetará apenas o plugin aria2.</string>
+    <string name="pref_aria2_launch">Executar o aria2</string>
+    <string name="pref_aria2_launch_summary">Executar o aria2 ao iniciar</string>
+    <string name="pref_aria2_shutdown">Desligar o aria2</string>
+    <string name="pref_aria2_shutdown_summary">Desligar o aria2 ao sair</string>
+    <string name="pref_aria2_path">Caminho</string>
+    <string name="pref_aria2_path_summary">Caminho completo para o programa aria2</string>
+    <string name="pref_aria2_args">Argumentos</string>
+    <string name="pref_aria2_args_summary">Passar argumentos para o aria2</string>
+
+    <string name="pref_media">Opções do site de mídias</string>
+    <string name="pref_media_match_mode">Modo de correspondência de mídia</string>
+    <string name="pref_media_match_mode_summary">Configure o modo de correspondência de mídia</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>Sem correspondência</item>
+        <item>1 correspondência</item>
+        <item>2 correspondências</item>
+        <item>Qualidade aproximada</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">Qualidade da mídia</string>
+    <string name="pref_media_quality_summary">Configure a condição de correspondência de mídia - qualidade</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Tipo de mídia</string>
+    <string name="pref_media_type_summary">Configure a condição de correspondência de mídia - tipo</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">Intervalo de salvamento automático</string>
+    <string name="pref_autosave_interval_summary">Salvar todos os dados a cada N minutos.</string>
+
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">Espelhos</string>
+    <string name="dnode_file">Arquivo</string>
+    <string name="dnode_folder">Pasta</string>
+    <string name="dnode_user">Usuário</string>
+    <string name="dnode_password">Senha</string>
+    <string name="dnode_connections">Máximo de conexões</string>
+    <string name="dnode_left">restante</string>
+    <string name="dnode_retry">Tentar novamente</string>
+    <string name="dnode_retry_limit">Limite de tentativas</string>
+    <string name="dnode_referrer">Referência</string>
+    <string name="dnode_proxy_type">Proxy</string>
+    <string name="dnode_proxy_host">Host</string>
+    <string name="dnode_proxy_port">Porta</string>
+    <string name="dnode_proxy_user">Usuário</string>
+    <string name="dnode_proxy_password">Senha</string>
+    <string-array name="dnode_proxy_type">
+        <item>Não usar</item>
+        <item>Padrão</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">Estado atual</string>
+    <string name="cnode_image_description">Estado atual</string>
+
+    <string name="cnode_name">Nome:</string>
+    <string name="cnode_active_limit">Downloads ativos</string>
+    <string name="cnode_finished_limit">Capacidade de finalizados</string>
+    <string name="cnode_recycled_limit">Capacidade de reciclados</string>
+    <string name="cnode_hosts">Hosts correspondentes:</string>
+    <string name="cnode_schemes">Esquemas correspondentes:</string>
+    <string name="cnode_file_types">Tipos correspondentes:</string>
+
+    <string name="category_creation">Nova categoria</string>
+    <string name="category_setting">Preferências da categoria</string>
+    <string name="download_creation">Novo download</string>
+    <string name="download_setting">Preferências de download</string>
+    <string name="download_default">Download padrão</string>
+
+    <string name="cnode_total">Todas as categorias</string>
+    <string name="cnode_default_new_name">Novo</string>
+    <string-array name="cnode_state">
+        <item>Todos os estados</item>
+        <item>Ativo</item>
+        <item>Enfileramento</item>
+        <item>Finalizado</item>
+        <item>Reciclado</item>
+    </string-array>
+
+    <string name="batch_seq_eg">ex.:</string>
+    <string name="batch_seq_to">Para:</string>
+    <string name="batch_seq_digits">dígitos:</string>
+    <string name="batch_seq_case_sensitive">diferenciar maiúsculo/minúsculo</string>
+    <string name="batch_seq_type_number">0-9</string>
+    <string name="batch_seq_type_char">a-z</string>
+    <string name="batch_seq_type_none">X</string>
+    <string name="batch_seq_msg_no_wildcard">Nenhum caractere coringa (*) na entrada de URI.</string>
+    <string name="batch_seq_msg_no_from_to">Nenhum caractere nas entradas \"De\" ou \"Para\".</string>
+    <string name="batch_seq_msg_uri_not_valid">URI não válida.</string>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">Nenhuma URI, favor designar uma.</string>
+    <string name="message_file_not_exist">Arquivo inexistente.</string>
+    <string name="menu_action_button_batch_sequence">Lote de sequência de URLs</string>
+    <string name="menu_action_button_open_category">Abra a categoria …</string>
+    <string name="menu_action_button_save_category">Salve categoria …</string>
+    <string name="menu_select_folder">Selecione a pasta…</string>
+    <string name="pref_ui_skip_existing_uri">Ir URI existente</string>
+
+</resources>

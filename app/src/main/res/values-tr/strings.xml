@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Çevrim dışı</string>
+
+    <string name="menu_action_main">Menü</string>
+    <string name="menu_action_category">Ulam</string>
+    <string name="menu_action_download">İndir</string>
+    <string name="menu_save_all">Tüm veriyi kaydet</string>
+
+    <string name="menu_category">Ulam...</string>
+    <string name="menu_download">İndirme...</string>
+    <string name="menu_settings">Ayarlar...</string>
+    <string name="menu_offline_mode">Çevrim Dışı Kip</string>
+    <string name="menu_about">Hakkında</string>
+    <string name="menu_exit">Çık</string>
+
+    <string name="menu_download_start_auto">Kendiliğinden başlat</string>
+    <string name="menu_download_start_manually">Elle başlat</string>
+
+    <string name="menu_category_new">Yeni...</string>
+    <string name="menu_delete">Sil</string>
+    <string name="menu_category_preferences">Seçenekler...</string>
+    <string name="menu_category_move_up">Yukarı Taşı</string>
+    <string name="menu_category_move_down">Aşağı Taşı</string>
+
+    <string name="menu_download_open">Aç...</string>
+    <string name="menu_download_delete">Sil...</string>
+    <string name="menu_download_delete_recycle">Sil (Geri dönüştür)</string>
+    <string name="menu_download_delete_data">Girdiyi Sil</string>
+    <string name="menu_download_delete_file">Girdiyi ve Dosyayı Sil</string>
+    <string name="menu_download_force_start">Zorla Başlat</string>
+    <string name="menu_download_runnable">Çalıştırılabilir</string>
+    <string name="menu_download_pause">Duraklat</string>
+    <string name="menu_download_move">Taşı...</string>
+    <string name="menu_download_priority">Öncelik...</string>
+    <string name="menu_download_priority_high">Yüksek</string>
+    <string name="menu_download_priority_normal">Olağan</string>
+    <string name="menu_download_priority_low">Düşük</string>
+
+    <string name="menu_context">İçerik Menüsü</string>
+    <string name="menu_context_new_download">Yeni İndirme...</string>
+    <string name="menu_context_new_category">Yeni Ulam...</string>
+
+    <string name="message_exit_title">Gerçekten Çıkılsın Mı?</string>
+    <string name="message_exit">Çıkmak istediğinize emin misiniz?</string>
+    <string name="message_delete_file_title">Gerçekten dosyalar silinsin mi?</string>
+    <string name="message_delete_file">Dosyaları silmek istediğinize emin misiniz?</string>
+    <string name="message_delete_file_category_title">Ulam gerçekten silinsin?</string>
+    <string name="message_delete_file_category">Ulamı silmek istediğinize emin misiniz?</string>
+
+    <string name="notification_error_title">Hata Oluştu</string>
+    <string name="notification_error_content">İndirirken hata oluştu.</string>
+    <string name="notification_starting_title">İndirme Başlatılıyor</string>
+    <string name="notification_starting_content">İndirme kuyruğu başlatılıyor.</string>
+    <string name="notification_completed_title">İndirme Tamamlandı</string>
+    <string name="notification_completed_content">Kuyruktaki tüm indirmeler tamamlandı.</string>
+
+    <string name="pref_ui">Kullanıcı arayüzü</string>
+    <string name="pref_ui_summary">Kullanıcı arayüzünü kur</string>
+    <string name="pref_sort">İndirme sıralaması...</string>
+    <string name="pref_sort_summary">Eğer kullanıcı \"Tüm Ulam\" ya da \"Tüm Durum\"u seçerse, indirmeler şöyle sıralanacak...</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Sıralama</item>
+        <item>Ada göre sırala</item>
+        <item>Eklenme tarihine göre sırala</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Silerken onay</string>
+    <string name="pref_ui_confirm_delete_summary">Dosyalar silinirken onayla</string>
+    <string name="pref_ui_confirm_exit">Çıkışta onay</string>
+    <string name="pref_ui_confirm_exit_summary">Çıkışta onay kutusu göster</string>
+    <string name="pref_ui_exit_on_back">Geriye basınca çık</string>
+    <string name="pref_ui_exit_on_back_summary">Kullanıcı geri düğmesine bastığında uGet\'ten çıkarır.</string>
+    <string name="pref_ui_notification_starting">İndirme başlıyor bildirimi</string>
+    <string name="pref_ui_notification_starting_summary">İndirme başlarken bildirim göster</string>
+    <string name="pref_ui_notification_sound">İndirme bittiğinde ses çıkar</string>
+    <string name="pref_ui_notification_sound_summary">İndirme bittiğinde ya da hata oluştuğunda ses çıkar.</string>
+    <string name="pref_ui_notification_vibrate">İndirme bittiğinde titret</string>
+    <string name="pref_ui_notification_vibrate_summary">İndirme bittiğinde ya da hata oluştuğunda titret.</string>
+    <string name="pref_ui_no_wifi_go_offline">WiFi bağlantısı yoksa çevrim dışı ol</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">Eğer WiFi bağlı değilse ya da bağlıysa program çevrim dışı kipi açar ya da kapatır.</string>
+
+    <string name="pref_clipboard">Pano</string>
+    <string name="pref_clipboard_summary">Pano izleyiciyi kur</string>
+    <string name="pref_clipboard_monitor">Pano izleyici</string>
+    <string name="pref_clipboard_monitor_summary">Pano izleyiciyi etkinleştir/devre dışı bırak</string>
+    <string name="pref_clipboard_media_website">Ortam web sitesinin URL\'sini izle</string>
+    <string name="pref_clipboard_media_website_summary">Eğer uGet o siteyi destekliyorsa, ortam web sitesinin URL\'sini izle.</string>
+    <string name="pref_clipboard_type">Dosya türleri</string>
+    <string name="pref_clipboard_type_summary">Belirtilen dosya türleri için panoyu izle (Düzenli İfadeyi destekler)</string>
+    <string name="pref_clipboard_type_error_title">Pano dosya türleri</string>
+    <string name="pref_clipboard_type_error_message">Düzenli ifadede söz dizimi hatası</string>
+    <string name="pref_clipboard_index">Öntanımlı ulam dizini</string>
+    <string name="pref_clipboard_index_summary">Eğer eşleşen ulam yoksa URL N. ulama eklenecek</string>
+    <string name="pref_clipboard_clear_at_exit">Çıkışta panoyu temizle</string>
+    <string name="pref_clipboard_clear_at_exit_summary">Çıkışta pano verisini temizle</string>
+    <string name="pref_clipboard_clear_after_accepting">URL kabul ettikten sonra panoyu temizle</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">uGet indirilebilir bir URL kabul ettikten sonra panoyu temizle.</string>
+
+    <string name="pref_speed">Hız sınırı</string>
+    <string name="pref_speed_summary">Hız sınırını kur, bu tüm eklentilere etki edecektir.</string>
+    <string name="pref_speed_download">İndirme hız sınırı</string>
+    <string name="pref_speed_download_summary">İndirme hız sınırını kur (KiB/sn)</string>
+    <string name="pref_speed_upload">Yükleme hız sınırı</string>
+    <string name="pref_speed_upload_summary">Yükleme hız sınırını kur (KiB/sn)</string>
+
+    <string name="pref_plugin_order">Eklenti eşleşme düzeni...</string>
+    <string name="pref_plugin_order_summary">Birincil ve ikincil eklentiyi seç.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Aria2 eklenti seçenekleri</string>
+    <string name="pref_aria2_summary">aria2 eklenti seçeneklerini kur</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">aria2 JSON-RPC için URI\'yi ayarla</string>
+    <string name="pref_aria2_token">RPC yetkilendirme gizli jetonu</string>
+    <string name="pref_aria2_token_summary">Eğer bunun ne olduğunu bilmiyorsan değiştirme. --rpc-secret aria2 değişkeniyle birlikte kullanın</string>
+    <string name="pref_aria2_local">Bu aygıtta aria2\'yi çalıştır</string>
+    <string name="pref_aria2_local_summary">Bu aygıtta aria2 sunucusu çalıştır. aria2c\'yi kendiniz yüklemelisiniz.</string>
+    <string name="pref_aria2_speed_download">aria2 için indirme hız sınırı</string>
+    <string name="pref_aria2_speed_download_summary">İndirme hız sınırını (KiB/s) kur, yalnızca aria2 eklentisini etkileyecek.</string>
+    <string name="pref_aria2_speed_upload">aria2 için yükleme hız sınırı</string>
+    <string name="pref_aria2_speed_upload_summary">Yükleme hız sınırını (KiB/s) kur, yalnızca aria2 eklentisini etkileyecek.</string>
+    <string name="pref_aria2_launch">aria2\'yi başlat</string>
+    <string name="pref_aria2_launch_summary">Başlangıçta aria2\'yi başlat</string>
+    <string name="pref_aria2_shutdown">aria2\'yi kapat</string>
+    <string name="pref_aria2_shutdown_summary">Çıkışta aria2\'yi kapat</string>
+    <string name="pref_aria2_path">Yol</string>
+    <string name="pref_aria2_path_summary">aria2 programının tam yolu</string>
+    <string name="pref_aria2_args">Değişkenler</string>
+    <string name="pref_aria2_args_summary">aria2\'ye değişken iletimi</string>
+
+    <string name="pref_media">Ortam web sitesi seçenekleri</string>
+    <string name="pref_media_summary">Ortam web sitesi seçeneklerini ayarla</string>
+    <string name="pref_media_match_mode">Ortam eşleşme kipi</string>
+    <string name="pref_media_match_mode_summary">Ortam eşleşme kipini kur</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>Eşleştirme</item>
+        <item>Eşleşme 1 koşulu</item>
+        <item>Eşleşme 2 koşulu</item>
+        <item>Yaklaşık nitelik</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">Ortam Niteliği</string>
+    <string name="pref_media_quality_summary">Ortam eşleşme koşulunu kur - Nitelik</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Ortam Türü</string>
+    <string name="pref_media_type_summary">Ortam eşleşme koşulunu kur - Tür</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">Kendiliğinden Kaydetme Aralığı</string>
+    <string name="pref_autosave_interval_summary">Her N dakikada tüm veriyi kaydet.</string>
+
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">Yansılar</string>
+    <string name="dnode_file">Dosya</string>
+    <string name="dnode_folder">Dizin</string>
+    <string name="dnode_user">Kullanıcı</string>
+    <string name="dnode_password">Parola</string>
+    <string name="dnode_connections">Azami bağlantılar</string>
+    <string name="dnode_left">kaldı</string>
+    <string name="dnode_retry">Yeniden dene</string>
+    <string name="dnode_retry_limit">Yeniden deneme sınırı</string>
+    <string name="dnode_referrer">Yönelten</string>
+    <string name="dnode_proxy_type">Vekil</string>
+    <string name="dnode_proxy_host">Ana makine</string>
+    <string name="dnode_proxy_port">Delik</string>
+    <string name="dnode_proxy_user">Kullanıcı</string>
+    <string name="dnode_proxy_password">Parola</string>
+    <string-array name="dnode_proxy_type">
+        <item>Kullanma</item>
+        <item>Varsayılan</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">Şimdiki durum</string>
+    <string name="cnode_image_description">Şimdiki durum</string>
+
+    <string name="cnode_name">Ad :</string>
+    <string name="cnode_active_limit">Etkin indirmeler</string>
+    <string name="cnode_finished_limit">Bitenlerin sığası</string>
+    <string name="cnode_recycled_limit">Geri dönüştürülenlerin sığası</string>
+    <string name="cnode_hosts">Eşleşen ana makineler :</string>
+    <string name="cnode_schemes">Eşleşen şemalar :</string>
+    <string name="cnode_file_types">Eşleşen türler :</string>
+
+    <string name="category_creation">Yeni Ulam</string>
+    <string name="category_setting">Ulam seçenekleri</string>
+    <string name="download_creation">Yeni İndirme</string>
+    <string name="download_setting">İndirme seçenekleri</string>
+    <string name="download_default">İndirme varsayılanı</string>
+
+    <string name="cnode_total">Tüm Ulam</string>
+    <string name="cnode_default_new_name">Yeni</string>
+    <string-array name="cnode_state">
+        <item>Tüm Durum</item>
+        <item>Etkin</item>
+        <item>Kuyruğa alınıyor</item>
+        <item>Bitti</item>
+        <item>Geri dönüştürüldü</item>
+    </string-array>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">URI yok, lütfen atayın.</string>
+    <string name="message_file_not_exist">Dosya yok.</string>
+
+</resources>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">Offline</string>
+
+    <string name="menu_action_main">Meny</string>
+    <string name="menu_action_category">Kategori</string>
+    <string name="menu_action_download">Nedladdning</string>
+    <string name="menu_save_all">Spara all data</string>
+
+    <string name="menu_category">Kategori...</string>
+    <string name="menu_download">Nedladdning...</string>
+    <string name="menu_settings">Inställningar...</string>
+    <string name="menu_offline_mode">Offlineläge</string>
+    <string name="menu_about">Om</string>
+    <string name="menu_exit">Avsluta</string>
+
+    <string name="menu_download_start_auto">Auto-starta</string>
+    <string name="menu_download_start_manually">Starta manuellt</string>
+
+    <string name="menu_category_new">Ny...</string>
+    <string name="menu_delete">Ta bort</string>
+    <string name="menu_category_preferences">Inställningar...</string>
+    <string name="menu_category_move_up">Flytta upp</string>
+    <string name="menu_category_move_down">Flytta ner</string>
+
+    <string name="menu_download_open">Öppna...</string>
+    <string name="menu_download_delete">Ta bort...</string>
+    <string name="menu_download_delete_recycle">Radera (ta bort)</string>
+    <string name="menu_download_delete_data">Ta bort inlägg</string>
+    <string name="menu_download_delete_file">Ta bort inlägg och fil</string>
+    <string name="menu_download_force_start">Tvinga uppstart</string>
+    <string name="menu_download_runnable">Körbar</string>
+    <string name="menu_download_pause">Pausa</string>
+    <string name="menu_download_move">Flytta...</string>
+    <string name="menu_download_priority">Prioritet...</string>
+    <string name="menu_download_priority_high">Hög</string>
+    <string name="menu_download_priority_normal">Normal</string>
+    <string name="menu_download_priority_low">Låg</string>
+
+    <string name="menu_context">Innehålls meny</string>
+    <string name="menu_context_new_download">Ny nedladdning...</string>
+    <string name="menu_context_new_category">Ny kategori...</string>
+
+    <string name="message_exit_title">Vill du avsluta?</string>
+    <string name="message_exit">Är du säker på att du vill avsluta?</string>
+    <string name="message_delete_file_title">Vill du ta bort filerna?</string>
+    <string name="message_delete_file">Är du säker på att du vill ta bort filerna?</string>
+    <string name="message_delete_file_category_title">Vill du ta bort kategorin?</string>
+    <string name="message_delete_file_category">Är du säker på att du vill radera kategorin?</string>
+
+    <string name="notification_error_title">Fel uppstod</string>
+    <string name="notification_error_content">Fel uppstod under nedladdning.</string>
+    <string name="notification_starting_title">Nedladdning startar</string>
+    <string name="notification_starting_content">Startar nedladdnings kö.</string>
+    <string name="notification_completed_title">Nedladdning slutförd</string>
+    <string name="notification_completed_content">Alla nedladdningar i kön har slutförts.</string>
+
+    <string name="pref_ui">Användargränssnitt</string>
+    <string name="pref_ui_summary">Ställ in användargränssnitt</string>
+    <string name="pref_sort">Nedladdning sorteras...</string>
+    <string name="pref_sort_summary">Om användaren väljer \"All kategorin\" eller \"Alla Status\", sorterar nedladdningar efter...</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>Ta bort sortering</item>
+        <item>Sortera efter namn</item>
+        <item>Sortera efter tillagd tid</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">Bekräfta borttagning</string>
+    <string name="pref_ui_confirm_delete_summary">Bekräfta när du tar bort filer</string>
+    <string name="pref_ui_confirm_exit">Bekräfta nedstängning</string>
+    <string name="pref_ui_confirm_exit_summary">Visa bekräftelsedialog vid nedstängning</string>
+    <string name="pref_ui_exit_on_back">Avsluta vid tryck av bakåtknapp</string>
+    <string name="pref_ui_exit_on_back_summary">Avslutar uGet när användaren trycker på bakåtknappen.</string>
+    <string name="pref_ui_notification_starting">Notifiera när en nedladdning påbörjas</string>
+    <string name="pref_ui_notification_starting_summary">Visa avisering när nedladdning startar.</string>
+    <string name="pref_ui_notification_sound">Spela en ton när nedladdning är slutförd</string>
+    <string name="pref_ui_notification_sound_summary">Spela en ton när nedladdning är slutförd eller ett fel uppstod.</string>
+    <string name="pref_ui_notification_vibrate">Vibrera när nedladdning är slutförd</string>
+    <string name="pref_ui_notification_vibrate_summary">Vibrera när nedladdning är slutförd eller ett fel uppstod.</string>
+    <string name="pref_ui_no_wifi_go_offline">Gå offline när WiFi anslutning saknas</string>
+    <string name="pref_ui_no_wifi_go_offline_summary">Programmet kommer aktivera/inaktivera offlineläget om WiFi anslutning har upphört/upprättats.</string>
+
+    <string name="pref_clipboard">Urklipp</string>
+    <string name="pref_clipboard_summary">Ställ in urklippsövervakare</string>
+    <string name="pref_clipboard_monitor">Urklippsövervakare</string>
+    <string name="pref_clipboard_monitor_summary">Aktivera/Inaktivera urklippsövervakare</string>
+    <string name="pref_clipboard_media_website">Övervaka URL till media webbplats</string>
+    <string name="pref_clipboard_media_website_summary">Övervaka URL till media webbplats om uGet stödjer denna webbplatsen.</string>
+    <string name="pref_clipboard_type">Filtyper</string>
+    <string name="pref_clipboard_type_summary">Övervaka urklipp efter specificerade filtyper (stöd reguljära uttryck):</string>
+    <string name="pref_clipboard_type_error_title">Urklipp filtyper</string>
+    <string name="pref_clipboard_type_error_message">Syntax-fel i reguljärt uttryck</string>
+    <string name="pref_clipboard_index">Standard kategori index</string>
+    <string name="pref_clipboard_index_summary">Lägger till i Nth kategori om ingen kategori matchades.</string>
+    <string name="pref_clipboard_clear_at_exit">Rensa urklipp vid avslut</string>
+    <string name="pref_clipboard_clear_at_exit_summary">Rensa urklipp-data vid avslut</string>
+    <string name="pref_clipboard_clear_after_accepting">Rensa urklipp efter att ha accepterat URL</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">Rensa urklipp-data efter uGet har accepterat en nedladdningsbar URL.</string>
+
+    <string name="pref_speed">Hastighetsbegränsning</string>
+    <string name="pref_speed_summary">Ställ in hastighetsbegränsning, dessa kommer påverka alla insticksmoduler.</string>
+    <string name="pref_speed_download">Nedladdnings hastighetsbegränsning</string>
+    <string name="pref_speed_download_summary">Ställ in hastighetsbegränsning för nedladdning (KiB/s)</string>
+    <string name="pref_speed_upload">Uppladdnings hastighetsbegränsning</string>
+    <string name="pref_speed_upload_summary">Ställ in hastighetsbegränsning för uppladdning (KiB/s)</string>
+
+    <string name="pref_plugin_order">Insticksmoduler i matchande ordning...</string>
+    <string name="pref_plugin_order_summary">Välj primär och sekundär insticksmodul.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">Alternativ för aria2 insticksmodul</string>
+    <string name="pref_aria2_summary">Ställ in alternativ för aria2 insticksmodul</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">Ställ in URI för aria2 JSON-RPC</string>
+    <string name="pref_aria2_token">RPC hemligt autentiserings token</string>
+    <string name="pref_aria2_token_summary">Ändra inte om du inte vet vad detta är. Använd med aria2 argument --rpc-secret</string>
+    <string name="pref_aria2_local">Kör aria2 på denna enheten</string>
+    <string name="pref_aria2_local_summary">Starta aria2 server på den här enheten. Du måste själv installera aria2c.</string>
+    <string name="pref_aria2_speed_download">Hastighetsbegränsning vid nedladdning för aria2</string>
+    <string name="pref_aria2_speed_download_summary">Ställ in hastighetsbegränsning för nedladdning (KiB/s), det kommer endast påverka insticksmodulen aria2.</string>
+    <string name="pref_aria2_speed_upload">Hastighetsbegränsning vid uppladdning för aria2</string>
+    <string name="pref_aria2_speed_upload_summary">Ställ in hastighetsbegränsning för uppladdning (KiB/s), det kommer endast påverka insticksmodulen aria2.</string>
+    <string name="pref_aria2_launch">Starta aria2</string>
+    <string name="pref_aria2_launch_summary">Starta aria2 vid uppstart</string>
+    <string name="pref_aria2_shutdown">Stäng aria2</string>
+    <string name="pref_aria2_shutdown_summary">Stäng aria2 vid avslut</string>
+    <string name="pref_aria2_path">Sökväg</string>
+    <string name="pref_aria2_path_summary">Full sökväg till aria2 programmet</string>
+    <string name="pref_aria2_args">Argument</string>
+    <string name="pref_aria2_args_summary">För vidare argumenten till aria2</string>
+
+    <string name="pref_media">Alternativ för media webbplats</string>
+    <string name="pref_media_summary">Ställ in alternativ för media webbplats</string>
+    <string name="pref_media_match_mode">Media matchningsläge</string>
+    <string name="pref_media_match_mode_summary">Ställ in media matchningsläge</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>Matcha inte</item>
+        <item>Match 1 förhållande</item>
+        <item>Match 2 förhållande</item>
+        <item>Nära kvalitet</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">Media kvalitet</string>
+    <string name="pref_media_quality_summary">Ställ in media matchningsförhållande - Kvalitet</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">Media typ</string>
+    <string name="pref_media_type_summary">Ställ in media matchningsförhållande - Typ</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">Auto-spar interval</string>
+    <string name="pref_autosave_interval_summary">Spara all data var N minuter.</string>
+
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">Speglar</string>
+    <string name="dnode_file">Fil</string>
+    <string name="dnode_folder">Mapp</string>
+    <string name="dnode_user">Användare</string>
+    <string name="dnode_password">Lösenord</string>
+    <string name="dnode_connections">Max anslutningar</string>
+    <string name="dnode_left">kvar</string>
+    <string name="dnode_retry">Försök igen</string>
+    <string name="dnode_retry_limit">Gräns för återförsök</string>
+    <string name="dnode_referrer">Hänvisare</string>
+    <string name="dnode_proxy_type">Proxy</string>
+    <string name="dnode_proxy_host">Värd</string>
+    <string name="dnode_proxy_port">Port</string>
+    <string name="dnode_proxy_user">Användare</string>
+    <string name="dnode_proxy_password">Lösenord</string>
+    <string-array name="dnode_proxy_type">
+        <item>Använd ej</item>
+        <item>Standard</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">Nuvarande status</string>
+    <string name="cnode_image_description">Nuvarande status</string>
+
+    <string name="cnode_name">Namn :</string>
+    <string name="cnode_active_limit">Aktiva nedladdningar</string>
+    <string name="cnode_finished_limit">Kapacitet för slutförda</string>
+    <string name="cnode_recycled_limit">Kapacitet för borttagna:</string>
+    <string name="cnode_hosts">Matchade värdar :</string>
+    <string name="cnode_schemes">Matchade scheman :</string>
+    <string name="cnode_file_types">Matchade typer :</string>
+
+    <string name="category_creation">Ny kategori</string>
+    <string name="category_setting">Kategori inställningar</string>
+    <string name="download_creation">Ny nedladdning</string>
+    <string name="download_setting">Nedladdningsinställningar</string>
+    <string name="download_default">Ladda ner standard</string>
+
+    <string name="cnode_total">All kategorin</string>
+    <string name="cnode_default_new_name">Ny</string>
+    <string-array name="cnode_state">
+        <item>Alla status</item>
+        <item>Aktiva</item>
+        <item>I kö</item>
+        <item>Slutförd</item>
+        <item>Borttagna</item>
+    </string-array>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">Ingen URI, vänligen ange den.</string>
+    <string name="message_file_not_exist">Filen finns inte.</string>
+
+</resources>

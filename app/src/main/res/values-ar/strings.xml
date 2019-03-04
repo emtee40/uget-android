@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uGet</string>
+    <string name="action_offline">غير متصل</string>
+
+    <string name="menu_action_main">القائمة</string>
+    <string name="menu_action_category">التصنيفات</string>
+    <string name="menu_action_download">تنزيل</string>
+    <string name="menu_save_all">حفظ كافة البيانات</string>
+
+    <string name="menu_category">التصنيفات.....</string>
+    <string name="menu_download">تحميل....</string>
+    <string name="menu_settings">الاعدادات...</string>
+    <string name="menu_offline_mode">نمط عدم الاتصال</string>
+    <string name="menu_about">حول</string>
+    <string name="menu_exit">خروج</string>
+
+    <string name="menu_download_start_auto">تشغيل تلقائي</string>
+    <string name="menu_download_start_manually">تشغيل يدوي</string>
+
+    <string name="menu_category_new">جديد...</string>
+    <string name="menu_delete">حذف</string>
+    <string name="menu_category_preferences">خصائص....</string>
+    <string name="menu_category_move_up">تحريك للاعلى</string>
+    <string name="menu_category_move_down">تحريك للاسفل</string>
+
+    <string name="menu_download_open">فتح...</string>
+    <string name="menu_download_delete">حذف...</string>
+    <string name="menu_download_delete_recycle">حذف(سلة المهملات)</string>
+    <string name="menu_download_delete_data">حذف المدخل</string>
+    <string name="menu_download_delete_file">حذف المدخل و الملف</string>
+    <string name="menu_download_force_start">فرض التشغيل</string>
+    <string name="menu_download_runnable">مشغل</string>
+    <string name="menu_download_pause">ايقاف</string>
+    <string name="menu_download_move">تحريك...</string>
+    <string name="menu_download_priority">الافضلية...</string>
+    <string name="menu_download_priority_high">عالي</string>
+    <string name="menu_download_priority_normal">عادي</string>
+    <string name="menu_download_priority_low">منخفظ</string>
+
+    <string name="menu_context">قائمة السياق</string>
+    <string name="menu_context_new_download">تحميل جديد...</string>
+    <string name="menu_context_new_category">تصنيف جديد...</string>
+
+    <string name="message_exit_title">هل تريد الخروج؟</string>
+    <string name="message_exit">هل انت متأكد من انك تريد الخروج؟</string>
+    <string name="message_delete_file_title">حذف هذا الملف فعلا؟</string>
+    <string name="message_delete_file">هل انت متأكد من انك تريد حذف الملف؟</string>
+    <string name="message_delete_file_category_title">حقا تريد حذف هذا التصنيف؟</string>
+    <string name="message_delete_file_category">هل انت متأكد من انك تريد حذف التصنيف؟</string>
+
+    <string name="notification_error_title">حصل خطأ</string>
+    <string name="notification_error_content">حصل خطأ اثناء التحميل.</string>
+    <string name="notification_starting_title">بدء التحميل</string>
+    <string name="notification_starting_content">بدء تحميل القائمة</string>
+    <string name="notification_completed_title">اكتمل التحميل</string>
+    <string name="notification_completed_content">كل تحميلات القائمة اكتملت</string>
+
+    <string name="pref_ui">واجهة المستخدم</string>
+    <string name="pref_ui_summary">اعداد واجهة المستخدم</string>
+    <string name="pref_sort">ترتيب التحميل...</string>
+    <string name="pref_sort_summary">اذا قام المستخدم باختيار \"كل التصنيفات\" او \"كل الحالات\", رتب التحميلات على...</string>
+    <string name="pref_sort_entrie_default">0</string>
+    <string-array name="pref_sort_entrie_array">
+        <item>غير مرتب</item>
+        <item>رتب حسب الاسم</item>
+        <item>رتب حسب وقت الاضافة</item>
+    </string-array>
+    <string-array name="pref_sort_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_ui_confirm_delete">اكد الحذف</string>
+    <string name="pref_ui_confirm_delete_summary">أكد عندما تحذف الملف</string>
+    <string name="pref_ui_confirm_exit">اكد الخروج</string>
+    <string name="pref_ui_confirm_exit_summary">اظهر نافذة الحوار  الخاصة بالتاكيد عند الخروج</string>
+    <string name="pref_ui_exit_on_back">اخرج بالضغط على زر الخلف</string>
+    <string name="pref_ui_exit_on_back_summary">اخرج من uGet عندما يقوم المستخدم بالضغط على زر الخلف</string>
+    <string name="pref_ui_notification_starting">تنبيه بدء التحميل</string>
+    <string name="pref_ui_notification_starting_summary">اظهر التنبيه عند بدء التحميل</string>
+    <string name="pref_ui_notification_sound">اشارة صوتية عند اكتمال التحميل</string>
+    <string name="pref_ui_notification_sound_summary">اشارة صوتية عند انتهاء التحميل او حصول خطأ</string>
+    <string name="pref_ui_notification_vibrate">عمل اهتزاز عند اكتمال التحميل</string>
+    <string name="pref_ui_notification_vibrate_summary">عمل اهتزاز عند اكتمال التحميل او حصول خطأ</string>
+    <string name="pref_ui_no_wifi_go_offline">غير متصل في حال عدم وجود اتصال WiFi </string>
+    <string name="pref_ui_no_wifi_go_offline_summary">البرنامج سيقوم بتفعيل/الغاء تفعيل نمط عدم الاتصال في حال ان اتصال WiFi كان متصل/غير متصل</string>
+
+    <string name="pref_clipboard">الحافظة</string>
+    <string name="pref_clipboard_summary">اعداد مراقب الحافظة</string>
+    <string name="pref_clipboard_monitor">مراقب الحافظة</string>
+    <string name="pref_clipboard_monitor_summary">تفعيل/الغاء مراقب الحافظة</string>
+    <string name="pref_clipboard_media_website">عرض رابط الانترنت موقع الوسائط</string>
+    <string name="pref_clipboard_media_website_summary">عرض رابط الانترنت موقع الوسائط اذا كان uGet يدعم هذا الموقع</string>
+    <string name="pref_clipboard_type">انواع الملف</string>
+    <string name="pref_clipboard_type_summary">راقب الحافظة لأنواع الملفات المحددة (دعم التعبير العادي)</string>
+    <string name="pref_clipboard_type_error_title">أنواع ملفات الحافظة</string>
+    <string name="pref_clipboard_type_error_message">خطأ لغوي في التعبير الاعتيادي</string>
+    <string name="pref_clipboard_index">فهرسة التصنيفات الافتراضية</string>
+    <string name="pref_clipboard_index_summary">إضافه رابط إلى الفئة n إذا لم تتطابق الفئة</string>
+    <string name="pref_clipboard_clear_at_exit">مسح الحافظة عند الخروج</string>
+    <string name="pref_clipboard_clear_at_exit_summary">مسح بيانات الحافظة عند الخروج</string>
+    <string name="pref_clipboard_clear_after_accepting">مسح الحافظة عند قبول الرابط</string>
+    <string name="pref_clipboard_clear_after_accepting_summary">مسح بيانات الحافظة بعدما ينتهي uGet من قبول رابط قابل للتحميل</string>
+
+    <string name="pref_speed">حدود السرعة</string>
+    <string name="pref_speed_summary">اعداد الحد الأقصى للسرعة. سوف يؤثر هذا علي جميع الاضافات</string>
+    <string name="pref_speed_download">حدود سرعة التحميل</string>
+    <string name="pref_speed_download_summary">اعداد الحد الأقصى لسرعه التحميل (كب/ثا)</string>
+    <string name="pref_speed_upload">حدود سرعة الرفع</string>
+    <string name="pref_speed_upload_summary">اعداد الحد الأقصى لسرعه الرفع (كب/ثا)</string>
+
+    <string name="pref_plugin_order">ترتيب مطابقه الاضافات...</string>
+    <string name="pref_plugin_order_summary">حدد الاضافات الاساسيه والثانوية.</string>
+    <string name="pref_plugin_order_entrie_default">0</string>
+    <string-array name="pref_plugin_order_entrie_array">
+        <item>curl</item>
+        <item>aria2</item>
+        <item>curl + aria2</item>
+        <item>aria2 + curl</item>
+    </string-array>
+    <string-array name="pref_plugin_order_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_aria2">خيارات اضافات Aria2</string>
+    <string name="pref_aria2_summary">اعداد خيارات اضافات Aria2</string>
+    <string name="pref_aria2_uri">URI</string>
+    <string name="pref_aria2_uri_summary">اعداد رابط aria2 json-RPC</string>
+    <string name="pref_aria2_token">رمز التخويل السري ل RPC</string>
+    <string name="pref_aria2_token_summary">لا تغير هذا إذا كنت لا تعرف ما هو. استخدمه مع وسيط aria2 هذا: --rpc-secret</string>
+    <string name="pref_aria2_local">شغل aria2 في هذا الجهاز</string>
+    <string name="pref_aria2_local_summary">شغل خادم aria2 في هذا الجهاز. يتوجب عليك تثبيت aria2c بنفسك.</string>
+    <string name="pref_aria2_speed_download">حدود سرعة التحميل ل aria2</string>
+    <string name="pref_aria2_speed_download_summary">اعداد الحد الأقصى لسرعه التحميل (كب/ثا)، سيؤثر هذا على اضافات aria2 فقط.</string>
+    <string name="pref_aria2_speed_upload">حدود سرعة الرفع ل aria2</string>
+    <string name="pref_aria2_speed_upload_summary">اعداد الحد الأقصى لسرعه الرفع (كب/ثا)، سيؤثر هذا على اضافات aria2 فقط.</string>
+    <string name="pref_aria2_launch">بدء aria2</string>
+    <string name="pref_aria2_launch_summary">تفعيل  aria2 عند بدء التشغيل</string>
+    <string name="pref_aria2_shutdown">اغلاق aria2</string>
+    <string name="pref_aria2_shutdown_summary">اغلاق aria2 عند الخروج</string>
+    <string name="pref_aria2_path">المسار</string>
+    <string name="pref_aria2_path_summary">المسار الكامل الى برنامج aria2</string>
+    <string name="pref_aria2_args">الوسائط</string>
+    <string name="pref_aria2_args_summary">تمرير المعاملات الى aria2</string>
+
+    <string name="pref_media">خيارات موقع الوسائط</string>
+    <string name="pref_media_summary">اعداد خيارات موقع الوسائط</string>
+    <string name="pref_media_match_mode">نمط مطابقة وسائط الميديا</string>
+    <string name="pref_media_match_mode_summary">اعداد نمط مطابقة وسائط الميديا</string>
+    <string name="pref_media_match_mode_entrie_default">3</string>
+    <string-array name="pref_media_match_mode_entrie_array">
+        <item>لا تقم بالمطابقة</item>
+        <item>طابق شرط واحد 1</item>
+        <item>طابق شرطين 2</item>
+        <item>قريب من الدقة</item>
+    </string-array>
+    <string-array name="pref_media_match_mode_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="pref_media_quality">دقة الوسائط</string>
+    <string name="pref_media_quality_summary">اعداد مطابقة شرط-دقة الوسائط</string>
+    <string name="pref_media_quality_entrie_default">1</string>
+    <string-array name="pref_media_quality_entrie_array">
+        <item>240p</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+    <string-array name="pref_media_quality_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="pref_media_type">نوع الوسائط</string>
+    <string name="pref_media_type_summary">اعداد مطابقة شرط-نوع الوسائط</string>
+    <string name="pref_media_type_entrie_default">0</string>
+    <string-array name="pref_media_type_entrie_array">
+        <item>mp4</item>
+        <item>webm</item>
+        <item>3gpp</item>
+        <item>flv</item>
+    </string-array>
+    <string-array name="pref_media_type_entrie_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_autosave_interval">فترة الحفظ التلقائي</string>
+    <string name="pref_autosave_interval_summary">حفظ كافة البيانات كل N من الدقائق</string>
+
+    <string name="dnode_uri">URI</string>
+    <string name="dnode_mirrors">المرايا</string>
+    <string name="dnode_file">ملف</string>
+    <string name="dnode_folder">مجلد</string>
+    <string name="dnode_user">مستخدم</string>
+    <string name="dnode_password">كلمة السر</string>
+    <string name="dnode_connections">اقصى عدد اتصالات</string>
+    <string name="dnode_left">يسار</string>
+    <string name="dnode_retry">محاولة</string>
+    <string name="dnode_retry_limit">حدود المحاولة</string>
+    <string name="dnode_referrer">المرجع</string>
+    <string name="dnode_proxy_type">Proxy</string>
+    <string name="dnode_proxy_host">مستضيف</string>
+    <string name="dnode_proxy_port">منفذ</string>
+    <string name="dnode_proxy_user">مستخدم</string>
+    <string name="dnode_proxy_password">كلمة سر</string>
+    <string-array name="dnode_proxy_type">
+        <item>لا تستخدم</item>
+        <item>افتراضي</item>
+        <item>HTTP</item>
+        <item>SOCKS v4</item>
+        <item>SOCKS v5</item>
+    </string-array>
+
+    <!-- Don't translate below 2 message -->
+    <string name="dnode_image_description">الحالة الحالية</string>
+    <string name="cnode_image_description">الحالات الحالية</string>
+
+    <string name="cnode_name">الاسم:</string>
+    <string name="cnode_active_limit">التحميلات النشطة</string>
+    <string name="cnode_finished_limit">قابلية المنتهية</string>
+    <string name="cnode_recycled_limit">قابلية سلة المهملات</string>
+    <string name="cnode_hosts">استضافات مطابقة:</string>
+    <string name="cnode_schemes">مخططات مطابقة</string>
+    <string name="cnode_file_types">انواع مطابقة:</string>
+
+    <string name="category_creation">تصنيف جديد</string>
+    <string name="category_setting">خصائص التنصيف</string>
+    <string name="download_creation">تحميل جديد</string>
+    <string name="download_setting">خصائص التحميل</string>
+    <string name="download_default">تحميل افتراضي</string>
+
+    <string name="cnode_total">كل التصنيفات</string>
+    <string name="cnode_default_new_name">جديد</string>
+    <string-array name="cnode_state">
+        <item>كل الحالات</item>
+        <item>نشط</item>
+        <item>طابور</item>
+        <item>انتهى</item>
+        <item>محذوف في سلة المهملات</item>
+    </string-array>
+
+    <!--
+    <string name="category_title">Category</string>
+    <string name="status_title">Status</string>
+     -->
+
+    <string name="message_no_uri">لا يوجد URI, رجاءا قم بتسجيله</string>
+    <string name="message_file_not_exist">الملف غير موجود</string>
+
+</resources>
