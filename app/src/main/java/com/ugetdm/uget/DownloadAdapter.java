@@ -317,8 +317,10 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
             @Override
             public boolean onLongClick(View view) {
-                int  position = getAdapterPosition();
                 // --- selection mode ---
+                if (singleSelection)
+                    return true;
+                int position = getAdapterPosition();
                 toggleSelection(view, position);
                 // --- notify ---
                 if (onItemLongClickListener != null)
