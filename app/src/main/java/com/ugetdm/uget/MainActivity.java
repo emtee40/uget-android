@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.provider.DocumentFile;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if (app.downloadAdapter.getCheckedItemCount() > 0) {
+        else if (app.downloadAdapter.getCheckedItemCount() > 0 || isToolbarHomeAsUp()) {
             // --- selection mode ---
             app.downloadAdapter.clearChoices(true);
             decideMenuVisible();
@@ -263,7 +264,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else {
-            moveTaskToBack(true);
+            // --- do nothing ---
+            // moveTaskToBack(true);
             // super.onBackPressed();
         }
     }
@@ -518,7 +520,9 @@ public class MainActivity extends AppCompatActivity {
             // --- left side to title space (if NavigationIcon exists)
             toolbar.setContentInsetStartWithNavigation(0);
             // reset Listener when icon changed
-            if (drawer != null) {
+            if (drawer == null)
+                getSupportActionBar().setHomeButtonEnabled(false);
+            else {
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -568,6 +572,10 @@ public class MainActivity extends AppCompatActivity {
         }
         // toolbar.setTitle(title);    // may not work
         getSupportActionBar().setTitle(title);
+    }
+
+    public boolean isToolbarHomeAsUp() {
+        return (getSupportActionBar().getDisplayOptions() & ActionBar.DISPLAY_HOME_AS_UP) != 0;
     }
 
     public void decideMenuVisible() {
