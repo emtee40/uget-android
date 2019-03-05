@@ -829,7 +829,7 @@ public class NodeActivity extends AppCompatActivity {
         if (isFolderWritable(folder) == false) {
             onFolderRequestResult(treeUri);
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab), R.string.message_permission_folder_get, Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.viewpager), R.string.message_permission_folder_get, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             // --- Toast ---
             //Toast.makeText(this, "Get permission for " + folder,
@@ -886,7 +886,7 @@ public class NodeActivity extends AppCompatActivity {
             case RESULT_FOLDER_REQUEST:
                 onFolderRequestResult(treeUri);
                 // --- Snackbar ---
-                Snackbar.make(findViewById(R.id.fab), FileUtil.getFullPathFromTreeUri(treeUri,this),
+                Snackbar.make(findViewById(R.id.viewpager), FileUtil.getFullPathFromTreeUri(treeUri,this),
                         Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 // --- Toast ---
                 //Toast.makeText(this, FileUtil.getFullPathFromTreeUri(treeUri,this),
