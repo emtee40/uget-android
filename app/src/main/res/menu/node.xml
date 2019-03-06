@@ -3,12 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_cancel"
-        android:orderInCategory="101"
         android:title="@android:string/cancel"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_ok"
-        android:orderInCategory="101"
         android:title="@android:string/ok"
         app:showAsAction="always" />
 </menu>
