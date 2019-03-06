@@ -1,10 +1,12 @@
 package com.ugetdm.uget;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.UriPermission;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -31,7 +33,10 @@ import android.widget.TextView;
 
 import com.ugetdm.uget.lib.*;
 
+import java.io.File;
 import java.util.List;
+
+import ar.com.daidalos.afiledialog.FileChooserDialog;
 
 public class NodeActivity extends AppCompatActivity {
     protected static MainApp    app = null;
@@ -778,8 +783,30 @@ public class NodeActivity extends AppCompatActivity {
                 new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == ID_MENU_SELECT_FOLDER)
-                            startFolderChooser();
+                        if (item.getItemId() == ID_MENU_SELECT_FOLDER) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                                startFolderChooser();
+                            else {
+                                FileChooserDialog dialog = new FileChooserDialog(NodeActivity.this);
+                                dialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
+                                    public void onFileSelected(Dialog source, File file) {
+                                        source.hide();
+                                        EditText editText = (EditText) findViewById(R.id.dnode_folder_editor);
+                                        editText.setText(file.getAbsolutePath());
+                                    }
+                                    public void onFileSelected(Dialog source, File folder, String name) {
+                                        source.hide();
+                                    }
+                                });
+
+                                EditText editText = (EditText) findViewById(R.id.dnode_folder_editor);
+                                File folder = new File(editText.getText().toString());
+                                if (folder.exists() && folder.isDirectory())
+                                    dialog.loadFolder(folder.toString());
+                                dialog.setFolderMode(true);
+                                dialog.show();
+                            }
+                        }
                         else {
                             EditText editText = (EditText) findViewById(R.id.dnode_folder_editor);
                             editText.setText(item.getTitle().toString());
@@ -799,29 +826,34 @@ public class NodeActivity extends AppCompatActivity {
 
     protected boolean isFolderWritable(String folder) {
         // for Android 5+
-        for (int index = 0;  index < app.folderWritable.length;  index++) {
-            if (folder.startsWith(app.folderWritable[index]))
-                return true;
-        }
-
-        List<UriPermission> list = getContentResolver().getPersistedUriPermissions();
-        for (int i = 0; i < list.size(); i++){
-            String folderFromUri = FileUtil.getFullPathFromTreeUri(list.get(i).getUri(), this);
-            if (folder.startsWith(folderFromUri))
-                if (list.get(i).isWritePermission())
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            for (int index = 0;  index < app.folderWritable.length;  index++) {
+                if (folder.startsWith(app.folderWritable[index]))
                     return true;
+            }
+
+            List<UriPermission> list = getContentResolver().getPersistedUriPermissions();
+            for (int i = 0; i < list.size(); i++){
+                String folderFromUri = FileUtil.getFullPathFromTreeUri(list.get(i).getUri(), this);
+                if (folder.startsWith(folderFromUri))
+                    if (list.get(i).isWritePermission())
+                        return true;
+            }
+            return false;
         }
-        return false;
+        return true;
     }
 
     protected void startFolderChooser () {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        startActivityForResult(intent, RESULT_FOLDER_CHOOSER);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivityForResult(intent, RESULT_FOLDER_CHOOSER);
+        }
     }
 
     protected void onFolderChooserResult (Uri  treeUri) {
@@ -848,13 +880,15 @@ public class NodeActivity extends AppCompatActivity {
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                startActivityForResult(intent, RESULT_FOLDER_REQUEST);
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                    // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    startActivityForResult(intent, RESULT_FOLDER_REQUEST);
+                }
             }
         });
 
@@ -863,13 +897,15 @@ public class NodeActivity extends AppCompatActivity {
     }
 
     protected void onFolderRequestResult (Uri  treeUri) {
-        grantUriPermission(getPackageName(), treeUri,
-                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        getContentResolver().takePersistableUriPermission(treeUri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            grantUriPermission(getPackageName(), treeUri,
+                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            getContentResolver().takePersistableUriPermission(treeUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
     }
 
     @Override

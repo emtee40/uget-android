@@ -2,6 +2,7 @@ package com.ugetdm.uget;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,6 +42,8 @@ import com.ugetdm.uget.lib.Util;
 
 import java.io.File;
 import java.util.regex.PatternSyntaxException;
+
+import ar.com.daidalos.afiledialog.FileChooserDialog;
 
 public class MainActivity extends AppCompatActivity {
     // MainApp data
@@ -324,7 +327,27 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_category_import:
-                runFileChooser();
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    startFileChooser();
+                else {
+                    FileChooserDialog fcDialog = new FileChooserDialog(MainActivity.this);
+                    fcDialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
+                        public void onFileSelected(Dialog source, File file) {
+                            source.hide();
+                            String filename = file.getName();
+                            if (app.core.loadCategory(file.getAbsolutePath()) != 0)
+                                showFileChooserResult(filename, true);
+                            else
+                                showFileChooserResult(filename, false);
+                        }
+                        // this is called when a file is created
+                        public void onFileSelected(Dialog source, File folder, String name) {
+                            source.hide();
+                        }
+                    });
+                    fcDialog.setFilter(".*json|.*JSON");
+                    fcDialog.show();
+                }
                 break;
 
             case R.id.action_category_edit:
@@ -338,7 +361,34 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_category_export:
-                runFileCreator();
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    startFileCreator();
+                else {
+                    FileChooserDialog fcDialog = new FileChooserDialog(MainActivity.this);
+                    fcDialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
+                        public void onFileSelected(Dialog source, File file) {
+                            source.hide();
+                            String filename = file.getName();
+                            if (app.saveNthCategory(app.nthCategory, file.getAbsolutePath()))
+                                showFileCreatorResult(filename, true);
+                            else
+                                showFileCreatorResult(filename, false);
+                        }
+                        // this is called when a file is created
+                        public void onFileSelected(Dialog source, File folder, String name) {
+                            source.hide();
+                            if (name.endsWith(".json") == false && name.endsWith(".JSON") == false)
+                                name = name + ".json";
+                            if (app.saveNthCategory(app.nthCategory, folder.getAbsolutePath() + '/' + name))
+                                showFileCreatorResult(name, true);
+                            else
+                                showFileCreatorResult(name, false);
+                        }
+                    });
+                    fcDialog.setCanCreateFiles(true);
+                    fcDialog.setFilter(".*json|.*JSON");
+                    fcDialog.show();
+                }
                 break;
 
             case R.id.action_save_all:
@@ -770,20 +820,32 @@ public class MainActivity extends AppCompatActivity {
         imageView = findViewById(R.id.category_move_down);
         if (app.nthCategory == 0 || app.nthCategory == Node.nChildren(app.core.nodeReal)) {
             imageView.setEnabled(false);
-            imageView.setImageAlpha(64);    // 0 - 255
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                imageView.setImageAlpha(64);    // 0 - 255
+            else
+                imageView.setAlpha(64);
         }
         else {
             imageView.setEnabled(true);
-            imageView.setImageAlpha(255);    // 0 - 255
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                imageView.setImageAlpha(255);    // 0 - 255
+            else
+                imageView.setAlpha(255);
         }
         imageView = findViewById(R.id.category_move_up);
         if (app.nthCategory < 2) {
             imageView.setEnabled(false);
-            imageView.setImageAlpha(64);    // 0 - 255
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                imageView.setImageAlpha(64);    // 0 - 255
+            else
+                imageView.setAlpha(64);
         }
         else {
             imageView.setEnabled(true);
-            imageView.setImageAlpha(255);    // 0 - 255
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                imageView.setImageAlpha(255);    // 0 - 255
+            else
+                imageView.setAlpha(255);
         }
     }
 
@@ -1137,7 +1199,7 @@ public class MainActivity extends AppCompatActivity {
                 REQUEST_WRITE_STORAGE);
     }
 
-    protected void runFileChooser() {
+    protected void startFileChooser() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.putExtra(Intent.EXTRA_TITLE, "Pick category json file");
@@ -1164,7 +1226,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String filename = DocumentFile.fromSingleUri(this, treeUri).getName();
-        if (parcelFD != null && app.core.loadCategory(parcelFD.detachFd()) != 0) {
+        if (parcelFD != null && app.core.loadCategory(parcelFD.detachFd()) != 0)
+            showFileChooserResult(filename, true);
+        else
+            showFileChooserResult(filename, false);
+
+        revokeUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    }
+
+    protected void showFileChooserResult(String filename, boolean ok) {
+        if (ok) {
             app.categoryAdapter.notifyDataSetChanged();
             app.stateAdapter.notifyDataSetChanged();
             // --- Snackbar ---
@@ -1188,11 +1259,9 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(this, getString(R.string.message_file_load_fail) + " - " + filename,
             //        Toast.LENGTH_SHORT).show();
         }
-
-        revokeUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
-    protected void runFileCreator() {
+    protected void startFileCreator() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
@@ -1217,7 +1286,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String filename = DocumentFile.fromSingleUri(this, treeUri).getName();
-        if (parcelFD != null && app.saveNthCategory(app.nthCategory, parcelFD.detachFd())) {
+        if (parcelFD != null && app.saveNthCategory(app.nthCategory, parcelFD.detachFd()))
+            showFileCreatorResult(filename, true);
+        else
+            showFileCreatorResult(filename, false);
+
+        revokeUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+    }
+
+    protected void showFileCreatorResult(String filename, boolean ok) {
+        if (ok) {
             // --- Snackbar ---
             Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_save_ok) +
                     " - " + filename, Snackbar.LENGTH_LONG)
@@ -1235,8 +1313,6 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(this, getString(R.string.message_file_save_fail) + " - " + filename,
             //        Toast.LENGTH_SHORT).show();
         }
-
-        revokeUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
     }
 
     //  @Override
@@ -1297,12 +1373,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void initTimeoutHandler() {
         speedHandler.postDelayed(speedRunnable, speedInterval);
-        speedHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initAd();
-            }
-        }, 1000);
+        // --- ad ---
+        if (BuildConfig.HAVE_ADS) {
+            speedHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    initAd();
+                }
+            }, 1000);
+        }
     }
 
     // ------------------------------------------------------------------------

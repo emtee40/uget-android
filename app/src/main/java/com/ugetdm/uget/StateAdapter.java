@@ -189,9 +189,15 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
     // ------------------------------------------------------------------------
     // Notification
     public void notifyItemClicked(RecyclerView recyclerView) {
+        View itemView;
         ViewHolder viewHolder;
         viewHolder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedPosition);
+        if (viewHolder == null)
+            itemView = null;
+        else
+            itemView = viewHolder.itemView;
+
         if (onItemClickListener != null)
-            onItemClickListener.onItemClick(viewHolder.itemView, selectedPosition);
+            onItemClickListener.onItemClick(itemView, selectedPosition);
     }
 }

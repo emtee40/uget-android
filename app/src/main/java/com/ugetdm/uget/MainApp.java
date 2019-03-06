@@ -1295,10 +1295,21 @@ public class MainApp extends Application {
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setDefaults(flags)
-                .setSmallIcon(R.mipmap.ic_notification)
-                .setColor(getResources().getColor(R.color.colorPrimary));
+                .setSmallIcon(R.mipmap.ic_notification);
 
-        Notification notification = notificationBuilder.build();
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        else {
+            notificationBuilder.setSmallIcon(R.mipmap.ic_notification)
+                    .setColor(getResources().getColor(R.color.colorPrimary));
+        }
+
+        Notification notification;
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+            notification = notificationBuilder.getNotification();
+        else
+            notification = notificationBuilder.build();
+
         notificationManager.notify(notificationId, notification);
     }
 
@@ -1313,11 +1324,13 @@ public class MainApp extends Application {
             title = getString(R.string.app_name) + " · " + title;
         String subText = getString(R.string.notification_active_title) + " : " + nActive;
 
-        notificationBuilder.setShowWhen(false);
-        notificationBuilder.setOngoing(true);
-        notificationBuilder.setOnlyAlertOnce(true);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            notificationBuilder.setShowWhen(false);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             notificationBuilder.setSubText(subText);
+
+        notificationBuilder.setOngoing(true);
+        notificationBuilder.setOnlyAlertOnce(true);
         notifyMessage(title, subText, 0);
     }
 
@@ -1325,15 +1338,20 @@ public class MainApp extends Application {
         int  flags = 0;
 
         if (setting.ui.soundNotification)
-            flags = Notification.DEFAULT_SOUND;
+            flags |= Notification.DEFAULT_SOUND;
         if (setting.ui.vibrateNotification)
             flags |= Notification.DEFAULT_VIBRATE;
+        if (setting.ui.soundNotification && setting.ui.vibrateNotification)
+            flags = Notification.DEFAULT_ALL;
 
-        notificationBuilder.setShowWhen(true);    // --- show time in notification ---
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            notificationBuilder.setShowWhen(true);    // --- show time in notification ---
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            notificationBuilder.setSubText(null);
+
         notificationBuilder.setOngoing(false);
         notificationBuilder.setOnlyAlertOnce(false);
-        notificationBuilder.setSubText(null);
-		
+
 		String title = getString(R.string.notification_error_title);
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             title = getString(R.string.app_name) + " · " + title;
@@ -1350,13 +1368,18 @@ public class MainApp extends Application {
             flags |= Notification.DEFAULT_SOUND;
         if (setting.ui.vibrateNotification)
             flags |= Notification.DEFAULT_VIBRATE;
+        if (setting.ui.soundNotification && setting.ui.vibrateNotification)
+            flags = Notification.DEFAULT_ALL;
 
-        notificationBuilder.setShowWhen(true);    // --- show time in notification ---
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            notificationBuilder.setShowWhen(true);    // --- show time in notification ---
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            notificationBuilder.setSubText(null);
+
         notificationBuilder.setOngoing(false);
         notificationBuilder.setOnlyAlertOnce(false);
-        notificationBuilder.setSubText(null);
-		
-		String title = getString(R.string.notification_completed_title); 
+
+        String title = getString(R.string.notification_completed_title);
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             title = getString(R.string.app_name) + " · " + title;
 		
