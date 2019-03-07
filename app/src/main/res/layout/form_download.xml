@@ -9,12 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:stretchColumns="1" >
 
         <TableRow
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end|center_vertical"
                     android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:switchMinWidth="56dp" />
 
             </LinearLayout>
@@ -50,9 +50,7 @@
 
         <TableRow
             android:id="@+id/dnode_uri_row"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -76,9 +74,7 @@
 
         <TableRow
             android:id="@+id/dnode_mirrors_row"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -101,9 +97,7 @@
 
         <TableRow
             android:id="@+id/dnode_file_row"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -126,9 +120,7 @@
         </TableRow>
 
         <TableRow
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -140,29 +132,33 @@
                 android:text="@string/dnode_folder"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
-                android:id="@+id/dnode_folder_editor"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:ems="4"
-                android:inputType="text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/dnode_folder_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_arrow_drop_down" />
+                <EditText
+                    android:id="@+id/dnode_folder_editor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="4"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <ImageView
+                    android:id="@+id/dnode_folder_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_arrow_drop_down" />
+            </LinearLayout>
 
         </TableRow>
 
         <TableRow
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -183,9 +179,7 @@
         </TableRow>
 
         <TableRow
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -206,9 +200,7 @@
         </TableRow>
 
         <TableRow
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -232,9 +224,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -277,9 +267,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="3dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:background="@android:color/darker_gray" />
 
@@ -287,9 +275,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -314,9 +300,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -363,9 +347,7 @@
         </LinearLayout>
 
         <TableRow
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
@@ -387,9 +369,7 @@
         </TableRow>
 
         <TableRow
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="8dp">
 
             <TextView
