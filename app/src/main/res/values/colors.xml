@@ -7,5 +7,5 @@
     <!-- selector_item_category.xml, selector_item_download.xml -->
     <color name="colorLightGray">#DDDDDD</color>
     <color name="colorLightAccent">#D89BA0</color>    <!-- item_category.xml -->
-    <color name="colorLightGreen">#99CCAA</color>    <!-- item_download.xml -->
+    <color name="colorLightGreen">#81C784</color>     <!-- item_download.xml -->
 </resources>
