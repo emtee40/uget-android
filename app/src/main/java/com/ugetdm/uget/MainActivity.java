@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         app.mainActivity = null;
+        // --- notification ---
+        app.cancelNotification();
         // --- ad ---
         if (BuildConfig.HAVE_ADS) {
             if (adView != null)

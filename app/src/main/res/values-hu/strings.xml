@@ -45,9 +45,6 @@
     <string name="notification_completed_title">A letöltés kész.</string>
     <string name="pref_ui">Felhasználói felület</string>
     <string name="pref_sort_entrie_default">0</string>
-    <string-array name="pref_sort_entrie_array">
-        <item>Rendezetlen</item>
-    </string-array>
     <string-array name="pref_sort_entrie_values">
         <item>0</item>
         <item>1</item>

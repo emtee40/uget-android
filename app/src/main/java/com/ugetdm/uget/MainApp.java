@@ -18,7 +18,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.UriPermission;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -1249,34 +1248,68 @@ public class MainApp extends Application {
     // ------------------------------------------------------------------------
     // Notification
     NotificationManager  notificationManager = null;
-    NotificationChannel  notificationChannel = null;
-    Notification.Builder notificationBuilder = null;
-    String       channelId = "uget_channel_01";  // The id of the channel.
-    CharSequence channelName = "uGet";  // The user-visible name of the channel.
-    final private int notificationId = 0 ;
+    private final int    notificationId = 0;
+    // --- Notification.Builder ---
+    Notification.Builder builderNormal = null;
+    Notification.Builder builderCompleted = null;
+    Notification.Builder builderError = null;
+    // --- ID of the NotificationChannel ---
+    final String          CHANNEL_NORMAL    = "0.Normal";
+    final String          CHANNEL_COMPLETED = "1.Completed";
+    final String          CHANNEL_ERROR     = "2.Error";
 
     public void initNotification() {
         if (notificationManager == null)
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (notificationChannel == null)
-                notificationChannel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
+            NotificationChannel channelNormal;
+            NotificationChannel channelCompleted;
+            NotificationChannel channelError;
 
-        // --- must set channel ID in Android O ---
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            notificationBuilder = new Notification.Builder(getApplicationContext(), channelId);
-        else
-            notificationBuilder = new Notification.Builder(getApplicationContext());
+            channelNormal = new NotificationChannel(CHANNEL_NORMAL,
+                    getString(R.string.notification_channel_normal),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channelCompleted = new NotificationChannel(CHANNEL_COMPLETED,
+                    getString(R.string.notification_channel_completed),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channelError = new NotificationChannel(CHANNEL_ERROR,
+                    getString(R.string.notification_channel_error),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            channelNormal.enableVibration(false);
+            channelNormal.setSound(null, null);
+            channelCompleted.enableVibration(setting.ui.vibrateNotification);
+            if (setting.ui.soundNotification == false)
+                channelCompleted.setSound(null, null);
+            //channelComplete.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, new AudioAttributes.Builder().build());
+            channelError.enableVibration(setting.ui.vibrateNotification);
+            if (setting.ui.soundNotification == false)
+                channelError.setSound(null, null);
+
+            try {
+                notificationManager.createNotificationChannel(channelNormal);
+                notificationManager.createNotificationChannel(channelCompleted);
+                notificationManager.createNotificationChannel(channelError);
+            } catch(Exception e) {}
+
+            builderNormal = new Notification.Builder(getApplicationContext(), CHANNEL_NORMAL);
+            builderCompleted = new Notification.Builder(getApplicationContext(), CHANNEL_COMPLETED);
+            builderError = new Notification.Builder(getApplicationContext(), CHANNEL_ERROR);
+        }
+        else {
+            builderNormal = new Notification.Builder(getApplicationContext());
+            builderCompleted = builderNormal;
+            builderError = builderNormal;
+        }
     }
 
     public void cancelNotification() {
         notificationManager.cancel(notificationId);
+        //notificationManager.cancelAll();
     }
 
-    public void notifyMessage(String title, String content, int flags) {
+    public void notifyMessage(Notification.Builder builder, String title, String content) {
         Intent notifyIntent = new Intent(MainApp.this, MainActivity.class);
         Context  context;
 
@@ -1287,33 +1320,32 @@ public class MainApp extends Application {
         context = getApplicationContext();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, 0);
 
-        notificationBuilder
-                .setTicker(content)
-                .setContentIntent(pendingIntent)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true)
-                .setDefaults(flags)
-                .setSmallIcon(R.mipmap.ic_notification);
+        builder.setTicker(content)
+               .setContentIntent(pendingIntent)
+               .setContentTitle(title)
+               .setContentText(content)
+               .setAutoCancel(true)
+               .setSmallIcon(R.mipmap.ic_notification);
 
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            builder.setShowWhen(true);
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
         else {
-            notificationBuilder.setSmallIcon(R.mipmap.ic_notification)
-                    .setColor(getResources().getColor(R.color.colorPrimary));
+            builder.setSmallIcon(R.mipmap.ic_notification)
+                   .setColor(getResources().getColor(R.color.colorPrimary));
         }
 
         Notification notification;
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            notification = notificationBuilder.getNotification();
+            notification = builder.getNotification();
         else
-            notification = notificationBuilder.build();
+            notification = builder.build();
 
         notificationManager.notify(notificationId, notification);
     }
 
-    public void notifyActiveSpeed(int nActive) {
+    public void notifyActiveSpeed(int nActive, boolean firstTime) {
         if (setting.ui.startNotification == false)
             return;
 
@@ -1324,68 +1356,64 @@ public class MainApp extends Application {
             title = getString(R.string.app_name) + " · " + title;
         String subText = getString(R.string.notification_active_title) + " : " + nActive;
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            notificationBuilder.setShowWhen(false);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+            builderNormal.setDefaults(0);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            notificationBuilder.setSubText(subText);
+            builderNormal.setSubText(subText);
+        if (firstTime)
+            builderNormal.setWhen(System.currentTimeMillis());
 
-        notificationBuilder.setOngoing(true);
-        notificationBuilder.setOnlyAlertOnce(true);
-        notifyMessage(title, subText, 0);
+        builderNormal.setOngoing(true);
+        builderNormal.setOnlyAlertOnce(true);
+        notifyMessage(builderNormal, title, subText);
+    }
+
+    public void notifyCompleted() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            builderCompleted.setSubText(null);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            int  flags = 0;
+            if (setting.ui.soundNotification)
+                flags |= Notification.DEFAULT_SOUND;
+            if (setting.ui.vibrateNotification)
+                flags |= Notification.DEFAULT_VIBRATE;
+            builderCompleted.setDefaults(flags);
+        }
+
+        builderCompleted.setWhen(System.currentTimeMillis());
+        builderCompleted.setOngoing(false);
+        builderCompleted.setOnlyAlertOnce(false);
+
+        String title = getString(R.string.notification_completed_title);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+            title = getString(R.string.app_name) + " · " + title;
+
+        notifyMessage(builderCompleted, title,
+                getString(R.string.notification_completed_content));
     }
 
     public void notifyError() {
-        int  flags = 0;
-
-        if (setting.ui.soundNotification)
-            flags |= Notification.DEFAULT_SOUND;
-        if (setting.ui.vibrateNotification)
-            flags |= Notification.DEFAULT_VIBRATE;
-        if (setting.ui.soundNotification && setting.ui.vibrateNotification)
-            flags = Notification.DEFAULT_ALL;
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            notificationBuilder.setShowWhen(true);    // --- show time in notification ---
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            notificationBuilder.setSubText(null);
+            builderError.setSubText(null);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            int  flags = 0;
+            if (setting.ui.soundNotification)
+                flags |= Notification.DEFAULT_SOUND;
+            if (setting.ui.vibrateNotification)
+                flags |= Notification.DEFAULT_VIBRATE;
+            builderError.setDefaults(flags);
+        }
 
-        notificationBuilder.setOngoing(false);
-        notificationBuilder.setOnlyAlertOnce(false);
+        builderError.setWhen(System.currentTimeMillis());
+        builderError.setOngoing(false);
+        builderError.setOnlyAlertOnce(false);
 
 		String title = getString(R.string.notification_error_title);
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             title = getString(R.string.app_name) + " · " + title;
 		
-        notifyMessage(title,
-                getString(R.string.notification_error_content),
-                flags);
-    }
-
-    public void notifyCompleted() {
-        int  flags = 0;
-
-        if (setting.ui.soundNotification)
-            flags |= Notification.DEFAULT_SOUND;
-        if (setting.ui.vibrateNotification)
-            flags |= Notification.DEFAULT_VIBRATE;
-        if (setting.ui.soundNotification && setting.ui.vibrateNotification)
-            flags = Notification.DEFAULT_ALL;
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            notificationBuilder.setShowWhen(true);    // --- show time in notification ---
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            notificationBuilder.setSubText(null);
-
-        notificationBuilder.setOngoing(false);
-        notificationBuilder.setOnlyAlertOnce(false);
-
-        String title = getString(R.string.notification_completed_title);
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-            title = getString(R.string.app_name) + " · " + title;
-		
-        notifyMessage(title,
-                getString(R.string.notification_completed_content),
-                flags);
+        notifyMessage(builderError, title,
+                getString(R.string.notification_error_content));
     }
 
     // ------------------------------------------------------------------------

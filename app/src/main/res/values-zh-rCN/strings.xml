@@ -10,6 +10,10 @@
     <string name="notification_error_content">下载过程中出错。</string>
     <string name="notification_completed_title">下载完成</string>
     <string name="notification_completed_content">队列里所有下载都已完成。</string>
+    <!-- Notification channel name, user can setup in system settings (Android 8+) -->
+    <string name="notification_channel_normal">正常通知</string>
+    <string name="notification_channel_completed">下载完成</string>
+    <string name="notification_channel_error">发生错误</string>
 
     <!-- Category preferences -->
     <string name="cnode_name">名称</string>
@@ -158,9 +162,9 @@
     <string name="pref_ui_notification_starting">下载开始提示</string>
     <string name="pref_ui_notification_starting_summary">当下载开始时显示提示。</string>
     <string name="pref_ui_notification_sound">完成下载时发出声音</string>
-    <string name="pref_ui_notification_sound_summary">当下载完成或发生错误时发出声音。</string>
+    <string name="pref_ui_notification_sound_summary">当下载完成或发生错误时发出声音。 (在Android 8及更高版本中，您必须修改有关应用程序通知的系统设置)</string>
     <string name="pref_ui_notification_vibrate">下载完成时振动</string>
-    <string name="pref_ui_notification_vibrate_summary">当下载完成或发生错误时振动。</string>
+    <string name="pref_ui_notification_vibrate_summary">当下载完成或发生错误时振动。 (在Android 8及更高版本中，您必须修改有关应用程序通知的系统设置)</string>
     <string name="pref_ui_no_wifi_go_offline">若无 WiFi 连接则离线</string>
     <string name="pref_ui_no_wifi_go_offline_summary">如果 WiFi 断开/连接，程序将启用/禁用离线模式。</string>
     <string name="pref_ui_skip_existing_uri">跳过现有的 URI</string>

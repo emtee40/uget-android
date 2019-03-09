@@ -9,6 +9,10 @@
     <string name="notification_error_content">Error occurred during download.</string>
     <string name="notification_completed_title">Download Completed</string>
     <string name="notification_completed_content">All queuing downloads have been completed.</string>
+    <!-- Notification channel name, user can setup in system settings (Android 8+) -->
+    <string name="notification_channel_normal">Normal</string>
+    <string name="notification_channel_completed">Download Completed</string>
+    <string name="notification_channel_error">Error Occurred</string>
 
     <!-- Category preferences -->
     <string name="cnode_name">Name</string>
@@ -157,9 +161,9 @@
     <string name="pref_ui_notification_starting">Download starting notification</string>
     <string name="pref_ui_notification_starting_summary">Show notification when download starting.</string>
     <string name="pref_ui_notification_sound">Sound when download is finished</string>
-    <string name="pref_ui_notification_sound_summary">Sound when download is finished or error occurred.</string>
+    <string name="pref_ui_notification_sound_summary">Sound when download is finished or error occurred. (In Android 8 and above, you must modify system setting about app notification)</string>
     <string name="pref_ui_notification_vibrate">Vibrate when download is finished</string>
-    <string name="pref_ui_notification_vibrate_summary">Vibrate when download is finished or error occurred.</string>
+    <string name="pref_ui_notification_vibrate_summary">Vibrate when download is finished or error occurred. (In Android 8 and above, you must modify system setting about app notification)</string>
     <string name="pref_ui_no_wifi_go_offline">Go offline if no WiFi connection</string>
     <string name="pref_ui_no_wifi_go_offline_summary">Program will enable/disable offline mode if WiFi has disconnected/connected.</string>
     <string name="pref_ui_skip_existing_uri">Skip existing URI</string>
