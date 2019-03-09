@@ -256,9 +256,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (app.downloadAdapter.getCheckedItemCount() > 0 || isToolbarHomeAsUp()) {
             // --- selection mode ---
-            app.downloadAdapter.clearChoices(true);
-            decideMenuVisible();
-            updateToolbar();
+            exitSelectionMode(true);
         }
         else if (app.setting.ui.exitOnBack) {
             if (app.setting.ui.confirmExit) {
@@ -268,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             // --- do nothing ---
-            // moveTaskToBack(true);
+            moveTaskToBack(true);
             // super.onBackPressed();
         }
     }
@@ -417,10 +415,8 @@ public class MainActivity extends AppCompatActivity {
                 // --- selection mode ---
                 if (selection != null) {
                     int nChecked = app.downloadAdapter.setCheckedNodes(selection);
-                    if (nChecked == 0) {
-                        decideMenuVisible();
-                        updateToolbar();
-                    }
+                    if (nChecked == 0)
+                        exitSelectionMode(false);
                 }
                 break;
 
@@ -431,10 +427,8 @@ public class MainActivity extends AppCompatActivity {
                 // --- selection mode ---
                 if (selection != null) {
                     int nChecked = app.downloadAdapter.setCheckedNodes(selection);
-                    if (nChecked == 0) {
-                        decideMenuVisible();
-                        updateToolbar();
-                    }
+                    if (nChecked == 0)
+                        exitSelectionMode(false);
                 }
                 app.userAction = true;
                 break;
@@ -473,10 +467,8 @@ public class MainActivity extends AppCompatActivity {
                     app.downloadAdapter.setCheckedNodes(selection);
                 }
                 // --- selection mode ---
-                if (app.downloadAdapter.getCheckedItemCount() == 0) {
-                    decideMenuVisible();
-                    updateToolbar();
-                }
+                if (app.downloadAdapter.getCheckedItemCount() == 0)
+                    exitSelectionMode(false);
                 break;
 
             case R.id.action_pause:
@@ -490,10 +482,8 @@ public class MainActivity extends AppCompatActivity {
                     app.downloadAdapter.setCheckedNodes(selection);
                 }
                 // --- selection mode ---
-                if (app.downloadAdapter.getCheckedItemCount() == 0) {
-                    decideMenuVisible();
-                    updateToolbar();
-                }
+                if (app.downloadAdapter.getCheckedItemCount() == 0)
+                    exitSelectionMode(false);
                 break;
 
             case R.id.action_select_all:
@@ -517,10 +507,8 @@ public class MainActivity extends AppCompatActivity {
                     app.downloadAdapter.setCheckedNodes(selection);
                 }
                 // --- selection mode ---
-                if (app.downloadAdapter.getCheckedItemCount() == 0) {
-                    decideMenuVisible();
-                    updateToolbar();
-                }
+                if (app.downloadAdapter.getCheckedItemCount() == 0)
+                    exitSelectionMode(false);
                 break;
 
             case R.id.action_delete_data:
@@ -537,8 +525,7 @@ public class MainActivity extends AppCompatActivity {
                     app.downloadAdapter.setCheckedNodes(selection);
                 }
                 // --- selection mode ---
-                decideMenuVisible();
-                updateToolbar();
+                exitSelectionMode(false);
                 break;
 
             case R.id.action_delete_file:
@@ -593,7 +580,7 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onBackPressed();
+                    exitSelectionMode(true);
                 }
             });
         }
@@ -626,6 +613,14 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isToolbarHomeAsUp() {
         return (getSupportActionBar().getDisplayOptions() & ActionBar.DISPLAY_HOME_AS_UP) != 0;
+    }
+
+    public void exitSelectionMode(boolean cancelChoice) {
+        // --- selection mode ---
+        if (cancelChoice)
+            app.downloadAdapter.clearChoices(true);
+        decideMenuVisible();
+        updateToolbar();
     }
 
     public void decideMenuVisible() {
@@ -704,8 +699,7 @@ public class MainActivity extends AppCompatActivity {
                 app.nthStatus = position;
                 app.switchDownloadAdapter();
                 // --- selection mode ---
-                decideMenuVisible();
-                updateToolbar();
+                exitSelectionMode(false);
                 // --- show message if no download ---
                 decideContent();
             }
@@ -784,8 +778,7 @@ public class MainActivity extends AppCompatActivity {
             app.nthCategory = position;
             app.switchDownloadAdapter();
             // --- selection mode ---
-            decideMenuVisible();
-            updateToolbar();
+            exitSelectionMode(false);
             // --- category menu ---
             invalidateOptionsMenu();    // this will call onPrepareOptionsMenu()
             // --- category button up/down ---
@@ -1083,8 +1076,7 @@ public class MainActivity extends AppCompatActivity {
         }
         app.downloadAdapter.clearChoices(false);
         // --- selection mode ---
-        decideMenuVisible();
-        updateToolbar();
+        exitSelectionMode(false);
         // --- show message if no download item ---
         decideContent();
     }
