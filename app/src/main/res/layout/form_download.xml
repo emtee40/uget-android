@@ -8,14 +8,14 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
+        android:paddingTop="@dimen/form_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:stretchColumns="1" >
 
         <TableRow
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,8 +50,8 @@
 
         <TableRow
             android:id="@+id/dnode_uri_row"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:id="@+id/dnode_uri"
@@ -74,8 +74,8 @@
 
         <TableRow
             android:id="@+id/dnode_mirrors_row"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:id="@+id/dnode_mirrors"
@@ -97,8 +97,8 @@
 
         <TableRow
             android:id="@+id/dnode_file_row"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:id="@+id/dnode_file"
@@ -120,8 +120,8 @@
         </TableRow>
 
         <TableRow
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:id="@+id/dnode_folder"
@@ -158,8 +158,8 @@
         </TableRow>
 
         <TableRow
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -179,8 +179,8 @@
         </TableRow>
 
         <TableRow
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -200,8 +200,8 @@
         </TableRow>
 
         <TableRow
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -224,8 +224,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -238,8 +238,8 @@
                 android:id="@+id/dnode_connections_editor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="@dimen/form_horizontal_margin"
+                android:layout_marginLeft="@dimen/form_horizontal_margin"
                 android:maxLines="1"
                 android:ems="3"
                 android:inputType="number"
@@ -267,16 +267,16 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="3dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/form_vertical_margin"
+            android:layout_marginBottom="@dimen/form_vertical_margin"
             android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -290,8 +290,8 @@
                 android:id="@+id/dnode_proxy_type_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="@dimen/form_horizontal_margin"
+                android:layout_marginLeft="@dimen/form_horizontal_margin"
                 android:layout_gravity="start"/>
 
         </LinearLayout>
@@ -300,8 +300,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:id="@+id/dnode_proxy_host"
@@ -316,8 +316,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="@dimen/form_horizontal_margin"
+                android:layout_marginLeft="@dimen/form_horizontal_margin"
                 android:maxLines="1"
                 android:ems="8"
                 android:inputType="text"
@@ -327,8 +327,8 @@
                 android:id="@+id/dnode_proxy_port"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="@dimen/form_horizontal_margin"
+                android:layout_marginLeft="@dimen/form_horizontal_margin"
                 android:labelFor="@+id/dnode_proxy_port_editor"
                 android:text="@string/dnode_proxy_port"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -337,8 +337,8 @@
                 android:id="@+id/dnode_proxy_port_editor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="@dimen/form_horizontal_margin"
+                android:layout_marginLeft="@dimen/form_horizontal_margin"
                 android:ems="4"
                 android:inputType="number"
                 android:maxLines="1"
@@ -347,8 +347,8 @@
         </LinearLayout>
 
         <TableRow
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:id="@+id/dnode_proxy_user"
@@ -369,8 +369,8 @@
         </TableRow>
 
         <TableRow
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="@dimen/form_vertical_margin"
+            android:paddingBottom="@dimen/form_vertical_margin">
 
             <TextView
                 android:id="@+id/dnode_proxy_password"

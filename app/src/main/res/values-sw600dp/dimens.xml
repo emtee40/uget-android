@@ -1,0 +1,14 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+
+    <!-- uGet -->
+    <dimen name="item_download_left_margin">12dp</dimen>
+    <dimen name="item_download_right_margin">16dp</dimen>
+    <dimen name="item_category_horizontal_margin">8dp</dimen>
+    <dimen name="form_vertical_margin">8dp</dimen>
+    <dimen name="form_horizontal_margin">8dp</dimen>
+    <dimen name="drawer_width">304dp</dimen>
+    <dimen name="traveler_horizontal_margin">16dp</dimen>
+    <dimen name="traveler_half_horizontal_margin">8dp</dimen>
+</resources>

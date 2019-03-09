@@ -10,7 +10,7 @@
         android:layout_gravity="center_vertical"
         android:src="@android:drawable/ic_delete"
         android:padding="4dp"
-        android:minWidth="32dp"
+        android:minWidth="24dp"
         android:maxWidth="32dp" />
 
     <TextView

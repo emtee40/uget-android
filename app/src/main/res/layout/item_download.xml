@@ -5,8 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_item_download"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:paddingLeft="@dimen/item_download_left_margin"
+    android:paddingRight="@dimen/item_download_right_margin"
+    android:paddingStart="@dimen/item_download_left_margin"
+    android:paddingEnd="@dimen/item_download_right_margin">
 
     <ImageView
         android:id="@+id/dnode_image"
@@ -90,8 +92,8 @@
         android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dnode_size"
+        app:layout_constraintStart_toEndOf="@+id/dnode_speed"
         app:layout_constraintTop_toBottomOf="@+id/dnode_percent" />
         <!-- android:textColor="@android:color/tab_indicator_text" -->
         <!-- android:textColor="0x1060009" -->

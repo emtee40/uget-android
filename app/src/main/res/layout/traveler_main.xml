@@ -8,12 +8,14 @@
     <!-- set "clickable" to true -->
     <!-- Disable click through on items behind the drawer -->
 
+    <!-- ============================================================== -->
+    <!-- Status label & RecyclerView (list view) -->
     <TextView
         android:id="@+id/status_listview_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/traveler_horizontal_margin"
+        android:paddingRight="@dimen/traveler_horizontal_margin"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:paddingBottom="@dimen/nav_header_vertical_spacing"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -24,6 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!-- ============================================================== -->
+    <!-- Separator -->
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -31,19 +35,24 @@
         android:background="?android:attr/listDivider" />
         <!-- android:background="@android:color/darker_gray" -->
 
+    <!-- ============================================================== -->
+    <!-- Category label & RecyclerView (list view) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/traveler_horizontal_margin"
+        android:paddingStart="@dimen/traveler_horizontal_margin"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:paddingRight="@dimen/traveler_half_horizontal_margin"
+        android:paddingEnd="@dimen/traveler_half_horizontal_margin"
+        android:paddingBottom="@dimen/nav_header_vertical_spacing">
+        <!-- paddingRight - 8dp for below "category_move_down" -->
 
         <TextView
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/nav_header_vertical_spacing"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/category_title" />
 
@@ -52,8 +61,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingStart="@dimen/traveler_half_horizontal_margin"
+            android:paddingEnd="@dimen/traveler_half_horizontal_margin"
+            android:paddingLeft="@dimen/traveler_half_horizontal_margin"
+            android:paddingRight="@dimen/traveler_half_horizontal_margin"
             android:src="@drawable/ic_arrow_up" />
 
         <ImageView
@@ -61,10 +72,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingStart="8dp"
-            android:paddingLeft="8dp"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:paddingRight="16dp"
+            android:paddingStart="@dimen/traveler_half_horizontal_margin"
+            android:paddingEnd="@dimen/traveler_half_horizontal_margin"
+            android:paddingLeft="@dimen/traveler_half_horizontal_margin"
+            android:paddingRight="@dimen/traveler_half_horizontal_margin"
             android:src="@drawable/ic_arrow_down" />
 
     </LinearLayout>

@@ -188,6 +188,7 @@ public class NodeActivity extends AppCompatActivity {
             // toolbar.setNavigationIcon(null);
             // toolbar.setContentInsetsRelative(16+32+16, 0);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setContentInsetStartWithNavigation(0);
             // --- reset Listener when icon changed
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,7 +199,7 @@ public class NodeActivity extends AppCompatActivity {
         }
         else {
             // toolbar.setNavigationIcon(R.drawable.ic_category);
-            // toolbar.setContentInsetStartWithNavigation(0);    // right side space of Navigation button
+            toolbar.setContentInsetStartWithNavigation(0);    // right side space of Navigation button
         }
         switch (mode) {
             case Mode.batch_sequence:

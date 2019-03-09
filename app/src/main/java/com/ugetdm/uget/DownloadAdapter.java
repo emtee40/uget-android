@@ -70,7 +70,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             retryMinWidth = calcTextWidth(holder.retry, ' ' + stringRetry + ">999");  // + '9'
             percentMinWidth = calcTextWidth(holder.percent, "000%") + 4;  // + padding
             speedMinWidth = calcTextWidth(holder.speed, "00000 WiB/s");  // + '0'
-            sizeMinWidth = calcTextWidth(holder.size, "00000 WiB / 00000 WiB");  // + '0' + '0'
+            sizeMinWidth = calcTextWidth(holder.size, "0000 WiB / 00000 WiB");  // + '0'
         }
         holder.retry.getLayoutParams().width = retryMinWidth;
         holder.percent.getLayoutParams().width = percentMinWidth;
@@ -116,6 +116,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             holder.name.setText(android.R.string.no);
             holder.image.setImageResource(android.R.drawable.ic_delete);
             holder.retry.setText(' ' + stringRetry + ">55");
+            holder.retry.getLayoutParams().width = retryMinWidth;
+            holder.retry.requestLayout();
             holder.progress.setProgress((int) 55);
             // holder.progress.getProgressDrawable().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
             holder.percent.setText(Integer.toString(55) + '%');
@@ -126,7 +128,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
                 holder.left.setVisibility(View.VISIBLE);
                 holder.left.setText("55:55:55" + " " + stringLeft);
                 holder.size.setVisibility(View.VISIBLE);
-                holder.size.setText("80 Kib");
+                holder.size.setText("1055 KiB / 2180 KiB");
             }
             else {
                 holder.message.setVisibility(View.VISIBLE);
@@ -248,7 +250,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         holder.size.setText(sizeText);
 
         // adjust width of size field
-        if (message == null) {
+        if ((state & Info.Group.active) > 0) {
+            // -- running task doesn't show message.
             holder.size.getLayoutParams().width = sizeMinWidth;
             holder.size.requestLayout();
             holder.size.setVisibility(View.VISIBLE);

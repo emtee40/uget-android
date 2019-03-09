@@ -31,7 +31,7 @@
         <include
             layout="@layout/traveler_node"
             android:id="@+id/traveler_node"
-            android:layout_width="288dp"
+            android:layout_width="@dimen/drawer_width"
             android:layout_height="match_parent"
             android:background="@android:color/background_light" />
 
