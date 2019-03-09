@@ -19,8 +19,8 @@
     <string name="daidalos_confirm_create_file">\'$file_name\'は存在しません。\n新しく作成しますか？</string>
     <string name="daidalos_confirm_select_folder">\'$file_name\'でよろしいですか？</string>
     <string name="daidalos_confirm_create_folder">\'$file_name\'は存在しません。\n新しく作成しますか？</string>
-    <color name="daidalos_backgroud">#000</color>
-    <color name="daidalos_active_file">#fff</color>
+    <color name="daidalos_backgroud">#fff</color>
+    <color name="daidalos_active_file">#000</color>
     <color name="daidalos_inactive_file">#888</color>
 
 </resources>

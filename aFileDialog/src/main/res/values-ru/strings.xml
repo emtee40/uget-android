@@ -19,8 +19,8 @@
     <string name="daidalos_confirm_create_file">Файл \'$file_name\' не существует, вы хотите его создать?</string>
     <string name="daidalos_confirm_select_folder">Вы уверены, что хотите выбрать папку \'$file_name\'?</string>
     <string name="daidalos_confirm_create_folder">Папка \'$file_name\' не существует, вы хотите её создать?</string>
-    <color name="daidalos_backgroud">#000</color>
-    <color name="daidalos_active_file">#fff</color>
+    <color name="daidalos_backgroud">#fff</color>
+    <color name="daidalos_active_file">#000</color>
     <color name="daidalos_inactive_file">#888</color>
 
 </resources>
