@@ -305,6 +305,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // --- selection mode ---
+        if (app.downloadAdapter.singleSelection)
+            app.downloadAdapter.clearChoices(true);
+
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
