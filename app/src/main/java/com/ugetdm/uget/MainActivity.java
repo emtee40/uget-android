@@ -632,6 +632,12 @@ public class MainActivity extends AppCompatActivity {
     public void decideMenuVisible() {
         boolean selectionMode = app.downloadAdapter.getCheckedItemCount() != 0;
         Menu menu = toolbar.getMenu();
+        if (menu == null)
+            return;
+        if (menu.findItem(R.id.action_file) == null)
+            return;
+        if (menu.findItem(R.id.action_start) == null)
+            return;
 
         menu.findItem(R.id.action_file).setVisible(selectionMode == false);
         menu.findItem(R.id.action_batch).setVisible(selectionMode == false);
