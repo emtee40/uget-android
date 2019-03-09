@@ -106,7 +106,8 @@ public class TimeoutHandler {
 
             if (nActive > 0) {
                 // --- show speed in notification ---
-                app.notifyActiveSpeed(nActive);
+                if ((queuingCounts & 1) == 1 || nActiveLast == 0)
+                    app.notifyActiveSpeed(nActive, nActiveLast == 0);
                 // --- adjust speed ---
                 if ((queuingCounts & 1) == 1)
                     app.core.adjustSpeed();
@@ -116,7 +117,8 @@ public class TimeoutHandler {
                 // --- start or stop ---
                 if (nActive > 0 && nActiveLast == 0) {
                     app.acquireWakeLock();
-                    app.core.nError = 0;    // reset  "app.core.nError"  when starting
+                    // --- reset  "app.core.nError"
+                    app.core.nError = 0;
                 }
                 else if (nActive == 0 && nActiveLast > 0) {
                     if (app.userAction)
@@ -126,7 +128,9 @@ public class TimeoutHandler {
                     else
                         app.notifyCompleted();
 
-                    // save all data before program release WakeLock
+                    // --- reset  "app.core.nError"
+                    app.core.nError = 0;
+                    // --- save all data before program release WakeLock
                     app.saveAllData();
                     app.releaseWakeLock();
                 }
