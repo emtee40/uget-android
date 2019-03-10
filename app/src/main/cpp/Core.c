@@ -255,6 +255,7 @@ Java_com_ugetdm_uget_lib_Core_trim (JNIEnv* env, jobject thiz)
 	UgArrayPtr* deletedNodes;
 	jclass      jCore_class;
     jlongArray  jArray;
+    jlong       jLong;
 	int         index;
 
 	jCore_class = (*env)->GetObjectClass (env, thiz);
@@ -274,8 +275,10 @@ Java_com_ugetdm_uget_lib_Core_trim (JNIEnv* env, jobject thiz)
         // Java long : 64-bit
         // C pointer : 32-bit or 64-bit
         jArray = (*env)->NewLongArray(env, app->n_deleted);
-	    for (index = 0;  index < deletedNodes->length;  index++)
-            (*env)->SetLongArrayRegion(env, jArray, index, 1, (jlong) deletedNodes->at[index]);
+	    for (index = 0;  index < deletedNodes->length;  index++) {
+			jLong = (jlong)(intptr_t) deletedNodes->at[index];
+			(*env)->SetLongArrayRegion(env, jArray, index, 1, &jLong);
+	    }
 	}
 	// C array
 	ug_array_clear(deletedNodes);
