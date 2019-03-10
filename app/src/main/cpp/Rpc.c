@@ -168,16 +168,20 @@ Java_com_ugetdm_uget_lib_Rpc_getCommand (JNIEnv* env, jobject thiz, jobject jreq
 	UgLink*      link;
 	UgetRpcCmd*  cmd;
 	UgetNode*    node;
-	jclass       jClass;
-	jobject      jObject;
+	jclass       stringClass;
 	jobjectArray uriArray;
+	jobject      jObject;
+	union {
+		jclass   req;
+		jclass   cmd;
+	} jClass;
 
 	// --------------------------------
 	// Rpc.Request
-	jClass = (*env)->GetObjectClass (env, jreq);
+	jClass.req = (*env)->GetObjectClass(env, jreq);
 	cmd = (UgetRpcCmd*)(intptr_t) (*env)->GetLongField(env, jreq,
-			(*env)->GetFieldID (env, jClass, "pointer", "J"));
-	(*env)->DeleteLocalRef (env, jClass);
+			(*env)->GetFieldID(env, jClass.req, "pointer", "J"));
+	(*env)->DeleteLocalRef(env, jClass.req);
 
 	// global lock
 	rec_mutex_lock (&rpclock);
@@ -186,46 +190,46 @@ Java_com_ugetdm_uget_lib_Rpc_getCommand (JNIEnv* env, jobject thiz, jobject jreq
 		return NULL;
 	// --------------------------------
 	// Rpc.Command
-	jClass = (*env)->FindClass (env, "com/ugetdm/uget/lib/Rpc$Command");
+	jClass.cmd = (*env)->FindClass(env, "com/ugetdm/uget/lib/Rpc$Command");
 	// Create New Object with constructor
 	// jObject = new com.ugetdm.uget.Rpc.Command()
-	jObject = (*env)->NewObject (env, jClass,
-			(*env)->GetMethodID (env, jClass, "<init>", "(Lcom/ugetdm/uget/lib/Rpc;)V"),
+	jObject = (*env)->NewObject(env, jClass.cmd,
+			(*env)->GetMethodID(env, jClass.cmd, "<init>", "()V"),
 			thiz);
 
 	// String  uris[];
-	uriArray = (*env)->NewObjectArray (env, cmd->uris.size,
-			(*env)->FindClass(env, "java/lang/String"),
-			(*env)->NewStringUTF(env, ""));
+	stringClass = (*env)->FindClass(env, "java/lang/String");
+	uriArray = (*env)->NewObjectArray(env, cmd->uris.size, stringClass, NULL);
+	(*env)->DeleteLocalRef(env, stringClass);
 	for (index = 0, link = cmd->uris.head;  link;  link = link->next, index++) {
-		(*env)->SetObjectArrayElement (env, uriArray, index,
-				(*env)->NewStringUTF (env, link->data));
+		(*env)->SetObjectArrayElement(env, uriArray, index,
+				(*env)->NewStringUTF(env, link->data));
 	}
 	(*env)->SetObjectField (env, jObject,
-			(*env)->GetFieldID (env, jClass, "uris", "[Ljava/lang/String;"),
+			(*env)->GetFieldID(env, jClass.cmd, "uris", "[Ljava/lang/String;"),
 			uriArray);
 	// DownloadProp prop;
 	node = uget_node_new (NULL);
 	uget_option_value_to_info (&cmd->value, node->info);
 	getDownloadProp (env, (jlong)(intptr_t) node,
 			(*env)->GetObjectField (env, jObject,
-					(*env)->GetFieldID (env, jClass, "prop",
+					(*env)->GetFieldID(env, jClass.cmd, "prop",
 							"Lcom/ugetdm/uget/lib/DownloadProp;")) );
 	uget_node_free (node);
 	// boolean  quiet;
 	(*env)->SetBooleanField (env, jObject,
-			(*env)->GetFieldID (env, jClass, "quiet", "Z"),
+			(*env)->GetFieldID(env, jClass.cmd, "quiet", "Z"),
 			cmd->value.quiet);
 	// int categoryIndex;
 	(*env)->SetIntField (env, jObject,
-			(*env)->GetFieldID (env, jClass, "categoryIndex", "I"),
+			(*env)->GetFieldID(env, jClass.cmd, "categoryIndex", "I"),
 			cmd->value.category_index);
 	// int  offline;
 	(*env)->SetIntField (env, jObject,
-			(*env)->GetFieldID (env, jClass, "offline", "I"),
+			(*env)->GetFieldID(env, jClass.cmd, "offline", "I"),
 			cmd->value.ctrl.offline);
 
-	(*env)->DeleteLocalRef (env, jClass);
+	(*env)->DeleteLocalRef(env, jClass.cmd);
 
 	// global lock
 	rec_mutex_unlock (&rpclock);

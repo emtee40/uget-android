@@ -93,29 +93,32 @@ Java_com_ugetdm_uget_lib_Sequence_getList (JNIEnv* env, jobject thiz, jstring jp
 	UgList         list;
 	UgLink*        link;
 	UgetSequence*  seq;
-	jclass         seqClass;
 	jobjectArray   uriArray;
 	const char*    pattern;
 	int            index;
+    union {
+        jclass  seq;
+        jclass  str;
+    } jClass;
 
-	seqClass = (*env)->GetObjectClass (env, thiz);
+    jClass.seq = (*env)->GetObjectClass(env, thiz);
 	seq = (UgetSequence*)(intptr_t) (*env)->GetLongField(env, thiz,
-			(*env)->GetFieldID (env, seqClass, "pointer", "J"));
-	(*env)->DeleteLocalRef (env, seqClass);
+			(*env)->GetFieldID(env, jClass.seq, "pointer", "J"));
+	(*env)->DeleteLocalRef(env, jClass.seq);
 
 	ug_list_init (&list);
 
-	pattern = (*env)->GetStringUTFChars (env, jpattern, NULL);
-	uget_sequence_get_list (seq, pattern, &list);
-	(*env)->ReleaseStringUTFChars (env, jpattern, pattern);
+	pattern = (*env)->GetStringUTFChars(env, jpattern, NULL);
+	uget_sequence_get_list(seq, pattern, &list);
+	(*env)->ReleaseStringUTFChars(env, jpattern, pattern);
 
 	// String  uris[];
-	uriArray = (*env)->NewObjectArray (env, list.size,
-			(*env)->FindClass(env, "java/lang/String"),
-			(*env)->NewStringUTF(env, ""));
+    jClass.str = (*env)->FindClass(env, "java/lang/String");
+	uriArray = (*env)->NewObjectArray(env, list.size, jClass.str, NULL);
+	(*env)->DeleteLocalRef(env, jClass.str);
 	for (index = 0, link = list.head;  link;  link = link->next, index++) {
-		(*env)->SetObjectArrayElement (env, uriArray, index,
-				(*env)->NewStringUTF (env, link->data));
+		(*env)->SetObjectArrayElement(env, uriArray, index,
+				(*env)->NewStringUTF(env, link->data));
 	}
 	ug_list_clear (&list, TRUE);
 
@@ -128,31 +131,34 @@ Java_com_ugetdm_uget_lib_Sequence_getPreview (JNIEnv* env, jobject thiz, jstring
 	UgList         list;
 	UgLink*        link;
 	UgetSequence*  seq;
-	jclass         seqClass;
 	jobjectArray   uriArray;
 	const char*    pattern;
 	int            index;
+	union {
+	    jclass  seq;
+	    jclass  str;
+	} jClass;
 
-	seqClass = (*env)->GetObjectClass (env, thiz);
+	jClass.seq = (*env)->GetObjectClass(env, thiz);
 	seq = (UgetSequence*)(intptr_t) (*env)->GetLongField(env, thiz,
-			(*env)->GetFieldID (env, seqClass, "pointer", "J"));
-	(*env)->DeleteLocalRef (env, seqClass);
+			(*env)->GetFieldID(env, jClass.seq, "pointer", "J"));
+	(*env)->DeleteLocalRef(env, jClass.seq);
 
 	ug_list_init (&list);
 
-	pattern = (*env)->GetStringUTFChars (env, jpattern, NULL);
-	uget_sequence_get_preview (seq, pattern, &list);
-	(*env)->ReleaseStringUTFChars (env, jpattern, pattern);
+	pattern = (*env)->GetStringUTFChars(env, jpattern, NULL);
+	uget_sequence_get_preview(seq, pattern, &list);
+	(*env)->ReleaseStringUTFChars(env, jpattern, pattern);
 
 	// String[];
-	uriArray = (*env)->NewObjectArray (env, list.size,
-			(*env)->FindClass(env, "java/lang/String"),
-			(*env)->NewStringUTF(env, ""));
+    jClass.str = (*env)->FindClass(env, "java/lang/String");
+	uriArray = (*env)->NewObjectArray(env, list.size, jClass.str, NULL);
+	(*env)->DeleteLocalRef(env, jClass.str);
 	for (index = 0, link = list.head;  link;  link = link->next, index++) {
-		(*env)->SetObjectArrayElement (env, uriArray, index,
-				(*env)->NewStringUTF (env, link->data));
+		(*env)->SetObjectArrayElement(env, uriArray, index,
+				(*env)->NewStringUTF(env, link->data));
 	}
-	ug_list_clear (&list, TRUE);
+	ug_list_clear(&list, TRUE);
 
 	return uriArray;
 }
