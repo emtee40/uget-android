@@ -92,6 +92,7 @@ Java_com_ugetdm_uget_lib_Sequence_getList (JNIEnv* env, jobject thiz, jstring jp
 {
 	UgList         list;
 	UgLink*        link;
+	UgLink*        link_next;
 	UgetSequence*  seq;
 	jobjectArray   uriArray;
 	const char*    pattern;
@@ -116,11 +117,13 @@ Java_com_ugetdm_uget_lib_Sequence_getList (JNIEnv* env, jobject thiz, jstring jp
     jClass.str = (*env)->FindClass(env, "java/lang/String");
 	uriArray = (*env)->NewObjectArray(env, list.size, jClass.str, NULL);
 	(*env)->DeleteLocalRef(env, jClass.str);
-	for (index = 0, link = list.head;  link;  link = link->next, index++) {
+	for (index = 0, link = list.head;  link;  link = link_next, index++) {
+        link_next = link->next;
 		(*env)->SetObjectArrayElement(env, uriArray, index,
 				(*env)->NewStringUTF(env, link->data));
+		ug_free(link);
 	}
-	ug_list_clear (&list, TRUE);
+	ug_list_clear(&list, FALSE);
 
 	return uriArray;
 }
@@ -158,7 +161,7 @@ Java_com_ugetdm_uget_lib_Sequence_getPreview (JNIEnv* env, jobject thiz, jstring
 		(*env)->SetObjectArrayElement(env, uriArray, index,
 				(*env)->NewStringUTF(env, link->data));
 	}
-	ug_list_clear(&list, TRUE);
+	uget_sequence_clear_result(&list);
 
 	return uriArray;
 }
