@@ -347,8 +347,8 @@ public class MainApp extends Application {
         categoryProp.finishedLimit = 100;
         categoryProp.recycledLimit = 100;
         categoryProp.hosts = ".edu;.idv";
-        categoryProp.schemes = "ftps;magnet";
-        categoryProp.fileTypes = "torrent;metalink";
+        categoryProp.schemes = "ftps";
+        categoryProp.fileTypes = "bmp;jpg";
         categoryProp.folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         categoryProp.connections = 1;
         categoryProp.proxyPort = 80;
