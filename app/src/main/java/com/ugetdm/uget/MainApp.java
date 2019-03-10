@@ -414,8 +414,9 @@ public class MainApp extends Application {
         position = Node.getPosition(core.nodeReal, cNodePointer);
         if (categoryAdapter != null) {
             categoryAdapter.notifyItemInserted(position);
-            categoryAdapter.notifyItemChanged(0);    // "All Category" getItemCount() changed
+            categoryAdapter.notifyItemChanged(0);    // "All Category" nChildren() was changed
         }
+        // --- If user selected "All Category", status nChildren() was changed too.
         if (stateAdapter != null)
             stateAdapter.notifyDataSetChanged();
     }
@@ -436,10 +437,9 @@ public class MainApp extends Application {
         if (Node.nChildren(core.nodeReal) == 0) {
             // --- create new category and append it.
             createDefaultCategory();
-            categoryAdapter.notifyItemInserted(1);
         }
         else {
-            // if no nth category, move position to previous category.
+            // move position to previous category.
             cNodePointer = Node.getNthChild(core.nodeReal, nth -1);
             if (cNodePointer == 0) {
                 nthCategory = nth - 1;
@@ -539,9 +539,11 @@ public class MainApp extends Application {
         core.addDownload(dNodePointer, cNodePointer, false);
         int  position = Node.getPosition(cNodePointer, dNodePointer);
 
-        stateAdapter.notifyDataSetChanged();
+        if (toNthCategory == nthCategory) {
+            stateAdapter.notifyDataSetChanged();
+            downloadAdapter.notifyItemInserted(position);
+        }
         categoryAdapter.notifyDataSetChanged();
-        downloadAdapter.notifyItemInserted(position);
         return position;
     }
 

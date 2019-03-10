@@ -418,6 +418,7 @@ public class MainActivity extends AppCompatActivity {
                 selection = app.downloadAdapter.getCheckedNodes();
                 app.core.resumeCategories();
                 app.downloadAdapter.notifyDataSetChanged();
+                app.stateAdapter.notifyDataSetChanged();
                 // --- selection mode ---
                 if (selection != null) {
                     int nChecked = app.downloadAdapter.setCheckedNodes(selection);
@@ -430,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
                 selection = app.downloadAdapter.getCheckedNodes();
                 app.core.pauseCategories();
                 app.downloadAdapter.notifyDataSetChanged();
+                app.stateAdapter.notifyDataSetChanged();
                 // --- selection mode ---
                 if (selection != null) {
                     int nChecked = app.downloadAdapter.setCheckedNodes(selection);
@@ -709,6 +711,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 app.nthStatus = position;
+                // --- avoid IndexOutOfBoundsException --- call getRecycledViewPool().clear()
+                downloadListView.getRecycledViewPool().clear();
+                // --- This will call app.downloadAdapter.notifyDataSetChanged()
                 app.switchDownloadAdapter();
                 // --- selection mode ---
                 exitSelectionMode(false);
@@ -788,6 +793,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(View view, int position) {
             app.nthCategory = position;
+            // --- avoid IndexOutOfBoundsException --- call getRecycledViewPool().clear()
+            downloadListView.getRecycledViewPool().clear();
+            // --- This will call app.downloadAdapter.notifyDataSetChanged()
             app.switchDownloadAdapter();
             // --- selection mode ---
             exitSelectionMode(false);

@@ -465,7 +465,6 @@ public class NodeActivity extends AppCompatActivity {
                 infoPointer = Node.info(nodePointer);
                 Info.set(infoPointer, categoryProp);
                 app.addCategoryNode(nodePointer);
-                app.categoryAdapter.notifyDataSetChanged();
                 // --- select category that just created.
                 app.categoryAdapter.setItemChecked(app.categoryAdapter.getItemCount()-1, true);
                 if (app.mainActivity != null)
