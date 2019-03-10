@@ -141,6 +141,7 @@ public class SequenceForm {
     public void setRangeType(int nthRange, int type) {
         View digitsLabel, charCase;
         EditText digits, from, to;
+        TextView toLabel;
 
         switch (nthRange) {
             default:
@@ -150,6 +151,7 @@ public class SequenceForm {
                 digits = (EditText) view.findViewById(R.id.batch_seq_digits1);
                 from = (EditText) view.findViewById(R.id.batch_seq_from1);
                 to = (EditText) view.findViewById(R.id.batch_seq_to1);
+                toLabel = (TextView) view.findViewById(R.id.batch_seq_to1_label);
                 break;
 
             case 1:
@@ -158,6 +160,7 @@ public class SequenceForm {
                 digits = (EditText) view.findViewById(R.id.batch_seq_digits2);
                 from = (EditText) view.findViewById(R.id.batch_seq_from2);
                 to = (EditText) view.findViewById(R.id.batch_seq_to2);
+                toLabel = (TextView) view.findViewById(R.id.batch_seq_to2_label);
                 break;
 
             case 2:
@@ -166,6 +169,7 @@ public class SequenceForm {
                 digits = (EditText) view.findViewById(R.id.batch_seq_digits3);
                 from = (EditText) view.findViewById(R.id.batch_seq_from3);
                 to = (EditText) view.findViewById(R.id.batch_seq_to3);
+                toLabel = (TextView) view.findViewById(R.id.batch_seq_to3_label);
                 break;
         }
 
@@ -177,6 +181,7 @@ public class SequenceForm {
                 charCase.setVisibility(View.INVISIBLE);
                 from.setEnabled(false);
                 to.setEnabled(false);
+                toLabel.setEnabled(false);
                 if (rangeTypeEnableCountdown > 0)
                     rangeTypeEnableCountdown--;
                 break;
@@ -189,6 +194,7 @@ public class SequenceForm {
                 from.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
                 to.setEnabled(true);
                 to.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
+                toLabel.setEnabled(true);
                 if (from.getInputType() != InputType.TYPE_CLASS_NUMBER || (from.length() == 0 && to.length() == 0)) {
                     from.setInputType(InputType.TYPE_CLASS_NUMBER);
                     to.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -209,6 +215,7 @@ public class SequenceForm {
                 from.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
                 to.setEnabled(true);
                 to.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+                toLabel.setEnabled(true);
                 if (from.getInputType() != InputType.TYPE_CLASS_TEXT || (from.length() == 0 && to.length() == 0)) {
                     from.setInputType(InputType.TYPE_CLASS_TEXT);
                     to.setInputType(InputType.TYPE_CLASS_TEXT);
