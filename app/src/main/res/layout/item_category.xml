@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/item_category_horizontal_margin"
-    android:paddingRight="@dimen/item_category_horizontal_margin"
+    android:paddingLeft="@dimen/item_category_horizontal_spacing"
+    android:paddingRight="@dimen/item_category_horizontal_spacing"
     android:background="@drawable/selector_item_category" >
 
     <ImageView

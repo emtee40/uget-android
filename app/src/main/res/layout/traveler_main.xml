@@ -14,10 +14,10 @@
         android:id="@+id/status_listview_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/traveler_horizontal_margin"
-        android:paddingRight="@dimen/traveler_horizontal_margin"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:paddingBottom="@dimen/nav_header_vertical_spacing"
+        android:paddingLeft="@dimen/traveler_horizontal_spacing"
+        android:paddingRight="@dimen/traveler_horizontal_spacing"
+        android:paddingTop="@dimen/traveler_vertical_spacing"
+        android:paddingBottom="@dimen/traveler_vertical_spacing"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/status_title" />
 
@@ -31,7 +31,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/traveler_vertical_spacing"
         android:background="?android:attr/listDivider" />
         <!-- android:background="@android:color/darker_gray" -->
 
@@ -41,12 +41,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/traveler_horizontal_margin"
-        android:paddingStart="@dimen/traveler_horizontal_margin"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:paddingRight="@dimen/traveler_half_horizontal_margin"
-        android:paddingEnd="@dimen/traveler_half_horizontal_margin"
-        android:paddingBottom="@dimen/nav_header_vertical_spacing">
+        android:paddingLeft="@dimen/traveler_horizontal_spacing"
+        android:paddingStart="@dimen/traveler_horizontal_spacing"
+        android:paddingTop="@dimen/traveler_vertical_spacing"
+        android:paddingRight="@dimen/traveler_horizontal_half_spacing"
+        android:paddingEnd="@dimen/traveler_horizontal_half_spacing"
+        android:paddingBottom="@dimen/traveler_vertical_spacing">
         <!-- paddingRight - 8dp for below "category_move_down" -->
 
         <TextView
@@ -61,10 +61,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingStart="@dimen/traveler_half_horizontal_margin"
-            android:paddingEnd="@dimen/traveler_half_horizontal_margin"
-            android:paddingLeft="@dimen/traveler_half_horizontal_margin"
-            android:paddingRight="@dimen/traveler_half_horizontal_margin"
+            android:paddingStart="@dimen/traveler_horizontal_half_spacing"
+            android:paddingEnd="@dimen/traveler_horizontal_half_spacing"
+            android:paddingLeft="@dimen/traveler_horizontal_half_spacing"
+            android:paddingRight="@dimen/traveler_horizontal_half_spacing"
             android:src="@drawable/ic_arrow_up" />
 
         <ImageView
@@ -72,10 +72,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingStart="@dimen/traveler_half_horizontal_margin"
-            android:paddingEnd="@dimen/traveler_half_horizontal_margin"
-            android:paddingLeft="@dimen/traveler_half_horizontal_margin"
-            android:paddingRight="@dimen/traveler_half_horizontal_margin"
+            android:paddingStart="@dimen/traveler_horizontal_half_spacing"
+            android:paddingEnd="@dimen/traveler_horizontal_half_spacing"
+            android:paddingLeft="@dimen/traveler_horizontal_half_spacing"
+            android:paddingRight="@dimen/traveler_horizontal_half_spacing"
             android:src="@drawable/ic_arrow_down" />
 
     </LinearLayout>

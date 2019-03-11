@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_item_download"
-    android:paddingLeft="@dimen/item_download_left_margin"
-    android:paddingRight="@dimen/item_download_right_margin"
-    android:paddingStart="@dimen/item_download_left_margin"
-    android:paddingEnd="@dimen/item_download_right_margin">
+    android:paddingLeft="@dimen/item_download_left_spacing"
+    android:paddingRight="@dimen/item_download_right_spacing"
+    android:paddingStart="@dimen/item_download_left_spacing"
+    android:paddingEnd="@dimen/item_download_right_spacing">
 
     <ImageView
         android:id="@+id/dnode_image"
