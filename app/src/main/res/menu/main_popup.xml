@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/menu_download_delete"
-        android:title="@string/menu_delete" >
+        android:title="@string/menu_download_delete" >
         <menu>
             <item
                 android:id="@+id/menu_download_delete_recycle"
@@ -70,5 +70,5 @@
 
     <item
         android:id="@+id/menu_download_properties"
-        android:title="@string/menu_properties" />
+        android:title="@string/menu_download_properties" />
 </menu>

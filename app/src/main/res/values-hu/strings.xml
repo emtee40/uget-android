@@ -16,7 +16,7 @@
     <string name="menu_download_start_manually">Kézi indítás</string>
 
     <string name="menu_category_new">Új...</string>
-    <string name="menu_delete">Törlés</string>
+    <string name="menu_category_delete">Törlés</string>
     <string name="menu_category_preferences">Beállítások...</string>
     <string name="menu_category_move_up">Felfelé</string>
     <string name="menu_category_move_down">Lefelé</string>
@@ -107,7 +107,7 @@
     <string name="dnode_folder">Mappa</string>
     <string name="dnode_user">Felhasználó</string>
     <string name="dnode_password">Jelszó</string>
-    <string name="dnode_retry">Újra</string>
+    <string name="dnode_retry_counts">Újra %d</string>
     <string name="dnode_proxy_type">Proxy</string>
     <string name="dnode_proxy_user">Felhasználó</string>
     <string name="dnode_proxy_password">Jelszó</string>
@@ -121,7 +121,7 @@
 
     <string name="cnode_name">Név:</string>
     <string name="download_creation">Új letöltés</string>
-    <string name="cnode_default_new_name">Új</string>
+    <string name="cnode_name_new">Új %d</string>
 
     <string name="message_file_not_exist">A fájl nem létezik.</string>
 

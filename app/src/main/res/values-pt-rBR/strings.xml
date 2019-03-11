@@ -17,7 +17,7 @@
     <string name="menu_download_start_manually">Início manual</string>
 
     <string name="menu_category_new">Novo...</string>
-    <string name="menu_delete">Excluir</string>
+    <string name="menu_category_delete">Excluir</string>
     <string name="menu_category_preferences">Preferências…</string>
     <string name="menu_category_move_up">Mover para cima</string>
     <string name="menu_category_move_down">Mover para baixo</string>
@@ -202,8 +202,8 @@
     <string name="dnode_user">Usuário</string>
     <string name="dnode_password">Senha</string>
     <string name="dnode_connections">Máximo de conexões</string>
-    <string name="dnode_left">restante</string>
-    <string name="dnode_retry">Tentar novamente</string>
+    <string name="dnode_time_left">%s restante</string>
+    <string name="dnode_retry_counts">Tentar novamente %d</string>
     <string name="dnode_retry_limit">Limite de tentativas</string>
     <string name="dnode_referrer">Referência</string>
     <string name="dnode_proxy_type">Proxy</string>
@@ -237,8 +237,8 @@
     <string name="download_setting">Preferências de download</string>
     <string name="download_default">Download padrão</string>
 
-    <string name="cnode_total">Todas as categorias</string>
-    <string name="cnode_default_new_name">Novo</string>
+    <string name="cnode_name_all">Todas as categorias</string>
+    <string name="cnode_name_new">Novo %d</string>
     <string-array name="cnode_state">
         <item>Todos os estados</item>
         <item>Ativo</item>

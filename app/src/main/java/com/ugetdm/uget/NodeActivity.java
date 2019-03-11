@@ -226,7 +226,7 @@ public class NodeActivity extends AppCompatActivity {
         Info.get(infoPointer, categoryProp);
         if ((mode & Mode.category_mode) > 0) {
             if (mode == Mode.category_creation)
-                categoryProp.name = getString(R.string.cnode_copy) + " - " + categoryProp.name;
+                categoryProp.name = getString(R.string.cnode_name_copy, categoryProp.name);
             setCategoryProp(categoryForm, categoryProp, false);
             setDownloadProp(downloadForm, categoryProp, true);
         }
@@ -413,7 +413,7 @@ public class NodeActivity extends AppCompatActivity {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
                     dialogBuilder.setTitle(R.string.action_batch);
                     dialogBuilder.setMessage(getString(R.string.batch_hints) + "\n\n" +
-                            getString(R.string.batch_total_counts) + " : " + sequenceForm.count());
+                            getString(R.string.batch_total_counts, sequenceForm.count()));
                     dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
@@ -964,8 +964,8 @@ public class NodeActivity extends AppCompatActivity {
             dialogBuilder.setIcon(android.R.drawable.ic_dialog_info);
             dialogBuilder.setTitle(R.string.action_batch);
             dialogBuilder.setMessage(
-                    getString(R.string.batch_remaining) + " : " + (batchUriArray.length - batchUriIndex) + "\n\n"
-                    + getString(R.string.batch_total_counts) + " : " + batchUriArray.length);
+                    getString(R.string.batch_remaining_counts, batchUriArray.length - batchUriIndex) + "\n\n"
+                    + getString(R.string.batch_total_counts, batchUriArray.length));
             batchDialog = dialogBuilder.show();
 
             timeMillis = System.currentTimeMillis();

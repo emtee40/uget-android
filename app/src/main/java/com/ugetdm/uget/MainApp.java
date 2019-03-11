@@ -342,7 +342,7 @@ public class MainApp extends Application {
         long  infoPointer;
         CategoryProp  categoryProp = new CategoryProp();
 
-        categoryProp.name = getString(R.string.cnode_default_new_name) + " " + nthCategoryCreation++;
+        categoryProp.name = getString(R.string.cnode_name_new, nthCategoryCreation++);
         categoryProp.activeLimit = 2;
         categoryProp.finishedLimit = 100;
         categoryProp.recycledLimit = 100;
@@ -1356,7 +1356,7 @@ public class MainApp extends Application {
             title +=   Util.stringFromIntUnit(core.uploadSpeed, 1)   + " ↑";
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             title = getString(R.string.app_name) + " · " + title;
-        String subText = getString(R.string.notification_active_title) + " : " + nActive;
+        String subText = getString(R.string.notification_active_counts, nActive);
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
             builderNormal.setDefaults(0);

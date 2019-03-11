@@ -5,7 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- MainApp.java -->
-    <string name="notification_active_title">啟動</string>
+    <string name="notification_active_counts">啟動 : %d</string>
     <string name="notification_error_title">發生錯誤</string>
     <string name="notification_error_content">下載期間發生錯誤。</string>
     <string name="notification_completed_title">下載完成</string>
@@ -17,6 +17,9 @@
 
     <!-- Category preferences -->
     <string name="cnode_name">名稱</string>
+    <string name="cnode_name_all">所有分類</string>          <!-- CategoryAdapter.java -->
+    <string name="cnode_name_new">新分類 %d</string>        <!-- MainApp.java -->
+    <string name="cnode_name_copy">複製 %s</string>        <!-- NodeActivity.java -->
     <string name="cnode_name_not_set">未指定分類名稱。</string>
     <string name="cnode_active_limit">啟動下載數量</string>
     <string name="cnode_finished_limit">已結束的容量</string>
@@ -24,9 +27,6 @@
     <string name="cnode_hosts">匹配主機</string>
     <string name="cnode_schemes">匹配協定</string>
     <string name="cnode_file_types">匹配文件類型</string>
-    <string name="cnode_total">所有分類</string>       <!-- CategoryAdapter.java -->
-    <string name="cnode_copy">複製</string>                <!-- NodeActivity.java -->
-    <string name="cnode_default_new_name">新分類</string>     <!-- MainApp.java -->
     <string-array name="cnode_state">                      <!-- StateAdapter.java -->
         <item>所有狀態</item>
         <item>活躍的</item>
@@ -48,8 +48,8 @@
     <string name="dnode_user">用戶</string>
     <string name="dnode_password">密碼</string>
     <string name="dnode_connections">最大連線數</string>
-    <string name="dnode_left">剩餘</string>                <!-- DownloadAdapter.java -->
-    <string name="dnode_retry">重試</string>              <!-- DownloadAdapter.java -->
+    <string name="dnode_time_left">剩餘 %s</string>                <!-- DownloadAdapter.java -->
+    <string name="dnode_retry_counts">重試 %d</string>              <!-- DownloadAdapter.java -->
     <string name="dnode_retry_limit">重試限制</string>
     <string name="dnode_referrer">參照位址</string>
     <string name="dnode_proxy_type">代理伺服器</string>
@@ -66,8 +66,8 @@
     </string-array>
 
     <!-- Batch -->
-    <string name="batch_remaining">剩餘</string>
-    <string name="batch_total_counts">總計</string>
+    <string name="batch_remaining_counts">剩餘 : %d</string>
+    <string name="batch_total_counts">總計 : %d</string>
     <string name="batch_hints">如果您產生大量下載，uGet可能會花費很多時間來處理。</string>
     <!-- Sequence Batch -->
     <string name="batch_seq_wildcard_1">第一個萬用字元(*)</string>
@@ -119,21 +119,20 @@
     <string name="action_settings">設定</string>
     <string name="action_exit">離開</string>
 
-    <string name="menu_delete">刪除</string>
-    <string name="menu_properties">屬性…</string>
-
     <string name="menu_download_open">開啟</string>
-    <string name="menu_download_move">搬移</string>
-    <string name="menu_download_move_up">上移</string>
-    <string name="menu_download_move_down">下移</string>
+    <string name="menu_download_delete">刪除</string>
     <string name="menu_download_delete_recycle">刪除 (回收)</string>
     <string name="menu_download_delete_data">刪除資料</string>
     <string name="menu_download_delete_file">刪除檔案與資料</string>
     <string name="menu_download_force_start">強制開始</string>
+    <string name="menu_download_move">搬移</string>
+    <string name="menu_download_move_up">上移</string>
+    <string name="menu_download_move_down">下移</string>
     <string name="menu_download_priority">優先權</string>
     <string name="menu_download_priority_high">高</string>
     <string name="menu_download_priority_normal">正常</string>
     <string name="menu_download_priority_low">低</string>
+    <string name="menu_download_properties">屬性…</string>
     <!-- NodeActivity.java -->
     <string name="menu_select_folder">選擇資料夾…</string>
 
@@ -292,10 +291,10 @@
     <string name="message_delete_title">真的要刪除檔案？</string>
     <string name="message_delete_file">您確定要刪除檔案嗎？</string>
     <string name="message_file_not_exist">檔案不存在</string>
-    <string name="message_file_load_ok">檔案已載入</string>
-    <string name="message_file_load_fail">檔案載入失敗</string>
-    <string name="message_file_save_ok">檔案已儲存</string>
-    <string name="message_file_save_fail">檔案儲存失敗</string>
+    <string name="message_file_load_ok">檔案 %s 已載入</string>
+    <string name="message_file_load_fail">檔案 %s 載入失敗</string>
+    <string name="message_file_save_ok">檔案 %s 已儲存</string>
+    <string name="message_file_save_fail">檔案 %s 儲存失敗</string>
     <string name="message_permission_required">要求權限</string>
     <string name="message_permission_sd_card">此應用程式下載檔案需要存取 SD Card 的權限。</string>
     <string name="message_permission_folder">需要存取目錄的權限。請選擇此目錄以獲得寫入權限。</string>

@@ -20,7 +20,7 @@
     <string name="menu_download_start_manually">Iniciar manualmente</string>
 
     <string name="menu_category_new">Nuevo...</string>
-    <string name="menu_delete">Eliminar</string>
+    <string name="menu_category_delete">Eliminar</string>
     <string name="menu_category_preferences">Preferencias...</string>
     <string name="menu_category_move_up">Mover arriba</string>
     <string name="menu_category_move_down">Mover abajo</string>

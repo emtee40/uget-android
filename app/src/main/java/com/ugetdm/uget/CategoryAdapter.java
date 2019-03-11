@@ -50,7 +50,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         if (position == 0) {
             nodePointer = Node.getNthChild(pointerMix, 0);
             holder.image.setImageResource(R.drawable.ic_all_inclusive);
-            holder.name.setText(R.string.cnode_total);
+            holder.name.setText(R.string.cnode_name_all);
         } else {
             nodePointer = Node.getNthChild(pointer, position - 1);
             infoPointer = Node.info(nodePointer);

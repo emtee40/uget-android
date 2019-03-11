@@ -20,7 +20,7 @@
     <string name="menu_download_start_manually">Elle başlat</string>
 
     <string name="menu_category_new">Yeni...</string>
-    <string name="menu_delete">Sil</string>
+    <string name="menu_category_delete">Sil</string>
     <string name="menu_category_preferences">Seçenekler...</string>
     <string name="menu_category_move_up">Yukarı Taşı</string>
     <string name="menu_category_move_down">Aşağı Taşı</string>
@@ -210,8 +210,8 @@
     <string name="dnode_user">Kullanıcı</string>
     <string name="dnode_password">Parola</string>
     <string name="dnode_connections">Azami bağlantılar</string>
-    <string name="dnode_left">kaldı</string>
-    <string name="dnode_retry">Yeniden dene</string>
+    <string name="dnode_time_left">%s kaldı</string>
+    <string name="dnode_retry_counts">Yeniden dene %d</string>
     <string name="dnode_retry_limit">Yeniden deneme sınırı</string>
     <string name="dnode_referrer">Yönelten</string>
     <string name="dnode_proxy_type">Vekil</string>
@@ -245,8 +245,8 @@
     <string name="download_setting">İndirme seçenekleri</string>
     <string name="download_default">İndirme varsayılanı</string>
 
-    <string name="cnode_total">Tüm Ulam</string>
-    <string name="cnode_default_new_name">Yeni</string>
+    <string name="cnode_name_all">Tüm Ulam</string>
+    <string name="cnode_name_new">Yeni %d</string>
     <string-array name="cnode_state">
         <item>Tüm Durum</item>
         <item>Etkin</item>

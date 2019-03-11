@@ -20,7 +20,7 @@
     <string name="menu_download_start_manually">تشغيل يدوي</string>
 
     <string name="menu_category_new">جديد...</string>
-    <string name="menu_delete">حذف</string>
+    <string name="menu_category_delete">حذف</string>
     <string name="menu_category_preferences">خصائص....</string>
     <string name="menu_category_move_up">تحريك للاعلى</string>
     <string name="menu_category_move_down">تحريك للاسفل</string>
@@ -210,8 +210,8 @@
     <string name="dnode_user">مستخدم</string>
     <string name="dnode_password">كلمة السر</string>
     <string name="dnode_connections">اقصى عدد اتصالات</string>
-    <string name="dnode_left">يسار</string>
-    <string name="dnode_retry">محاولة</string>
+    <string name="dnode_time_left">يسار %s</string>
+    <string name="dnode_retry_counts">محاولة %d</string>
     <string name="dnode_retry_limit">حدود المحاولة</string>
     <string name="dnode_referrer">المرجع</string>
     <string name="dnode_proxy_type">Proxy</string>
@@ -245,8 +245,8 @@
     <string name="download_setting">خصائص التحميل</string>
     <string name="download_default">تحميل افتراضي</string>
 
-    <string name="cnode_total">كل التصنيفات</string>
-    <string name="cnode_default_new_name">جديد</string>
+    <string name="cnode_name_all">كل التصنيفات</string>
+    <string name="cnode_name_new">جديد %d</string>
     <string-array name="cnode_state">
         <item>كل الحالات</item>
         <item>نشط</item>

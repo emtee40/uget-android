@@ -20,7 +20,7 @@
     <string name="menu_download_start_manually">Starta manuellt</string>
 
     <string name="menu_category_new">Ny...</string>
-    <string name="menu_delete">Ta bort</string>
+    <string name="menu_category_delete">Ta bort</string>
     <string name="menu_category_preferences">Inställningar...</string>
     <string name="menu_category_move_up">Flytta upp</string>
     <string name="menu_category_move_down">Flytta ner</string>
@@ -210,8 +210,8 @@
     <string name="dnode_user">Användare</string>
     <string name="dnode_password">Lösenord</string>
     <string name="dnode_connections">Max anslutningar</string>
-    <string name="dnode_left">kvar</string>
-    <string name="dnode_retry">Försök igen</string>
+    <string name="dnode_time_left">%s kvar</string>
+    <string name="dnode_retry_counts">Försök igen %d</string>
     <string name="dnode_retry_limit">Gräns för återförsök</string>
     <string name="dnode_referrer">Hänvisare</string>
     <string name="dnode_proxy_type">Proxy</string>
@@ -245,8 +245,8 @@
     <string name="download_setting">Nedladdningsinställningar</string>
     <string name="download_default">Ladda ner standard</string>
 
-    <string name="cnode_total">All kategorin</string>
-    <string name="cnode_default_new_name">Ny</string>
+    <string name="cnode_name_all">All kategorin</string>
+    <string name="cnode_name_new">Ny %d</string>
     <string-array name="cnode_state">
         <item>Alla status</item>
         <item>Aktiva</item>

@@ -20,7 +20,7 @@
     <string name="menu_download_start_manually">Ручной запуск</string>
 
     <string name="menu_category_new">Новый...</string>
-    <string name="menu_delete">Удалить</string>
+    <string name="menu_category_delete">Удалить</string>
     <string name="menu_category_preferences">Настройки...</string>
     <string name="menu_category_move_up">Переместить Вверх</string>
     <string name="menu_category_move_down">Переместить Вниз</string>
@@ -210,8 +210,8 @@
     <string name="dnode_user">Пользователь</string>
     <string name="dnode_password">Пароль</string>
     <string name="dnode_connections">Максимальное количество соединений</string>
-    <string name="dnode_left">осталось</string>
-    <string name="dnode_retry">Повторить</string>
+    <string name="dnode_time_left">%s осталось</string>
+    <string name="dnode_retry_counts">Повторить %d</string>
     <string name="dnode_retry_limit">Лимит повторений</string>
     <string name="dnode_referrer">Реферер</string>
     <string name="dnode_proxy_type">Прокси</string>
@@ -245,8 +245,8 @@
     <string name="download_setting">Свойства Загрузки</string>
     <string name="download_default">Загрузка по умолчанию</string>
 
-    <string name="cnode_total"> Все Категории</string>
-    <string name="cnode_default_new_name">Новая</string>
+    <string name="cnode_name_all"> Все Категории</string>
+    <string name="cnode_name_new">Новая %d</string>
     <string-array name="cnode_state">
         <item>Все Состояния</item>
         <item>Активно</item>

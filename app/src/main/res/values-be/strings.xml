@@ -21,7 +21,7 @@
     <string name="menu_action_button_save_category">Захаваць катэгорыю як…</string>
 
     <string name="menu_category_new">Новая…</string>
-    <string name="menu_delete">Удалить</string>
+    <string name="menu_category_delete">Удалить</string>
     <string name="menu_category_preferences">Параметры…</string>
     <string name="menu_category_move_up">Переместить выше</string>
     <string name="menu_category_move_down">Переместить ниже</string>
@@ -209,8 +209,8 @@
     <string name="dnode_user">Пользователь</string>
     <string name="dnode_password">Пароль</string>
     <string name="dnode_connections">Максимум подключений</string>
-    <string name="dnode_left">осталось</string>
-    <string name="dnode_retry">Повтор</string>
+    <string name="dnode_time_left">%s осталось</string>
+    <string name="dnode_retry_counts">Повтор %d</string>
     <string name="dnode_retry_limit">Количество повторов</string>
     <string name="dnode_referrer">Referrer</string>
     <string name="dnode_proxy_type">Прокси</string>
@@ -244,8 +244,8 @@
     <string name="download_setting">Параметры загрузки</string>
     <string name="download_default">Загрузка по умолчанию</string>
 
-    <string name="cnode_total">Все категории</string>
-    <string name="cnode_default_new_name">Новая</string>
+    <string name="cnode_name_all">Все категории</string>
+    <string name="cnode_name_new">Новая %d</string>
     <string-array name="cnode_state">
         <item>Все статусы</item>
         <item>Активные</item>

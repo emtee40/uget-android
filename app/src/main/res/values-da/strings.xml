@@ -20,7 +20,7 @@
     <string name="menu_download_start_manually">Manuel start</string>
 
     <string name="menu_category_new">Ny…</string>
-    <string name="menu_delete">Slet</string>
+    <string name="menu_category_delete">Slet</string>
     <string name="menu_category_preferences">Præferencer…</string>
     <string name="menu_category_move_up">Flyt op</string>
     <string name="menu_category_move_down">Flyt ned</string>
@@ -210,8 +210,8 @@
     <string name="dnode_user">Bruger</string>
     <string name="dnode_password">Adgangskode</string>
     <string name="dnode_connections">Maks. forbindelser</string>
-    <string name="dnode_left">tilbage</string>
-    <string name="dnode_retry">Prøv igen</string>
+    <string name="dnode_time_left">%s tilbage</string>
+    <string name="dnode_retry_counts">Prøv igen %d</string>
     <string name="dnode_retry_limit">Forsøgsgrænse</string>
     <string name="dnode_referrer">Henviser</string>
     <string name="dnode_proxy_type">Proxy</string>
@@ -245,8 +245,8 @@
     <string name="download_setting">Præferencer for download</string>
     <string name="download_default">Downloadstandard</string>
 
-    <string name="cnode_total">Alle kategorier</string>
-    <string name="cnode_default_new_name">Ny</string>
+    <string name="cnode_name_all">Alle kategorier</string>
+    <string name="cnode_name_new">Ny %d</string>
     <string-array name="cnode_state">
         <item>Al status</item>
         <item>Aktive</item>

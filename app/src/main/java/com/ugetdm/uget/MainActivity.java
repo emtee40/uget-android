@@ -1251,11 +1251,10 @@ public class MainActivity extends AppCompatActivity {
             app.categoryAdapter.notifyDataSetChanged();
             app.stateAdapter.notifyDataSetChanged();
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_load_ok) +
-                    " - " + filename, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_load_ok, filename),
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show();
             // --- Toast ---
-            //Toast.makeText(this, getString(R.string.message_file_load_ok) + " - " + filename,
+            //Toast.makeText(this, getString(R.string.message_file_load_ok, filename),
             //        Toast.LENGTH_SHORT).show();
 
             // --- select category that just loaded.
@@ -1264,11 +1263,10 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab),getString(R.string.message_file_load_fail) +
-                    " - " + filename, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Snackbar.make(findViewById(R.id.fab),getString(R.string.message_file_load_fail, filename),
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show();
             // --- Toast ---
-            //Toast.makeText(this, getString(R.string.message_file_load_fail) + " - " + filename,
+            //Toast.makeText(this, getString(R.string.message_file_load_fail, filename),
             //        Toast.LENGTH_SHORT).show();
         }
     }
@@ -1309,20 +1307,18 @@ public class MainActivity extends AppCompatActivity {
     protected void showFileCreatorResult(String filename, boolean ok) {
         if (ok) {
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_save_ok) +
-                    " - " + filename, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_save_ok, filename),
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show();
             // --- Toast ---
-            //Toast.makeText(this, getString(R.string.message_file_save_ok) + " - " + filename,
+            //Toast.makeText(this, getString(R.string.message_file_save_ok, filename),
             //        Toast.LENGTH_SHORT).show();
         }
         else {
             // --- Snackbar ---
-            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_save_fail) +
-                    " - " + filename, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Snackbar.make(findViewById(R.id.fab), getString(R.string.message_file_save_fail, filename),
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show();
             // --- Toast ---
-            //Toast.makeText(this, getString(R.string.message_file_save_fail) + " - " + filename,
+            //Toast.makeText(this, getString(R.string.message_file_save_fail, filename),
             //        Toast.LENGTH_SHORT).show();
         }
     }

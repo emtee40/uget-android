@@ -26,9 +26,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     private   int     retryMinWidth = 0;
     private   int     speedMinWidth = 0;
     private   int     sizeMinWidth = 0;
-    // resource
-    private   String  stringRetry;
-    private   String  stringLeft;
+    //private   int     leftMinWidth = 0;
+    //private   int     leftMaxWidth = 0;
     // --- multiple choice ---
     private   SparseBooleanArray selections;
     public    int     nSelectedLast;   // used by onItemClick and onItemLongClick
@@ -65,9 +64,9 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
         // calculate minimum width of strings
         if (retryMinWidth == 0) {
-            stringRetry = context.getResources().getString(R.string.dnode_retry);
-            stringLeft = context.getResources().getString(R.string.dnode_left);
-            retryMinWidth = calcTextWidth(holder.retry, ' ' + stringRetry + ">999");  // + '9'
+            //leftMaxWidth = calcTextWidth(holder.left, context.getString(R.string.dnode_time_left, "000:00:00"));  // + '0'
+            //leftMinWidth = calcTextWidth(holder.left, "000:00:00");    // + '0'
+            retryMinWidth = calcTextWidth(holder.retry, context.getString(R.string.dnode_retry_counts, 999));  // + '9'
             percentMinWidth = calcTextWidth(holder.percent, "000%") + 4;  // + padding
             speedMinWidth = calcTextWidth(holder.speed, "00000 WiB/s");  // + '0'
             sizeMinWidth = calcTextWidth(holder.size, "0000 WiB / 00000 WiB");  // + '0'
@@ -93,6 +92,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         long       nodePointer;
         long       infoPointer;
         int        state = 0;
+        Context    context = holder.itemView.getContext();
         Progress   progress = null;
         String     message = null;
         String     name = null;
@@ -115,7 +115,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
             holder.name.setText(android.R.string.no);
             holder.image.setImageResource(android.R.drawable.ic_delete);
-            holder.retry.setText(' ' + stringRetry + ">55");
+            holder.retry.setText(context.getString(R.string.dnode_retry_counts, 55));
             holder.retry.getLayoutParams().width = retryMinWidth;
             holder.retry.requestLayout();
             holder.progress.setProgress((int) 55);
@@ -126,9 +126,9 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
                 holder.speed.setVisibility(View.VISIBLE);
                 holder.speed.setText(Util.stringFromIntUnit(1024000, 1));
                 holder.left.setVisibility(View.VISIBLE);
-                holder.left.setText("55:55:55" + " " + stringLeft);
+                holder.left.setText(context.getString(R.string.dnode_time_left,"55:55:55"));
                 holder.size.setVisibility(View.VISIBLE);
-                holder.size.setText("1055 KiB / 2180 KiB");
+                holder.size.setText("1055 KiB / 2055 KiB");
             }
             else {
                 holder.message.setVisibility(View.VISIBLE);
@@ -167,16 +167,16 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
         // retry count
         if (progress.retryCount == 0) {
-            // avoid to overlap percent
+            // if no retry counts, don't show retry counts.
+            // avoid overlap percent
             holder.retry.setText("");
             holder.retry.getLayoutParams().width = percentMinWidth;
         }
         else {
             // holder.retry.setVisibility(View.VISIBLE);
             if (progress.retryCount > 99)
-                holder.retry.setText(' ' + stringRetry + ">99");
-            else
-                holder.retry.setText(' ' + stringRetry + ":" + Integer.toString(progress.retryCount));
+                progress.retryCount = 99;
+            holder.retry.setText(context.getString(R.string.dnode_retry_counts, progress.retryCount));
             holder.retry.getLayoutParams().width = retryMinWidth;
             // holder.retry.setLayoutParams(new LinearLayout.LayoutParams(retryMinWidth,
             //         LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -227,7 +227,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
                 String timeLeftString = Util.stringFromSeconds((int) progress.remainTime, 1);
                 // if (timeLeftString.startsWith("00:"))
                 //     timeLeftString.replace("00:", "   ");
-                holder.left.setText(timeLeftString + " " + stringLeft);
+                holder.left.setText(context.getString(R.string.dnode_time_left, timeLeftString));
             }
         }
 
@@ -350,12 +350,12 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             super(view);
             image = view.findViewById(R.id.dnode_image);
             name = view.findViewById(R.id.dnode_name);
-            retry = view.findViewById(R.id.dnode_retry);
+            retry = view.findViewById(R.id.dnode_retry_counts);
             progress = view.findViewById(R.id.dnode_progress);
             percent = view.findViewById(R.id.dnode_percent);
             message = view.findViewById(R.id.dnode_message);
             speed = view.findViewById(R.id.dnode_speed);
-            left = view.findViewById(R.id.dnode_left);
+            left = view.findViewById(R.id.dnode_time_left);
             size = view.findViewById(R.id.dnode_size);
 
             // view.setLongClickable(true);

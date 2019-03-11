@@ -5,7 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- MainApp.java -->
-    <string name="notification_active_title">啟動</string>
+    <string name="notification_active_counts">啟動 : %d</string>
     <string name="notification_error_title">发生错误</string>
     <string name="notification_error_content">下载过程中出错。</string>
     <string name="notification_completed_title">下载完成</string>
@@ -17,6 +17,9 @@
 
     <!-- Category preferences -->
     <string name="cnode_name">名称</string>
+    <string name="cnode_name_all">全部分类</string>          <!-- CategoryAdapter.java -->
+    <string name="cnode_name_new">新建 %d</string>         <!-- MainApp.java -->
+    <string name="cnode_name_copy">复制 %s</string>        <!-- NodeActivity.java -->
     <string name="cnode_name_not_set">未指定分类名称。</string>
     <string name="cnode_active_limit">活动中的下载</string>
     <string name="cnode_finished_limit">\"已完成\"分类的容量</string>
@@ -24,9 +27,6 @@
     <string name="cnode_hosts">匹配主机</string>
     <string name="cnode_schemes">匹配方案</string>
     <string name="cnode_file_types">匹配类型</string>
-    <string name="cnode_total">全部分类</string>       <!-- CategoryAdapter.java -->
-    <string name="cnode_copy">复制</string>                <!-- NodeActivity.java -->
-    <string name="cnode_default_new_name">新建</string>     <!-- MainApp.java -->
     <string-array name="cnode_state">                      <!-- StateAdapter.java -->
         <item>全部状态</item>
         <item>活动的</item>
@@ -48,8 +48,8 @@
     <string name="dnode_user">用户</string>
     <string name="dnode_password">密码</string>
     <string name="dnode_connections">最大连接数</string>
-    <string name="dnode_left">剩余</string>                <!-- DownloadAdapter.java -->
-    <string name="dnode_retry">重试</string>              <!-- DownloadAdapter.java -->
+    <string name="dnode_time_left">剩余 %s</string>                <!-- DownloadAdapter.java -->
+    <string name="dnode_retry_counts">重试 %d</string>              <!-- DownloadAdapter.java -->
     <string name="dnode_retry_limit">重试上限</string>
     <string name="dnode_referrer">引用页</string>
     <string name="dnode_proxy_type">代理</string>
@@ -66,8 +66,8 @@
     </string-array>
 
     <!-- Batch -->
-    <string name="batch_remaining">剩余</string>
-    <string name="batch_total_counts">总数</string>
+    <string name="batch_remaining_counts">剩余 : %d</string>
+    <string name="batch_total_counts">总数 : %d</string>
     <string name="batch_hints">如果您产生大量下载，uGet可能会花费很多时间来处理。</string>
     <!-- Sequence Batch -->
     <string name="batch_seq_wildcard_1">第一个通配符(*)</string>
@@ -119,21 +119,20 @@
     <string name="action_settings">设置</string>
     <string name="action_exit">退出</string>
 
-    <string name="menu_delete">删除</string>
-    <string name="menu_properties">属性…</string>
-
     <string name="menu_download_open">打开</string>
-    <string name="menu_download_move">移动</string>
-    <string name="menu_download_move_up">上移</string>
-    <string name="menu_download_move_down">下移</string>
+    <string name="menu_download_delete">删除</string>
     <string name="menu_download_delete_recycle">删除（回收）</string>
     <string name="menu_download_delete_data">删除条目</string>
     <string name="menu_download_delete_file">删除条目及文件</string>
     <string name="menu_download_force_start">强制开始</string>
+    <string name="menu_download_move">移动</string>
+    <string name="menu_download_move_up">上移</string>
+    <string name="menu_download_move_down">下移</string>
     <string name="menu_download_priority">优先级</string>
     <string name="menu_download_priority_high">高</string>
     <string name="menu_download_priority_normal">正常</string>
     <string name="menu_download_priority_low">低</string>
+    <string name="menu_download_properties">属性…</string>
     <!-- NodeActivity.java -->
     <string name="menu_select_folder">选择文件夹…</string>
 
@@ -292,10 +291,10 @@
     <string name="message_delete_title">确定删除文件？</string>
     <string name="message_delete_file">您确定想要删除文件吗？</string>
     <string name="message_file_not_exist">文件不存在</string>
-    <string name="message_file_load_ok">文件已加载</string>
-    <string name="message_file_load_fail">无法加载文件</string>
-    <string name="message_file_save_ok">文件已保存</string>
-    <string name="message_file_save_fail">保存文件失败</string>
+    <string name="message_file_load_ok">文件 %s 已加载</string>
+    <string name="message_file_load_fail">无法加载文件 %s</string>
+    <string name="message_file_save_ok">文件 %s 已保存</string>
+    <string name="message_file_save_fail">保存文件 %s 失败</string>
     <string name="message_permission_required">需要许可</string>
     <string name="message_permission_sd_card">此应用程序下载文件需要访问SD卡的权限。</string>
     <string name="message_permission_folder">需要访问此文件夹的权限。请选择此文件夹以获得写入权限。</string>

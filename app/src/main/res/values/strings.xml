@@ -4,7 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- MainApp.java -->
-    <string name="notification_active_title">Active</string>
+    <string name="notification_active_counts">Active : %d</string>
     <string name="notification_error_title">Error Occurred</string>
     <string name="notification_error_content">Error occurred during download.</string>
     <string name="notification_completed_title">Download Completed</string>
@@ -16,6 +16,9 @@
 
     <!-- Category preferences -->
     <string name="cnode_name">Name</string>
+    <string name="cnode_name_all">All Category</string>         <!-- CategoryAdapter.java -->
+    <string name="cnode_name_new">New %d</string>               <!-- MainApp.java -->
+    <string name="cnode_name_copy">Copy of %s</string>          <!-- NodeActivity.java -->
     <string name="cnode_name_not_set">No Category Name, please set it.</string>
     <string name="cnode_active_limit">Active downloads</string>
     <string name="cnode_finished_limit">Capacity of Finished</string>
@@ -23,9 +26,6 @@
     <string name="cnode_hosts">Matched hosts</string>
     <string name="cnode_schemes">Matched schemes</string>
     <string name="cnode_file_types">Matched types</string>
-    <string name="cnode_total">All Category</string>       <!-- CategoryAdapter.java -->
-    <string name="cnode_copy">Copy</string>                <!-- NodeActivity.java -->
-    <string name="cnode_default_new_name">New</string>     <!-- MainApp.java -->
     <string-array name="cnode_state">                      <!-- StateAdapter.java -->
         <item>All Status</item>
         <item>Active</item>
@@ -47,8 +47,8 @@
     <string name="dnode_user">User</string>
     <string name="dnode_password">Password</string>
     <string name="dnode_connections">Max connections</string>
-    <string name="dnode_left">left</string>                <!-- DownloadAdapter.java -->
-    <string name="dnode_retry">Retry</string>              <!-- DownloadAdapter.java -->
+    <string name="dnode_time_left">%s left</string>        <!-- DownloadAdapter.java -->
+    <string name="dnode_retry_counts">Retry %d</string>    <!-- DownloadAdapter.java -->
     <string name="dnode_retry_limit">Retry limit</string>
     <string name="dnode_referrer">Referrer</string>
     <string name="dnode_proxy_type">Proxy</string>
@@ -65,8 +65,8 @@
     </string-array>
 
     <!-- Batch -->
-    <string name="batch_remaining">Remaining</string>
-    <string name="batch_total_counts">Total counts</string>
+    <string name="batch_remaining_counts">Remaining : %d</string>
+    <string name="batch_total_counts">Total counts : %d</string>
     <string name="batch_hints">If you produce large amount of download, uGet may consume much time to process.</string>
     <!-- Sequence Batch -->
     <string name="batch_seq_wildcard_1">1st wildcard(*)</string>
@@ -118,21 +118,20 @@
     <string name="action_settings">Settings</string>
     <string name="action_exit">Exit</string>
 
-    <string name="menu_delete">Delete</string>
-    <string name="menu_properties">Properties…</string>
-
     <string name="menu_download_open">Open</string>
-    <string name="menu_download_move">Move</string>
-    <string name="menu_download_move_up">Move Up</string>
-    <string name="menu_download_move_down">Move Down</string>
+    <string name="menu_download_delete">Delete</string>
     <string name="menu_download_delete_recycle">Delete (Recycle)</string>
     <string name="menu_download_delete_data">Delete Entry</string>
     <string name="menu_download_delete_file">Delete Entry and File</string>
     <string name="menu_download_force_start">Force Start</string>
+    <string name="menu_download_move">Move</string>
+    <string name="menu_download_move_up">Move Up</string>
+    <string name="menu_download_move_down">Move Down</string>
     <string name="menu_download_priority">Priority</string>
     <string name="menu_download_priority_high">High</string>
     <string name="menu_download_priority_normal">Normal</string>
     <string name="menu_download_priority_low">Low</string>
+    <string name="menu_download_properties">Properties…</string>
     <!-- NodeActivity.java -->
     <string name="menu_select_folder">Select Folder…</string>
 
@@ -291,10 +290,10 @@
     <string name="message_delete_title">Really delete?</string>
     <string name="message_delete_file">Are you sure you want to delete files?</string>
     <string name="message_file_not_exist">File does not exist</string>
-    <string name="message_file_load_ok">File loaded</string>
-    <string name="message_file_load_fail">Failed to load file</string>
-    <string name="message_file_save_ok">File saved</string>
-    <string name="message_file_save_fail">Failed to save file</string>
+    <string name="message_file_load_ok">File %s loaded</string>
+    <string name="message_file_load_fail">Failed to load file %s</string>
+    <string name="message_file_save_ok">File %s saved</string>
+    <string name="message_file_save_fail">Failed to save file %s</string>
     <string name="message_permission_required">Permission required</string>
     <string name="message_permission_sd_card">Permission to access the SD Card is required for this app to Download files.</string>
     <string name="message_permission_folder">Permission to access this folder is required. Please pick this folder to get write permission.</string>

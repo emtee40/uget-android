@@ -20,7 +20,7 @@
     <string name="menu_download_start_manually">Paleisti rankiniu būdu</string>
 
     <string name="menu_category_new">Naujas…</string>
-    <string name="menu_delete">Ištrinti</string>
+    <string name="menu_category_delete">Ištrinti</string>
     <string name="menu_category_preferences">Nuostatos…</string>
     <string name="menu_category_move_up">Pakelti</string>
     <string name="menu_category_move_down">Nuleisti</string>
@@ -210,8 +210,8 @@
     <string name="dnode_user">Naudotojas</string>
     <string name="dnode_password">Slaptažodis</string>
     <string name="dnode_connections">Daugiausia sujungimų</string>
-    <string name="dnode_left">liko</string>
-    <string name="dnode_retry">Bandyti dar kartą</string>
+    <string name="dnode_time_left">%s liko</string>
+    <string name="dnode_retry_counts">Bandyti dar kartą %d</string>
     <string name="dnode_retry_limit">Bandymų iš naujo riba</string>
     <string name="dnode_referrer">Nukreipėjas</string>
     <string name="dnode_proxy_type">Įgaliotasis serveris</string>
@@ -245,8 +245,8 @@
     <string name="download_setting">Atsiuntimo nuostatos</string>
     <string name="download_default">Numatytasis atsiuntimas</string>
 
-    <string name="cnode_total">Visos kategorijos</string>
-    <string name="cnode_default_new_name">Naujas</string>
+    <string name="cnode_name_all">Visos kategorijos</string>
+    <string name="cnode_name_new">Naujas %d</string>
     <string-array name="cnode_state">
         <item>Visos būsenos</item>
         <item>Aktyvūs</item>

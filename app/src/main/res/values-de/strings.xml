@@ -20,7 +20,7 @@
     <string name="menu_download_start_manually">Manueller Start</string>
 
     <string name="menu_category_new">Neu …</string>
-    <string name="menu_delete">Löschen</string>
+    <string name="menu_category_delete">Löschen</string>
     <string name="menu_category_preferences">Einstellungen …</string>
     <string name="menu_category_move_up">hoch</string>
     <string name="menu_category_move_down">runter</string>
@@ -141,7 +141,7 @@
 
     <string name="cnode_name">Name: </string>
     <string name="cnode_active_limit">Aktive Übertragungen</string>
-    <string name="cnode_default_new_name">Neu</string>
+    <string name="cnode_name_new">Neu %d</string>
     <string-array name="cnode_state">
         <item>Jeder Status</item>
         <item>Aktiv</item>

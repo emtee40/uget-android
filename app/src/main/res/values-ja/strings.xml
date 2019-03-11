@@ -17,7 +17,7 @@
     <string name="menu_download_start_manually">手動開始</string>
 
     <string name="menu_category_new">新規…</string>
-    <string name="menu_delete">削除</string>
+    <string name="menu_category_delete">削除</string>
     <string name="menu_category_preferences">プリファレンス…</string>
     <string name="menu_category_move_up">上に移動</string>
     <string name="menu_category_move_down">下に移動</string>
@@ -202,8 +202,8 @@
     <string name="dnode_user">ユーザー</string>
     <string name="dnode_password">パスワード</string>
     <string name="dnode_connections">最大接続数</string>
-    <string name="dnode_left">残り</string>
-    <string name="dnode_retry">リトライ</string>
+    <string name="dnode_time_left">%s 残り</string>
+    <string name="dnode_retry_counts">リトライ %d</string>
     <string name="dnode_retry_limit">リトライ限度</string>
     <string name="dnode_referrer">リファラー</string>
     <string name="dnode_proxy_type">プロキシ</string>
@@ -237,8 +237,8 @@
     <string name="download_setting">ダウンロードプリファレンス</string>
     <string name="download_default">ダウンロードデフォルト</string>
 
-    <string name="cnode_total">すべてのカテゴリー</string>
-    <string name="cnode_default_new_name">新規</string>
+    <string name="cnode_name_all">すべてのカテゴリー</string>
+    <string name="cnode_name_new">新規 %d</string>
     <string-array name="cnode_state">
         <item>すべてのステータス</item>
         <item>アクティブ</item>

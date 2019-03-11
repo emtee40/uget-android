@@ -28,17 +28,17 @@
         android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@drawable/selector_item_text"
-        app:layout_constraintEnd_toStartOf="@+id/dnode_retry"
+        app:layout_constraintEnd_toStartOf="@+id/dnode_retry_counts"
         app:layout_constraintStart_toEndOf="@+id/dnode_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/dnode_retry"
+        android:id="@+id/dnode_retry_counts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:maxLines="1"
-        android:text="@string/dnode_retry"
+        android:text="@string/dnode_retry_counts"
         android:textColor="@android:color/holo_orange_dark"
         android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +63,7 @@
         android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dnode_retry" />
+        app:layout_constraintTop_toBottomOf="@+id/dnode_retry_counts" />
 
     <TextView
         android:id="@+id/dnode_message"
@@ -78,6 +78,7 @@
         android:id="@+id/dnode_speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
         android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_constraintStart_toEndOf="@+id/dnode_image"
@@ -85,10 +86,10 @@
         <!-- android:textColor="@drawable/selector_item_text" -->
 
     <TextView
-        android:id="@+id/dnode_left"
-        android:layout_width="wrap_content"
+        android:id="@+id/dnode_time_left"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="end"
+        android:gravity="center"
         android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:visibility="gone"
@@ -102,7 +103,7 @@
         android:id="@+id/dnode_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
+        android:gravity="end|center_vertical"
         android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_constraintEnd_toEndOf="parent"
