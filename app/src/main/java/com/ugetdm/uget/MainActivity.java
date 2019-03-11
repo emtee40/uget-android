@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     // View
     public Toolbar      toolbar;
     public DrawerLayout drawer;
+    public PopupMenu    downloadPopupMenu = null;   // cancelSingleActionMenu()
 
     // ------------------------------------------------------------------------
     // entire lifetime: ORIENTATION
@@ -132,8 +133,7 @@ public class MainActivity extends AppCompatActivity {
         // --- offline status
         app.saveStatus();
         // --- single selection mode ---
-        if (app.downloadAdapter.singleSelection)
-            app.downloadAdapter.clearChoices(false);
+        cancelSingleActionMenu();
     }
 
     // ------------------------------------------------------------------------
@@ -306,8 +306,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // --- selection mode ---
-        if (app.downloadAdapter.singleSelection)
-            app.downloadAdapter.clearChoices(true);
+        cancelSingleActionMenu();
 
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -573,8 +572,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (drawer.isDrawerOpen(GravityCompat.START))
                             drawer.closeDrawer(GravityCompat.START);
-                        else
+                        else {
                             drawer.openDrawer(GravityCompat.START);
+                            // --- single selection mode ---
+                            cancelSingleActionMenu();
+                        }
                     }
                 });
             }
@@ -621,6 +623,15 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isToolbarHomeAsUp() {
         return (getSupportActionBar().getDisplayOptions() & ActionBar.DISPLAY_HOME_AS_UP) != 0;
+    }
+
+    public void cancelSingleActionMenu() {
+        if (app.downloadAdapter.singleSelection) {
+            //app.downloadAdapter.singleSelection = false;
+            app.downloadAdapter.clearChoices(true);
+            if (downloadPopupMenu != null)
+                downloadPopupMenu.dismiss();
+        }
     }
 
     public void exitSelectionMode(boolean cancelChoice) {
@@ -873,7 +884,7 @@ public class MainActivity extends AppCompatActivity {
         if (view == null)
             return false;
 
-        PopupMenu downloadPopupMenu = new PopupMenu(this, view);
+        downloadPopupMenu = new PopupMenu(this, view);
         downloadPopupMenu.inflate(R.menu.main_popup);
 
         Menu menu = downloadPopupMenu.getMenu();
@@ -942,6 +953,8 @@ public class MainActivity extends AppCompatActivity {
                 app.downloadAdapter.clearChoices(true);
             // --- show message if no download ---
             decideContent();
+            // --- popup menu closed ---
+            downloadPopupMenu = null;
         }
 
         @Override
@@ -1116,6 +1129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // --- selection mode ---
+                // cancelSingleActionMenu();
                 if (app.downloadAdapter.singleSelection)
                     app.downloadAdapter.clearChoices(true);
                 dialog.dismiss();
