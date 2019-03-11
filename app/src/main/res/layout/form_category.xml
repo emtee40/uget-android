@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/form_vertical_margin"
+        android:paddingTop="@dimen/view_vertical_spacing"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -15,8 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/form_vertical_margin"
-            android:paddingBottom="@dimen/form_vertical_margin" >
+            android:paddingTop="@dimen/view_vertical_spacing"
+            android:paddingBottom="@dimen/view_vertical_spacing" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,8 +30,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="@dimen/form_horizontal_margin"
-                android:layout_marginLeft="@dimen/form_horizontal_margin"
+                android:layout_marginStart="@dimen/view_horizontal_spacing"
+                android:layout_marginLeft="@dimen/view_horizontal_spacing"
                 android:inputType="text"
                 android:ems="6"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -44,8 +44,8 @@
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/form_vertical_margin"
-                android:paddingBottom="@dimen/form_vertical_margin">
+                android:paddingTop="@dimen/view_vertical_spacing"
+                android:paddingBottom="@dimen/view_vertical_spacing">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -67,8 +67,8 @@
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/form_vertical_margin"
-                android:paddingBottom="@dimen/form_vertical_margin">
+                android:paddingTop="@dimen/view_vertical_spacing"
+                android:paddingBottom="@dimen/view_vertical_spacing">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -90,8 +90,8 @@
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/form_vertical_margin"
-                android:paddingBottom="@dimen/form_vertical_margin">
+                android:paddingTop="@dimen/view_vertical_spacing"
+                android:paddingBottom="@dimen/view_vertical_spacing">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/form_vertical_margin"
+            android:layout_marginTop="@dimen/view_vertical_spacing"
             android:labelFor="@+id/hosts_editor"
             android:text="@string/cnode_hosts"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -123,14 +123,14 @@
             android:id="@+id/hosts_editor"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/form_vertical_margin"
+            android:layout_marginBottom="@dimen/view_vertical_spacing"
             android:ems="10"
             android:inputType="text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/form_vertical_margin"
+            android:layout_marginTop="@dimen/view_vertical_spacing"
             android:labelFor="@+id/schemes_editor"
             android:text="@string/cnode_schemes"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -139,14 +139,14 @@
             android:id="@+id/schemes_editor"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/form_vertical_margin"
+            android:layout_marginBottom="@dimen/view_vertical_spacing"
             android:ems="10"
             android:inputType="text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/form_vertical_margin"
+            android:layout_marginTop="@dimen/view_vertical_spacing"
             android:labelFor="@+id/file_types_editor"
             android:text="@string/cnode_file_types"
             android:textAppearance="?android:attr/textAppearanceMedium" />

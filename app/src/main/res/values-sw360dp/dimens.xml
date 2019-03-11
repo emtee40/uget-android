@@ -7,10 +7,10 @@
     <dimen name="item_download_left_spacing">4dp</dimen>
     <dimen name="item_download_right_spacing">8dp</dimen>
     <dimen name="item_category_horizontal_spacing">8dp</dimen>
-    <dimen name="form_vertical_margin">4dp</dimen>
-    <dimen name="form_horizontal_margin">4dp</dimen>
+    <dimen name="view_vertical_spacing">4dp</dimen>
+    <dimen name="view_horizontal_spacing">4dp</dimen>
     <dimen name="drawer_width">288dp</dimen>
     <dimen name="traveler_horizontal_spacing">16dp</dimen>
     <dimen name="traveler_horizontal_half_spacing">8dp</dimen>
-    <dimen name="traveler_vertical_spacing">8dp</dimen>
+    <dimen name="traveler_vertical_spacing">4dp</dimen>
 </resources>
