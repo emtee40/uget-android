@@ -8,10 +8,17 @@
     <!-- set "clickable" to true -->
     <!-- Disable click through on items behind the drawer -->
 
+    <!-- used by popup menu -->
+    <View
+        android:id="@+id/traveler_top"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/item_category_horizontal_spacing"
+        android:layout_marginLeft="@dimen/item_category_horizontal_spacing"/>
+
     <!-- ============================================================== -->
     <!-- Status label & RecyclerView (list view) -->
     <TextView
-        android:id="@+id/status_listview_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/traveler_horizontal_spacing"

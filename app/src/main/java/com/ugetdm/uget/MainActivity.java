@@ -823,9 +823,10 @@ public class MainActivity extends AppCompatActivity {
             onItemClick(view, position);
             app.categoryAdapter.setItemChecked(position, true);
 
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, findViewById(R.id.status_listview_label));
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, findViewById(R.id.traveler_top));
             popupMenu.inflate(R.menu.main_category);
-            popupMenu.getMenu().findItem(R.id.action_category_delete).setEnabled(app.nthCategory > 0);
+            //popupMenu.getMenu().findItem(R.id.action_category_delete).setEnabled(app.nthCategory > 0);
+            popupMenu.getMenu().findItem(R.id.action_category_delete).setVisible(app.nthCategory > 0);
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
