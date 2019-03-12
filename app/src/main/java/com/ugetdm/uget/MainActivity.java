@@ -216,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
             // clear processed intent
             intent.removeExtra(Intent.EXTRA_TEXT);
             intent.setAction("");
+            intent.replaceExtras(new Bundle());    // remove it completely
 
             if (uri != null) {
                 if (app.setting.ui.skipExistingUri && app.core.isUriExist(uri.toString())) {
