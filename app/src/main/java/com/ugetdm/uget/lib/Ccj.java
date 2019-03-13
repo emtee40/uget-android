@@ -49,7 +49,7 @@ public class Ccj {
 
             // externalFilesDirs[0] = Internal Storage
             // externalFilesDirs[1] = External Storage
-            if (externalFilesDirs.length > 1) {
+            if (externalFilesDirs.length > 1 && externalFilesDirs[1] != null) {
                 String absolutePath = externalFilesDirs[1].getAbsolutePath();
                 externalFilesDir = absolutePath;
             }
