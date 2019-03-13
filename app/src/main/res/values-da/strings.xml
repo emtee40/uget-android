@@ -182,7 +182,6 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
-        <item>5</item>
     </string-array>
     <string name="pref_media_type">Medietype</string>
     <string name="pref_media_type_summary">Opsæt betingelse af matchtilstand for medie - Type</string>

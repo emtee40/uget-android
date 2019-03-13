@@ -95,6 +95,7 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
     <string name="pref_media_quality_entrie_default">1</string>
     <string-array name="pref_media_quality_entrie_array">
@@ -110,7 +111,6 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
-        <item>5</item>
     </string-array>
     <string name="pref_media_type">Medientyp</string>
     <string name="pref_media_type_entrie_default">0</string>
@@ -128,12 +128,6 @@
     </string-array>
 
     <string name="dnode_uri">Adresse</string>
-    <string-array name="dnode_proxy_type">
-        <item>Vorgabe</item>
-        <item>HTTP</item>
-        <item>SOCKS v4</item>
-        <item>SOCKS v5</item>
-    </string-array>
 
     <!-- Don't translate below 2 message -->
     <string name="dnode_image_description">Aktueller Status</string>
@@ -142,9 +136,5 @@
     <string name="cnode_name">Name: </string>
     <string name="cnode_active_limit">Aktive Übertragungen</string>
     <string name="cnode_name_new">Neu %d</string>
-    <string-array name="cnode_state">
-        <item>Jeder Status</item>
-        <item>Aktiv</item>
-    </string-array>
 
     </resources>
