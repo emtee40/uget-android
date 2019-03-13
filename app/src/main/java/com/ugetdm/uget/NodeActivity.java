@@ -941,6 +941,29 @@ public class NodeActivity extends AppCompatActivity {
         // --- disable OK and CANCEL ---
         findViewById(R.id.action_ok).setEnabled(false);
         findViewById(R.id.action_cancel).setEnabled(false);
+
+        // --- batch dialog ---
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(NodeActivity.this);
+        dialogBuilder.setIcon(android.R.drawable.ic_dialog_info);
+        dialogBuilder.setTitle(R.string.action_batch);
+        dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // --- this will stop batchRunnable
+                batchUriIndex = batchUriArray.length;
+            }
+        });
+
+        batchDialog = dialogBuilder.create();
+        batchDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // --- this will stop batchRunnable
+                batchUriIndex = batchUriArray.length;
+            }
+        });
+        batchDialog.setMessage("");    // --- This will make message visible
+        batchDialog.show();
+
         // --- batch handler ---
         batchUriIndex = 0;
         batchUriArray = sequenceForm.getList();
@@ -948,7 +971,7 @@ public class NodeActivity extends AppCompatActivity {
         batchHandler.postDelayed(batchRunnable, 0);
     }
 
-    private AlertDialog batchDialog;
+    private AlertDialog batchDialog = null;
     private int      batchUriIndex;
     private String[] batchUriArray;
     private Handler  batchHandler;
@@ -958,24 +981,21 @@ public class NodeActivity extends AppCompatActivity {
             long         timeMillis;
             DownloadProp downloadProp;
 
-            if (batchDialog != null)
-                batchDialog.dismiss();
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(NodeActivity.this);
-            dialogBuilder.setIcon(android.R.drawable.ic_dialog_info);
-            dialogBuilder.setTitle(R.string.action_batch);
-            dialogBuilder.setMessage(
-                    getString(R.string.batch_remaining_counts, batchUriArray.length - batchUriIndex) + "\n\n"
-                    + getString(R.string.batch_total_counts, batchUriArray.length));
-            batchDialog = dialogBuilder.show();
+            // --- batch dialog ---
+            batchDialog.setMessage(
+                    getString(R.string.batch_remaining_counts, batchUriArray.length - batchUriIndex)
+                            + "\n\n"
+                            + getString(R.string.batch_total_counts, batchUriArray.length));
 
             timeMillis = System.currentTimeMillis();
             downloadProp = (DownloadProp) categoryProp;
             for (;  batchUriIndex < batchUriArray.length;  batchUriIndex++) {
-                if (System.currentTimeMillis() - timeMillis > 300)
+                if (System.currentTimeMillis() - timeMillis > 100)
                     break;
                 long nodePointer = Node.create();
                 long infoPointer = Node.info(nodePointer);
                 downloadProp.uri = batchUriArray[batchUriIndex];
+                batchUriArray[batchUriIndex] = null;
                 Info.set(infoPointer, downloadProp);
                 app.addDownloadNode(nodePointer, nthCategoryReal + 1);
             }
@@ -985,7 +1005,7 @@ public class NodeActivity extends AppCompatActivity {
                 finish();
                 return;
             }
-            batchHandler.postDelayed(this, 100);
+            batchHandler.postDelayed(this, 0);
         }
     };
 }
