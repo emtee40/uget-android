@@ -159,6 +159,71 @@ Java_com_ugetdm_uget_lib_Node_getNthChild (JNIEnv* env, jclass nodeClass, jlong 
 	return result;
 }
 
+JNIEXPORT jint
+Java_com_ugetdm_uget_lib_Node_getChildrenByPositions(JNIEnv* env, jclass nodeClass, jlong pointer, jlongArray jArray)
+{
+	UgetNode*  node;
+	jlong*     jArrayElements;
+	int        size, index, position, next_counts;
+
+	node = ((UgetNode*)(intptr_t)pointer)->children;
+	size = (*env)->GetArrayLength(env, jArray);
+	jArrayElements = (*env)->GetLongArrayElements(env, jArray, NULL);
+
+	for (position = 0, index = 0;  index < size;  index++) {
+		next_counts = (int)jArrayElements[index] - position;
+		position += next_counts;
+		for (;  next_counts > 0;  next_counts--)
+			node = node->next;
+		jArrayElements[index] = (jlong)(intptr_t) node->base;
+	}
+
+	(*env)->ReleaseLongArrayElements(env, jArray, jArrayElements, 0);
+	return size;
+}
+
+static UgetNode* getFakeByParent (UgetNode* node, UgetNode* parent);
+
+JNIEXPORT jint
+Java_com_ugetdm_uget_lib_Node_getPositionsByChildren(JNIEnv* env, jclass nodeClass, jlong pointer, jlongArray jArray)
+{
+	UgetNode*  node;
+	UgetNode*  prev = NULL;
+	int        prev_position = 0;
+	int        size, index;
+    jlong*     jArrayElements;
+
+	size = (*env)->GetArrayLength(env, jArray);
+	jArrayElements = (*env)->GetLongArrayElements(env, jArray, NULL);
+
+	for (index = 0;  index < size;  index++) {
+		node = (UgetNode*)(intptr_t) jArrayElements[index];
+		if (node == NULL) {
+            jArrayElements[index] = -1;
+            continue;
+		}
+		node = getFakeByParent(node, (UgetNode*)(intptr_t) pointer);
+		if (node == NULL) {
+            jArrayElements[index] = -1;
+            continue;
+		}
+
+		if (prev == NULL)
+            jArrayElements[index] = uget_node_child_position((UgetNode*)(intptr_t) pointer, node);
+		else if (node->next == prev)
+			jArrayElements[index] = prev_position - 1;
+		else if (node->prev == prev)
+            jArrayElements[index] = prev_position + 1;
+		else
+            jArrayElements[index] = uget_node_child_position((UgetNode*)(intptr_t) pointer, node);
+		prev = node;
+		prev_position = (int)jArrayElements[index];
+	}
+
+	(*env)->ReleaseLongArrayElements(env, jArray, jArrayElements, 0);
+	return size;
+}
+
 JNIEXPORT jlong
 Java_com_ugetdm_uget_lib_Node_getFakeByGroup (JNIEnv* env, jclass nodeClass, jlong pointer, jint group)
 {

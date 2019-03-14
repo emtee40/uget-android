@@ -23,6 +23,10 @@ public class Node {
 
     public native static long    getNthChild(long nodePointer, int nth);
 
+    // parameter positionsToNodes[] must be sorted
+    public native static int     getChildrenByPositions(long nodePointer, long positionsToNodes[]);
+    public native static int     getPositionsByChildren(long nodePointer, long nodesToPositions[]);
+
     public native static long    getFakeByGroup(long nodePointer, int group);
     public native static long    getFakeByParent(long nodePointer, long nodeParent);
 }

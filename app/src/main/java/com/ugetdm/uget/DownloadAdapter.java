@@ -18,6 +18,8 @@ import com.ugetdm.uget.lib.Node;
 import com.ugetdm.uget.lib.Progress;
 import com.ugetdm.uget.lib.Util;
 
+import java.util.Arrays;
+
 public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHolder> {
     // C pointer to node
     protected long    pointer;
@@ -432,35 +434,28 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             return null;
 
         long nodeArray[] = new long[size];
-        for (int i = 0;  i < size;  i++) {
-            nodeArray[i] = Node.getNthChild(pointer, selections.keyAt(i));
-            nodeArray[i] = Node.base(nodeArray[i]);
-        }
+        for (int i = 0;  i < size;  i++)
+            nodeArray[i] = selections.keyAt(i);
+        Arrays.sort(nodeArray);
+        Node.getChildrenByPositions(pointer, nodeArray);
         return nodeArray;
     }
 
     public int setCheckedNodes(long[] nodeArray) {
         int   position;
-        long node;
 
-        clearChoices(true);   // clear selection
-        if (nodeArray == null)
-            return 0;
+        clearChoices(false);   // clear selection
+        if (nodeArray != null) {
+            Node.getPositionsByChildren(pointer, nodeArray);
 
-        for (int i = 0;  i < nodeArray.length;  i++) {
-            // --- if node was removed
-            node = nodeArray[i];
-            if (node == 0)
-                continue;
-            // --- if node move to other category/status
-            node = Node.getFakeByParent(node, pointer);
-            if (node == 0)
-                continue;
-            // --- if node stay in current category/status
-            position = Node.getPosition(pointer, node);
-            selections.put(position, true);
-            notifyItemChanged(position);
+            for (int i = 0;  i < nodeArray.length;  i++) {
+                position = (int) nodeArray[i];
+                if (position < 0)
+                    continue;
+                selections.put(position, true);
+            }
         }
+        notifyDataSetChanged();
         nSelectedLast = selections.size();
         return nSelectedLast;
     }
