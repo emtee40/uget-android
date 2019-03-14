@@ -37,6 +37,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.ugetdm.uget.lib.Core;
+import com.ugetdm.uget.lib.Info;
 import com.ugetdm.uget.lib.Node;
 import com.ugetdm.uget.lib.Util;
 
@@ -259,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (app.downloadAdapter.getCheckedItemCount() > 0 || isToolbarHomeAsUp()) {
             // --- selection mode ---
-            exitSelectionMode(true);
+            decideSelectionMode(true);
         }
         else if (app.setting.ui.exitOnBack) {
             if (app.setting.ui.confirmExit) {
@@ -340,9 +341,9 @@ public class MainActivity extends AppCompatActivity {
                             source.hide();
                             String filename = file.getName();
                             if (app.core.loadCategory(file.getAbsolutePath()) != 0)
-                                showFileChooserResult(filename, true);
+                                handleFileChooserResult(filename, true);
                             else
-                                showFileChooserResult(filename, false);
+                                handleFileChooserResult(filename, false);
                         }
                         // this is called when a file is created
                         public void onFileSelected(Dialog source, File folder, String name) {
@@ -417,28 +418,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_resume_all:
                 selection = app.downloadAdapter.getCheckedNodes();
                 app.core.resumeCategories();
-                app.downloadAdapter.notifyDataSetChanged();
+                app.downloadAdapter.setCheckedNodes(selection);
                 app.stateAdapter.notifyDataSetChanged();
                 // --- selection mode ---
-                if (selection != null) {
-                    int nChecked = app.downloadAdapter.setCheckedNodes(selection);
-                    if (nChecked == 0)
-                        exitSelectionMode(false);
-                }
+                decideSelectionMode(false);
                 break;
 
             case R.id.action_pause_all:
                 selection = app.downloadAdapter.getCheckedNodes();
                 app.core.pauseCategories();
-                app.downloadAdapter.notifyDataSetChanged();
+                app.downloadAdapter.setCheckedNodes(selection);
                 app.stateAdapter.notifyDataSetChanged();
-                // --- selection mode ---
-                if (selection != null) {
-                    int nChecked = app.downloadAdapter.setCheckedNodes(selection);
-                    if (nChecked == 0)
-                        exitSelectionMode(false);
-                }
                 app.userAction = true;
+                // --- selection mode ---
+                decideSelectionMode(false);
                 break;
 
             case R.id.action_offline:
@@ -468,72 +461,70 @@ public class MainActivity extends AppCompatActivity {
                 selection = app.downloadAdapter.getCheckedNodes();
                 if (selection != null) {
                     for (int i=0;  i < selection.length;  i++) {
-                        position = app.getDownloadNodePosition(selection[i]);
-                        if (position != -1)
-                            app.tryQueueNthDownload(position);
+                        long infoPointer = Node.info(selection[i]);
+                        if ((Info.getGroup(infoPointer) & Info.Group.active) > 0)
+                            continue;
+                        app.core.queueDownload(selection[i]);
                     }
                     app.downloadAdapter.setCheckedNodes(selection);
+                    app.stateAdapter.notifyDataSetChanged();
+                    //app.userAction = true;
+                    // --- selection mode ---
+                    decideSelectionMode(false);
                 }
-                // --- selection mode ---
-                if (app.downloadAdapter.getCheckedItemCount() == 0)
-                    exitSelectionMode(false);
                 break;
 
             case R.id.action_pause:
                 selection = app.downloadAdapter.getCheckedNodes();
                 if (selection != null) {
-                    for (int i=0;  i < selection.length;  i++) {
-                        position = app.getDownloadNodePosition(selection[i]);
-                        if (position != -1)
-                            app.pauseNthDownload(position);
-                    }
+                    for (int i=0;  i < selection.length;  i++)
+                        app.core.pauseDownload(selection[i]);
                     app.downloadAdapter.setCheckedNodes(selection);
+                    app.stateAdapter.notifyDataSetChanged();
+                    app.userAction = true;
+                    // --- selection mode ---
+                    decideSelectionMode(false);
                 }
-                // --- selection mode ---
-                if (app.downloadAdapter.getCheckedItemCount() == 0)
-                    exitSelectionMode(false);
                 break;
 
             case R.id.action_select_all:
                 int  size = app.downloadAdapter.getItemCount();
                 for (int i = 0;  i < size;  i++)
                     app.downloadAdapter.setItemChecked(i, true);
-                decideTitle();    // updateToolbar()
+                // --- selection mode ---
+                decideSelectionMode(false);
                 break;
 
             case R.id.action_delete_recycle:
                 selection = app.downloadAdapter.getCheckedNodes();
                 if (selection != null) {
                     for (int i=0;  i < selection.length;  i++) {
-                        position = app.getDownloadNodePosition(selection[i]);
-                        if (position != -1) {
-                            // set selection[i] to 0 if current position was removed
-                            if (app.recycleNthDownload(position) == -1)
-                                selection[i] = 0;
-                        }
+                        // app.core.recycleDownload() return false if it removed.
+                        if (app.core.recycleDownload(selection[i]) == false)
+                            selection[i] = 0;
                     }
                     app.downloadAdapter.setCheckedNodes(selection);
+                    app.categoryAdapter.notifyDataSetChanged();
+                    app.stateAdapter.notifyDataSetChanged();
+                    app.userAction = true;
+                    // --- selection mode ---
+                    decideSelectionMode(false);
                 }
-                // --- selection mode ---
-                if (app.downloadAdapter.getCheckedItemCount() == 0)
-                    exitSelectionMode(false);
                 break;
 
             case R.id.action_delete_data:
                 selection = app.downloadAdapter.getCheckedNodes();
                 if (selection != null) {
-                    for (int i=0;  i < selection.length;  i++) {
-                        position = app.getDownloadNodePosition(selection[i]);
-                        if (position != -1) {
-                            app.deleteNthDownload(position, false);
-                            // set selection[i] to 0 if current position was removed
-                            selection[i] = 0;
-                        }
-                    }
-                    app.downloadAdapter.setCheckedNodes(selection);
+                    for (int i=0;  i < selection.length;  i++)
+                        app.core.deleteDownload(selection[i], false);
+                    app.downloadAdapter.clearChoices(false);
+                    app.downloadAdapter.notifyDataSetChanged();
+                    app.categoryAdapter.notifyDataSetChanged();
+                    app.stateAdapter.notifyDataSetChanged();
+                    app.userAction = true;
+                    // --- selection mode ---
+                    decideSelectionMode(false);
                 }
-                // --- selection mode ---
-                exitSelectionMode(false);
                 break;
 
             case R.id.action_delete_file:
@@ -591,7 +582,7 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    exitSelectionMode(true);
+                    decideSelectionMode(true);
                 }
             });
         }
@@ -635,7 +626,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void exitSelectionMode(boolean cancelChoice) {
+    public void decideSelectionMode(boolean cancelChoice) {
         // --- selection mode ---
         if (cancelChoice)
             app.downloadAdapter.clearChoices(true);
@@ -728,7 +719,7 @@ public class MainActivity extends AppCompatActivity {
                 // --- This will call app.downloadAdapter.notifyDataSetChanged()
                 app.switchDownloadAdapter();
                 // --- selection mode ---
-                exitSelectionMode(false);
+                decideSelectionMode(false);
                 // --- show message if no download ---
                 decideContent();
             }
@@ -810,7 +801,7 @@ public class MainActivity extends AppCompatActivity {
             // --- This will call app.downloadAdapter.notifyDataSetChanged()
             app.switchDownloadAdapter();
             // --- selection mode ---
-            exitSelectionMode(false);
+            decideSelectionMode(false);
             // --- category menu ---
             invalidateOptionsMenu();    // this will call onPrepareOptionsMenu()
             // --- category button up/down ---
@@ -1104,14 +1095,15 @@ public class MainActivity extends AppCompatActivity {
         if (selection == null)
             return;
 
-        for (int i=0;  i < selection.length;  i++) {
-            int position = app.getDownloadNodePosition(selection[i]);
-            if (position != -1)
-                app.deleteNthDownload(position, true);
-        }
+        for (int i=0;  i < selection.length;  i++)
+            app.core.deleteDownload(selection[i], true);
         app.downloadAdapter.clearChoices(false);
+        app.downloadAdapter.notifyDataSetChanged();
+        app.categoryAdapter.notifyDataSetChanged();
+        app.stateAdapter.notifyDataSetChanged();
+        app.userAction = true;
         // --- selection mode ---
-        exitSelectionMode(false);
+        decideSelectionMode(false);
         // --- show message if no download item ---
         decideContent();
     }
@@ -1255,14 +1247,14 @@ public class MainActivity extends AppCompatActivity {
 
         String filename = DocumentFile.fromSingleUri(this, treeUri).getName();
         if (parcelFD != null && app.core.loadCategory(parcelFD.detachFd()) != 0)
-            showFileChooserResult(filename, true);
+            handleFileChooserResult(filename, true);
         else
-            showFileChooserResult(filename, false);
+            handleFileChooserResult(filename, false);
 
         revokeUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
-    protected void showFileChooserResult(String filename, boolean ok) {
+    protected void handleFileChooserResult(String filename, boolean ok) {
         if (ok) {
             app.categoryAdapter.notifyDataSetChanged();
             app.stateAdapter.notifyDataSetChanged();
