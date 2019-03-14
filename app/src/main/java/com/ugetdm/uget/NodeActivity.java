@@ -990,7 +990,7 @@ public class NodeActivity extends AppCompatActivity {
             timeMillis = System.currentTimeMillis();
             downloadProp = (DownloadProp) categoryProp;
             for (;  batchUriIndex < batchUriArray.length;  batchUriIndex++) {
-                if (System.currentTimeMillis() - timeMillis > 100)
+                if (System.currentTimeMillis() - timeMillis > 250)
                     break;
                 long nodePointer = Node.create();
                 long infoPointer = Node.info(nodePointer);
