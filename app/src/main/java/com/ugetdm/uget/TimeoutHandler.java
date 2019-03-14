@@ -152,6 +152,9 @@ public class TimeoutHandler {
                 }
                 // --- restore selected node ---
                 app.downloadAdapter.setCheckedNodes(checkedNodes);
+                // --- notify data changed ---
+                app.categoryAdapter.notifyDataSetChanged();
+                app.stateAdapter.notifyDataSetChanged();
                 // --- main activity
                 if (app.mainActivity != null) {
                     // --- selection mode ---
@@ -162,10 +165,6 @@ public class TimeoutHandler {
                     // --- show message if no download ---
                     app.mainActivity.decideContent();
                 }
-                // --- notify data changed ---
-                app.downloadAdapter.notifyDataSetChanged();
-                app.categoryAdapter.notifyDataSetChanged();
-                app.stateAdapter.notifyDataSetChanged();
             } else {
                 long nodeArray[] = app.getActiveDownloadNode();
                 if (nodeArray != null) {
