@@ -248,24 +248,11 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             sizeTextWidth = calcTextWidth(holder.size, sizeText) + 4;    // + padding
         }
         holder.size.setText(sizeText);
-
-        // adjust width of size field
-        if ((state & Info.Group.active) > 0) {
-            // -- running task doesn't show message.
+        if ((state & Info.Group.active) == 0)
+            holder.size.getLayoutParams().width = sizeTextWidth;
+        else
             holder.size.getLayoutParams().width = sizeMinWidth;
-            holder.size.requestLayout();
-            holder.size.setVisibility(View.VISIBLE);
-        }
-        else {
-            // --- try to reduce width if this item has message.
-            if (progress.total == 0)
-                holder.size.setVisibility(View.GONE);
-            else {
-                holder.size.getLayoutParams().width = sizeTextWidth;
-                holder.size.requestLayout();
-                holder.size.setVisibility(View.VISIBLE);
-            }
-        }
+        holder.size.requestLayout();
 
         // --- multiple choice ---
         if (selections.get(position))
