@@ -443,51 +443,6 @@ Java_com_ugetdm_uget_lib_Core_resumeCategories (JNIEnv* env, jobject thiz)
 }
 
 JNIEXPORT void
-Java_com_ugetdm_uget_lib_Core_addDownloadSequence (JNIEnv* env, jobject thiz, jobject sequence, jstring jpattern, jlong cNodePointer, jint startupMode)
-{
-	UgetApp*      app;
-	UgetSequence* seq;
-	jclass        objClass;
-	const char*   pattern;
-	UgList        uriList;
-	UgLink*       link;
-	UgetNode*     dnode;
-    union {
-        UgetCommon*   common;
-        UgetRelation* relation;
-    } temp;
-
-	objClass = (*env)->GetObjectClass (env, thiz);
-//	objClass = (*env)->FindClass (env, "com/ugetdm/uget/lib/Core");
-	app = (UgetApp*)(intptr_t) (*env)->GetLongField(env, thiz,
-			(*env)->GetFieldID (env, objClass, "pointer", "J"));
-	(*env)->DeleteLocalRef (env, objClass);
-
-	objClass = (*env)->GetObjectClass (env, sequence);
-//	objClass = (*env)->FindClass (env, "com/ugetdm/uget/lib/Sequence");
-	seq = (UgetSequence*)(intptr_t) (*env)->GetLongField(env, sequence,
-			(*env)->GetFieldID (env, objClass, "pointer", "J"));
-	(*env)->DeleteLocalRef (env, objClass);
-
-	ug_list_init (&uriList);
-	pattern = (*env)->GetStringUTFChars (env, jpattern, NULL);
-	uget_sequence_get_list (seq, pattern, &uriList);
-	(*env)->ReleaseStringUTFChars (env, jpattern, pattern);
-
-	for (link = uriList.head;  link;  link = link->next) {
-		dnode = uget_node_new (NULL);
-		temp.common = ug_info_realloc (dnode->info, UgetCommonInfo);
-		temp.common->uri = ug_strdup (link->data);
-		if (startupMode == 1) {
-            temp.relation = ug_info_realloc(dnode->info, UgetRelationInfo);
-            temp.relation->group = UGET_GROUP_PAUSED;
-        }
-		uget_app_add_download (app, dnode, (UgetNode*)(intptr_t)cNodePointer, TRUE);
-	}
-	ug_list_foreach_link (&uriList, (UgForeachFunc)ug_free, NULL);
-}
-
-JNIEXPORT void
 Java_com_ugetdm_uget_lib_Core_addDownloadByUri (JNIEnv* env, jobject thiz, jstring juri, jlong cNodePointer, jboolean apply)
 {
 	UgetApp*  app;

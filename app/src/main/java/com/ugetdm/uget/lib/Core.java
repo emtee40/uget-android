@@ -51,7 +51,6 @@ public class Core {
     public  native void    pauseCategories();    // pause all
     public  native void    resumeCategories();   // resuem all
 
-    public  native void    addDownloadSequence(Sequence sequence, String pattern, long cNodePointer, int startupMode);  // 1 == pause
     public  native void    addDownloadByUri(String uri, long cNodePointer, boolean apply);
     public  native void    addDownload(long dNodePointer, long cNodePointer, boolean apply);
     public  native boolean moveDownload(long dNodePointer, long dNodePosition);
