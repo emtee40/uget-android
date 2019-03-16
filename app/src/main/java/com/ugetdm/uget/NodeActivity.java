@@ -949,7 +949,7 @@ public class NodeActivity extends AppCompatActivity {
         dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // --- this will stop batchRunnable
-                batchUriIndex = batchUriArray.length;
+                batchUriIndex = batchUriTotal;
             }
         });
 
@@ -958,7 +958,7 @@ public class NodeActivity extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 // --- this will stop batchRunnable
-                batchUriIndex = batchUriArray.length;
+                batchUriIndex = batchUriTotal;
             }
         });
         batchDialog.setMessage("");    // --- This will make message visible
@@ -966,14 +966,16 @@ public class NodeActivity extends AppCompatActivity {
 
         // --- batch handler ---
         batchUriIndex = 0;
-        batchUriArray = sequenceForm.getList();
+        batchUriTotal = sequenceForm.count();
+        batchResult = sequenceForm.startBatch();
         batchHandler = new Handler();
         batchHandler.postDelayed(batchRunnable, 0);
     }
 
     private AlertDialog batchDialog = null;
     private int      batchUriIndex;
-    private String[] batchUriArray;
+    private int      batchUriTotal;
+    private long     batchResult;
     private Handler  batchHandler;
     private Runnable batchRunnable = new Runnable() {
         @Override
@@ -983,24 +985,35 @@ public class NodeActivity extends AppCompatActivity {
 
             // --- batch dialog ---
             batchDialog.setMessage(
-                    getString(R.string.batch_remaining_counts, batchUriArray.length - batchUriIndex)
+                    getString(R.string.batch_remaining_counts, batchUriTotal - batchUriIndex)
                             + "\n\n"
-                            + getString(R.string.batch_total_counts, batchUriArray.length));
+                            + getString(R.string.batch_total_counts, batchUriTotal));
 
             timeMillis = System.currentTimeMillis();
             downloadProp = (DownloadProp) categoryProp;
-            for (;  batchUriIndex < batchUriArray.length;  batchUriIndex++) {
-                if (System.currentTimeMillis() - timeMillis > 250)
+            for (;  batchUriIndex < batchUriTotal;  batchUriIndex++) {
+                if (System.currentTimeMillis() - timeMillis > 100)
                     break;
+
+                String uri = sequenceForm.getBatchUri(batchResult);
+                if (uri == null) {
+                    // --- error occurred ---
+                    batchUriIndex = batchUriTotal;
+                    break;
+                }
                 long nodePointer = Node.create();
                 long infoPointer = Node.info(nodePointer);
-                downloadProp.uri = batchUriArray[batchUriIndex];
-                batchUriArray[batchUriIndex] = null;
+                downloadProp.uri = uri;
                 Info.set(infoPointer, downloadProp);
-                app.addDownloadNode(nodePointer, nthCategoryReal + 1);
+                app.core.addDownload(nodePointer,
+                        Node.getNthChild(app.core.nodeReal, nthCategoryReal), false);
             }
+            app.downloadAdapter.notifyDataSetChanged();
+            app.categoryAdapter.notifyDataSetChanged();
+            app.stateAdapter.notifyDataSetChanged();
 
-            if (batchUriIndex == batchUriArray.length) {
+            if (batchUriIndex == batchUriTotal) {
+                sequenceForm.endBatch(batchResult);
                 batchDialog.dismiss();
                 finish();
                 return;

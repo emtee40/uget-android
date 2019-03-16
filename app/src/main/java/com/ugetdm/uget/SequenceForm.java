@@ -349,17 +349,27 @@ public class SequenceForm {
         return true;
     }
 
-    public String[] getList() {
-        if (showPreview()) {
-            EditText uriEditor = (EditText) view.findViewById(R.id.batch_seq_uri_editor);
-            return sequence.getList(uriEditor.getText().toString());
-        }
-        return null;
-    }
-
     public int count() {
         EditText uriEditor = (EditText) view.findViewById(R.id.batch_seq_uri_editor);
         return sequence.count(uriEditor.getText().toString());
     }
 
+    public long startBatch() {
+        if (showPreview()) {
+            EditText uriEditor = (EditText) view.findViewById(R.id.batch_seq_uri_editor);
+            return sequence.startBatch(uriEditor.getText().toString());
+        }
+        return 0;
+    }
+
+    public String getBatchUri(long batchResult) {
+        if (batchResult != 0)
+            return sequence.getBatchUri(batchResult);
+        return null;
+    }
+
+    public void endBatch(long batchResult) {
+        if (batchResult != 0)
+            sequence.endBatch(batchResult);
+    }
 }

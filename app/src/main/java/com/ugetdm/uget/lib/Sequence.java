@@ -22,8 +22,11 @@ public class Sequence {
     public  native void        add(int beg, int end, int digits);
     public  native void        clear();
     public  native int         count(String pattern);
-    public  native String[]    getList(String pattern);
     public  native String[]    getPreview(String pattern);
+
+    public  native long        startBatch(String pattern);
+    public  native String      getBatchUri(long batchResult);
+    public  native void        endBatch(long batchResult);
 }
 
 
