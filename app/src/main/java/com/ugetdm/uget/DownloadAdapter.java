@@ -32,7 +32,6 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     //private   int     leftMaxWidth = 0;
     // --- multiple choice ---
     private   SparseBooleanArray selections;
-    public    int     nSelectedLast;   // used by onItemClick and onItemLongClick
     // --- single choice ---
     public    boolean singleSelection;
 
@@ -290,18 +289,20 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         public class ItemListener implements View.OnClickListener, View.OnLongClickListener {
             @Override
             public void onClick(View view) {
+                int position;
                 // --- selection mode ---
-                if (singleSelection) {
-                    if (selections.size() > 0)
-                        return;
+                if (selections.size() == 0)
+                    singleSelection = true;
+                else if (singleSelection) {
+                    position = getCheckedItemPosition();
+                    if (position >= 0)
+                        toggleSelection(view, position);
                 }
                 // --- If you click fast, getAdapterPosition() sometimes throw the -1 position.
-                int position = getAdapterPosition();
+                position = getAdapterPosition();
                 if (position == -1)
                     return;
-                // --- multiple selection mode ---
-                if (selections.size() > 0)
-                    toggleSelection(view, position);
+                toggleSelection(view, position);
                 // --- notify ---
                 if (onItemClickListener != null)
                     onItemClickListener.onItemClick(view, position);
@@ -309,10 +310,15 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
             @Override
             public boolean onLongClick(View view) {
+                int position;
                 // --- selection mode ---
-                if (singleSelection)
-                    return true;
-                int position = getAdapterPosition();
+                if (singleSelection) {
+                    singleSelection = false;
+                    position = getCheckedItemPosition();
+                    if (position >= 0)
+                        toggleSelection(view, position);
+                }
+                position = getAdapterPosition();
                 toggleSelection(view, position);
                 // --- notify ---
                 if (onItemLongClickListener != null)
@@ -324,14 +330,11 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
 
             public void toggleSelection(View view, int position) {
                 // --- multiple choice ---
-                if (selections.get(position)) {
+                if (selections.get(position))
                     selections.delete(position);
-                    view.setSelected(false);    // notifyItemChanged(position)
-                }
-                else {
+                else
                     selections.put(position, true);
-                    view.setSelected(true);     // notifyItemChanged(position)
-                }
+                notifyItemChanged(position);
             }
         }
 
@@ -388,8 +391,6 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             }
         }
         selections.clear();
-        nSelectedLast = 0;
-        singleSelection = false;
     }
 
     public int getCheckedItemCount() {
@@ -412,7 +413,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     }
 
     public void setItemChecked(int position, boolean checked) {
-        if (position < getItemCount() && position >= 0) {
+        if (position >= 0 && position < getItemCount()) {
             if (checked)
                 selections.put(position, true);
             else
@@ -420,9 +421,6 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             // --- notify ---
             notifyItemChanged(position);
         }
-        nSelectedLast = selections.size();
-        if (nSelectedLast == 0)
-            singleSelection = false;
     }
 
     // ------------------------------------------------------------------------
@@ -456,8 +454,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             }
         }
         notifyDataSetChanged();
-        nSelectedLast = selections.size();
-        return nSelectedLast;
+        return selections.size();
     }
 }
 

@@ -160,7 +160,7 @@ public class TimeoutHandler {
                     // --- selection mode ---
                     if (app.downloadAdapter.singleSelection == false) {
                         app.mainActivity.decideMenuVisible();
-                        app.mainActivity.updateToolbar();
+                        app.mainActivity.decideToolbarStatus();
                     }
                     // --- show message if no download ---
                     app.mainActivity.decideContent();
