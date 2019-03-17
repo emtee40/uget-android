@@ -14,8 +14,8 @@ android {
         applicationId "com.ugetdm.uget"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 45
-        versionName '2.0.3'
+        versionCode 46
+        versionName '2.0.4'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
