@@ -142,10 +142,14 @@ public class MainActivity extends AppCompatActivity {
     // onPause -> onSaveInstanceState -> onStop -> onDestroy
     // onCreate -> onStart -> onRestoreInstanceState -> onResume
 
-    /*
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the user's current game state
+        if (app.downloadAdapter.singleSelection) {
+            int position = app.downloadAdapter.getCheckedItemPosition();
+            if (isDownloadPositionVisible(position))
+                savedInstanceState.putBoolean("isCheckedVisible", true);
+        }
 
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
@@ -157,9 +161,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         // Restore state members from saved instance
-
+        boolean isCheckedVisible = savedInstanceState.getBoolean("isCheckedVisible", false);
+        if (app.downloadAdapter.singleSelection && isCheckedVisible) {
+            int position = app.downloadAdapter.getCheckedItemPosition();
+            if (position >= 0)
+                scrollToDownloadPosition(position);
+        }
     }
-    */
 
     // ------------------------------------------------------------------------
     // foreground lifetime
@@ -319,7 +327,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         Bundle bundle;
         long   selection[];
-        int     position;
 
         switch(id) {
             case R.id.action_category_new:
@@ -828,11 +835,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void scrollToDownloadPosition(int position) {
+        if (isDownloadPositionVisible(position) == false)
+            downloadListView.smoothScrollToPosition(position);
+    }
+
+    public boolean isDownloadPositionVisible(int position) {
         int first, last;
         first = downloadLayoutManager.findFirstCompletelyVisibleItemPosition();
         last = downloadLayoutManager.findLastCompletelyVisibleItemPosition();
-        if (position >= first || position <= last)
-            downloadListView.smoothScrollToPosition(position);
+        return (position >= first && position <= last);
     }
 
     // --- category button up/down ---
