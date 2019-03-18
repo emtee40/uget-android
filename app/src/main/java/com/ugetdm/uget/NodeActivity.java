@@ -825,6 +825,9 @@ public class NodeActivity extends AppCompatActivity {
     private static final int RESULT_FOLDER_REQUEST = 0xDF0E;
 
     protected boolean isFolderWritable(String folder) {
+        if (folder.equals(""))
+            return true;
+
         // for Android 5+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             for (int index = 0;  index < app.folderWritable.length;  index++) {
