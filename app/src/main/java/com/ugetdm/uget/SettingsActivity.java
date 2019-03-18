@@ -8,8 +8,10 @@ import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
@@ -103,7 +105,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return UiSettingFragment.class.getName().equals(fragmentName)
                 || ClipboardSettingFragment.class.getName().equals(fragmentName)
                 || SpeedSettingFragment.class.getName().equals(fragmentName)
-                || Aria2SettingFragment.class.getName().equals(fragmentName)
+                || PluginSettingFragment.class.getName().equals(fragmentName)
                 || MediaSettingFragment.class.getName().equals(fragmentName)
                 || OtherSettingFragment.class.getName().equals(fragmentName)
                 || AboutFragment.class.getName().equals(fragmentName);
@@ -166,43 +168,58 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    public static class Aria2SettingFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static class PluginSettingFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_aria2);
+            addPreferencesFromResource(R.xml.pref_plugin);
             getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
-            Preference.OnPreferenceClickListener clickListener;
-            clickListener = new Preference.OnPreferenceClickListener() {
+            Preference.OnPreferenceChangeListener changeListener;
+            changeListener = new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    // TODO Auto-generated method stub
+                public boolean onPreferenceChange(Preference preference, Object value) {
                     SettingsActivity.aria2Changed = true;
-                    return false;
+                    // --- return true, write new value to Preference
+                    return true;
                 }
             };
 
             Preference preference;
-            // pref_aria2_uri
+            // pref_plugin
+            preference = findPreference("pref_plugin_order");
+            preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object value) {
+                    if (preference instanceof ListPreference) {
+                        decideAria2OptionEnable(value);
+                    }
+                    // --- return true, write new value to Preference
+                    return true;
+                }
+            });
+            // pref_aria2_xxx
             preference = findPreference("pref_aria2_uri");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
             preference = findPreference("pref_aria2_token");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
             preference = findPreference("pref_aria2_speed_download");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
             preference = findPreference("pref_aria2_speed_upload");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
             preference = findPreference("pref_aria2_local");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
             preference = findPreference("pref_aria2_launch");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
             preference = findPreference("pref_aria2_shutdown");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
             preference = findPreference("pref_aria2_path");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
             preference = findPreference("pref_aria2_args");
-            preference.setOnPreferenceClickListener(clickListener);
+            preference.setOnPreferenceChangeListener(changeListener);
+
+            // --- initialize status ---
+            decideAria2OptionEnable(null);
         }
 
         @Override
@@ -214,6 +231,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             updatePreferenceSummary();
+        }
+
+        private void decideAria2OptionEnable(Object value) {
+            boolean enableAria2Option;
+            int index;
+
+            if (value == null) {
+                SharedPreferences sharedPrefs = getPreferenceManager().getSharedPreferences();
+                index = Integer.parseInt(sharedPrefs.getString("pref_plugin_order", "0"));
+            }
+            else {
+                Preference preference = findPreference("pref_plugin_order");
+                ListPreference listPreference = (ListPreference) preference;
+                index = listPreference.findIndexOfValue(value.toString());
+           }
+
+            if (index > 0)
+                enableAria2Option = true;
+            else
+                enableAria2Option = false;
+
+            PreferenceCategory preferenceCategory = (PreferenceCategory)findPreference("pref_aria2");
+            preferenceCategory.setEnabled(enableAria2Option);
         }
 
         private void updatePreferenceSummary() {

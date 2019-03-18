@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="pref_plugin_order"
+        android:title="@string/pref_plugin_order"
+        android:summary="@string/pref_plugin_order_summary"
+        android:entries="@array/pref_plugin_order_entrie_array"
+        android:entryValues="@array/pref_plugin_order_entrie_values"
+        android:defaultValue="@string/pref_plugin_order_entrie_default"
+        android:dialogTitle="@string/pref_plugin_order" />
+
+    <PreferenceCategory
+        android:key="pref_aria2"
+        android:title="@string/pref_aria2">
+
+        <EditTextPreference
+            android:defaultValue="http://localhost:6800/jsonrpc"
+            android:singleLine="true"
+            android:key="pref_aria2_uri"
+            android:title="@string/pref_aria2_uri"
+            android:summary="@string/pref_aria2_uri_summary"
+            android:dialogTitle="@string/pref_aria2_uri_summary" />
+
+        <EditTextPreference
+            android:key="pref_aria2_token"
+            android:title="@string/pref_aria2_token"
+            android:summary="@string/pref_aria2_token_summary"
+            android:dialogTitle="@string/pref_aria2_token" />
+
+        <EditTextPreference
+            android:defaultValue="0"
+            android:numeric="integer"
+            android:key="pref_aria2_speed_download"
+            android:title="@string/pref_aria2_speed_download"
+            android:summary="@string/pref_aria2_speed_download_summary"
+            android:dialogTitle="@string/pref_aria2_speed_download" />
+
+        <EditTextPreference
+            android:defaultValue="0"
+            android:numeric="integer"
+            android:key="pref_aria2_speed_upload"
+            android:title="@string/pref_aria2_speed_upload"
+            android:summary="@string/pref_aria2_speed_upload_summary"
+            android:dialogTitle="@string/pref_aria2_speed_upload" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_aria2_local"
+            android:title="@string/pref_aria2_local"
+            android:summary="@string/pref_aria2_local_summary" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="pref_aria2_local"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:key="pref_aria2_launch"
+            android:title="@string/pref_aria2_launch"
+            android:summary="@string/pref_aria2_launch_summary" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="pref_aria2_local"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:key="pref_aria2_shutdown"
+            android:title="@string/pref_aria2_shutdown"
+            android:summary="@string/pref_aria2_shutdown_summary" />
+
+        <EditTextPreference
+            android:defaultValue="aria2c"
+            android:dependency="pref_aria2_local"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:key="pref_aria2_path"
+            android:title="@string/pref_aria2_path"
+            android:summary="@string/pref_aria2_path_summary"
+            android:dialogTitle="@string/pref_aria2_path_summary" />
+
+        <EditTextPreference
+            android:defaultValue="--enable-rpc=true -D --check-certificate=false"
+            android:dependency="pref_aria2_local"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:key="pref_aria2_args"
+            android:title="@string/pref_aria2_args"
+            android:summary="@string/pref_aria2_args_summary"
+            android:dialogTitle="@string/pref_aria2_args_summary" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

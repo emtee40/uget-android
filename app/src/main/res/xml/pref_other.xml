@@ -10,15 +10,6 @@
         android:defaultValue="@string/pref_sort_entrie_default"
         android:dialogTitle="@string/pref_sort" />
 
-    <ListPreference
-        android:key="pref_plugin_order"
-        android:title="@string/pref_plugin_order"
-        android:summary="@string/pref_plugin_order_summary"
-        android:entries="@array/pref_plugin_order_entrie_array"
-        android:entryValues="@array/pref_plugin_order_entrie_values"
-        android:defaultValue="@string/pref_plugin_order_entrie_default"
-        android:dialogTitle="@string/pref_plugin_order" />
-
     <EditTextPreference
         android:key="pref_autosave_interval"
         android:defaultValue="1"

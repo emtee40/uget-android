@@ -160,9 +160,9 @@
     <string name="pref_ui_notification_starting">Download starting notification</string>
     <string name="pref_ui_notification_starting_summary">Show notification when download starting.</string>
     <string name="pref_ui_notification_sound">Sound when download is finished</string>
-    <string name="pref_ui_notification_sound_summary">Sound when download is finished or error occurred. (In Android 8 and above, you must modify system setting about app notification)</string>
+    <string name="pref_ui_notification_sound_summary">Sound when download is finished or error occurred. In Android 8 and above, you must modify system setting about app notification</string>
     <string name="pref_ui_notification_vibrate">Vibrate when download is finished</string>
-    <string name="pref_ui_notification_vibrate_summary">Vibrate when download is finished or error occurred. (In Android 8 and above, you must modify system setting about app notification)</string>
+    <string name="pref_ui_notification_vibrate_summary">Vibrate when download is finished or error occurred. In Android 8 and above, you must modify system setting about app notification</string>
     <string name="pref_ui_no_wifi_go_offline">Go offline if no WiFi connection</string>
     <string name="pref_ui_no_wifi_go_offline_summary">Program will enable/disable offline mode if WiFi has disconnected/connected.</string>
     <string name="pref_ui_skip_existing_uri">Skip existing URI</string>
@@ -189,6 +189,7 @@
     <string name="pref_speed_upload">Upload speed limit</string>
     <string name="pref_speed_upload_summary">Setup upload speed limit (KiB/s)</string>
 
+    <string name="pref_plugin">Plug-in options</string>
     <string name="pref_plugin_order">Plug-in matching order…</string>
     <string name="pref_plugin_order_summary">Select primary and secondary plug-in.</string>
     <string name="pref_plugin_order_entrie_default">0</string>
@@ -209,9 +210,10 @@
     <string name="pref_aria2_uri">URI</string>
     <string name="pref_aria2_uri_summary">Setup URI for aria2 JSON-RPC</string>
     <string name="pref_aria2_token">RPC authorization secret token</string>
-    <string name="pref_aria2_token_summary">Don\'t change If you don\'t know what is this. Use with aria2 argument --rpc-secret</string>
+    <string name="pref_aria2_token_summary">Setup this value the same as your aria2 server.</string>
     <string name="pref_aria2_local">Run aria2 in this device</string>
-    <string name="pref_aria2_local_summary">Launch aria2 server in this device. You must install aria2c by yourself.</string>
+    <string name="pref_aria2_local_summary">Launch aria2 server in this device. You must install aria2c by yourself.
+        I recommend install Aria2Android from Google Play and disable this option.</string>
     <string name="pref_aria2_speed_download">Download speed limit for aria2</string>
     <string name="pref_aria2_speed_download_summary">Setup download speed limit (KiB/s), it only affect aria2 plug-in.</string>
     <string name="pref_aria2_speed_upload">Upload speed limit for aria2</string>

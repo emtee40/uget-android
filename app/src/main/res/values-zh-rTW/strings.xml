@@ -159,9 +159,9 @@
     <string name="pref_ui_exit_on_back">按返回鈕時離開</string>
     <string name="pref_ui_exit_on_back_summary">當使用者按返回鈕時離開 uGet。</string>
     <string name="pref_ui_notification_starting">開始下載時通知</string>
-    <string name="pref_ui_notification_starting_summary">當下載開始時顯示通知。 (在Android 8及更高版本中，您必須修改有關應用程式通知的系統設定)</string>
+    <string name="pref_ui_notification_starting_summary">當下載開始時顯示通知。在Android 8及更高版本中，您必須修改有關應用程式通知的系統設定。</string>
     <string name="pref_ui_notification_sound">下載完成時發出聲音</string>
-    <string name="pref_ui_notification_sound_summary">當下載完成或發生錯誤時發出聲音。 (在Android 8及更高版本中，您必須修改有關應用程式通知的系統設定)</string>
+    <string name="pref_ui_notification_sound_summary">當下載完成或發生錯誤時發出聲音。在Android 8及更高版本中，您必須修改有關應用程式通知的系統設定。</string>
     <string name="pref_ui_notification_vibrate">下載完成時振動</string>
     <string name="pref_ui_notification_vibrate_summary">當下載完成或發生錯誤時振動。</string>
     <string name="pref_ui_no_wifi_go_offline">沒有 WiFi 連線時離線</string>
@@ -190,6 +190,7 @@
     <string name="pref_speed_upload">上傳速度限制</string>
     <string name="pref_speed_upload_summary">設定上傳速度限制 (KiB/s)</string>
 
+    <string name="pref_plugin">外掛程式選項</string>
     <string name="pref_plugin_order">外掛程式配對順序…</string>
     <string name="pref_plugin_order_summary">選擇主要和次要的外掛程式。</string>
     <string name="pref_plugin_order_entrie_default">0</string>
@@ -210,9 +211,10 @@
     <string name="pref_aria2_uri">網址</string>
     <string name="pref_aria2_uri_summary">設定 aria2 JSON 遠端呼叫網址</string>
     <string name="pref_aria2_token">遠程呼叫授權密碼</string>
-    <string name="pref_aria2_token_summary">不知道這是什麼的話就別修改，需配合 aria2 參數 --rpc-secret</string>
+    <string name="pref_aria2_token_summary">將此值設置為與 aria2 伺服器相同。</string>
     <string name="pref_aria2_local">在這台裝置執行 aria2</string>
-    <string name="pref_aria2_local_summary">在這台裝置啟動 aria2 伺服器，您必須自行安裝 aria2c。</string>
+    <string name="pref_aria2_local_summary">在這台裝置啟動 aria2 伺服器，您必須自行安裝 aria2c。
+        建議從 Google Play 安裝 Aria2Android 並關閉此選項。</string>
     <string name="pref_aria2_speed_download">Aria2 下載速度限制</string>
     <string name="pref_aria2_speed_download_summary">下載速度限制 (KiB/s)，這裡只會影響 aria2 外掛程式。</string>
     <string name="pref_aria2_speed_upload">Aria2 上傳速度限制</string>

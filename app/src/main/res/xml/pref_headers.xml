@@ -14,8 +14,8 @@
         android:title="@string/pref_speed" />
 
     <header
-        android:fragment="com.ugetdm.uget.SettingsActivity$Aria2SettingFragment"
-        android:title="@string/pref_aria2" />
+        android:fragment="com.ugetdm.uget.SettingsActivity$PluginSettingFragment"
+        android:title="@string/pref_plugin" />
 
     <header
         android:fragment="com.ugetdm.uget.SettingsActivity$MediaSettingFragment"
