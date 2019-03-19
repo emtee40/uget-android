@@ -902,9 +902,9 @@ public class MainApp extends Application {
                     Integer.toString(setting.pluginOrder));
         }
 
-        // pref_aria2_x
+        // pref_aria2_xxx
         setting.plugin.aria2.uri = preferences.getString("pref_aria2_uri", "http://localhost:6800/jsonrpc");
-        setting.plugin.aria2.token = preferences.getString("pref_aria2_token", null);
+        setting.plugin.aria2.token = preferences.getString("pref_aria2_token", "aria2");
 
         // pref_aria2_speed_download
         string = preferences.getString("pref_aria2_speed_download", "0");
@@ -1144,12 +1144,12 @@ public class MainApp extends Application {
     }
 
     public void addFolderHistory(String folder) {
-        int  index = folderHistory.length -1;
+        if (folder.equals(""))
+            return;
 
+        int  index = folderHistory.length -1;
         for (int count = 0;  count < folderHistory.length;  count++) {
-            if (folderHistory[count] != null &&
-                    folderHistory[count].compareTo(folder) == 0)
-            {
+            if (folderHistory[count] != null && folderHistory[count].equals(folder)) {
                 index = count;
                 break;
             }
