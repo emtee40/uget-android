@@ -469,6 +469,8 @@ public class MainActivity extends AppCompatActivity {
                 selection = app.downloadAdapter.getCheckedNodes();
                 if (selection != null) {
                     for (int i=0;  i < selection.length;  i++) {
+                        if (selection[i] == 0)
+                            continue;
                         long infoPointer = Node.info(selection[i]);
                         if ((Info.getGroup(infoPointer) & Info.Group.active) > 0)
                             continue;
@@ -485,8 +487,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_pause:
                 selection = app.downloadAdapter.getCheckedNodes();
                 if (selection != null) {
-                    for (int i=0;  i < selection.length;  i++)
+                    for (int i=0;  i < selection.length;  i++) {
+                        if (selection[i] == 0)
+                            continue;
                         app.core.pauseDownload(selection[i]);
+                    }
                     app.downloadAdapter.setCheckedNodes(selection);
                     app.stateAdapter.notifyDataSetChanged();
                     app.userAction = true;
@@ -507,6 +512,8 @@ public class MainActivity extends AppCompatActivity {
                 selection = app.downloadAdapter.getCheckedNodes();
                 if (selection != null) {
                     for (int i=0;  i < selection.length;  i++) {
+                        if (selection[i] == 0)
+                            continue;
                         // app.core.recycleDownload() return false if it removed.
                         if (app.core.recycleDownload(selection[i]) == false)
                             selection[i] = 0;
@@ -523,8 +530,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_delete_data:
                 selection = app.downloadAdapter.getCheckedNodes();
                 if (selection != null) {
-                    for (int i=0;  i < selection.length;  i++)
+                    for (int i=0;  i < selection.length;  i++) {
+                        if (selection[i] == 0)
+                            continue;
                         app.core.deleteDownload(selection[i], false);
+                    }
                     app.downloadAdapter.clearChoices(false);
                     app.downloadAdapter.notifyDataSetChanged();
                     app.categoryAdapter.notifyDataSetChanged();
@@ -1097,8 +1107,11 @@ public class MainActivity extends AppCompatActivity {
         if (selection == null)
             return;
 
-        for (int i=0;  i < selection.length;  i++)
+        for (int i=0;  i < selection.length;  i++) {
+            if (selection[i] == 0)
+                continue;
             app.core.deleteDownload(selection[i], true);
+        }
         app.downloadAdapter.clearChoices(false);
         app.downloadAdapter.notifyDataSetChanged();
         app.categoryAdapter.notifyDataSetChanged();

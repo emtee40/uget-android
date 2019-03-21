@@ -427,8 +427,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     // Selection - UgetNode pointer
 
     public long[] getCheckedNodes() {
-        int  size = selections.size();
-        if (size == 0)
+        int size = selections.size();
+        if (size == 0 || getItemCount() == 0)
             return null;
 
         long nodeArray[] = new long[size];
