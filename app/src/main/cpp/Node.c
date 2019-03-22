@@ -174,13 +174,14 @@ Java_com_ugetdm_uget_lib_Node_getChildrenByPositions(JNIEnv* env, jclass nodeCla
 		next_counts = (int)jArrayElements[index] - position;
 		position += next_counts;
 		for (;  next_counts > 0;  next_counts--) {
-			node = node->next;
-			if (node == NULL) {
-				jArrayElements[index] = NULL;
-				continue;
-			}
+		    if (node == NULL)
+		        break;
+		    node = node->next;
 		}
-		jArrayElements[index] = (jlong)(intptr_t) node->base;
+		if (node)
+		    jArrayElements[index] = (jlong)(intptr_t) node->base;
+		else
+            jArrayElements[index] = NULL;
 	}
 
 	(*env)->ReleaseLongArrayElements(env, jArray, jArrayElements, 0);
