@@ -151,14 +151,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
         private void updatePreferenceSummary() {
+            String value;
             Preference preference;
             SharedPreferences sharedPrefs = getPreferenceManager().getSharedPreferences();
 
             preference = findPreference("pref_speed_download");
-            preference.setSummary(sharedPrefs.getString("pref_speed_download", "0") + " KiB/s");
+            value = sharedPrefs.getString("pref_speed_download", "0");
+            if (value.equals(""))
+                value = "0";
+            preference.setSummary(value + " KiB/s");
 
             preference = findPreference("pref_speed_upload");
-            preference.setSummary(sharedPrefs.getString("pref_speed_upload", "0") + " KiB/s");
+            value = sharedPrefs.getString("pref_speed_upload", "0");
+            if (value.equals(""))
+                value = "0";
+            preference.setSummary(value + " KiB/s");
 
             // if (preference instanceof ListPreference) {
             //     ListPreference listPreference = (ListPreference) preference;
@@ -257,6 +264,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
         private void updatePreferenceSummary() {
+            String value;
             Preference preference;
             SharedPreferences sharedPrefs = getPreferenceManager().getSharedPreferences();
 
@@ -264,9 +272,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             preference.setSummary(sharedPrefs.getString("pref_aria2_uri", "http://localhost:6800/jsonrpc"));
 
             preference = findPreference("pref_aria2_speed_download");
-            preference.setSummary(sharedPrefs.getString("pref_aria2_speed_download", "0") + " KiB/s");
+            value = sharedPrefs.getString("pref_aria2_speed_download", "0");
+            if (value.equals(""))
+                value = "0";
+            preference.setSummary(value + " KiB/s");
+
             preference = findPreference("pref_aria2_speed_upload");
-            preference.setSummary(sharedPrefs.getString("pref_aria2_speed_upload", "0") + " KiB/s");
+            value = sharedPrefs.getString("pref_aria2_speed_upload", "0");
+            if (value.equals(""))
+                value = "0";
+            preference.setSummary(value + " KiB/s");
 
             // if (preference instanceof ListPreference) {
             //     ListPreference listPreference = (ListPreference) preference;

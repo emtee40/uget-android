@@ -23,6 +23,7 @@
             android:dialogTitle="@string/pref_aria2_uri_summary" />
 
         <EditTextPreference
+            android:defaultValue="aria2"
             android:key="pref_aria2_token"
             android:title="@string/pref_aria2_token"
             android:summary="@string/pref_aria2_token_summary"
