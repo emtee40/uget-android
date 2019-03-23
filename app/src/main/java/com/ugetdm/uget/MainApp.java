@@ -75,6 +75,8 @@ public class MainApp extends Application {
         if (wakeLock == null) {
             logAppend("WakeLock acquire");
             PowerManager pm = (PowerManager)this.getSystemService(Context.POWER_SERVICE);
+            if (pm == null)
+                return;
             wakeLock = pm.newWakeLock(
                     PowerManager.PARTIAL_WAKE_LOCK,
                     "uGet: Processing...");
@@ -233,18 +235,25 @@ public class MainApp extends Application {
         downloadAdapter = new DownloadAdapter(Node.getNthChild(core.nodeMix, 0));
         categoryAdapter = new CategoryAdapter(core.nodeReal, core.nodeMix);
         stateAdapter = new StateAdapter(this, Node.getNthChild(core.nodeMix, 0));
-        // RPC server
-        rpc = new Rpc(getFilesDir().getAbsolutePath() + "/attachment");
 
-        // load/create category
-        core.setConfigDir(getFilesDir().getAbsolutePath());
-        logAppend ("App.startRunning() before loading category");
-        //   getExternalStorageDirectory().toString()
-        if (core.loadCategories(null) == 0) {
+        File filesDir = getFilesDir();
+        if (filesDir != null) {
+            // RPC server
+            rpc = new Rpc(filesDir.getAbsolutePath() + "/attachment");
+            // load/create category
+            core.setConfigDir(filesDir.getAbsolutePath());
+            logAppend ("App.startRunning() before loading category");
+            //   getExternalStorageDirectory().toString()
+            core.loadCategories(null);
+            logAppend("App.startRunning() after loading category");
+        }
+
+        // if there is no category
+        if (Node.nChildren(core.nodeReal) == 0) {
             logAppend ("App.startRunning() no category loaded, create one.");
             createDefaultCategory();
         }
-        logAppend("App.startRunning() after loading category");
+
         loadFolderHistory();
         logAppend("App.startRunning() after loading folder history");
         initFolderWritable();
@@ -303,7 +312,13 @@ public class MainApp extends Application {
     }
 
     public void saveStatus() {
-        File statusFile = new File (getFilesDir(), "offline");
+        File filesDir = getFilesDir();
+        if (filesDir == null)    // avoid NullPointerException
+            return;
+        File statusFile = new File(filesDir, "offline");
+        if (statusFile == null)
+            return;
+
         if (setting.offlineMode) {
             try {
                 statusFile.createNewFile();
@@ -315,7 +330,13 @@ public class MainApp extends Application {
     }
 
     public void loadStatus() {
-        File statusFile = new File (getFilesDir(), "offline");
+        File filesDir = getFilesDir();
+        if (filesDir == null)    // avoid NullPointerException
+            return;
+        File statusFile = new File (filesDir, "offline");
+        if (statusFile == null)
+            return;
+
         if (statusFile.exists()) {
             statusFile.delete();
             setting.offlineMode = true;
@@ -323,13 +344,15 @@ public class MainApp extends Application {
     }
 
     public void saveAllData() {
-        int  nCategorySaved;
+        File filesDir = getFilesDir();
+        if (filesDir == null)
+            return;
 
-        File path = new File(getFilesDir(),"category");
+        File path = new File(filesDir,"category");
         path.mkdirs();
         path = null;
         saveFolderHistory();
-        nCategorySaved = core.saveCategories(getFilesDir().getAbsolutePath());
+        int nCategorySaved = core.saveCategories(filesDir.getAbsolutePath());
         if (nCategorySaved == 0) {
             Log.v("uGet", "App.saveAllData(): Nothing save");
             // TODO: show message dialog
@@ -1096,7 +1119,10 @@ public class MainApp extends Application {
             return null;
 
         Uri uri = null;
-        ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+        ClipData clipData = clipboard.getPrimaryClip();
+        if (clipData == null)
+            return null;
+        ClipData.Item item = clipData.getItemAt(0);
 
         try {
             String tempString = item.getText().toString();
@@ -1129,8 +1155,11 @@ public class MainApp extends Application {
 
     public void initFolderWritable() {
         folderWritable = new String[3];
+        File filesDir = getFilesDir();
+        if (filesDir == null)
+            filesDir = new File(File.separator);
 
-        folderWritable[0] = getFilesDir().getAbsolutePath();
+        folderWritable[0] = filesDir.getAbsolutePath();
         folderWritable[1] = Environment.getExternalStorageDirectory().getAbsolutePath();
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             File[] externalFilesDirs  = getExternalFilesDirs(null);
@@ -1165,21 +1194,23 @@ public class MainApp extends Application {
     }
 
     public void loadFolderHistory() {
-        BufferedReader   bufReader;
-
+        File filesDir = getFilesDir();
+        if (filesDir == null)
+            return;
         if (folderHistory == null)
             folderHistory = new String[6];
 
         try {
             /*
             FileInputStream  fis;
-            fis = new FileInputStream(getFilesDir().getAbsolutePath() +
+            fis = new FileInputStream(filesDir.getAbsolutePath() +
                     File.separator + "folder-history.txt");
             bufReader = new BufferedReader(
                     new InputStreamReader(fis, Charset.forName("UTF-8")));
             */
+            BufferedReader  bufReader;
             FileReader  freader;
-            freader = new FileReader(getFilesDir().getAbsolutePath() +
+            freader = new FileReader(filesDir.getAbsolutePath() +
                     File.separator + "folder-history.txt");
             bufReader = new BufferedReader(freader);
 
@@ -1193,8 +1224,6 @@ public class MainApp extends Application {
             }
 
             bufReader.close();
-            bufReader = null;
-            freader= null;
         }
         catch (IOException e) {
             if (folderHistory[0] == null) {
@@ -1218,18 +1247,21 @@ public class MainApp extends Application {
     }
 
     public void saveFolderHistory() {
-        BufferedWriter    bufWriter;
+        File filesDir = getFilesDir();
+        if (filesDir == null)
+            return;
 
         try {
             /*
             FileOutputStream  fos;
-            fos = new FileOutputStream(getFilesDir().getAbsolutePath() +
+            fos = new FileOutputStream(filesDir.getAbsolutePath() +
                     File.separator + "folder-history.txt");
             bufWriter = new BufferedWriter(
                     new OutputStreamWriter(fos, Charset.forName("UTF-8")));
             */
+            BufferedWriter  bufWriter;
             FileWriter  fwriter;
-            fwriter = new FileWriter(getFilesDir().getAbsolutePath() +
+            fwriter = new FileWriter(filesDir.getAbsolutePath() +
                     File.separator + "folder-history.txt");
             bufWriter = new BufferedWriter(fwriter);
 
@@ -1425,6 +1457,9 @@ public class MainApp extends Application {
     public File logGetFile()
     {
         String  path;
+        File  filesDir = getFilesDir();
+        if (filesDir == null)
+            return null;
 
         if (Environment.getExternalStorageState().equals(
                 android.os.Environment.MEDIA_MOUNTED))
@@ -1435,19 +1470,25 @@ public class MainApp extends Application {
 //                    File.separator + "uGet-log.txt";
         }
         else
-            path = getFilesDir().getAbsolutePath() + File.separator + "log.txt";
+            path = filesDir.getAbsolutePath() + File.separator + "log.txt";
 
         return new File(path);
     }
 
     public void logClear()
     {
-        logGetFile().delete();
+        File logFile = logGetFile();
+        if (logFile == null)
+            return;
+        logFile.delete();
     }
 
     public void logAppend(String text)
     {
         File logFile = logGetFile();
+        if (logFile == null)
+            return;
+
         if (!logFile.exists())
         {
             try {
