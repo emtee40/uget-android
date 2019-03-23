@@ -260,7 +260,9 @@ public class TimeoutHandler {
                 if (cNodePointer == 0)
                     break toExit;
 
+                long checkedNodes[] = app.downloadAdapter.getCheckedNodes();
                 app.core.addDownloadByUri(text, cNodePointer, true);
+                app.downloadAdapter.setCheckedNodes(checkedNodes);
                 if (app.setting.clipboard.clearAfterAccepting)
                     app.clearClipboard();
                 // --- notify ---

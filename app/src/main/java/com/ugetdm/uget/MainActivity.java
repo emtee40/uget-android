@@ -238,8 +238,12 @@ public class MainActivity extends AppCompatActivity {
                 long cnode = app.core.matchCategory(uri.toString(), null);
                 if (cnode == 0)
                     cnode = Node.getNthChild(app.core.nodeReal, 0);
-                if (cnode != 0)
-                    app.core.addDownloadByUri(uri.toString(), cnode, true);
+                if (cnode == 0)
+                    return;
+
+                long checkedNodes[] = app.downloadAdapter.getCheckedNodes();
+                app.core.addDownloadByUri(uri.toString(), cnode, true);
+                app.downloadAdapter.setCheckedNodes(checkedNodes);
                 // --- notify ---
                 app.stateAdapter.notifyDataSetChanged();
                 app.categoryAdapter.notifyDataSetChanged();
