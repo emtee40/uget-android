@@ -575,7 +575,7 @@ public class MainApp extends Application {
         if (dNodePointer != 0) {
             // core.recycleDownload() return false if it removed.
             if (core.recycleDownload(dNodePointer))
-                nth = getDownloadNodePosition(dNodePointer);
+                nth = getDownloadPositionByNode(dNodePointer);
             else
                 nth = -1;
 
@@ -608,7 +608,7 @@ public class MainApp extends Application {
             return -1;
 
         if (core.moveDownload(dNodePointer1, dNodePointer2)) {
-            to_nth = getDownloadNodePosition(dNodePointer1);
+            to_nth = getDownloadPositionByNode(dNodePointer1);
             downloadAdapter.notifyItemMoved(from_nth, to_nth);
             return to_nth;
         }
@@ -628,7 +628,7 @@ public class MainApp extends Application {
             return -1;
         else {
             if (core.activateDownload(dNodePointer)) {
-                nth = getDownloadNodePosition(dNodePointer);
+                nth = getDownloadPositionByNode(dNodePointer);
                 if (nth < 0) {
                     // item was moved to other status
                     downloadAdapter.notifyItemRemoved(nthLast);
@@ -657,7 +657,7 @@ public class MainApp extends Application {
             return -1;
         else {
             if (core.pauseDownload(dNodePointer)) {
-                nth = getDownloadNodePosition(dNodePointer);
+                nth = getDownloadPositionByNode(dNodePointer);
                 if (nth < 0) {
                     // item was moved to other status
                     downloadAdapter.notifyItemRemoved(nthLast);
@@ -686,7 +686,7 @@ public class MainApp extends Application {
             return -1;
         else {
             if (core.queueDownload(dNodePointer)) {
-                nth = getDownloadNodePosition(dNodePointer);
+                nth = getDownloadPositionByNode(dNodePointer);
                 if (nth < 0) {
                     // item was moved to other status
                     downloadAdapter.notifyItemRemoved(nthLast);
@@ -741,17 +741,18 @@ public class MainApp extends Application {
             Info.setPriority(Node.info(nodePointer), priority);
     }
 
-    public long getNthDownloadNode(int nth) {
-        long dNode;
+    public long getDownloadNodeByPosition(int position) {
+        if (position == -1)
+            return 0;
 
-        dNode = Node.getNthChild(downloadAdapter.pointer, nth);
+        long dNode = Node.getNthChild(downloadAdapter.pointer, position);
         if (dNode != 0)
             return Node.base(dNode);
         else
             return 0;
     }
 
-    public int  getDownloadNodePosition(long dNode) {
+    public int  getDownloadPositionByNode(long dNode) {
         if (dNode != 0) {
             dNode = Node.getFakeByParent(dNode, downloadAdapter.pointer);
             if (dNode != 0)
