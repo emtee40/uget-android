@@ -944,6 +944,8 @@ public class NodeActivity extends AppCompatActivity {
         // --- disable OK and CANCEL ---
         findViewById(R.id.action_ok).setEnabled(false);
         findViewById(R.id.action_cancel).setEnabled(false);
+        // --- don't keep selection ---
+        app.downloadAdapter.clearChoices(false);
 
         // --- batch dialog ---
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(NodeActivity.this);
