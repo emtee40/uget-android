@@ -358,7 +358,9 @@ public class TimeoutHandler {
                     command.prop.uri = command.uris[index];
                     dNodePointer = Node.create();
                     Info.set(Node.info(dNodePointer), command.prop);
+                    long checkedNodes[] = app.downloadAdapter.getCheckedNodes();
                     app.core.addDownload(dNodePointer, cNodePointer, false);
+                    app.downloadAdapter.setCheckedNodes(checkedNodes);
                 }
                 // notify
                 app.stateAdapter.notifyDataSetChanged();
