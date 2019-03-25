@@ -699,7 +699,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView stateListView;
 
     public void initTraveler() {
-        downloadLayoutManager = new LinearLayoutManager(this);
+        downloadLayoutManager = new NeLinearLayoutManager(this);
         downloadListView = findViewById(R.id.download_listview);
         downloadListView.setLayoutManager(downloadLayoutManager);
         downloadListView.setAdapter(app.downloadAdapter);
@@ -712,14 +712,14 @@ public class MainActivity extends AppCompatActivity {
         downloadListView.addItemDecoration(dividerItemDecoration);
 
         categoryListView = findViewById(R.id.category_listview);
-        categoryListView.setLayoutManager(new LinearLayoutManager(this));
+        categoryListView.setLayoutManager(new NeLinearLayoutManager(this));
         categoryListView.setAdapter(app.categoryAdapter);
         categoryListView.setHasFixedSize(true);
         // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
         categoryListView.getItemAnimator().setChangeDuration(0);
 
         stateListView = findViewById(R.id.state_listview);
-        stateListView.setLayoutManager(new LinearLayoutManager(this));
+        stateListView.setLayoutManager(new NeLinearLayoutManager(this));
         stateListView.setAdapter(app.stateAdapter);
         stateListView.setHasFixedSize(true);
         // avoid that RecyclerView's views are blinking when notifyDataSetChanged()

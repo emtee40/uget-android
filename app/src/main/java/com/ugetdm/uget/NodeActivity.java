@@ -122,7 +122,7 @@ public class NodeActivity extends AppCompatActivity {
         categoryAdapter.selectedPosition = nthCategoryReal;
         RecyclerView categoryListView;
         categoryListView = findViewById(R.id.category_listview);
-        categoryListView.setLayoutManager(new LinearLayoutManager(this));
+        categoryListView.setLayoutManager(new NeLinearLayoutManager(this));
         categoryListView.setAdapter(categoryAdapter);
         categoryListView.setHasFixedSize(true);
 
