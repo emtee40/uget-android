@@ -184,10 +184,5 @@ Java_com_ugetdm_uget_lib_Sequence_endBatch(JNIEnv* env, jobject thiz, jlong resu
     UgLink* next;
 
     batchResult = (struct BatchResult*) result;
-    for (;  batchResult->cur;  batchResult->cur = next) {
-        next = batchResult->cur->next;
-        ug_free(batchResult->cur);
-    }
-
     ug_free(batchResult);
 }
