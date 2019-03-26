@@ -65,6 +65,7 @@
     </string-array>
 
     <!-- Batch -->
+    <string name="batch_memory_alloc_failed">Error : Memory allocation failure.</string>
     <string name="batch_remaining_counts">Remaining : %d</string>
     <string name="batch_total_counts">Total counts : %d</string>
     <string name="batch_hints">If you produce large amount of download, uGet may consume much time to process.</string>

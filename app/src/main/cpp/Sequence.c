@@ -133,13 +133,26 @@ struct BatchResult
 	UgLink* cur;
 };
 
+static void batch_result_free(struct BatchResult* batchResult)
+{
+	UgLink* next;
+
+	for (;  batchResult->cur;  batchResult->cur = next) {
+		next = batchResult->cur->next;
+		ug_free(batchResult->cur);
+	}
+
+	ug_free(batchResult);
+}
+
 JNIEXPORT jlong
-Java_com_ugetdm_uget_lib_Sequence_startBatch(JNIEnv* env, jobject thiz, jstring jpattern)
+Java_com_ugetdm_uget_lib_Sequence_batchStart(JNIEnv* env, jobject thiz, jstring jpattern)
 {
 	struct BatchResult* batchResult;
 	UgetSequence*  seq;
 	jclass         seqClass;
 	const char*    pattern;
+	int            count, size;
 
 	seqClass = (*env)->GetObjectClass(env, thiz);
 	seq = (UgetSequence*)(intptr_t) (*env)->GetLongField(env, thiz,
@@ -151,15 +164,22 @@ Java_com_ugetdm_uget_lib_Sequence_startBatch(JNIEnv* env, jobject thiz, jstring 
 	ug_list_init(&batchResult->list);
 
 	pattern = (*env)->GetStringUTFChars(env, jpattern, NULL);
-	uget_sequence_get_list(seq, pattern, &batchResult->list);
+	count = uget_sequence_count(seq, pattern);
+	size = uget_sequence_get_list(seq, pattern, &batchResult->list);
 	(*env)->ReleaseStringUTFChars(env, jpattern, pattern);
 
 	batchResult->cur = batchResult->list.head;
+	if (count != size) {
+		// memory allocation failure.
+		batch_result_free(batchResult);
+		return NULL;
+	}
+
 	return (intptr_t) batchResult;
 }
 
 JNIEXPORT jstring
-Java_com_ugetdm_uget_lib_Sequence_getBatchUri(JNIEnv* env, jobject thiz, jlong result)
+Java_com_ugetdm_uget_lib_Sequence_batchGetUri(JNIEnv* env, jobject thiz, jlong result)
 {
 	struct BatchResult* batchResult;
 	UgLink* next;
@@ -178,16 +198,11 @@ Java_com_ugetdm_uget_lib_Sequence_getBatchUri(JNIEnv* env, jobject thiz, jlong r
 }
 
 JNIEXPORT void
-Java_com_ugetdm_uget_lib_Sequence_endBatch(JNIEnv* env, jobject thiz, jlong result)
+Java_com_ugetdm_uget_lib_Sequence_batchEnd(JNIEnv* env, jobject thiz, jlong result)
 {
 	struct BatchResult* batchResult;
 	UgLink* next;
 
 	batchResult = (struct BatchResult*) result;
-	for (;  batchResult->cur;  batchResult->cur = next) {
-		next = batchResult->cur->next;
-		ug_free(batchResult->cur);
-	}
-
-	ug_free(batchResult);
+	batch_result_free(batchResult);
 }

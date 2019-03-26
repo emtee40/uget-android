@@ -413,7 +413,7 @@ public class NodeActivity extends AppCompatActivity {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
                     dialogBuilder.setTitle(R.string.action_batch);
                     dialogBuilder.setMessage(getString(R.string.batch_hints) + "\n\n" +
-                            getString(R.string.batch_total_counts, sequenceForm.count()));
+                            getString(R.string.batch_total_counts, sequenceForm.batchCount()));
                     dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
@@ -421,7 +421,7 @@ public class NodeActivity extends AppCompatActivity {
                     });
                     dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            batchAdd();
+                            batchAdd(sequenceForm);
                         }
                     });
                     dialogBuilder.show();
@@ -940,44 +940,8 @@ public class NodeActivity extends AppCompatActivity {
     // ------------------------------------------------------------------------
     // Batch Handler
 
-    public void batchAdd() {
-        // --- disable OK and CANCEL ---
-        findViewById(R.id.action_ok).setEnabled(false);
-        findViewById(R.id.action_cancel).setEnabled(false);
-        // --- don't keep selection ---
-        app.downloadAdapter.clearChoices(false);
-
-        // --- batch dialog ---
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(NodeActivity.this);
-        dialogBuilder.setIcon(android.R.drawable.ic_dialog_info);
-        dialogBuilder.setTitle(R.string.action_batch);
-        dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // --- this will stop batchRunnable
-                batchUriIndex = batchUriTotal;
-            }
-        });
-
-        batchDialog = dialogBuilder.create();
-        batchDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                // --- this will stop batchRunnable
-                batchUriIndex = batchUriTotal;
-            }
-        });
-        batchDialog.setMessage("");    // --- This will make message visible
-        batchDialog.show();
-
-        // --- batch handler ---
-        batchUriIndex = 0;
-        batchUriTotal = sequenceForm.count();
-        batchResult = sequenceForm.startBatch();
-        batchHandler = new Handler();
-        batchHandler.postDelayed(batchRunnable, 0);
-    }
-
-    private AlertDialog batchDialog = null;
+    private AlertDialog       batchDialog = null;
+    private UriBatchInterface batchInterface;
     private int      batchUriIndex;
     private int      batchUriTotal;
     private long     batchResult;
@@ -994,13 +958,13 @@ public class NodeActivity extends AppCompatActivity {
                             + "\n\n"
                             + getString(R.string.batch_total_counts, batchUriTotal));
 
-            timeMillis = System.currentTimeMillis();
             downloadProp = (DownloadProp) categoryProp;
+            timeMillis = System.currentTimeMillis();
             for (;  batchUriIndex < batchUriTotal;  batchUriIndex++) {
                 if (System.currentTimeMillis() - timeMillis > 100)
                     break;
 
-                String uri = sequenceForm.getBatchUri(batchResult);
+                String uri = batchInterface.batchGet1(batchResult);
                 if (uri == null) {
                     // --- error occurred ---
                     batchUriIndex = batchUriTotal;
@@ -1018,7 +982,7 @@ public class NodeActivity extends AppCompatActivity {
             app.stateAdapter.notifyDataSetChanged();
 
             if (batchUriIndex == batchUriTotal) {
-                sequenceForm.endBatch(batchResult);
+                batchInterface.batchEnd(batchResult);
                 batchDialog.dismiss();
                 finish();
                 return;
@@ -1026,4 +990,54 @@ public class NodeActivity extends AppCompatActivity {
             batchHandler.postDelayed(this, 0);
         }
     };
+
+    public void batchAdd(UriBatchInterface batchInterface) {
+        // --- disable OK and CANCEL ---
+        findViewById(R.id.action_ok).setEnabled(false);
+        findViewById(R.id.action_cancel).setEnabled(false);
+        // --- don't keep selection ---
+        app.downloadAdapter.clearChoices(false);
+
+        this.batchInterface = batchInterface;
+        batchResult   = batchInterface.batchStart();
+        batchUriTotal = batchInterface.batchCount();
+        batchUriIndex = 0;
+
+        // --- batch dialog ---
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(NodeActivity.this);
+        dialogBuilder.setIcon(android.R.drawable.ic_dialog_info);
+        dialogBuilder.setTitle(R.string.action_batch);
+        dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        batchDialog = dialogBuilder.create();
+        if (batchResult == 0) {
+            batchDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    finish();
+                }
+            });
+            batchDialog.setMessage(getString(R.string.batch_memory_alloc_failed));
+            batchDialog.show();
+            return;
+        }
+        else {
+            batchDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    // --- This will stop batchRunnable
+                    batchUriIndex = batchUriTotal;
+                }
+            });
+            batchDialog.setMessage("");    // --- This will make message visible
+            batchDialog.show();
+        }
+
+        // --- batch handler ---
+        batchHandler = new Handler();
+        batchHandler.postDelayed(batchRunnable, 0);
+    }
 }

@@ -66,6 +66,7 @@
     </string-array>
 
     <!-- Batch -->
+    <string name="batch_memory_alloc_failed">错误：内存分配失败。</string>
     <string name="batch_remaining_counts">剩余 : %d</string>
     <string name="batch_total_counts">总数 : %d</string>
     <string name="batch_hints">如果您产生大量下载，uGet可能会花费很多时间来处理。</string>

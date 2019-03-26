@@ -66,6 +66,7 @@
     </string-array>
 
     <!-- Batch -->
+    <string name="batch_memory_alloc_failed">錯誤：記憶體配置失敗。</string>
     <string name="batch_remaining_counts">剩餘 : %d</string>
     <string name="batch_total_counts">總計 : %d</string>
     <string name="batch_hints">如果您產生大量下載，uGet可能會花費很多時間來處理。</string>

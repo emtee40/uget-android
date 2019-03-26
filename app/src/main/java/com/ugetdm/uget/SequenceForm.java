@@ -15,13 +15,13 @@ import android.widget.TextView;
 
 import com.ugetdm.uget.lib.Sequence;
 
-public class SequenceForm {
-    protected View      view;
-    protected Activity  activity;
-    private   TextView  preview;
-    private   Sequence  sequence;
-    public    int       rangeTypeEnableCountdown = 0;
-    public    String    errorMessage;
+public class SequenceForm implements UriBatchInterface {
+    protected View view;
+    protected Activity activity;
+    private TextView preview;
+    private Sequence sequence;
+    public int rangeTypeEnableCountdown = 0;
+    public String errorMessage;
 
     public static final class RangeType {
         public static final int none = 0;
@@ -31,7 +31,7 @@ public class SequenceForm {
 
     public SequenceForm(Activity activity) {
         this.activity = activity;
-        view = activity.getLayoutInflater().inflate(R.layout.form_sequence,null);
+        view = activity.getLayoutInflater().inflate(R.layout.form_sequence, null);
 
         preview = (TextView) view.findViewById(R.id.batch_seq_preview);
         // preview.setMovementMethod(new ScrollingMovementMethod());
@@ -309,7 +309,7 @@ public class SequenceForm {
         uriString = uriEditor.getText().toString();
         if (uriString != null) {
             Uri uri = Uri.parse(uriString);
-            if(uri.getScheme() == null) {
+            if (uri.getScheme() == null) {
                 errorMessage = activity.getString(R.string.batch_seq_msg_uri_not_valid);
                 preview.setText(errorMessage);
                 return false;
@@ -339,8 +339,7 @@ public class SequenceForm {
             errorMessage = activity.getString(R.string.batch_seq_msg_no_from_to);
             preview.setText(errorMessage);
             return false;
-        }
-        else {
+        } else {
             preview.setText("");
             for (index = 0; index < uriArray.length; index++)
                 preview.append(uriArray[index] + "\n");
@@ -349,27 +348,30 @@ public class SequenceForm {
         return true;
     }
 
-    public int count() {
-        EditText uriEditor = (EditText) view.findViewById(R.id.batch_seq_uri_editor);
-        return sequence.count(uriEditor.getText().toString());
-    }
+    // --------------------------------------------------------------
+    // UriBatchInterface
 
-    public long startBatch() {
+    public long batchStart() {
         if (showPreview()) {
             EditText uriEditor = (EditText) view.findViewById(R.id.batch_seq_uri_editor);
-            return sequence.startBatch(uriEditor.getText().toString());
+            return sequence.batchStart(uriEditor.getText().toString());
         }
         return 0;
     }
 
-    public String getBatchUri(long batchResult) {
-        if (batchResult != 0)
-            return sequence.getBatchUri(batchResult);
+    public String batchGet1(long resultOfBatchStart) {
+        if (resultOfBatchStart != 0)
+            return sequence.batchGetUri(resultOfBatchStart);
         return null;
     }
 
-    public void endBatch(long batchResult) {
-        if (batchResult != 0)
-            sequence.endBatch(batchResult);
+    public void batchEnd(long resultOfBatchStart) {
+        if (resultOfBatchStart != 0)
+            sequence.batchEnd(resultOfBatchStart);
+    }
+
+    public int    batchCount() {
+        EditText uriEditor = (EditText) view.findViewById(R.id.batch_seq_uri_editor);
+        return sequence.count(uriEditor.getText().toString());
     }
 }

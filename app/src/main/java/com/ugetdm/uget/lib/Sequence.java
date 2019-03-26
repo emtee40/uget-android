@@ -24,9 +24,7 @@ public class Sequence {
     public  native int         count(String pattern);
     public  native String[]    getPreview(String pattern);
 
-    public  native long        startBatch(String pattern);
-    public  native String      getBatchUri(long batchResult);
-    public  native void        endBatch(long batchResult);
+    public  native long        batchStart(String pattern);
+    public  native String      batchGetUri(long batchResult);
+    public  native void        batchEnd(long batchResult);
 }
-
-
