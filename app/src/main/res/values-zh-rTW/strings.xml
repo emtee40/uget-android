@@ -159,11 +159,11 @@
     <string name="pref_ui_exit_on_back">按返回鈕時離開</string>
     <string name="pref_ui_exit_on_back_summary">當使用者按返回鈕時離開 uGet。</string>
     <string name="pref_ui_notification_starting">開始下載時通知</string>
-    <string name="pref_ui_notification_starting_summary">當下載開始時顯示通知。在Android 8及更高版本中，您必須修改有關應用程式通知的系統設定。</string>
+    <string name="pref_ui_notification_starting_summary">當下載開始時顯示通知。</string>
     <string name="pref_ui_notification_sound">下載完成時發出聲音</string>
     <string name="pref_ui_notification_sound_summary">當下載完成或發生錯誤時發出聲音。在Android 8及更高版本中，您必須修改有關應用程式通知的系統設定。</string>
     <string name="pref_ui_notification_vibrate">下載完成時振動</string>
-    <string name="pref_ui_notification_vibrate_summary">當下載完成或發生錯誤時振動。</string>
+    <string name="pref_ui_notification_vibrate_summary">當下載完成或發生錯誤時振動。在Android 8及更高版本中，您必須修改有關應用程式通知的系統設定。</string>
     <string name="pref_ui_no_wifi_go_offline">沒有 WiFi 連線時離線</string>
     <string name="pref_ui_no_wifi_go_offline_summary">WiFi 斷線/連線時程式啟動/關閉離線模式。</string>
     <string name="pref_ui_skip_existing_uri">跳過已有的網址</string>
