@@ -97,8 +97,8 @@ Java_com_ugetdm_uget_lib_Sequence_getPreview (JNIEnv* env, jobject thiz, jstring
 	const char*    pattern;
 	int            index;
 	union {
-	    jclass  seq;
-	    jclass  str;
+		jclass  seq;
+		jclass  str;
 	} jClass;
 
 	jClass.seq = (*env)->GetObjectClass(env, thiz);
@@ -113,7 +113,7 @@ Java_com_ugetdm_uget_lib_Sequence_getPreview (JNIEnv* env, jobject thiz, jstring
 	(*env)->ReleaseStringUTFChars(env, jpattern, pattern);
 
 	// String[];
-    jClass.str = (*env)->FindClass(env, "java/lang/String");
+	jClass.str = (*env)->FindClass(env, "java/lang/String");
 	uriArray = (*env)->NewObjectArray(env, list.size, jClass.str, NULL);
 	(*env)->DeleteLocalRef(env, jClass.str);
 	for (index = 0, link = list.head;  link;  link = link->next, index++) {
@@ -129,60 +129,65 @@ Java_com_ugetdm_uget_lib_Sequence_getPreview (JNIEnv* env, jobject thiz, jstring
 
 struct BatchResult
 {
-    UgList  list;
-    UgLink* cur;
+	UgList  list;
+	UgLink* cur;
 };
 
 JNIEXPORT jlong
 Java_com_ugetdm_uget_lib_Sequence_startBatch(JNIEnv* env, jobject thiz, jstring jpattern)
 {
-    struct BatchResult* batchResult;
-    UgetSequence*  seq;
-    jclass         seqClass;
-    const char*    pattern;
+	struct BatchResult* batchResult;
+	UgetSequence*  seq;
+	jclass         seqClass;
+	const char*    pattern;
 
-    seqClass = (*env)->GetObjectClass(env, thiz);
-    seq = (UgetSequence*)(intptr_t) (*env)->GetLongField(env, thiz,
-            (*env)->GetFieldID(env, seqClass, "pointer", "J"));
-    (*env)->DeleteLocalRef(env, seqClass);
+	seqClass = (*env)->GetObjectClass(env, thiz);
+	seq = (UgetSequence*)(intptr_t) (*env)->GetLongField(env, thiz,
+			(*env)->GetFieldID(env, seqClass, "pointer", "J"));
+	(*env)->DeleteLocalRef(env, seqClass);
 
-    batchResult = ug_malloc(sizeof(struct BatchResult));
+	batchResult = ug_malloc(sizeof(struct BatchResult));
 
-    ug_list_init(&batchResult->list);
+	ug_list_init(&batchResult->list);
 
-    pattern = (*env)->GetStringUTFChars(env, jpattern, NULL);
-    uget_sequence_get_list(seq, pattern, &batchResult->list);
-    (*env)->ReleaseStringUTFChars(env, jpattern, pattern);
+	pattern = (*env)->GetStringUTFChars(env, jpattern, NULL);
+	uget_sequence_get_list(seq, pattern, &batchResult->list);
+	(*env)->ReleaseStringUTFChars(env, jpattern, pattern);
 
-    batchResult->cur = batchResult->list.head;
-    return (intptr_t) batchResult;
+	batchResult->cur = batchResult->list.head;
+	return (intptr_t) batchResult;
 }
 
 JNIEXPORT jstring
 Java_com_ugetdm_uget_lib_Sequence_getBatchUri(JNIEnv* env, jobject thiz, jlong result)
 {
-    struct BatchResult* batchResult;
-    UgLink* next;
-    jstring uri;
+	struct BatchResult* batchResult;
+	UgLink* next;
+	jstring uri;
 
-    batchResult = (struct BatchResult*) result;
-    if (batchResult->cur == NULL)
-        return NULL;
-    uri = (*env)->NewStringUTF(env, batchResult->cur->data);
+	batchResult = (struct BatchResult*) result;
+	if (batchResult->cur == NULL)
+		return NULL;
+	uri = (*env)->NewStringUTF(env, batchResult->cur->data);
 
-    next = batchResult->cur->next;
-    ug_free(batchResult->cur);
-    batchResult->cur = next;
+	next = batchResult->cur->next;
+	ug_free(batchResult->cur);
+	batchResult->cur = next;
 
-    return uri;
+	return uri;
 }
 
 JNIEXPORT void
 Java_com_ugetdm_uget_lib_Sequence_endBatch(JNIEnv* env, jobject thiz, jlong result)
 {
-    struct BatchResult* batchResult;
-    UgLink* next;
+	struct BatchResult* batchResult;
+	UgLink* next;
 
-    batchResult = (struct BatchResult*) result;
-    ug_free(batchResult);
+	batchResult = (struct BatchResult*) result;
+	for (;  batchResult->cur;  batchResult->cur = next) {
+		next = batchResult->cur->next;
+		ug_free(batchResult->cur);
+	}
+
+	ug_free(batchResult);
 }
