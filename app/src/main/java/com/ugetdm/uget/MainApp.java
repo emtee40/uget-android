@@ -1154,7 +1154,7 @@ public class MainApp extends Application {
     public String folderWritable[];
 
     public void initFolderWritable() {
-        folderWritable = new String[3];
+        folderWritable = new String[2];
         File filesDir = getFilesDir();
         if (filesDir == null)
             filesDir = new File(File.separator);
@@ -1163,10 +1163,15 @@ public class MainApp extends Application {
         folderWritable[1] = Environment.getExternalStorageDirectory().getAbsolutePath();
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             File[] externalFilesDirs  = getExternalFilesDirs(null);
+            if (externalFilesDirs == null)
+                return;
             for (int index = 0;  index < externalFilesDirs.length;  index++) {
                 String absolutePath = externalFilesDirs[index].getAbsolutePath();
                 if (absolutePath.startsWith(folderWritable[1]) == false) {
-                    folderWritable[2] = absolutePath;
+                    String[] newFolderWritable = new String[3];
+                    System.arraycopy(folderWritable, 0, newFolderWritable, 0, folderWritable.length);
+                    newFolderWritable[2] = absolutePath;
+                    folderWritable = newFolderWritable;
                     break;
                 }
             }
@@ -1191,6 +1196,28 @@ public class MainApp extends Application {
             folderHistory[count] = folderHistory[count-1];
         }
         folderHistory[0] = folder;
+    }
+
+    public void initFolderHistory() {
+        if (folderHistory[0] == null) {
+            folderHistory[0] = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+            folderHistory[1] = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath();
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                File[] externalFilesDirs  = getExternalFilesDirs(null);
+                if (externalFilesDirs == null)
+                    return;
+                for (int index = 0;  index < externalFilesDirs.length;  index++) {
+                    String absolutePath = externalFilesDirs[index].getAbsolutePath();
+                    if (absolutePath.startsWith(folderHistory[1]) == false) {
+                        folderHistory[2] = absolutePath;
+                        break;
+                    }
+                }
+            }
+        }
+        // e.printStackTrace();
     }
 
     public void loadFolderHistory() {
@@ -1226,23 +1253,7 @@ public class MainApp extends Application {
             bufReader.close();
         }
         catch (IOException e) {
-            if (folderHistory[0] == null) {
-                folderHistory[0] = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-                folderHistory[1] = Environment.getExternalStorageDirectory()
-                        .getAbsolutePath();
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    File[] externalFilesDirs  = getExternalFilesDirs(null);
-                    for (int index = 0;  index < externalFilesDirs.length;  index++) {
-                        String absolutePath = externalFilesDirs[index].getAbsolutePath();
-                        if (absolutePath.startsWith(folderHistory[1]) == false) {
-                            folderHistory[2] = absolutePath;
-                            break;
-                        }
-                    }
-                }
-            }
-            // e.printStackTrace();
+            initFolderHistory();
         }
     }
 
