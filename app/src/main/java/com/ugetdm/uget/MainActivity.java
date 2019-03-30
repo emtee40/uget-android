@@ -184,15 +184,15 @@ public class MainActivity extends AppCompatActivity {
             string.matches(app.setting.clipboard.types);
         }
         catch (PatternSyntaxException e) {
-            AlertDialog.Builder MyAlertDialog = new AlertDialog.Builder(this);
-            MyAlertDialog.setTitle(getString(R.string.pref_clipboard_type_error_title));
-            MyAlertDialog.setMessage(getString(R.string.pref_clipboard_type_error_message));
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            dialogBuilder.setTitle(getString(R.string.pref_clipboard_type_error_title));
+            dialogBuilder.setMessage(getString(R.string.pref_clipboard_type_error_message));
 
             DialogInterface.OnClickListener OkClick = new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {}
             };
-            MyAlertDialog.setNeutralButton(getResources().getString(android.R.string.ok), OkClick);
-            MyAlertDialog.show();
+            dialogBuilder.setNeutralButton(getResources().getString(android.R.string.ok), OkClick);
+            dialogBuilder.show();
         }
         // --- ad ---
         if (BuildConfig.HAVE_ADS) {
@@ -1014,17 +1014,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     else {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                        // dialog.setTitle(R.string.menu_download_open);
-                        dialog.setIcon(android.R.drawable.ic_dialog_alert);
-                        dialog.setMessage(R.string.message_file_not_exist);
-                        dialog.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        // builder.setTitle(R.string.menu_download_open);
+                        builder.setIcon(android.R.drawable.ic_dialog_alert);
+                        builder.setMessage(R.string.message_file_not_exist);
+                        builder.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         });
-                        dialog.show();
+                        builder.show();
                     }
                     break;
 
@@ -1212,15 +1212,12 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(R.string.message_permission_sd_card)
                         .setTitle(R.string.message_permission_required);
-
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         makeRequest();
                     }
                 });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                builder.show();
             }
             else {
                 makeRequest();

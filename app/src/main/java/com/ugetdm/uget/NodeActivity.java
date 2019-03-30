@@ -878,9 +878,9 @@ public class NodeActivity extends AppCompatActivity {
 
     protected void startFolderRequest () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         builder.setMessage(R.string.message_permission_folder)
                 .setTitle(R.string.message_permission_required);
-
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -894,9 +894,8 @@ public class NodeActivity extends AppCompatActivity {
                 }
             }
         });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if (isFinishing() == false)
+            builder.show();
     }
 
     protected void onFolderRequestResult (Uri  treeUri) {
@@ -1021,8 +1020,8 @@ public class NodeActivity extends AppCompatActivity {
                 }
             });
             batchDialog.setMessage(getString(R.string.batch_memory_alloc_failed));
-            batchDialog.show();
-            return;
+            if (isFinishing() == false)
+                batchDialog.show();
         }
         else {
             batchDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -1033,11 +1032,11 @@ public class NodeActivity extends AppCompatActivity {
                 }
             });
             batchDialog.setMessage("");    // --- This will make message visible
-            batchDialog.show();
+            if (isFinishing() == false)
+                batchDialog.show();
+            // --- batch handler ---
+            batchHandler = new Handler();
+            batchHandler.postDelayed(batchRunnable, 0);
         }
-
-        // --- batch handler ---
-        batchHandler = new Handler();
-        batchHandler.postDelayed(batchRunnable, 0);
     }
 }
