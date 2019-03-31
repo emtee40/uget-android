@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         // --- init MainApp ---
         app = (MainApp)getApplicationContext();
-        app.startRunning();
+        app.onCreateRunning();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------------------------------------------------------
     // visible lifetime
 
+    // onStart() Called when the activity is becoming visible to the user.
     @Override
     protected void onStart() {
         super.onStart();

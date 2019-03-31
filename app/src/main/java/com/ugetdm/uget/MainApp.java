@@ -225,12 +225,13 @@ public class MainApp extends Application {
         //    System.exit(0);
     }
 
-    public void startRunning() {
+    // this function was called by MainActivity.onCreate()
+    public void onCreateRunning() {
         if (rpc != null)
             return;
-        logAppend ("App.startRunning()");
+        logAppend ("App.onCreateRunning()");
 
-        logAppend ("App.startRunning() create Adapter and RPC server");
+        logAppend ("App.onCreateRunning() create Adapter and RPC server");
         // Adapter
         downloadAdapter = new DownloadAdapter(Node.getNthChild(core.nodeMix, 0));
         categoryAdapter = new CategoryAdapter(core.nodeReal, core.nodeMix);
@@ -242,33 +243,33 @@ public class MainApp extends Application {
             rpc = new Rpc(filesDir.getAbsolutePath() + "/attachment");
             // load/create category
             core.setConfigDir(filesDir.getAbsolutePath());
-            logAppend ("App.startRunning() before loading category");
+            logAppend ("App.onCreateRunning() before loading category");
             //   getExternalStorageDirectory().toString()
             core.loadCategories(null);
-            logAppend("App.startRunning() after loading category");
+            logAppend("App.onCreateRunning() after loading category");
         }
 
         // if there is no category
         if (Node.nChildren(core.nodeReal) == 0) {
-            logAppend ("App.startRunning() no category loaded, create one.");
+            logAppend ("App.onCreateRunning() no category loaded, create one.");
             createDefaultCategory();
         }
 
         loadFolderHistory();
-        logAppend("App.startRunning() after loading folder history");
+        logAppend("App.onCreateRunning() after loading folder history");
         initFolderWritable();
 
         initSharedPreferences();
-        logAppend("App.startRunning() after initSharedPreferences");
+        logAppend("App.onCreateRunning() after initSharedPreferences");
         initClipboard();
-        logAppend("App.startRunning() after initClipboard");
+        logAppend("App.onCreateRunning() after initClipboard");
         initNotification();
 
         // call stopTimerService() and rpc.stopServer() in onTerminate()
         rpc.startServer();
-        logAppend("App.startRunning() after rpc.startServer");
+        logAppend("App.onCreateRunning() after rpc.startServer");
         timeoutHandler.startHandler();
-        logAppend("App.startRunning() after timeoutHandler.startHandler");
+        logAppend("App.onCreateRunning() after timeoutHandler.startHandler");
         startMainService();
 
         // offline status
@@ -286,7 +287,7 @@ public class MainApp extends Application {
             }
         }
 
-        logAppend ("App.startRunning() return");
+        logAppend ("App.onCreateRunning() return");
     }
 
     public void refreshUriPermission() {
@@ -1166,6 +1167,8 @@ public class MainApp extends Application {
             if (externalFilesDirs == null)
                 return;
             for (int index = 0;  index < externalFilesDirs.length;  index++) {
+                if (externalFilesDirs[index] == null)
+                    continue;
                 String absolutePath = externalFilesDirs[index].getAbsolutePath();
                 if (absolutePath.startsWith(folderWritable[1]) == false) {
                     String[] newFolderWritable = new String[3];
@@ -1199,7 +1202,10 @@ public class MainApp extends Application {
     }
 
     public void initFolderHistory() {
-        if (folderHistory[0] == null) {
+        if (folderHistory[0] != null)
+            return;
+
+        try {
             folderHistory[0] = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
             folderHistory[1] = Environment.getExternalStorageDirectory()
@@ -1209,6 +1215,8 @@ public class MainApp extends Application {
                 if (externalFilesDirs == null)
                     return;
                 for (int index = 0;  index < externalFilesDirs.length;  index++) {
+                    if (externalFilesDirs[index] == null)
+                        continue;
                     String absolutePath = externalFilesDirs[index].getAbsolutePath();
                     if (absolutePath.startsWith(folderHistory[1]) == false) {
                         folderHistory[2] = absolutePath;
@@ -1217,7 +1225,9 @@ public class MainApp extends Application {
                 }
             }
         }
-        // e.printStackTrace();
+        catch (Exception e) {
+            // e.printStackTrace();
+        }
     }
 
     public void loadFolderHistory() {
