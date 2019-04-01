@@ -57,11 +57,11 @@
     <string name="dnode_proxy_user">User</string>
     <string name="dnode_proxy_password">Password</string>
     <string-array name="dnode_proxy_type">
-        <item>Don\'t use</item>
-        <item>Default</item>
-        <item>HTTP</item>
-        <item>SOCKS v4</item>
-        <item>SOCKS v5</item>
+        <item>"Don't use"</item>
+        <item>"Default"</item>
+        <item>"HTTP"</item>
+        <item>"SOCKS v4"</item>
+        <item>"SOCKS v5"</item>
     </string-array>
 
     <!-- Batch -->
@@ -190,7 +190,7 @@
     <string name="pref_speed_upload">Upload speed limit</string>
     <string name="pref_speed_upload_summary">Setup upload speed limit (KiB/s)</string>
 
-    <string name="pref_plugin">Plug-in options</string>
+    <string name="pref_plugin">Plug-in</string>
     <string name="pref_plugin_order">Plug-in matching order…</string>
     <string name="pref_plugin_order_summary">Select primary and secondary plug-in.</string>
     <string name="pref_plugin_order_entrie_default">0</string>
@@ -228,7 +228,7 @@
     <string name="pref_aria2_args">Arguments</string>
     <string name="pref_aria2_args_summary">Passing arguments to aria2</string>
 
-    <string name="pref_media">Media website options</string>
+    <string name="pref_media">Media website</string>
     <string name="pref_media_match_mode">Media matching mode</string>
     <string name="pref_media_match_mode_summary">Setup media matching mode</string>
     <string name="pref_media_match_mode_entrie_default">3</string>

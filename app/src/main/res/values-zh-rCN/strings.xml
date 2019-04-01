@@ -191,7 +191,7 @@
     <string name="pref_speed_upload">上传速度限制</string>
     <string name="pref_speed_upload_summary">设置上传速度限制 (KiB/s)</string>
 
-    <string name="pref_plugin">插件选项</string>
+    <string name="pref_plugin">插件</string>
     <string name="pref_plugin_order">插件匹配顺序…</string>
     <string name="pref_plugin_order_summary">选择主要和次要插件。</string>
     <string name="pref_plugin_order_entrie_default">0</string>
@@ -229,14 +229,14 @@
     <string name="pref_aria2_args">参数</string>
     <string name="pref_aria2_args_summary">传递参数到 aria2</string>
 
-    <string name="pref_media">媒体网站选项</string>
+    <string name="pref_media">媒体网站</string>
     <string name="pref_media_match_mode">媒体匹配模式</string>
     <string name="pref_media_match_mode_summary">设置媒体匹配模式</string>
     <string name="pref_media_match_mode_entrie_default">3</string>
     <string-array name="pref_media_match_mode_entrie_array">
         <item>不匹配</item>
-        <item>匹配条件 1</item>
-        <item>匹配条件2</item>
+        <item>匹配1个条件</item>
+        <item>匹配2个条件</item>
         <item>接近质量</item>
     </string-array>
     <string-array name="pref_media_match_mode_entrie_values">
