@@ -47,7 +47,8 @@ public class MainService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        app = (MainApp) getApplicationContext();
+        //app = (MainApp) getApplicationContext();    // throw RuntimeException
+        app = (MainApp) getApplication();
 
         // Error prevention mechanism
         if (app == null) {
@@ -72,7 +73,8 @@ public class MainService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        app = (MainApp) getApplicationContext();
+        //app = (MainApp) getApplicationContext();    // throw RuntimeException
+        app = (MainApp) getApplication();
 
         if (binder == null)
             binder = new MainBinder();

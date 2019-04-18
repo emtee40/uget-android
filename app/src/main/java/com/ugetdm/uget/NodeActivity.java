@@ -152,7 +152,8 @@ public class NodeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        app = (MainApp)getApplicationContext();
+        //app = (MainApp) getApplicationContext();    // throw RuntimeException
+        app = (MainApp) getApplication();
         categoryProp = new CategoryProp();
 
         // --- bundle ---

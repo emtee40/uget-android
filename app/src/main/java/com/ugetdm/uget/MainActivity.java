@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // --- init MainApp ---
-        app = (MainApp)getApplicationContext();
+        //app = (MainApp) getApplicationContext();    // throw RuntimeException
+        app = (MainApp) getApplication();
         app.onCreateRunning();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

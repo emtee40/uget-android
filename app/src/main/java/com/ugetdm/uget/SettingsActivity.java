@@ -49,7 +49,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         setupActionBar();
 
-        app = (MainApp) getApplicationContext();
+        //app = (MainApp) getApplicationContext();    // throw RuntimeException
+        app = (MainApp) getApplication();
     }
 
     @Override
