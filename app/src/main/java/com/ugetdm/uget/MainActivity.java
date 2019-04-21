@@ -3,9 +3,11 @@ package com.ugetdm.uget;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,11 +25,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,13 +50,16 @@ import ar.com.daidalos.afiledialog.FileChooserDialog;
 
 public class MainActivity extends AppCompatActivity {
     // MainApp data
-    public static MainApp app = null;
+    public MainApp      app;
     // View
     public Toolbar      toolbar;
     public DrawerLayout drawer;
     public PopupMenu    downloadPopupMenu = null;   // decideSelectionMode()
     // RecyclerView
     LinearLayoutManager downloadLayoutManager;
+
+    public ProgressJob  progressJob;
+    public boolean      deviceRotated;
 
     // ------------------------------------------------------------------------
     // entire lifetime: ORIENTATION
@@ -88,21 +93,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+/*
+        // --- set listener in decideToolbarStatus()
         if (drawer != null) {
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
         }
-
+*/
         decideToolbarStatus();
         initTraveler();
-        initTimeoutHandler();
-        // --- handle URI from "Share Link" ---
-        processUriFromIntent();
 
-        // --- MainActivity is ready ---
-        app.mainActivity = this;
+        app.logAppend("MainActivity.onCreate() - Job.queuedTotal = " + Job.queuedTotal);
+        progressJob = new ProgressJob(handler);
+        progressJob.waitForReady(R.string.message_loading, new Runnable() {
+            @Override
+            public void run() {
+                downloadListView.setAdapter(app.downloadAdapter);
+                categoryListView.setAdapter(app.categoryAdapter);
+                stateListView.setAdapter(app.stateAdapter);
+                decideContent();
+                initHandler();
+
+                // --- handle URI from "Share Link" ---
+                processUriFromIntent();
+
+                // --- MainActivity is ready ---
+                app.mainActivity = MainActivity.this;
+            }
+        });
     }
 
     @Override
@@ -110,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
         app.mainActivity = null;
         // --- notification ---
         app.cancelNotification();
+        // --- dialog ---
+        progressJob.destroy();
         // --- ad ---
         if (BuildConfig.HAVE_ADS) {
             if (adView != null)
@@ -135,12 +157,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        // --- offline status
+        // --- save all data & offline status ---
+        app.logAppend("MainApp.onStop() deviceRotated = " + deviceRotated);
+        if (Job.queued[Job.SAVE_ALL] == 0 && deviceRotated == false)
+            Job.saveAll();
+        app.saveFolderHistory();
         app.saveStatus();
+        deviceRotated = false;
     }
 
     // ------------------------------------------------------------------------
-    // Actvity Lifecycle when you rotate screen
+    // Activity Lifecycle when you rotate screen
     // onPause -> onSaveInstanceState -> onStop -> onDestroy
     // onCreate -> onStart -> onRestoreInstanceState -> onResume
 
@@ -173,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------------------------------------------------------------------
     // foreground lifetime
+    // e.g. show/hide dialog above this activity
 
     @Override
     protected void onResume() {
@@ -207,11 +235,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        app.saveAllData();
         // --- ad ---
         if (BuildConfig.HAVE_ADS) {
             if (adView != null)
                 ((AdView)adView).pause();
+        }
+    }
+
+    // --------------------------------
+    // <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    // <Activity android:configChanges="orientation|screenSize|keyboard">
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ||
+            newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            deviceRotated = true;
+            recreate();
         }
     }
 
@@ -353,11 +395,16 @@ public class MainActivity extends AppCompatActivity {
                     fcDialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
                         public void onFileSelected(Dialog source, File file) {
                             source.hide();
-                            String filename = file.getName();
-                            if (app.core.loadCategory(file.getAbsolutePath()) != 0)
-                                handleFileChooserResult(filename, true);
-                            else
-                                handleFileChooserResult(filename, false);
+                            // --- load category on thread ---
+                            Job.load(file.getAbsolutePath());
+                            progressJob.filename = file.getName();
+                            progressJob.waitForReady(R.string.message_loading, new Runnable() {
+                                @Override
+                                public void run() {
+                                    boolean isOK = Job.result[Job.LOAD] == 0;
+                                    handleFileChooserResult(progressJob.filename, isOK);
+                                }
+                            });
                         }
                         // this is called when a file is created
                         public void onFileSelected(Dialog source, File folder, String name) {
@@ -387,21 +434,32 @@ public class MainActivity extends AppCompatActivity {
                     fcDialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
                         public void onFileSelected(Dialog source, File file) {
                             source.hide();
-                            String filename = file.getName();
-                            if (app.saveNthCategory(app.nthCategory, file.getAbsolutePath()))
-                                showFileCreatorResult(filename, true);
-                            else
-                                showFileCreatorResult(filename, false);
+                            // --- save category on thread ---
+                            Job.save(app.getNthCategory(app.nthCategory), file.getAbsolutePath());
+                            progressJob.filename = file.getName();
+                            progressJob.waitForReady(R.string.message_saving, new Runnable() {
+                                @Override
+                                public void run() {
+                                    boolean isOK = Job.result[Job.SAVE] == 0;
+                                    showFileCreatorResult(progressJob.filename, isOK);
+                                }
+                            });
                         }
                         // this is called when a file is created
                         public void onFileSelected(Dialog source, File folder, String name) {
                             source.hide();
                             if (name.endsWith(".json") == false && name.endsWith(".JSON") == false)
                                 name = name + ".json";
-                            if (app.saveNthCategory(app.nthCategory, folder.getAbsolutePath() + '/' + name))
-                                showFileCreatorResult(name, true);
-                            else
-                                showFileCreatorResult(name, false);
+                            // --- save category on thread ---
+                            Job.save(app.getNthCategory(app.nthCategory), folder.getAbsolutePath() + '/' + name);
+                            progressJob.filename = name;
+                            progressJob.waitForReady(R.string.message_saving, new Runnable() {
+                                @Override
+                                public void run() {
+                                    boolean isOK = Job.result[Job.SAVE] == 0;
+                                    showFileCreatorResult(progressJob.filename, isOK);
+                                }
+                            });
                         }
                     });
                     fcDialog.setCanCreateFiles(true);
@@ -411,7 +469,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_save_all:
-                app.saveAllData();
+                app.saveFolderHistory();
+                app.saveStatus();
+                Job.saveAll();
+                progressJob.waitForReady(R.string.message_saving, null);
                 break;
 
             case R.id.action_category_delete:
@@ -465,10 +526,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_exit:
                 if (app.setting.ui.confirmExit)
                     confirmExit();
-                else {
-                    finish();
-                    app.onTerminate();
-                }
+                else
+                    exit();
                 break;
 
             case R.id.action_start:
@@ -704,7 +763,6 @@ public class MainActivity extends AppCompatActivity {
         downloadLayoutManager = new NeLinearLayoutManager(this);
         downloadListView = findViewById(R.id.download_listview);
         downloadListView.setLayoutManager(downloadLayoutManager);
-        downloadListView.setAdapter(app.downloadAdapter);
         downloadListView.setHasFixedSize(true);
         // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
         downloadListView.getItemAnimator().setChangeDuration(0);
@@ -715,14 +773,12 @@ public class MainActivity extends AppCompatActivity {
 
         categoryListView = findViewById(R.id.category_listview);
         categoryListView.setLayoutManager(new NeLinearLayoutManager(this));
-        categoryListView.setAdapter(app.categoryAdapter);
         categoryListView.setHasFixedSize(true);
         // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
         categoryListView.getItemAnimator().setChangeDuration(0);
 
         stateListView = findViewById(R.id.state_listview);
         stateListView.setLayoutManager(new NeLinearLayoutManager(this));
-        stateListView.setAdapter(app.stateAdapter);
         stateListView.setHasFixedSize(true);
         // avoid that RecyclerView's views are blinking when notifyDataSetChanged()
         stateListView.getItemAnimator().setChangeDuration(0);
@@ -1173,6 +1229,18 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    public void exit() {
+        // finish()
+        if (Job.queued[Job.SAVE_ALL] == 0)
+            Job.saveAll();
+        progressJob.waitForReady(R.string.message_saving, new Runnable() {
+            @Override
+            public void run() {
+                app.destroy(false);
+            }
+        });
+    }
+
     public void confirmExit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(getResources().getString(R.string.message_exit));
@@ -1181,8 +1249,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                finish();
-                app.onTerminate();
+                exit();
             }
         });
         builder.setNegativeButton(getResources().getString(android.R.string.no), new DialogInterface.OnClickListener() {
@@ -1198,8 +1265,8 @@ public class MainActivity extends AppCompatActivity {
     // permission
 
     private static final int REQUEST_WRITE_STORAGE = 112;
-    private static final int RESULT_FILE_CHOOSER = 42;
-    private static final int RESULT_FILE_CREATOR = 43;
+    private static final int REQUEST_FILE_CHOOSER = 42;
+    private static final int REQUEST_FILE_CREATOR = 43;
 
     protected void checkPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -1242,7 +1309,7 @@ public class MainActivity extends AppCompatActivity {
             intent.setType("application/*");
             // Android doesn't support 'json', getMimeTypeFromExtension("json") return null
             // intent.setType(MimeTypeMap.getSingleton().getMimeTypeFromExtension("zip"));
-            startActivityForResult(intent, RESULT_FILE_CHOOSER);
+            startActivityForResult(intent, REQUEST_FILE_CHOOSER);
         }
     }
 
@@ -1259,13 +1326,22 @@ public class MainActivity extends AppCompatActivity {
             parcelFD = null;
         }
 
-        String filename = DocumentFile.fromSingleUri(this, treeUri).getName();
-        if (parcelFD != null && app.core.loadCategory(parcelFD.detachFd()) != 0)
-            handleFileChooserResult(filename, true);
-        else
-            handleFileChooserResult(filename, false);
-
-        revokeUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (parcelFD == null) {
+            revokeUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            return;
+        }
+        // --- load category on thread ---
+        Job.loadFd(parcelFD.detachFd());
+        progressJob.filename = DocumentFile.fromSingleUri(this, treeUri).getName();
+        progressJob.treeUri = treeUri;
+        progressJob.waitForReady(R.string.message_loading, new Runnable() {
+            @Override
+            public void run() {
+                boolean isOK = Job.result[Job.LOAD_FD] == 0;
+                handleFileChooserResult(progressJob.filename, isOK);
+                revokeUriPermission(progressJob.treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+        });
     }
 
     protected void handleFileChooserResult(String filename, boolean ok) {
@@ -1300,7 +1376,7 @@ public class MainActivity extends AppCompatActivity {
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("application/*");
             // Android doesn't support 'json', getMimeTypeFromExtension("json") return null
-            startActivityForResult(intent, RESULT_FILE_CREATOR);
+            startActivityForResult(intent, REQUEST_FILE_CREATOR);
         }
     }
 
@@ -1317,13 +1393,22 @@ public class MainActivity extends AppCompatActivity {
             parcelFD = null;
         }
 
-        String filename = DocumentFile.fromSingleUri(this, treeUri).getName();
-        if (parcelFD != null && app.saveNthCategory(app.nthCategory, parcelFD.detachFd()))
-            showFileCreatorResult(filename, true);
-        else
-            showFileCreatorResult(filename, false);
-
-        revokeUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        if (parcelFD == null) {
+            revokeUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            return;
+        }
+        // --- save category on thread ---
+        Job.saveFd(app.getNthCategory(app.nthCategory), parcelFD.detachFd());
+        progressJob.filename = DocumentFile.fromSingleUri(this, treeUri).getName();
+        progressJob.treeUri = treeUri;
+        progressJob.waitForReady(R.string.message_saving, new Runnable() {
+            @Override
+            public void run() {
+                boolean isOK = Job.result[Job.SAVE_FD] == 0;
+                showFileCreatorResult(progressJob.filename, isOK);
+                revokeUriPermission(progressJob.treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+        });
     }
 
     protected void showFileCreatorResult(String filename, boolean ok) {
@@ -1347,19 +1432,19 @@ public class MainActivity extends AppCompatActivity {
 
     //  @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent resultData) {
+        Uri  treeUri;
+
         if (resultCode == RESULT_CANCELED)
             return;
-        Uri  treeUri = resultData.getData(); // you can't use Uri.fromFile() to get path
-
-        DocumentFile docFile = DocumentFile.fromSingleUri(this, treeUri);
-        String name = docFile.getName();
 
         switch (requestCode) {
-            case RESULT_FILE_CHOOSER:
+            case REQUEST_FILE_CHOOSER:
+                treeUri = resultData.getData(); // you can't use Uri.fromFile() to get path
                 onFileChooserResult(treeUri);
                 break;
 
-            case RESULT_FILE_CREATOR:
+            case REQUEST_FILE_CREATOR:
+                treeUri = resultData.getData(); // you can't use Uri.fromFile() to get path
                 onFileCreatorResult(treeUri);
                 break;
 
@@ -1369,10 +1454,128 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ------------------------------------------------------------------------
-    // Timeout Interval & Handler
+    // SensorManager
+/*
+    SensorManager sensorManager;
+    SensorEventListener sensorEventListener;
 
+    void registerSensorEvent() {
+        if (sensorManager == null)
+            sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+
+        if (sensorEventListener == null) {
+            sensorEventListener = new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        // Orientation : PORTRAIT
+                    }
+                    else {
+                        // "Orientation : LANDSCAPE"
+                    }
+                }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+            };
+        }
+
+        sensorManager.registerListener(sensorEventListener,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    void unregisterSensorEvent() {
+        sensorManager.unregisterListener(sensorEventListener);
+    }
+*/
+
+    // ------------------------------------------------------------------------
+    // ProgressJob
+
+    private class ProgressJob implements Runnable {
+        public int      messageId;
+        public Handler  handler;
+        public Runnable runnable;
+        ProgressDialog  progressDialog;
+        // --- parameter ---
+        public String   filename;
+        public Uri      treeUri;
+
+        public ProgressJob(Handler handler) {
+            this.handler = handler;
+        }
+
+        public void destroy() {
+            if (progressDialog != null)
+                progressDialog.dismiss();
+        }
+
+        public void waitForReady(int messageId, Runnable runnable) {
+            this.messageId = messageId;
+            this.runnable = runnable;
+            handler.post(this);
+        }
+
+        @Override
+        public void run() {
+            // --- wait MainApp ready
+            if (Job.queuedTotal > 0) {
+                // --- progress dialog ---
+                if (progressDialog == null) {
+                    // --- To disable the user interaction you just need to add the following code
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    // --- create progress dialog
+                    progressDialog = new ProgressDialog(MainActivity.this);
+                    progressDialog.setMessage(getString(messageId));
+                    progressDialog.setIndeterminate(false);
+                    progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    // --- test progress dialog ---
+                    // progressDialog.show();
+                    // handler.postDelayed(this, 3500);
+                    // return;
+                }
+                progressDialog.show();
+                // --- recheck MainApp every 100 millisecond ---
+                handler.postDelayed(this, 100);
+                return;
+            }
+
+            if (runnable != null)
+                runnable.run();
+            filename = null;
+            treeUri = null;
+
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+            // --- To get user interaction back you just need to add the following code
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
+    };
+
+    // ------------------------------------------------------------------------
+    // Handler, Runnable, and Timeout Interval
+
+    private Handler  handler = new Handler();
     private static final int speedInterval = 1000;
-    private Handler  speedHandler  = new Handler();
+
+    public void initHandler() {
+        handler.postDelayed(speedRunnable, speedInterval);
+        // --- ad ---
+        if (BuildConfig.HAVE_ADS) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    initAd();
+                }
+            }, 1000);
+        }
+    }
+
     private Runnable speedRunnable = new Runnable() {
         int downloadSpeedLast = 0;
         int uploadSpeedLast = 0;
@@ -1380,7 +1583,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             if (app.core.downloadSpeed == downloadSpeedLast && app.core.uploadSpeed == uploadSpeedLast) {
-                speedHandler.postDelayed(this, speedInterval);
+                handler.postDelayed(this, speedInterval);
                 return;
             }
 
@@ -1397,22 +1600,9 @@ public class MainActivity extends AppCompatActivity {
             uploadSpeedLast = app.core.uploadSpeed;
 
             // call this function after the specified time interval
-            speedHandler.postDelayed(this, speedInterval);
+            handler.postDelayed(this, speedInterval);
         }
     };
-
-    public void initTimeoutHandler() {
-        speedHandler.postDelayed(speedRunnable, speedInterval);
-        // --- ad ---
-        if (BuildConfig.HAVE_ADS) {
-            speedHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    initAd();
-                }
-            }, 1000);
-        }
-    }
 
     // ------------------------------------------------------------------------
     // Ad

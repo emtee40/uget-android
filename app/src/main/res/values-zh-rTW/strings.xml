@@ -10,7 +10,10 @@
     <string name="notification_error_content">下載期間發生錯誤。</string>
     <string name="notification_completed_title">下載完成</string>
     <string name="notification_completed_content">所有排隊中的檔案下載完成。</string>
+    <!-- MainService.java -->
+    <string name="notification_standby">待機中</string>
     <!-- Notification channel name, user can setup in system settings (Android 8+) -->
+    <string name="notification_channel_standby">待機通知</string>
     <string name="notification_channel_normal">一般通知</string>
     <string name="notification_channel_completed">下載完成</string>
     <string name="notification_channel_error">發生錯誤</string>
@@ -292,6 +295,8 @@
     <string name="message_delete_category">您確定要刪除目前的分類嗎？</string>
     <string name="message_delete_title">真的要刪除檔案？</string>
     <string name="message_delete_file">您確定要刪除檔案嗎？</string>
+    <string name="message_loading">載入中…</string>
+    <string name="message_saving">儲存中…</string>
     <string name="message_file_not_exist">檔案不存在</string>
     <string name="message_file_load_ok">檔案 %s 已載入</string>
     <string name="message_file_load_fail">檔案 %s 載入失敗</string>

@@ -52,6 +52,7 @@ public class MainApp extends Application {
     public StateAdapter     stateAdapter;
     //
     public MainActivity     mainActivity;
+//    public MainService      mainService;
     // NodeActivity use this to save/restore properties
     public CategoryProp     categoryProp = new CategoryProp();
 
@@ -83,7 +84,6 @@ public class MainApp extends Application {
             if (wakeLock != null)
                 wakeLock.acquire();
         }
-        wakeLockCount++;
     }
 
     public void releaseWakeLock() {
@@ -107,7 +107,7 @@ public class MainApp extends Application {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
-                    onTerminate();
+                    destroy(true);
                 }
                 else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                     releaseWakeLock();
@@ -125,45 +125,47 @@ public class MainApp extends Application {
     }
 
     // ------------------------------------------------------------------------
-    // TimerService: keep application alive
-
-    /*
-    TimerService  timerService = null;
-
-    private ServiceConnection timerServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            TimerService.TimerBinder binder = (TimerService.TimerBinder) service;
-            timerService = binder.getService();
-            timerService.startHandler();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            timerService.stopHandler();
-            timerService = null;
-        }
-    };
-*/
+    // MainService: keep application alive
 
     public void startMainService () {
-        // start service
-        Intent intent = new Intent(MainApp.this, MainService.class);
-        startService(intent);
+        if (MainService.count == 0) {
+            Intent intent = new Intent(MainApp.this, MainService.class);
+            intent.setAction(MainService.ACTION_START_FOREGROUND);
+            startService(intent);
+        }
+        MainService.count++;
 
-//        bindService(intent, timerServiceConnection, Context.BIND_AUTO_CREATE);
+        // Intent intentBind = new Intent(MainApp.this, MainService.class);
+        // bindService(intentBind, mainServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     public void stopMainService () {
-        // stop service
-        Intent intent = new Intent(MainApp.this, MainService.class);
-        stopService(intent);
+        if (MainService.count == 1) {
+            Intent intent = new Intent(MainApp.this, MainService.class);
+            stopService(intent);
+        }
+        if (MainService.count > 0)
+            MainService.count--;
 
-//        if (timerService != null)
-//            timerService.stopHandler();
-//        unbindService(timerServiceConnection);
+        // Intent intentBind = new Intent(MainApp.this, MainService.class);
+        // bindService(intentBind, mainServiceConnection, BIND_AUTO_CREATE);
     }
+
+    /*
+        private ServiceConnection mainServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder serviceBinder)
+            {
+                mainService = ((MainService.LocalBinder)serviceBinder).getService();
+            }
+
+            public void onServiceDisconnected(ComponentName name)
+            {
+                mainService = null;
+                Log.d("uGet", "onServiceDisconnected()" + name.getClassName());
+            }
+        };
+    */
 
     // ------------------------------------------------------------------------
     @Override
@@ -173,30 +175,32 @@ public class MainApp extends Application {
         logClear();
         logAppend("App.onCreate()");
 
-        Ccj.init(this);    // initial C Call Java in main thread
-        // call unregisterBroadcastReceiver() and releaseWakeLock() in onTerminate()
-        registerBroadcastReceiver();
-        acquireWakeLock();
+        Job.init(this);
+        // initialize C Call Java in main thread
+        Ccj.init(this);
     }
 
-    @Override
-    public void onTerminate () {
-        super.onTerminate();
-        logAppend("App.onTerminate()");
-        //    Log.v("uGet", "App.onTerminate()");
+    public void destroy(boolean saveCategories) {
+        logAppend("App.destroy()");
+        //    Log.v("uGet", "App.destroy()");
 
-        // offline status
+        logAppend("App.destroy() stop background task");
+        // --- stop background task ---
+        timeoutHandler.stopHandler();
+        if (rpc != null)
+            rpc.stopServer();
+
+        // call registerBroadcastReceiver() in onCreateRunning()
+        unregisterBroadcastReceiver();
+        stopMainService();
+
+        // --- save all data & offline status ---
+        if (Job.queued[Job.SAVE_ALL] == 0 && saveCategories)
+            Job.saveAll();
+        saveFolderHistory();
         saveStatus();
 
-        // call startTimerService() and rpc.startServer() in startRunning()
-        logAppend("App.stopMainService()");
-        stopMainService();
-        logAppend("App.stopHandler()");
-        timeoutHandler.stopHandler();
-        logAppend("App.rpc.stopServer()");
-        rpc.stopServer();
-
-        // clear data in system
+        // --- clear data in system
         logAppend("App.clearClipboard()");
         clearClipboard();
         cancelNotification();
@@ -204,78 +208,97 @@ public class MainApp extends Application {
         // JNI finalize functions
         logAppend("core.removeAllTask()");
         core.removeAllTask();
-        saveAllData();
         logAppend("core.clearAttachment()");
         core.clearAttachment();
 
         // this will release all JNI data.
-        // Don't call any JNI function after App.cFinal()
+        // Don't call any JNI function after Core.cFinal()
         core.cFinal(setting.plugin.aria2.shutdown && setting.plugin.aria2.local);
-        Ccj.cFinal();
+        // Ccj.cFinal();    // Don't run this line
 
-        //    Lib.sync();
-        //    SystemClock.sleep(3000);
+        Job.runOnThread(new Runnable() {
+            @Override
+            public void run() {
+                // --- sleep 100 milliseconds
+                // try { Thread.sleep(100); } catch(Exception e) {}
 
-        // call registerBroadcastReceiver() and acquireWakeLock() in onCreate()
-        unregisterBroadcastReceiver();
-        releaseWakeLock();
+                // --- exit uGet
+                // android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(0);
+            }
+        });
 
-        logAppend("App.onTerminate() ok");
-        android.os.Process.killProcess(android.os.Process.myPid());
-        //    System.exit(0);
+        logAppend("App.destroy() return");
     }
 
-    // this function was called by MainActivity.onCreate()
+    // this function is called by MainActivity.onCreate()
     public void onCreateRunning() {
-        if (rpc != null)
-            return;
+        // run once on startup
         logAppend ("App.onCreateRunning()");
+        if (downloadAdapter != null)
+            return;
 
-        logAppend ("App.onCreateRunning() create Adapter and RPC server");
+        logAppend ("App.onCreateRunning() create RecyclerView.Adapter");
         // Adapter
         downloadAdapter = new DownloadAdapter(Node.getNthChild(core.nodeMix, 0));
         categoryAdapter = new CategoryAdapter(core.nodeReal, core.nodeMix);
         stateAdapter = new StateAdapter(this, Node.getNthChild(core.nodeMix, 0));
 
+        logAppend("App.onCreateRunning() - initSharedPreferences()");
+        initSharedPreferences();
+        logAppend("App.onCreateRunning() - initNotification()");
+        initNotification();
+        logAppend("App.onCreateRunning() - initClipboard()");
+        initClipboard();
+
         File filesDir = getFilesDir();
         if (filesDir != null) {
             // RPC server
-            rpc = new Rpc(filesDir.getAbsolutePath() + "/attachment");
-            // load/create category
+            // rpc = new Rpc(filesDir.getAbsolutePath() + "/attachment");
             core.setConfigDir(filesDir.getAbsolutePath());
-            logAppend ("App.onCreateRunning() before loading category");
             //   getExternalStorageDirectory().toString()
-            core.loadCategories(null);
-            logAppend("App.onCreateRunning() after loading category");
         }
 
-        // if there is no category
-        if (Node.nChildren(core.nodeReal) == 0) {
-            logAppend ("App.onCreateRunning() no category loaded, create one.");
-            createDefaultCategory();
-        }
-
+        logAppend("App.onCreateRunning() loading status / folder history");
+        loadStatus();
         loadFolderHistory();
-        logAppend("App.onCreateRunning() after loading folder history");
         initFolderWritable();
 
-        initSharedPreferences();
-        logAppend("App.onCreateRunning() after initSharedPreferences");
-        initClipboard();
-        logAppend("App.onCreateRunning() after initClipboard");
-        initNotification();
+        // --- call loadCategoriesOnStart() in thread
+        Job.loadAll();
+        // --- run on thread after Job.loadAll();
+        Job.runOnThread(new Runnable() {
+            @Override
+            public void run() {
+                logAppend("App.onCreateRunning() start background task");
+                // --- start background task ---
+                timeoutHandler.startHandler();
+                // if (rpc != null)
+                //     rpc.startServer();
 
-        // call stopTimerService() and rpc.stopServer() in onTerminate()
-        rpc.startServer();
-        logAppend("App.onCreateRunning() after rpc.startServer");
-        timeoutHandler.startHandler();
-        logAppend("App.onCreateRunning() after timeoutHandler.startHandler");
-        startMainService();
+                // call unregisterBroadcastReceiver() and in destroy()
+                registerBroadcastReceiver();
+                startMainService();
 
-        // offline status
-        loadStatus();
+                // --- update permission after device reboot
+                refreshUriPermission();
+            }
+        });
 
-        refreshUriPermission();  // update permission after device reboot
+        logAppend ("App.onCreateRunning() return");
+    }
+
+    // run once on startup
+    // this function is called by Job.loadAll()
+    public void loadCategoriesOnStart() {
+        logAppend ("App.loadCategoriesOnStart() before loading category");
+        core.loadCategories(null);
+        logAppend("App.loadCategoriesOnStart() after loading category");
+        // if there is no category
+        if (Node.nChildren(core.nodeReal) == 0) {
+            logAppend ("App.loadCategoriesOnStart() no category loaded, create one.");
+            createDefaultCategory();
+        }
 
         // loading category proterties from uGet for Android 1.x
         if (preferences.getInt("pref_about_version", 0) == 0) {
@@ -286,8 +309,24 @@ public class MainApp extends Application {
                 Info.setGroup(infoPointer, Info.Group.queuing);
             }
         }
+    }
 
-        logAppend ("App.onCreateRunning() return");
+    // this function is called by Job.saveAll()
+    public void saveCategories() {
+        File filesDir = getFilesDir();
+        if (filesDir == null)
+            return;
+
+        File path = new File(filesDir,"category");
+        path.mkdirs();
+        path = null;
+
+        int nCategorySaved = core.saveCategories(filesDir.getAbsolutePath());
+        if (nCategorySaved == 0) {
+            Log.v("uGet", "App.saveCategories(): Nothing save");
+            // TODO: show message dialog
+        }
+        Log.v ("uGet", "App.nCategorySaved = " + nCategorySaved);
     }
 
     public void refreshUriPermission() {
@@ -342,23 +381,6 @@ public class MainApp extends Application {
             statusFile.delete();
             setting.offlineMode = true;
         }
-    }
-
-    public void saveAllData() {
-        File filesDir = getFilesDir();
-        if (filesDir == null)
-            return;
-
-        File path = new File(filesDir,"category");
-        path.mkdirs();
-        path = null;
-        saveFolderHistory();
-        int nCategorySaved = core.saveCategories(filesDir.getAbsolutePath());
-        if (nCategorySaved == 0) {
-            Log.v("uGet", "App.saveAllData(): Nothing save");
-            // TODO: show message dialog
-        }
-        Log.v ("uGet", "App.nCategorySaved = " + nCategorySaved);
     }
 
     public void createDefaultCategory() {
@@ -493,24 +515,6 @@ public class MainApp extends Application {
         }
 
         return result;
-    }
-
-    public boolean saveNthCategory(int nthCategory, String filename)
-    {
-        int nthCategoryReal = nthCategory - 1;
-        if (nthCategoryReal < 0)
-            nthCategoryReal = 0;
-        long nodePointer = Node.getNthChild(core.nodeReal, nthCategoryReal);
-        return core.saveCategory(nodePointer, filename);
-    }
-
-    public boolean saveNthCategory(int nthCategory, int fd)
-    {
-        int nthCategoryReal = nthCategory - 1;
-        if (nthCategoryReal < 0)
-            nthCategoryReal = 0;
-        long nodePointer = Node.getNthChild(core.nodeReal, nthCategoryReal);
-        return core.saveCategory(nodePointer, fd);
     }
 
     public long getNthCategory(int nthCategory) {
@@ -1306,10 +1310,12 @@ public class MainApp extends Application {
     NotificationManager  notificationManager = null;
     private final int    notificationId = 0;
     // --- Notification.Builder ---
+    Notification.Builder builderStandby = null;
     Notification.Builder builderNormal = null;
     Notification.Builder builderCompleted = null;
     Notification.Builder builderError = null;
     // --- ID of the NotificationChannel ---
+    final String          CHANNEL_STANDBY    = "-.Standby";
     final String          CHANNEL_NORMAL    = "0.Normal";
     final String          CHANNEL_COMPLETED = "1.Completed";
     final String          CHANNEL_ERROR     = "2.Error";
@@ -1319,10 +1325,14 @@ public class MainApp extends Application {
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channelStandby;
             NotificationChannel channelNormal;
             NotificationChannel channelCompleted;
             NotificationChannel channelError;
 
+            channelStandby = new NotificationChannel(CHANNEL_STANDBY,
+                    getString(R.string.notification_channel_standby),
+                    NotificationManager.IMPORTANCE_DEFAULT);
             channelNormal = new NotificationChannel(CHANNEL_NORMAL,
                     getString(R.string.notification_channel_normal),
                     NotificationManager.IMPORTANCE_DEFAULT);
@@ -1333,6 +1343,8 @@ public class MainApp extends Application {
                     getString(R.string.notification_channel_error),
                     NotificationManager.IMPORTANCE_DEFAULT);
 
+            channelStandby.enableVibration(false);
+            channelStandby.setSound(null, null);
             channelNormal.enableVibration(false);
             channelNormal.setSound(null, null);
             channelCompleted.enableVibration(setting.ui.vibrateNotification);
@@ -1344,19 +1356,24 @@ public class MainApp extends Application {
                 channelError.setSound(null, null);
 
             try {
+                notificationManager.createNotificationChannel(channelStandby);
                 notificationManager.createNotificationChannel(channelNormal);
                 notificationManager.createNotificationChannel(channelCompleted);
                 notificationManager.createNotificationChannel(channelError);
-            } catch(Exception e) {}
+            } catch(Exception e) {
+                logAppend("app.initNotification() : " + e.getMessage());
+            }
 
+            builderStandby = new Notification.Builder(getApplicationContext(), CHANNEL_STANDBY);
             builderNormal = new Notification.Builder(getApplicationContext(), CHANNEL_NORMAL);
             builderCompleted = new Notification.Builder(getApplicationContext(), CHANNEL_COMPLETED);
             builderError = new Notification.Builder(getApplicationContext(), CHANNEL_ERROR);
         }
         else {
-            builderNormal = new Notification.Builder(getApplicationContext());
-            builderCompleted = builderNormal;
-            builderError = builderNormal;
+            builderStandby = new Notification.Builder(getApplicationContext());
+            builderNormal = builderStandby;
+            builderCompleted = builderStandby;
+            builderError = builderStandby;
         }
     }
 
@@ -1380,8 +1397,7 @@ public class MainApp extends Application {
                .setContentIntent(pendingIntent)
                .setContentTitle(title)
                .setContentText(content)
-               .setAutoCancel(true)
-               .setSmallIcon(R.mipmap.ic_notification);
+               .setAutoCancel(true);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             builder.setShowWhen(true);
@@ -1467,7 +1483,7 @@ public class MainApp extends Application {
 		String title = getString(R.string.notification_error_title);
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             title = getString(R.string.app_name) + " · " + title;
-		
+
         notifyMessage(builderError, title,
                 getString(R.string.notification_error_content));
     }

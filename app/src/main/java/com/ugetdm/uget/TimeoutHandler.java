@@ -130,8 +130,8 @@ public class TimeoutHandler {
 
                     // --- reset  "app.core.nError"
                     app.core.nError = 0;
-                    // --- save all data before program release WakeLock
-                    app.saveAllData();
+                    if (Job.queued[Job.SAVE_ALL] == 0)
+                        Job.saveAll();
                     app.releaseWakeLock();
                 }
             }
@@ -285,7 +285,8 @@ public class TimeoutHandler {
             autoSaveCounts++;
             if (autoSaveCounts >= app.setting.autosaveInterval) {
                 autoSaveCounts = 0;
-                app.saveAllData();
+                if (Job.queued[Job.SAVE_ALL] == 0)
+                    Job.saveAll();
             }
 
             // call this function after the specified time interval

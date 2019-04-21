@@ -2,14 +2,16 @@
     <string name="app_name">uGet</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <!-- MainApp.java -->
     <string name="notification_active_counts">Active : %d</string>
     <string name="notification_error_title">Error Occurred</string>
     <string name="notification_error_content">Error occurred during download.</string>
     <string name="notification_completed_title">Download Completed</string>
     <string name="notification_completed_content">All queuing downloads have been completed.</string>
+    <!-- MainService.java -->
+    <string name="notification_standby">Standby</string>
     <!-- Notification channel name, user can setup in system settings (Android 8+) -->
+    <string name="notification_channel_standby">Standby</string>
     <string name="notification_channel_normal">Normal</string>
     <string name="notification_channel_completed">Download Completed</string>
     <string name="notification_channel_error">Error Occurred</string>
@@ -291,6 +293,8 @@
     <string name="message_delete_category">Are you sure you want to delete current category?</string>
     <string name="message_delete_title">Really delete?</string>
     <string name="message_delete_file">Are you sure you want to delete files?</string>
+    <string name="message_loading">Loading…</string>
+    <string name="message_saving">Saving…</string>
     <string name="message_file_not_exist">File does not exist</string>
     <string name="message_file_load_ok">File %s loaded</string>
     <string name="message_file_load_fail">Failed to load file %s</string>
