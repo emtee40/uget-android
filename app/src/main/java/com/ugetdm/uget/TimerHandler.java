@@ -20,64 +20,110 @@ import com.ugetdm.uget.lib.Rpc;
 
 import java.util.regex.PatternSyntaxException;
 
-public class TimeoutHandler {
-    // Timeout Interval & Handler
-
+public class TimerHandler {
     private MainApp  app;
     private Handler  handler;
-    // used by queuingRunnable
-    private ConnectivityManager connectivityManager;
 
-    private boolean  handlerStarted = false;
+    // timer interval
+    private static final int connectivityInterval = 1000;
+    private static final int queuingInterval   = 1000;
+    private static final int clipboardInterval = 1000 * 2;
+    private static final int autosaveInterval  = 1000 * 3;
+    private static final int rpcInterval       = 1000;
+
+    // handler status
+    private boolean  queuingRunning   = false;
+    private boolean  clipboardRunning = false;
+    private boolean  autosaveRunning  = false;
+    protected long   autosaveLastTime;
+    private int      autosaveQueuingCounts;
+
+    // used by connectivityRunnable
+    private ConnectivityManager connectivityManager;
     private boolean  offlineModeLast = false;
+
+    // used by queuingRunning
     private int      nActiveLast    = 0;
     private int      queuingCounts  = 0;
-    private int      autoSaveCounts = 0;
-    private static final int queuingInterval   = 1000 * 1;
-    private static final int clipboardInterval = 1000 * 2;
-    private static final int autoSaveInterval  = 1000 * 60;
-    private static final int rpcInterval       = 500;
 
-    public TimeoutHandler(MainApp mainApp) {
+    // ----------------------------------------------------
+
+    public TimerHandler(MainApp mainApp) {
         app = mainApp;
 
+        // -- run on main thread ---
         // Get a handler that can be used to post to the main thread
-        // handler = new Handler();    // call this in main thread
         handler = new Handler(Looper.getMainLooper());    // context.getMainLooper()
     }
 
-    public void startHandler() {
-        if (handlerStarted == true)
-            return;
-        connectivityManager = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public void start() {
+        if (connectivityManager == null)
+            connectivityManager = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
+        handler.postDelayed(connectivityRunnable, connectivityInterval);
 
-        handlerStarted = true;
-        handler.postDelayed(queuingRunnable, queuingInterval);
-        handler.postDelayed(clipboardRunnable, clipboardInterval);
-        handler.postDelayed(autoSaveRunnable, autoSaveInterval);
-        handler.postDelayed(rpcRunnable, rpcInterval);
+        startQueuing();
+        startClipboard();
+        startAutosave();
+        autosaveLastTime = System.currentTimeMillis();
+        // handler.postDelayed(rpcRunnable, rpcInterval);
     }
 
-    public void stopHandler() {
-        if (handlerStarted == false)
-            return;
-
-        handlerStarted = false;
-        handler.removeCallbacks(queuingRunnable);
-        handler.removeCallbacks(clipboardRunnable);
-        handler.removeCallbacks(autoSaveRunnable);
-        handler.removeCallbacks(rpcRunnable);
+    public void stop() {
+        handler.removeCallbacks(connectivityRunnable);
+        stopQueuing();
+        stopClipboard();
+        stopAutosave();
+        // handler.removeCallbacks(rpcRunnable);
     }
 
-    private Runnable queuingRunnable = new Runnable() {
+    public void startQueuing() {
+        if (queuingRunning == false) {
+            queuingRunning = true;
+            handler.postDelayed(queuingRunnable, queuingInterval);
+        }
+    }
+
+    public void stopQueuing() {
+        if (queuingRunning) {
+            queuingRunning = false;
+            handler.removeCallbacks(queuingRunnable);
+        }
+    }
+
+    public void startClipboard() {
+        if (clipboardRunning == false) {
+            clipboardRunning = true;
+            handler.postDelayed(clipboardRunnable, clipboardInterval);
+        }
+    }
+
+    public void stopClipboard() {
+        if (clipboardRunning) {
+            clipboardRunning = false;
+            handler.removeCallbacks(clipboardRunnable);
+        }
+    }
+
+    public void startAutosave() {
+        if (autosaveRunning == false && app.setting.autosaveInterval != 0) {
+            autosaveRunning = true;
+            handler.postDelayed(autosaveRunnable, autosaveInterval);
+        }
+    }
+
+    public void stopAutosave() {
+        if (autosaveRunning) {
+            autosaveRunning = false;
+            handler.removeCallbacks(autosaveRunnable);
+        }
+    }
+
+    // ----------------------------------------------------
+    // Runnable
+
+    private Runnable connectivityRunnable = new Runnable() {
         @Override
         public void run() {
-            queuingCounts++;
-            int  nActive;
-            long checkedNodes[] = null;
-            long deletedNodes[];
-            boolean intoOfflineMode = false;
-
             // Go offline if no WiFi connection
             if (app.setting.ui.noWifiGoOffline) {
                 if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected())
@@ -88,15 +134,34 @@ public class TimeoutHandler {
             // enable/disable offline mode
             if (offlineModeLast != app.setting.offlineMode) {
                 offlineModeLast = app.setting.offlineMode;
-                // if go offline
                 if (app.setting.offlineMode) {
+                    // --- go offline
                     app.core.stopCategories();
                     app.userAction = true;
-                    intoOfflineMode = true;
                 }
-                else if (app.mainActivity != null)
+                if (app.mainActivity != null)
                     app.mainActivity.decideTitle();
+                // --- start timer handler ---
+                startQueuing();
             }
+
+            // call this function after the specified time interval
+            handler.postDelayed(this, connectivityInterval);
+        }
+    };
+
+    private Runnable queuingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int  nActive;
+            long checkedNodes[] = null;
+            long deletedNodes[];
+            boolean queuingContinuing = true;
+
+            queuingCounts++;
+            // stop queuing while loading or saving data
+            if (Job.queuedTotal > 0)
+                handler.postDelayed(this, queuingInterval);
 
             // --- reserve selected node --- restore them after app.core.trim()
             if (app.downloadAdapter.getCheckedItemCount() > 0)
@@ -104,7 +169,12 @@ public class TimeoutHandler {
 
             nActive = app.core.grow(app.setting.offlineMode);
 
-            if (nActive > 0) {
+            if (nActive == 0) {
+                // --- stop queuing runnable ---
+                queuingContinuing = false;
+                queuingRunning = false;
+            }
+            else {
                 // --- show speed in notification ---
                 if ((queuingCounts & 1) == 1 || nActiveLast == 0)
                     app.notifyActiveSpeed(nActive, nActiveLast == 0);
@@ -113,34 +183,34 @@ public class TimeoutHandler {
                     app.core.adjustSpeed();
             }
 
+            // --- start or stop ---
             if (nActive != nActiveLast) {
-                // --- start or stop ---
                 if (nActive > 0 && nActiveLast == 0) {
-                    app.acquireWakeLock();
-                    // --- reset  "app.core.nError"
-                    app.core.nError = 0;
+                    // --- start ---
+                    app.acquireWakeLock(true);
+                    app.startMainService();
                 }
                 else if (nActive == 0 && nActiveLast > 0) {
+                    // --- stop ---
                     if (app.userAction)
                         app.cancelNotification();
                     else if (app.core.nError > 0)
                         app.notifyError();
                     else
                         app.notifyCompleted();
-
-                    // --- reset  "app.core.nError"
-                    app.core.nError = 0;
-                    if (Job.queued[Job.SAVE_ALL] == 0)
-                        Job.saveAll();
+                    // --- reduce power consumption ---
                     app.releaseWakeLock();
+                    app.stopMainService();
                 }
+                // --- reset  "app.core.nError"
+                app.core.nError = 0;
             }
 
             // --- trim ---
             deletedNodes = app.core.trim();
 
             // --- restore selections & notify changed
-            if (app.core.nMoved > 0 || app.core.nDeleted > 0 || intoOfflineMode) {
+            if (app.core.nMoved > 0 || app.core.nDeleted > 0 || app.setting.offlineMode) {
                 // --- remove deleted nodes from checked nodes
                 if (deletedNodes != null && checkedNodes != null) {
                     for (int deletedIndex = 0;  deletedIndex < deletedNodes.length;  deletedIndex++) {
@@ -179,8 +249,9 @@ public class TimeoutHandler {
             app.userAction = false;
             nActiveLast = nActive;
 
-            // call this function after the specified time interval
-            handler.postDelayed(this, queuingInterval);
+            // call postDelayed() after the specified time interval
+            if (queuingContinuing)
+                handler.postDelayed(this, queuingInterval);
         }
     };
 
@@ -193,6 +264,10 @@ public class TimeoutHandler {
             // a fake loop for toExit
             toExit:
             for (;;) {
+                // stop clipboard monitor while loading or saving data
+                if (Job.queuedTotal > 0)
+                    break toExit;
+
                 if (app.setting.clipboard.enable == false)
                     break toExit;
 
@@ -269,6 +344,8 @@ public class TimeoutHandler {
                 app.stateAdapter.notifyDataSetChanged();
                 app.categoryAdapter.notifyDataSetChanged();
                 app.downloadAdapter.notifyDataSetChanged();
+                // --- start queuing ---
+                startQueuing();
 
                 break toExit;
             }
@@ -279,18 +356,25 @@ public class TimeoutHandler {
         }
     };
 
-    private Runnable autoSaveRunnable = new Runnable() {
+    private Runnable autosaveRunnable = new Runnable() {
         @Override
         public void run() {
-            autoSaveCounts++;
-            if (autoSaveCounts >= app.setting.autosaveInterval) {
-                autoSaveCounts = 0;
-                if (Job.queued[Job.SAVE_ALL] == 0)
-                    Job.saveAll();
-            }
+            // if (app.setting.autosaveInterval == 0)
+            //     return;
 
-            // call this function after the specified time interval
-            handler.postDelayed(this, autoSaveInterval);
+            long curTime = System.currentTimeMillis();
+            if (curTime - autosaveLastTime > app.setting.autosaveInterval * 1000 * 60) {
+                if (autosaveQueuingCounts == queuingCounts)
+                    autosaveLastTime = curTime;
+                else {
+                    autosaveQueuingCounts = queuingCounts;
+                    app.logAppend("TimerHandler.autosaveRunnable");
+                    if (Job.queued[Job.SAVE_ALL] == 0)
+                        Job.saveAll();
+                }
+            }
+            // --- call this function after the specified time interval
+            handler.postDelayed(this, autosaveInterval);
         }
     };
 
@@ -304,7 +388,11 @@ public class TimeoutHandler {
 
             // a fake loop for toExit
             toExit:
-            for (;;) {
+            while (app.rpc != null) {
+                // stop RPC while loading or saving data
+                if (Job.queuedTotal > 0)
+                    break toExit;
+
                 request = app.rpc.getRequest();
                 if (request == null)
                     break toExit;

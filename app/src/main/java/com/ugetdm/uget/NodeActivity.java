@@ -379,10 +379,12 @@ public class NodeActivity extends AppCompatActivity {
 
         switch(id) {
             case R.id.action_ok:
+                setResult(RESULT_OK);
                 onSelectOk();
                 break;
 
             case R.id.action_cancel:
+                setResult(RESULT_CANCELED);
                 finish();
                 break;
         }
@@ -404,6 +406,7 @@ public class NodeActivity extends AppCompatActivity {
         switch(mode) {
             case Mode.batch_sequence:
                 if (sequenceForm.showPreview() == false) {
+                    setResult(RESULT_CANCELED);
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
                     dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
                     dialogBuilder.setTitle(R.string.action_batch_sequence);
@@ -417,11 +420,13 @@ public class NodeActivity extends AppCompatActivity {
                             getString(R.string.batch_total_counts, sequenceForm.batchCount()));
                     dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            setResult(RESULT_CANCELED);
                             dialog.dismiss();
                         }
                     });
                     dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            setResult(RESULT_OK);
                             batchAdd(sequenceForm);
                         }
                     });

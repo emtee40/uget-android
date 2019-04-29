@@ -56,8 +56,8 @@ public class MainApp extends Application {
     // NodeActivity use this to save/restore properties
     public CategoryProp     categoryProp = new CategoryProp();
 
-    // Timeout Interval & Handler
-    public TimeoutHandler   timeoutHandler = new TimeoutHandler(this);
+    // Timer Interval & Handler
+    public TimerHandler   timerHandler = new TimerHandler(this);
 
     // constructor must run before MainActivity.OnCreate()
     public MainApp() {
@@ -72,8 +72,13 @@ public class MainApp extends Application {
     private PowerManager.WakeLock wakeLock = null;
     private int  wakeLockCount = 0;
 
-    public void acquireWakeLock() {
-        if (wakeLock == null) {
+    public void acquireWakeLock(boolean countOnly) {
+        if (countOnly) {
+            wakeLockCount++;
+            return;
+        }
+
+        if (wakeLock == null && wakeLockCount > 0) {
             logAppend("WakeLock acquire");
             PowerManager pm = (PowerManager)this.getSystemService(Context.POWER_SERVICE);
             if (pm == null)
@@ -87,7 +92,8 @@ public class MainApp extends Application {
     }
 
     public void releaseWakeLock() {
-        wakeLockCount--;
+        if (wakeLockCount > 0)
+            wakeLockCount--;
         if (wakeLock != null && wakeLockCount == 0) {
             logAppend("WakeLock release");
             wakeLock.release();
@@ -107,13 +113,21 @@ public class MainApp extends Application {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
-                    destroy(true);
+                    destroy(false);
                 }
                 else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                    releaseWakeLock();
+                    // --- reduce power consumption ---
+                    acquireWakeLock(false);
+                    stopMainService();
+                    timerHandler.stopClipboard();
+                    timerHandler.stopAutosave();
                 }
                 else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                    acquireWakeLock();
+                    // --- reduce power consumption ---
+                    releaseWakeLock();
+                    startMainService();
+                    timerHandler.startClipboard();
+                    timerHandler.startAutosave();
                 }
             }
         };
@@ -123,6 +137,27 @@ public class MainApp extends Application {
     void unregisterBroadcastReceiver() {
         unregisterReceiver(broadcastReceiver);
     }
+
+    // ------------------------------------------------------------------------
+    // ConnectivityManager (API >= 21)
+/*
+    private ConnectivityManager connectivityManager;
+    private final ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
+        @Override
+        public void onAvailable(Network network) {
+            super.onAvailable(network);
+            // this ternary operation is not quite true, because non-metered doesn't yet mean, that it's wifi
+            // nevertheless, for simplicity let's assume that's true
+            Log.i("vvv", "connected to " + (connectivityManager.isActiveNetworkMetered() ? "LTE" : "WIFI"));
+        }
+
+        @Override
+        public void onLost(Network network) {
+            super.onLost(network);
+            Log.i("vvv", "losing active connection");
+        }
+    };
+*/
 
     // ------------------------------------------------------------------------
     // MainService: keep application alive
@@ -186,9 +221,9 @@ public class MainApp extends Application {
 
         logAppend("App.destroy() stop background task");
         // --- stop background task ---
-        timeoutHandler.stopHandler();
-        if (rpc != null)
-            rpc.stopServer();
+        timerHandler.stop();
+        // if (rpc != null)
+        //     rpc.stopServer();
 
         // call registerBroadcastReceiver() in onCreateRunning()
         unregisterBroadcastReceiver();
@@ -272,7 +307,7 @@ public class MainApp extends Application {
             public void run() {
                 logAppend("App.onCreateRunning() start background task");
                 // --- start background task ---
-                timeoutHandler.startHandler();
+                timerHandler.start();
                 // if (rpc != null)
                 //     rpc.startServer();
 
@@ -327,6 +362,8 @@ public class MainApp extends Application {
             // TODO: show message dialog
         }
         Log.v ("uGet", "App.nCategorySaved = " + nCategorySaved);
+        // save current time for autoSave
+        timerHandler.autosaveLastTime = System.currentTimeMillis();
     }
 
     public void refreshUriPermission() {
@@ -1007,7 +1044,7 @@ public class MainApp extends Application {
         }
 
         // pref_autosave_interval
-        string = preferences.getString("pref_autosave_interval", "1");
+        string = preferences.getString("pref_autosave_interval", "3");
         try {
             if (string.length() > 0)
                 setting.autosaveInterval = Integer.parseInt(string);
@@ -1029,6 +1066,10 @@ public class MainApp extends Application {
             core.setSorting(setting.sortBy);
             downloadAdapter.notifyDataSetChanged();
         }
+        if (setting.autosaveInterval > 0)
+            timerHandler.startAutosave();
+        else
+            timerHandler.stopAutosave();
         core.setPluginOrder(setting.pluginOrder);
         core.setMediaMatchMode(setting.plugin.media.matchMode);
         core.setMediaQuality(setting.plugin.media.quality);
@@ -1371,9 +1412,9 @@ public class MainApp extends Application {
         }
         else {
             builderStandby = new Notification.Builder(getApplicationContext());
-            builderNormal = builderStandby;
-            builderCompleted = builderStandby;
-            builderError = builderStandby;
+            builderNormal = new Notification.Builder(getApplicationContext());
+            builderCompleted = builderNormal;
+            builderError = builderNormal;
         }
     }
 

@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
                 intent.putExtras(bundle);
                 intent.setClass(MainActivity.this, NodeActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_ADD_DOWNLOAD);
             }
         });
 
@@ -105,9 +105,7 @@ public class MainActivity extends AppCompatActivity {
         decideToolbarStatus();
         initTraveler();
 
-        app.logAppend("MainActivity.onCreate() - Job.queuedTotal = " + Job.queuedTotal);
-        progressJob = new ProgressJob(handler);
-        progressJob.waitForReady(R.string.message_loading, new Runnable() {
+        Runnable readyRunnable = new Runnable() {
             @Override
             public void run() {
                 downloadListView.setAdapter(app.downloadAdapter);
@@ -115,14 +113,22 @@ public class MainActivity extends AppCompatActivity {
                 stateListView.setAdapter(app.stateAdapter);
                 decideContent();
                 initHandler();
-
                 // --- handle URI from "Share Link" ---
                 processUriFromIntent();
-
                 // --- MainActivity is ready ---
                 app.mainActivity = MainActivity.this;
             }
-        });
+        };
+
+        app.logAppend("MainActivity.onCreate() - Job.queuedTotal = " + Job.queuedTotal);
+        progressJob = new ProgressJob(handler);
+        if (Job.queued[Job.LOAD_ALL] > 0)
+            progressJob.waitForReady(R.string.message_loading, readyRunnable);
+        else {
+            readyRunnable.run();
+            if (Job.queuedTotal > 0)
+                progressJob.waitForReady(R.string.message_loading, null);
+        }
     }
 
     @Override
@@ -131,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         // --- notification ---
         app.cancelNotification();
         // --- dialog ---
+        if (downloadPopupMenu != null)
+            downloadPopupMenu.dismiss();
         progressJob.destroy();
         // --- ad ---
         if (BuildConfig.HAVE_ADS) {
@@ -158,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
 
         // --- save all data & offline status ---
-        app.logAppend("MainApp.onStop() deviceRotated = " + deviceRotated);
         if (Job.queued[Job.SAVE_ALL] == 0 && deviceRotated == false)
             Job.saveAll();
         app.saveFolderHistory();
@@ -173,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current game state
+        // Save the current state
         if (app.downloadAdapter.singleSelection) {
             int position = app.downloadAdapter.getCheckedItemPosition();
             if (isDownloadPositionVisible(position))
@@ -292,6 +299,8 @@ public class MainActivity extends AppCompatActivity {
                 app.stateAdapter.notifyDataSetChanged();
                 app.categoryAdapter.notifyDataSetChanged();
                 app.downloadAdapter.notifyDataSetChanged();
+                // --- start timer handler ---
+                app.timerHandler.startQueuing();
 
                 // moveTaskToBack(true);
             }
@@ -487,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
                 intent.putExtras(bundle);
                 intent.setClass(MainActivity.this, NodeActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_ADD_DOWNLOAD);
                 break;
 
             case R.id.action_resume_all:
@@ -497,6 +506,8 @@ public class MainActivity extends AppCompatActivity {
                 app.stateAdapter.notifyDataSetChanged();
                 // --- selection mode ---
                 decideSelectionMode();
+                // --- start timer handler ---
+                app.timerHandler.startQueuing();
                 break;
 
             case R.id.action_pause_all:
@@ -507,6 +518,8 @@ public class MainActivity extends AppCompatActivity {
                 app.userAction = true;
                 // --- selection mode ---
                 decideSelectionMode();
+                // --- start timer handler ---
+                app.timerHandler.startQueuing();
                 break;
 
             case R.id.action_offline:
@@ -515,6 +528,8 @@ public class MainActivity extends AppCompatActivity {
                 else
                     app.setting.offlineMode = true;
                 decideTitle();
+                // --- start timer handler ---
+                app.timerHandler.startQueuing();
                 break;
 
             case R.id.action_settings:
@@ -543,9 +558,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     app.downloadAdapter.setCheckedNodes(selection);
                     app.stateAdapter.notifyDataSetChanged();
-                    //app.userAction = true;
+                    // app.userAction = true;
                     // --- selection mode ---
                     decideSelectionMode();
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                 }
                 break;
 
@@ -562,6 +579,8 @@ public class MainActivity extends AppCompatActivity {
                     app.userAction = true;
                     // --- selection mode ---
                     decideSelectionMode();
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                 }
                 break;
 
@@ -589,6 +608,8 @@ public class MainActivity extends AppCompatActivity {
                     app.userAction = true;
                     // --- selection mode ---
                     decideSelectionMode();
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                 }
                 break;
 
@@ -607,6 +628,8 @@ public class MainActivity extends AppCompatActivity {
                     app.userAction = true;
                     // --- selection mode ---
                     decideSelectionMode();
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                 }
                 break;
 
@@ -615,6 +638,8 @@ public class MainActivity extends AppCompatActivity {
                     confirmDeleteDownloadFile();
                 else
                     deleteSelectedDownloadFile();
+                // --- start timer handler ---
+                app.timerHandler.startQueuing();
                 break;
 
             default:
@@ -964,6 +989,8 @@ public class MainActivity extends AppCompatActivity {
         if (view == null)
             return false;
 
+        if (downloadPopupMenu != null)
+            downloadPopupMenu.dismiss();
         downloadPopupMenu = new PopupMenu(this, view);
         downloadPopupMenu.inflate(R.menu.main_popup);
 
@@ -1105,11 +1132,15 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.menu_download_force_start:
                     app.downloadAdapter.notifyItemChanged(nthDownload);
                     nthDownloadAfter = app.activateNthDownload(nthDownload);
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                     break;
 
                 case R.id.menu_download_start:
                     app.downloadAdapter.notifyItemChanged(nthDownload);
                     nthDownloadAfter = app.tryQueueNthDownload(nthDownload);
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                     break;
 
                 case R.id.menu_download_pause:
@@ -1147,7 +1178,7 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putLong("nodePointer", Node.getNthChild(cnodePointer, nthDownload));
                     intent.putExtras(bundle);
                     intent.setClass(MainActivity.this, NodeActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_ADD_DOWNLOAD);
                     break;
             }
             // end of switch (item.getItemId())
@@ -1265,6 +1296,7 @@ public class MainActivity extends AppCompatActivity {
     // permission
 
     private static final int REQUEST_WRITE_STORAGE = 112;
+    private static final int REQUEST_ADD_DOWNLOAD = 41;
     private static final int REQUEST_FILE_CHOOSER = 42;
     private static final int REQUEST_FILE_CREATOR = 43;
 
@@ -1358,6 +1390,8 @@ public class MainActivity extends AppCompatActivity {
             // --- select category that just loaded.
             app.categoryAdapter.setItemChecked(app.categoryAdapter.getItemCount()-1, true);
             app.categoryAdapter.notifyItemClicked(categoryListView);
+            // --- start timer handler ---
+            app.timerHandler.startQueuing();
         }
         else {
             // --- Snackbar ---
@@ -1446,6 +1480,11 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_FILE_CREATOR:
                 treeUri = resultData.getData(); // you can't use Uri.fromFile() to get path
                 onFileCreatorResult(treeUri);
+                break;
+
+            case REQUEST_ADD_DOWNLOAD:
+                // --- start timer handler ---
+                app.timerHandler.startQueuing();
                 break;
 
             default:
@@ -1558,7 +1597,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     // ------------------------------------------------------------------------
-    // Handler, Runnable, and Timeout Interval
+    // Handler, Runnable, and Timer Interval
 
     private Handler  handler = new Handler();
     private static final int speedInterval = 1000;

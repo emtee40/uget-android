@@ -281,7 +281,7 @@
 
     <string name="pref_other">Other</string>
     <string name="pref_autosave_interval">Autosave Interval</string>
-    <string name="pref_autosave_interval_summary">Save all data every N minutes.</string>
+    <string name="pref_autosave_interval_summary">Save all data every N minutes. If you want to disable autosave, set it to 0.</string>
 
     <string name="pref_about">About uGet</string>
     <string name="pref_about_version">Version Information</string>

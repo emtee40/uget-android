@@ -283,7 +283,7 @@
 
     <string name="pref_other">其他</string>
     <string name="pref_autosave_interval">自动保存时间间隔</string>
-    <string name="pref_autosave_interval_summary">每 N 分钟保存全部数据。</string>
+    <string name="pref_autosave_interval_summary">每隔几分钟保存全部数据。如果要禁用自动保存，请将其设置为 0。</string>
 
     <string name="pref_about">关于 uGet</string>
     <string name="pref_about_version">版本信息</string>

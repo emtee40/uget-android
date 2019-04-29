@@ -12,7 +12,7 @@
 
     <EditTextPreference
         android:key="pref_autosave_interval"
-        android:defaultValue="1"
+        android:defaultValue="3"
         android:numeric="integer"
         android:title="@string/pref_autosave_interval"
         android:summary="@string/pref_autosave_interval_summary"
