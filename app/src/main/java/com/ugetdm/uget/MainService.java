@@ -118,14 +118,14 @@ public class MainService extends Service {
     // ----------------------------------------------------
 
     private Notification createNotification(MainApp app) {
-        Notification.Builder builder = app.builderStandby;
+        Notification.Builder builder = app.builderService;
         Notification         notification;
         Intent notifyIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
         builder.setContentIntent(pendingIntent)
                .setWhen(System.currentTimeMillis());
 
-        String title = getString(R.string.notification_standby);
+        String title = getString(R.string.notification_service_running);
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             title = getString(R.string.app_name) + " · " + title;
         builder.setContentTitle(title);

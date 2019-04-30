@@ -42,6 +42,8 @@ public class Job {
     }
 
     public static void runOnThread(Runnable runnable) {
+        if (queuedTotal == 0)
+            mainApp.startMainService();
         queuedTotal++;
         queued[CUSTOM]++;
         result[CUSTOM] = 0;
@@ -57,12 +59,16 @@ public class Job {
                 runnable.run();
                 queued[CUSTOM]--;
                 queuedTotal--;
+                if (queuedTotal == 0)
+                    mainApp.stopMainService();
             }
         };
         handler.post(new ThreadRunnable(runnable));
     }
 
     public static void load(String filename) {
+        if (queuedTotal == 0)
+            mainApp.startMainService();
         queuedTotal++;
         queued[LOAD]++;
         result[LOAD] = 0;
@@ -79,12 +85,16 @@ public class Job {
                     result[LOAD] = -1;
                 queued[LOAD]--;
                 queuedTotal--;
+                if (queuedTotal == 0)
+                    mainApp.stopMainService();
             }
         };
         handler.post(new loadRunnable(filename));
     }
 
     public static void save(long node, String filename) {
+        if (queuedTotal == 0)
+            mainApp.startMainService();
         queuedTotal++;
         queued[SAVE]++;
         result[SAVE] = 0;
@@ -103,12 +113,16 @@ public class Job {
                     result[SAVE] = -1;
                 queued[SAVE]--;
                 queuedTotal--;
+                if (queuedTotal == 0)
+                    mainApp.stopMainService();
             }
         };
         handler.post(new saveRunnable(node, filename));
     }
 
     public static void loadFd(int fd) {
+        if (queuedTotal == 0)
+            mainApp.startMainService();
         queuedTotal++;
         queued[LOAD_FD]++;
         result[LOAD_FD] = 0;
@@ -125,12 +139,16 @@ public class Job {
                     result[LOAD_FD] = -1;
                 queued[LOAD_FD]--;
                 queuedTotal--;
+                if (queuedTotal == 0)
+                    mainApp.stopMainService();
             }
         };
         handler.post(new loadFdRunnable(fd));
     }
 
     public static void saveFd(long node, int fd) {
+        if (queuedTotal == 0)
+            mainApp.startMainService();
         queuedTotal++;
         queued[SAVE_FD]++;
         result[SAVE_FD] = 0;
@@ -149,12 +167,16 @@ public class Job {
                     result[SAVE_FD] = -1;
                 queued[SAVE_FD]--;
                 queuedTotal--;
+                if (queuedTotal == 0)
+                    mainApp.stopMainService();
             }
         };
         handler.post(new saveFdRunnable(node, fd));
     }
 
     public static void loadAll() {
+        if (queuedTotal == 0)
+            mainApp.startMainService();
         queuedTotal++;
         queued[LOAD_ALL]++;
         result[LOAD_ALL] = 0;
@@ -166,11 +188,15 @@ public class Job {
                 mainApp.loadCategoriesOnStart();
                 queued[LOAD_ALL]--;
                 queuedTotal--;
+                if (queuedTotal == 0)
+                    mainApp.stopMainService();
             }
         });
     }
 
     public static void saveAll() {
+        if (queuedTotal == 0)
+            mainApp.startMainService();
         queuedTotal++;
         queued[SAVE_ALL]++;
         result[SAVE_ALL] = 0;
@@ -181,6 +207,8 @@ public class Job {
                 mainApp.saveCategories();
                 queued[SAVE_ALL]--;
                 queuedTotal--;
+                if (queuedTotal == 0)
+                    mainApp.stopMainService();
             }
         });
     }

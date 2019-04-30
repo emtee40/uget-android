@@ -5,15 +5,14 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- MainApp.java -->
+    <string name="notification_service_running">服务运行中</string>
     <string name="notification_active_counts">啟動 : %d</string>
     <string name="notification_error_title">发生错误</string>
     <string name="notification_error_content">下载过程中出错。</string>
     <string name="notification_completed_title">下载完成</string>
     <string name="notification_completed_content">队列里所有下载都已完成。</string>
-    <!-- MainService.java -->
-    <string name="notification_standby">待机中</string>
     <!-- Notification channel name, user can setup in system settings (Android 8+) -->
-    <string name="notification_channel_standby">待机通知</string>
+    <string name="notification_channel_service">服务通知</string>
     <string name="notification_channel_normal">正常通知</string>
     <string name="notification_channel_completed">下载完成</string>
     <string name="notification_channel_error">发生错误</string>

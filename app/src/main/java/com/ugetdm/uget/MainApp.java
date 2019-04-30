@@ -118,14 +118,14 @@ public class MainApp extends Application {
                 else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                     // --- reduce power consumption ---
                     acquireWakeLock(false);
-                    stopMainService();
+                    // stopMainService();
                     timerHandler.stopClipboard();
                     timerHandler.stopAutosave();
                 }
                 else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
                     // --- reduce power consumption ---
                     releaseWakeLock();
-                    startMainService();
+                    // startMainService();
                     timerHandler.startClipboard();
                     timerHandler.startAutosave();
                 }
@@ -227,7 +227,7 @@ public class MainApp extends Application {
 
         // call registerBroadcastReceiver() in onCreateRunning()
         unregisterBroadcastReceiver();
-        stopMainService();
+        // stopMainService();
 
         // --- save all data & offline status ---
         if (Job.queued[Job.SAVE_ALL] == 0 && saveCategories)
@@ -313,7 +313,7 @@ public class MainApp extends Application {
 
                 // call unregisterBroadcastReceiver() and in destroy()
                 registerBroadcastReceiver();
-                startMainService();
+                // startMainService();
 
                 // --- update permission after device reboot
                 refreshUriPermission();
@@ -1351,12 +1351,12 @@ public class MainApp extends Application {
     NotificationManager  notificationManager = null;
     private final int    notificationId = 0;
     // --- Notification.Builder ---
-    Notification.Builder builderStandby = null;
+    Notification.Builder builderService = null;
     Notification.Builder builderNormal = null;
     Notification.Builder builderCompleted = null;
     Notification.Builder builderError = null;
     // --- ID of the NotificationChannel ---
-    final String          CHANNEL_STANDBY    = "-.Standby";
+    final String          CHANNEL_SERVICE    = "-.Service";
     final String          CHANNEL_NORMAL    = "0.Normal";
     final String          CHANNEL_COMPLETED = "1.Completed";
     final String          CHANNEL_ERROR     = "2.Error";
@@ -1371,8 +1371,8 @@ public class MainApp extends Application {
             NotificationChannel channelCompleted;
             NotificationChannel channelError;
 
-            channelStandby = new NotificationChannel(CHANNEL_STANDBY,
-                    getString(R.string.notification_channel_standby),
+            channelStandby = new NotificationChannel(CHANNEL_SERVICE,
+                    getString(R.string.notification_channel_service),
                     NotificationManager.IMPORTANCE_DEFAULT);
             channelNormal = new NotificationChannel(CHANNEL_NORMAL,
                     getString(R.string.notification_channel_normal),
@@ -1405,13 +1405,13 @@ public class MainApp extends Application {
                 logAppend("app.initNotification() : " + e.getMessage());
             }
 
-            builderStandby = new Notification.Builder(getApplicationContext(), CHANNEL_STANDBY);
+            builderService = new Notification.Builder(getApplicationContext(), CHANNEL_SERVICE);
             builderNormal = new Notification.Builder(getApplicationContext(), CHANNEL_NORMAL);
             builderCompleted = new Notification.Builder(getApplicationContext(), CHANNEL_COMPLETED);
             builderError = new Notification.Builder(getApplicationContext(), CHANNEL_ERROR);
         }
         else {
-            builderStandby = new Notification.Builder(getApplicationContext());
+            builderService = new Notification.Builder(getApplicationContext());
             builderNormal = new Notification.Builder(getApplicationContext());
             builderCompleted = builderNormal;
             builderError = builderNormal;
