@@ -218,9 +218,11 @@ Java_com_ugetdm_uget_lib_Core_grow (JNIEnv* env, jobject thiz, jboolean no_queui
 
 	// reset counter
 	app->n_moved = 0;
-//	app->n_error = 0;
 	app->n_deleted = 0;
 	app->n_completed = 0;
+//	app->n_error = 0;
+	app->n_error = (*env)->GetIntField(env, thiz,
+			(*env)->GetFieldID (env, jCore_class, "nError", "I"));
 	// grow
 	nActive = uget_app_grow (app, no_queuing);
 
@@ -230,19 +232,18 @@ Java_com_ugetdm_uget_lib_Core_grow (JNIEnv* env, jobject thiz, jboolean no_queui
 	(*env)->SetIntField(env, thiz,
 			(*env)->GetFieldID (env, jCore_class, "uploadSpeed", "I"),
 			app->task.speed.upload);
-
 	(*env)->SetIntField(env, thiz,
 			(*env)->GetFieldID (env, jCore_class, "nMoved", "I"),
 			app->n_moved);
-	(*env)->SetIntField(env, thiz,
-			(*env)->GetFieldID (env, jCore_class, "nError", "I"),
-			app->n_error);
 	(*env)->SetIntField(env, thiz,
 			(*env)->GetFieldID (env, jCore_class, "nDeleted", "I"),
 			app->n_deleted);
 	(*env)->SetIntField(env, thiz,
 			(*env)->GetFieldID (env, jCore_class, "nCompleted", "I"),
 			app->n_completed);
+	(*env)->SetIntField(env, thiz,
+			(*env)->GetFieldID (env, jCore_class, "nError", "I"),
+			app->n_error);
 	(*env)->DeleteLocalRef (env, jCore_class);
 
 	return nActive;
