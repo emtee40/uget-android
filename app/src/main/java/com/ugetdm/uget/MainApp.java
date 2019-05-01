@@ -166,7 +166,11 @@ public class MainApp extends Application {
         if (MainService.count == 0) {
             Intent intent = new Intent(MainApp.this, MainService.class);
             intent.setAction(MainService.ACTION_START_FOREGROUND);
-            startService(intent);
+            // --- VERSION_CODES.O --- API 26
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                startForegroundService(intent);
+            else
+                startService(intent);
         }
         MainService.count++;
 
