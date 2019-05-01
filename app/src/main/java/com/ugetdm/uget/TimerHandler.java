@@ -65,6 +65,7 @@ public class TimerHandler {
         startClipboard();
         startAutosave();
         autosaveLastTime = System.currentTimeMillis();
+        autosaveQueuingCounts = 1;   // added by startQueuing()
         // handler.postDelayed(rpcRunnable, rpcInterval);
     }
 
@@ -116,6 +117,20 @@ public class TimerHandler {
             autosaveRunning = false;
             handler.removeCallbacks(autosaveRunnable);
         }
+    }
+
+    public void setAutosave(boolean saved) {
+        if (saved) {
+            autosaveQueuingCounts = queuingCounts;
+            autosaveLastTime = System.currentTimeMillis();
+        }
+        else {
+            autosaveQueuingCounts = 0;
+        }
+    }
+
+    public boolean isAutosave() {
+        return (autosaveQueuingCounts == queuingCounts);
     }
 
     // ----------------------------------------------------
@@ -362,11 +377,10 @@ public class TimerHandler {
             // if (app.setting.autosaveInterval == 0)
             //     return;
 
-            long curTime = System.currentTimeMillis();
-            if (curTime - autosaveLastTime > app.setting.autosaveInterval * 1000 * 60) {
-                if (autosaveQueuingCounts == queuingCounts)
+            if (autosaveQueuingCounts != queuingCounts) {
+                long curTime = System.currentTimeMillis();
+                if (curTime - autosaveLastTime > app.setting.autosaveInterval * 1000 * 60) {
                     autosaveLastTime = curTime;
-                else {
                     autosaveQueuingCounts = queuingCounts;
                     app.logAppend("TimerHandler.autosaveRunnable");
                     if (Job.queued[Job.SAVE_ALL] == 0)
@@ -455,6 +469,8 @@ public class TimerHandler {
                 app.stateAdapter.notifyDataSetChanged();
                 app.categoryAdapter.notifyDataSetChanged();
                 app.downloadAdapter.notifyDataSetChanged();
+                // --- start timer handler ---
+                startQueuing();
 
                 break toExit;
             }
