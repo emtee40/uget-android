@@ -9,6 +9,8 @@ package com.ugetdm.uget;
 import com.ugetdm.uget.lib.*;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -40,7 +42,8 @@ public class MainService extends Service {
 
         // MainApp = (MainApp) getApplicationContext();    // throw RuntimeException
         MainApp app = (MainApp) getApplication();
-        app.logAppend("MainService.onDestroy()");
+        if (app != null)
+            app.logAppend("MainService.onDestroy()");
 
         // --- stop foreground service
         if (isForeground)
@@ -51,11 +54,16 @@ public class MainService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // MainApp = (MainApp) getApplicationContext();    // throw RuntimeException
         MainApp app = (MainApp) getApplication();
-        app.logAppend("MainService.onStartCommand()");
+        if (app != null)
+            app.logAppend("MainService.onStartCommand()");
+
+        // --- The Intent supplied to onStartCommand may be null if the service is being restarted after its process has gone away
+        if (intent == null)
+            return Service.START_NOT_STICKY;
 
         // --- start foreground service
         if (intent.getAction().equals(ACTION_START_FOREGROUND)) {
-            Notification notification = createNotification(app);
+            Notification notification = createNotification();
             startForeground(14777, notification);
             isForeground = true;
         }
@@ -77,12 +85,8 @@ public class MainService extends Service {
         MainApp app = (MainApp) getApplication();
 
         // Error prevention mechanism
-        if (app != null) {
-            // app.logAppend("MainService.onTaskRemoved()");
-            // if (Job.queued[Job.SAVE_ALL] == 0)
-            //     Job.saveAll();
+        if (app != null)
             app.destroy(false);
-        }
         else {
             // if you return START_NOT_STICKY in startCommand(), below code is unnecessary.
             stopSelf();
@@ -116,10 +120,36 @@ public class MainService extends Service {
     }
 
     // ----------------------------------------------------
+    // Notification
 
-    private Notification createNotification(MainApp app) {
-        Notification.Builder builder = app.builderService;
-        Notification         notification;
+    static Notification.Builder builder;
+    private final String        CHANNEL_SERVICE    = "-.Service";
+
+    private void initNotificationBuilder() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager;
+            NotificationChannel channelService;
+
+            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            channelService = new NotificationChannel(CHANNEL_SERVICE,
+                    getString(R.string.notification_channel_service),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channelService.enableVibration(false);
+            channelService.setSound(null, null);
+            try {
+                notificationManager.createNotificationChannel(channelService);
+            } catch(Exception e) { }
+
+            builder = new Notification.Builder(getApplicationContext(), CHANNEL_SERVICE);
+        }
+        else
+            builder = new Notification.Builder(getApplicationContext());
+    }
+
+    private Notification createNotification() {
+        if (builder == null)
+            initNotificationBuilder();
+
         Intent notifyIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
         builder.setContentIntent(pendingIntent)
@@ -136,11 +166,10 @@ public class MainService extends Service {
             builder.setSmallIcon(R.mipmap.ic_notification)
                     .setColor(getResources().getColor(R.color.colorPrimary));
         }
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            notification = builder.getNotification();
-        else
-            notification = builder.build();
 
-        return notification;
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+            return builder.getNotification();
+        else
+            return builder.build();
     }
 }

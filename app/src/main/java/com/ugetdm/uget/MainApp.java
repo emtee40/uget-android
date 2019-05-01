@@ -219,7 +219,7 @@ public class MainApp extends Application {
         Ccj.init(this);
     }
 
-    public void destroy(boolean saveCategories) {
+    public void destroy(boolean saveData) {
         logAppend("App.destroy()");
         //    Log.v("uGet", "App.destroy()");
 
@@ -234,10 +234,12 @@ public class MainApp extends Application {
         // stopMainService();
 
         // --- save all data & offline status ---
-        if (Job.queued[Job.SAVE_ALL] == 0 && saveCategories)
-            Job.saveAll();
-        saveFolderHistory();
-        saveStatus();
+        if (saveData) {
+            if (Job.queued[Job.SAVE_ALL] == 0)
+                Job.saveAll();
+            saveFolderHistory();
+            saveStatus();
+        }
 
         // --- clear data in system
         logAppend("App.clearClipboard()");
@@ -1355,12 +1357,10 @@ public class MainApp extends Application {
     NotificationManager  notificationManager = null;
     private final int    notificationId = 0;
     // --- Notification.Builder ---
-    Notification.Builder builderService = null;
     Notification.Builder builderNormal = null;
     Notification.Builder builderCompleted = null;
     Notification.Builder builderError = null;
     // --- ID of the NotificationChannel ---
-    final String          CHANNEL_SERVICE    = "-.Service";
     final String          CHANNEL_NORMAL    = "0.Normal";
     final String          CHANNEL_COMPLETED = "1.Completed";
     final String          CHANNEL_ERROR     = "2.Error";
@@ -1370,14 +1370,10 @@ public class MainApp extends Application {
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channelStandby;
             NotificationChannel channelNormal;
             NotificationChannel channelCompleted;
             NotificationChannel channelError;
 
-            channelStandby = new NotificationChannel(CHANNEL_SERVICE,
-                    getString(R.string.notification_channel_service),
-                    NotificationManager.IMPORTANCE_DEFAULT);
             channelNormal = new NotificationChannel(CHANNEL_NORMAL,
                     getString(R.string.notification_channel_normal),
                     NotificationManager.IMPORTANCE_DEFAULT);
@@ -1388,8 +1384,6 @@ public class MainApp extends Application {
                     getString(R.string.notification_channel_error),
                     NotificationManager.IMPORTANCE_DEFAULT);
 
-            channelStandby.enableVibration(false);
-            channelStandby.setSound(null, null);
             channelNormal.enableVibration(false);
             channelNormal.setSound(null, null);
             channelCompleted.enableVibration(setting.ui.vibrateNotification);
@@ -1401,7 +1395,6 @@ public class MainApp extends Application {
                 channelError.setSound(null, null);
 
             try {
-                notificationManager.createNotificationChannel(channelStandby);
                 notificationManager.createNotificationChannel(channelNormal);
                 notificationManager.createNotificationChannel(channelCompleted);
                 notificationManager.createNotificationChannel(channelError);
@@ -1409,13 +1402,11 @@ public class MainApp extends Application {
                 logAppend("app.initNotification() : " + e.getMessage());
             }
 
-            builderService = new Notification.Builder(getApplicationContext(), CHANNEL_SERVICE);
             builderNormal = new Notification.Builder(getApplicationContext(), CHANNEL_NORMAL);
             builderCompleted = new Notification.Builder(getApplicationContext(), CHANNEL_COMPLETED);
             builderError = new Notification.Builder(getApplicationContext(), CHANNEL_ERROR);
         }
         else {
-            builderService = new Notification.Builder(getApplicationContext());
             builderNormal = new Notification.Builder(getApplicationContext());
             builderCompleted = builderNormal;
             builderError = builderNormal;
