@@ -181,7 +181,10 @@ public class MainApp extends Application {
     public void stopMainService () {
         if (MainService.count == 1) {
             Intent intent = new Intent(MainApp.this, MainService.class);
-            stopService(intent);
+            intent.setAction(MainService.ACTION_STOP_FOREGROUND);
+            startService(intent);
+            // --- call stopService() will cause error when service doesn't ready.
+            // stopService(intent);
         }
         if (MainService.count > 0)
             MainService.count--;

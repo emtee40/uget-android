@@ -25,47 +25,41 @@ public class MainService extends Service {
     // onCreate() -> onStartCommand() -> onDestroy()
 
     public static final String ACTION_START_FOREGROUND = "ACTION_START_FOREGROUND";
+    public static final String ACTION_STOP_FOREGROUND  = "ACTION_STOP_FOREGROUND";
 
-    public static boolean   isForeground;
-    public static int       count;
+    // --- startup counts that used by MainApp.startMainService() and MainApp.stopMainService() ---
+    public static int   count;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        isForeground = false;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        // MainApp = (MainApp) getApplicationContext();    // throw RuntimeException
-        MainApp app = (MainApp) getApplication();
-        if (app != null)
-            app.logAppend("MainService.onDestroy()");
-
-        // --- stop foreground service
-        if (isForeground)
-            stopForeground(true);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // MainApp = (MainApp) getApplicationContext();    // throw RuntimeException
         MainApp app = (MainApp) getApplication();
-        if (app != null)
-            app.logAppend("MainService.onStartCommand()");
 
         // --- The Intent supplied to onStartCommand may be null if the service is being restarted after its process has gone away
         if (intent == null)
             return Service.START_NOT_STICKY;
 
-        // --- start foreground service
         if (intent.getAction().equals(ACTION_START_FOREGROUND)) {
+            app.logAppend("MainService - START");
+            // --- start foreground service
             Notification notification = createNotification();
             startForeground(14777, notification);
-            isForeground = true;
+        }
+        else if (intent.getAction().equals(ACTION_STOP_FOREGROUND)) {
+            app.logAppend("MainService - STOP");
+            // --- stop foreground service
+            stopForeground(true);
+            stopSelf();
         }
 
         // return super.onStartCommand(intent, flags, startId);
