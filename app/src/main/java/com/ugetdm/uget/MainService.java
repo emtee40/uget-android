@@ -123,24 +123,24 @@ public class MainService extends Service {
     // Notification
 
     static Notification.Builder builder;
-    private final String        CHANNEL_SERVICE    = "-.Service";
+    private final String        CHANNEL_ID_SERVICE    = "-.Service";
 
     private void initNotificationBuilder() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager;
-            NotificationChannel channelService;
+            NotificationChannel notificationChannel;
 
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            channelService = new NotificationChannel(CHANNEL_SERVICE,
-                    getString(R.string.notification_channel_service),
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channelService.enableVibration(false);
-            channelService.setSound(null, null);
-            try {
-                notificationManager.createNotificationChannel(channelService);
-            } catch(Exception e) { }
-
-            builder = new Notification.Builder(getApplicationContext(), CHANNEL_SERVICE);
+            notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID_SERVICE);
+            if (notificationChannel == null) {
+                notificationChannel = new NotificationChannel(CHANNEL_ID_SERVICE,
+                        getString(R.string.notification_channel_service),
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationChannel.enableVibration(false);
+                notificationChannel.setSound(null, null);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+            builder = new Notification.Builder(getApplicationContext(), CHANNEL_ID_SERVICE);
         }
         else
             builder = new Notification.Builder(getApplicationContext());
@@ -164,7 +164,7 @@ public class MainService extends Service {
             builder.setSmallIcon(R.mipmap.ic_launcher);
         else {
             builder.setSmallIcon(R.mipmap.ic_notification)
-                    .setColor(getResources().getColor(R.color.colorPrimary));
+                   .setColor(getResources().getColor(R.color.colorPrimary));
         }
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)

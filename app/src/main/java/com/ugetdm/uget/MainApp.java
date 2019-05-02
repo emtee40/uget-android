@@ -1361,50 +1361,58 @@ public class MainApp extends Application {
     Notification.Builder builderCompleted = null;
     Notification.Builder builderError = null;
     // --- ID of the NotificationChannel ---
-    final String          CHANNEL_NORMAL    = "0.Normal";
-    final String          CHANNEL_COMPLETED = "1.Completed";
-    final String          CHANNEL_ERROR     = "2.Error";
+    final String          CHANNEL_ID_NORMAL    = "0.Normal";
+    final String          CHANNEL_ID_COMPLETED = "1.Completed";
+    final String          CHANNEL_ID_ERROR     = "2.Error";
 
     public void initNotification() {
         if (notificationManager == null)
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channelNormal;
-            NotificationChannel channelCompleted;
-            NotificationChannel channelError;
+            NotificationChannel notificationChannel;
 
-            channelNormal = new NotificationChannel(CHANNEL_NORMAL,
-                    getString(R.string.notification_channel_normal),
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channelCompleted = new NotificationChannel(CHANNEL_COMPLETED,
-                    getString(R.string.notification_channel_completed),
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channelError = new NotificationChannel(CHANNEL_ERROR,
-                    getString(R.string.notification_channel_error),
-                    NotificationManager.IMPORTANCE_DEFAULT);
-
-            channelNormal.enableVibration(false);
-            channelNormal.setSound(null, null);
-            channelCompleted.enableVibration(setting.ui.vibrateNotification);
-            if (setting.ui.soundNotification == false)
-                channelCompleted.setSound(null, null);
-            //channelComplete.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, new AudioAttributes.Builder().build());
-            channelError.enableVibration(setting.ui.vibrateNotification);
-            if (setting.ui.soundNotification == false)
-                channelError.setSound(null, null);
-
-            try {
-                notificationManager.createNotificationChannel(channelNormal);
-                notificationManager.createNotificationChannel(channelCompleted);
-                notificationManager.createNotificationChannel(channelError);
-            } catch(Exception e) {
-                logAppend("app.initNotification() : " + e.getMessage());
+            // --- create NotificationChannel --- normal
+            notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID_NORMAL);
+            if (notificationChannel == null) {
+                notificationChannel = new NotificationChannel(CHANNEL_ID_NORMAL,
+                        getString(R.string.notification_channel_normal),
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(notificationChannel);
             }
+            notificationChannel.enableVibration(false);
+            notificationChannel.setSound(null, null);
 
-            builderNormal = new Notification.Builder(getApplicationContext(), CHANNEL_NORMAL);
-            builderCompleted = new Notification.Builder(getApplicationContext(), CHANNEL_COMPLETED);
-            builderError = new Notification.Builder(getApplicationContext(), CHANNEL_ERROR);
+            // --- create NotificationChannel --- completed
+            notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID_COMPLETED);
+            if (notificationChannel == null) {
+                notificationChannel = new NotificationChannel(CHANNEL_ID_COMPLETED,
+                        getString(R.string.notification_channel_completed),
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+            notificationChannel.enableVibration(setting.ui.vibrateNotification);
+            if (setting.ui.soundNotification == false)
+                notificationChannel.setSound(null, null);
+            // notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI,
+            //         new AudioAttributes.Builder().build());
+
+            // --- create NotificationChannel --- error
+            notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID_ERROR);
+            if (notificationChannel == null) {
+                notificationChannel = new NotificationChannel(CHANNEL_ID_ERROR,
+                        getString(R.string.notification_channel_error),
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+            notificationChannel.enableVibration(setting.ui.vibrateNotification);
+            if (setting.ui.soundNotification == false)
+                notificationChannel.setSound(null, null);
+
+            // --- create Notification.Builder ---
+            builderNormal = new Notification.Builder(getApplicationContext(), CHANNEL_ID_NORMAL);
+            builderCompleted = new Notification.Builder(getApplicationContext(), CHANNEL_ID_COMPLETED);
+            builderError = new Notification.Builder(getApplicationContext(), CHANNEL_ID_ERROR);
         }
         else {
             builderNormal = new Notification.Builder(getApplicationContext());
