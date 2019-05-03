@@ -106,6 +106,9 @@ public class MainApp extends Application {
     BroadcastReceiver  broadcastReceiver;
 
     void registerBroadcastReceiver() {
+        if (broadcastReceiver != null)
+            return;
+
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SHUTDOWN);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
@@ -135,7 +138,10 @@ public class MainApp extends Application {
     }
 
     void unregisterBroadcastReceiver() {
+        if (broadcastReceiver == null)
+            return;
         unregisterReceiver(broadcastReceiver);
+        broadcastReceiver = null;
     }
 
     // ------------------------------------------------------------------------
@@ -236,6 +242,11 @@ public class MainApp extends Application {
         unregisterBroadcastReceiver();
         // stopMainService();
 
+        // --- clear data in system
+        cancelNotification();
+        logAppend("App.clearClipboard()");
+        clearClipboard();
+
         // --- save all data & offline status ---
         if (saveData) {
             if (Job.queued[Job.SAVE_ALL] == 0)
@@ -243,11 +254,6 @@ public class MainApp extends Application {
             saveFolderHistory();
             saveStatus();
         }
-
-        // --- clear data in system
-        logAppend("App.clearClipboard()");
-        clearClipboard();
-        cancelNotification();
 
         // JNI finalize functions
         logAppend("core.removeAllTask()");
@@ -344,7 +350,7 @@ public class MainApp extends Application {
             createDefaultCategory();
         }
 
-        // loading category proterties from uGet for Android 1.x
+        // loading category proterties from uGet 1.x for Android
         if (preferences.getInt("pref_about_version", 0) == 0) {
             preferences.edit().putInt("pref_about_version", 1).apply();
             long cnode;
