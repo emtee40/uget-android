@@ -195,7 +195,7 @@ public class Job {
     }
 
     public static void saveAll() {
-        if (mainApp.timerHandler.isAutosave())
+        if (mainApp.timerHandler.isAutosaved())
             return;
 
         if (queuedTotal == 0)
@@ -213,7 +213,7 @@ public class Job {
                 if (queuedTotal == 0)
                     mainApp.stopMainService();
 
-                mainApp.timerHandler.setAutosave(true);
+                mainApp.timerHandler.setAutosaved(true);
             }
         });
     }

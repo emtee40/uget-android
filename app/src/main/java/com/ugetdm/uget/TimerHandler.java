@@ -119,17 +119,16 @@ public class TimerHandler {
         }
     }
 
-    public void setAutosave(boolean saved) {
+    public void setAutosaved(boolean saved) {
         if (saved) {
             autosaveQueuingCounts = queuingCounts;
             autosaveLastTime = System.currentTimeMillis();
         }
-        else {
+        else
             autosaveQueuingCounts = 0;
-        }
     }
 
-    public boolean isAutosave() {
+    public boolean isAutosaved() {
         return (autosaveQueuingCounts == queuingCounts);
     }
 

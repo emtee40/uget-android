@@ -1116,10 +1116,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.menu_download_delete_recycle:
                     app.downloadAdapter.notifyItemChanged(nthDownload);
                     nthDownloadAfter = app.recycleNthDownload(nthDownload);
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                     break;
 
                 case R.id.menu_download_delete_data:
                     app.deleteNthDownload(nthDownload, false);
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                     return true;
 
                 case R.id.menu_download_delete_file:
@@ -1127,6 +1131,8 @@ public class MainActivity extends AppCompatActivity {
                         confirmDeleteDownloadFile();
                     else
                         deleteSelectedDownloadFile();
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                     return true;
 
                 case R.id.menu_download_force_start:
@@ -1146,28 +1152,40 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.menu_download_pause:
                     app.downloadAdapter.notifyItemChanged(nthDownload);
                     nthDownloadAfter = app.pauseNthDownload(nthDownload);
+                    // --- start timer handler ---
+                    app.timerHandler.startQueuing();
                     break;
 
                 case R.id.menu_download_move_up:
                     app.downloadAdapter.notifyItemChanged(nthDownload);
                     nthDownloadAfter = app.moveNthDownload(nthDownload, nthDownload -1);
+                    // --- Autosave ---
+                    app.timerHandler.setAutosaved(false);
                     break;
 
                 case R.id.menu_download_move_down:
                     app.downloadAdapter.notifyItemChanged(nthDownload);
                     nthDownloadAfter = app.moveNthDownload(nthDownload, nthDownload +1);
+                    // --- Autosave ---
+                    app.timerHandler.setAutosaved(false);
                     break;
 
                 case R.id.menu_download_priority_high:
                     app.setNthDownloadPriority(nthDownload, Core.Priority.high);
+                    // --- Autosave ---
+                    app.timerHandler.setAutosaved(false);
                     break;
 
                 case R.id.menu_download_priority_normal:
                     app.setNthDownloadPriority(nthDownload, Core.Priority.normal);
+                    // --- Autosave ---
+                    app.timerHandler.setAutosaved(false);
                     break;
 
                 case R.id.menu_download_priority_low:
                     app.setNthDownloadPriority(nthDownload, Core.Priority.low);
+                    // --- Autosave ---
+                    app.timerHandler.setAutosaved(false);
                     break;
 
                 case R.id.menu_download_properties:
@@ -1179,6 +1197,8 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtras(bundle);
                     intent.setClass(MainActivity.this, NodeActivity.class);
                     startActivityForResult(intent, REQUEST_ADD_DOWNLOAD);
+                    // --- Autosave ---
+                    app.timerHandler.setAutosaved(false);
                     break;
             }
             // end of switch (item.getItemId())
