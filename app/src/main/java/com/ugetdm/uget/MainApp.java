@@ -1364,7 +1364,7 @@ public class MainApp extends Application {
     // ------------------------------------------------------------------------
     // Notification
     NotificationManager  notificationManager = null;
-    private final int    notificationId = 0;
+    private final int    NOTIFICATION_ID = 1;
     // --- Notification.Builder ---
     Notification.Builder builderNormal = null;
     Notification.Builder builderCompleted = null;
@@ -1431,7 +1431,7 @@ public class MainApp extends Application {
     }
 
     public void cancelNotification() {
-        notificationManager.cancel(notificationId);
+        notificationManager.cancel(NOTIFICATION_ID);
         //notificationManager.cancelAll();
     }
 
@@ -1467,7 +1467,7 @@ public class MainApp extends Application {
         else
             notification = builder.build();
 
-        notificationManager.notify(notificationId, notification);
+        notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
     public void notifyActiveSpeed(int nActive, boolean firstTime) {
