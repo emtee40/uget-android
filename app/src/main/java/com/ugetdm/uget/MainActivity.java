@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
                 intent.putExtras(bundle);
                 intent.setClass(MainActivity.this, NodeActivity.class);
-                startActivityForResult(intent, REQUEST_ADD_DOWNLOAD);
+                startActivityForResult(intent, REQUEST_CREATE_NODE);
             }
         });
 
@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
                 intent.putExtras(bundle);
                 intent.setClass(MainActivity.this, NodeActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_MODIFY_NODE);
                 break;
 
             case R.id.action_category_import:
@@ -432,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
                 intent.putExtras(bundle);
                 intent.setClass(MainActivity.this, NodeActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_MODIFY_NODE);
                 break;
 
             case R.id.action_category_export:
@@ -496,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
                 intent.putExtras(bundle);
                 intent.setClass(MainActivity.this, NodeActivity.class);
-                startActivityForResult(intent, REQUEST_ADD_DOWNLOAD);
+                startActivityForResult(intent, REQUEST_CREATE_NODE);
                 break;
 
             case R.id.action_resume_all:
@@ -841,6 +841,8 @@ public class MainActivity extends AppCompatActivity {
                 app.categoryAdapter.setItemChecked(app.nthCategory, true);
                 // --- category button up/down ---
                 decideCategoryButtonEnable();
+                // --- Autosave ---
+                app.timerHandler.setAutosaved(false);
             }
         });
         imageView = findViewById(R.id.category_move_down);
@@ -852,6 +854,8 @@ public class MainActivity extends AppCompatActivity {
                 app.categoryAdapter.setItemChecked(app.nthCategory, true);
                 // --- category button up/down ---
                 decideCategoryButtonEnable();
+                // --- Autosave ---
+                app.timerHandler.setAutosaved(false);
             }
         });
 
@@ -1196,9 +1200,7 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putLong("nodePointer", Node.getNthChild(cnodePointer, nthDownload));
                     intent.putExtras(bundle);
                     intent.setClass(MainActivity.this, NodeActivity.class);
-                    startActivityForResult(intent, REQUEST_ADD_DOWNLOAD);
-                    // --- Autosave ---
-                    app.timerHandler.setAutosaved(false);
+                    startActivityForResult(intent, REQUEST_MODIFY_NODE);
                     break;
             }
             // end of switch (item.getItemId())
@@ -1318,9 +1320,10 @@ public class MainActivity extends AppCompatActivity {
     // permission
 
     private static final int REQUEST_WRITE_STORAGE = 112;
-    private static final int REQUEST_ADD_DOWNLOAD = 41;
-    private static final int REQUEST_FILE_CHOOSER = 42;
-    private static final int REQUEST_FILE_CREATOR = 43;
+    private static final int REQUEST_CREATE_NODE = 42;
+    private static final int REQUEST_MODIFY_NODE = 43;
+    private static final int REQUEST_FILE_CHOOSER = 44;
+    private static final int REQUEST_FILE_CREATOR = 45;
 
     protected void checkPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -1504,9 +1507,14 @@ public class MainActivity extends AppCompatActivity {
                 onFileCreatorResult(treeUri);
                 break;
 
-            case REQUEST_ADD_DOWNLOAD:
+            case REQUEST_CREATE_NODE:
                 // --- start timer handler ---
                 app.timerHandler.startQueuing();
+                break;
+
+            case REQUEST_MODIFY_NODE:
+                // --- Autosave ---
+                app.timerHandler.setAutosaved(false);
                 break;
 
             default:
