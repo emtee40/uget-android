@@ -1282,6 +1282,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void exit() {
         // finish()
+        app.saveFolderHistory();
+        app.saveStatus();
         if (Job.queued[Job.SAVE_ALL] == 0)
             Job.saveAll();
         progressJob.waitForReady(R.string.message_saving, new Runnable() {
