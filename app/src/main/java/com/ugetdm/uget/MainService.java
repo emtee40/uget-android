@@ -29,6 +29,7 @@ public class MainService extends Service {
 
     // --- startup counts that used by MainApp.startMainService() and MainApp.stopMainService() ---
     public static int   count;
+    public static MainApp app;
 
     @Override
     public void onCreate() {
@@ -42,8 +43,10 @@ public class MainService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // MainApp = (MainApp) getApplicationContext();    // throw RuntimeException
-        MainApp app = (MainApp) getApplication();
+        if (app == null) {
+            // MainApp = (MainApp) getApplicationContext();    // throw RuntimeException
+            app = (MainApp) getApplication();
+        }
 
         // --- The Intent supplied to onStartCommand may be null if the service is being restarted after its process has gone away
         if (intent == null)
@@ -75,12 +78,11 @@ public class MainService extends Service {
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
 
-        // MainApp = (MainApp) getApplicationContext();    // throw RuntimeException
-        MainApp app = (MainApp) getApplication();
-
         // Error prevention mechanism
-        if (app != null)
+        if (app != null) {
+            app.logAppend("MainService.onTaskRemoved()");
             app.destroy(false);
+        }
         else {
             // if you return START_NOT_STICKY in startCommand(), below code is unnecessary.
             stopSelf();
