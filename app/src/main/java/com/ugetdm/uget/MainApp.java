@@ -266,19 +266,20 @@ public class MainApp extends Application {
         core.cFinal(setting.plugin.aria2.shutdown && setting.plugin.aria2.local);
         // Ccj.cFinal();    // Don't run this line
 
-        Job.runOnThread(new Runnable() {
+        Runnable exitRunnable = new Runnable() {
             @Override
             public void run() {
-                // --- sleep 100 milliseconds
-                // try { Thread.sleep(100); } catch(Exception e) {}
-
                 // --- exit uGet
                 // android.os.Process.killProcess(android.os.Process.myPid());
                 System.exit(0);
             }
-        });
+        };
 
-        logAppend("App.destroy() return");
+        logAppend("App.destroy() before exit.");
+        if (Job.queuedTotal == 0)
+            exitRunnable.run();
+        else
+            Job.runOnThread(exitRunnable);
     }
 
     // this function is called by MainActivity.onCreate()
