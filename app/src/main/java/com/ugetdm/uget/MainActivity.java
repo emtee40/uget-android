@@ -134,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         app.mainActivity = null;
-        // --- notification ---
-        app.cancelNotification();
         // --- dialog ---
         if (downloadPopupMenu != null)
             downloadPopupMenu.dismiss();
