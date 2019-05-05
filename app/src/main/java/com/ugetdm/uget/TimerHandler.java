@@ -44,7 +44,7 @@ public class TimerHandler {
 
     // used by queuingRunning
     private int      nActiveLast    = 0;
-    private int      queuingCounts  = 0;
+    private int      queuingCounts  = 0;   // run first time on app startup
 
     // ----------------------------------------------------
 
@@ -65,7 +65,7 @@ public class TimerHandler {
         startClipboard();
         startAutosave();
         autosaveLastTime = System.currentTimeMillis();
-        autosaveQueuingCounts = 1;   // added by startQueuing()
+        autosaveQueuingCounts = 1;   // run first time on app startup
         // handler.postDelayed(rpcRunnable, rpcInterval);
     }
 
@@ -172,10 +172,12 @@ public class TimerHandler {
             long deletedNodes[];
             boolean queuingContinuing = true;
 
-            queuingCounts++;
             // stop queuing while loading or saving data
-            if (Job.queuedTotal > 0)
+            if (Job.queuedTotal > 0) {
                 handler.postDelayed(this, queuingInterval);
+                return;
+            }
+            queuingCounts++;
 
             // --- reserve selected node --- restore them after app.core.trim()
             if (app.downloadAdapter.getCheckedItemCount() > 0)
@@ -216,6 +218,8 @@ public class TimerHandler {
                     app.releaseWakeLock();
                     app.stopMainService();
                 }
+                // --- Autosave ---
+                setAutosaved(false);
                 // --- reset  "app.core.nError"
                 app.core.nError = 0;
             }
@@ -379,6 +383,8 @@ public class TimerHandler {
             if (autosaveQueuingCounts != queuingCounts) {
                 long curTime = System.currentTimeMillis();
                 if (curTime - autosaveLastTime > app.setting.autosaveInterval * 1000 * 60) {
+                    // --- reset queuingCounts --- Don't reset it to 0
+                    queuingCounts = ((queuingCounts & 1) == 1) ? 1 : 2;
                     autosaveLastTime = curTime;
                     autosaveQueuingCounts = queuingCounts;
                     app.logAppend("TimerHandler.autosaveRunnable");
