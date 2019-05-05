@@ -626,8 +626,8 @@ public class MainActivity extends AppCompatActivity {
                     app.userAction = true;
                     // --- selection mode ---
                     decideSelectionMode();
-                    // --- start timer handler ---
-                    app.timerHandler.startQueuing();
+                    // --- Autosave ---
+                    app.timerHandler.setAutosaved(false);
                 }
                 break;
 
@@ -635,9 +635,7 @@ public class MainActivity extends AppCompatActivity {
                 if (app.setting.ui.confirmDelete)
                     confirmDeleteDownloadFile();
                 else
-                    deleteSelectedDownloadFile();
-                // --- start timer handler ---
-                app.timerHandler.startQueuing();
+                    deleteSelectedDownloadFile();    // call setAutosaved(false)
                 break;
 
             default:
@@ -1124,17 +1122,15 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.menu_download_delete_data:
                     app.deleteNthDownload(nthDownload, false);
-                    // --- start timer handler ---
-                    app.timerHandler.startQueuing();
+                    // --- Autosave ---
+                    app.timerHandler.setAutosaved(false);
                     return true;
 
                 case R.id.menu_download_delete_file:
                     if (app.setting.ui.confirmDelete)
                         confirmDeleteDownloadFile();
                     else
-                        deleteSelectedDownloadFile();
-                    // --- start timer handler ---
-                    app.timerHandler.startQueuing();
+                        deleteSelectedDownloadFile();    // call setAutosaved(false)
                     return true;
 
                 case R.id.menu_download_force_start:
@@ -1234,6 +1230,8 @@ public class MainActivity extends AppCompatActivity {
         decideSelectionMode();
         // --- show message if no download item ---
         decideContent();
+        // --- Autosave ---
+        app.timerHandler.setAutosaved(false);
     }
 
     public void confirmDeleteDownloadFile() {
@@ -1268,6 +1266,8 @@ public class MainActivity extends AppCompatActivity {
                 app.stateAdapter.setItemChecked(app.nthStatus, true);
                 app.categoryAdapter.notifyItemClicked(categoryListView);
                 app.stateAdapter.notifyItemClicked(stateListView);
+                // --- Autosave ---
+                app.timerHandler.setAutosaved(false);
                 dialog.dismiss();
             }
         });
