@@ -24,6 +24,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.content.ClipboardManager;
+import android.provider.Settings;
 import android.util.*;
 
 import com.ugetdm.uget.lib.*;
@@ -1388,10 +1389,11 @@ public class MainApp extends Application {
                 notificationChannel = new NotificationChannel(CHANNEL_ID_NORMAL,
                         getString(R.string.notification_channel_normal),
                         NotificationManager.IMPORTANCE_DEFAULT);
+                // notificationChannel.enableLights(true);
+                notificationChannel.enableVibration(false);
+                notificationChannel.setSound(null, null);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
-            notificationChannel.enableVibration(false);
-            notificationChannel.setSound(null, null);
 
             // --- create NotificationChannel --- completed
             notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID_COMPLETED);
@@ -1399,13 +1401,16 @@ public class MainApp extends Application {
                 notificationChannel = new NotificationChannel(CHANNEL_ID_COMPLETED,
                         getString(R.string.notification_channel_completed),
                         NotificationManager.IMPORTANCE_DEFAULT);
+                // notificationChannel.enableLights(true);
+                notificationChannel.enableVibration(setting.ui.vibrateNotification);
+                if (setting.ui.soundNotification) {
+                    notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI,
+                            Notification.AUDIO_ATTRIBUTES_DEFAULT);
+                }
+                else
+                    notificationChannel.setSound(null, null);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
-            notificationChannel.enableVibration(setting.ui.vibrateNotification);
-            if (setting.ui.soundNotification == false)
-                notificationChannel.setSound(null, null);
-            // notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI,
-            //         new AudioAttributes.Builder().build());
 
             // --- create NotificationChannel --- error
             notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID_ERROR);
@@ -1413,11 +1418,16 @@ public class MainApp extends Application {
                 notificationChannel = new NotificationChannel(CHANNEL_ID_ERROR,
                         getString(R.string.notification_channel_error),
                         NotificationManager.IMPORTANCE_DEFAULT);
+                // notificationChannel.enableLights(true);
+                notificationChannel.enableVibration(setting.ui.vibrateNotification);
+                if (setting.ui.soundNotification) {
+                    notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI,
+                            Notification.AUDIO_ATTRIBUTES_DEFAULT);
+                }
+                else
+                    notificationChannel.setSound(null, null);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
-            notificationChannel.enableVibration(setting.ui.vibrateNotification);
-            if (setting.ui.soundNotification == false)
-                notificationChannel.setSound(null, null);
 
             // --- create Notification.Builder ---
             builderNormal = new Notification.Builder(getApplicationContext(), CHANNEL_ID_NORMAL);
