@@ -17,6 +17,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DividerItemDecoration;
@@ -1083,19 +1084,29 @@ public class MainActivity extends AppCompatActivity {
                     if (file != null) {
                         // create Intent for Activity
                         try {
+                            Uri uri;
                             Intent intent = new Intent(Intent.ACTION_VIEW);
-                            Uri uri = Uri.fromFile(file);
-                            String url = uri.toString();
+
+                            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+                                uri = Uri.fromFile(file);
+                            else {
+                                // --- Android 7.0 --- API 24 ---
+                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                uri = FileProvider.getUriForFile(MainActivity.this,
+                                        getApplicationContext().getPackageName() + ".fileprovider", file);
+                            }
 
                             // grab mime type
                             String newMimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                                    MimeTypeMap.getFileExtensionFromUrl(url));
+                                    MimeTypeMap.getFileExtensionFromUrl(uri.toString()));
 
                             intent.setDataAndType(uri, newMimeType);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity (intent);
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
+                            app.logAppend("ACTION_VIEW - " + e.getMessage());
                         }
                     }
                     else {
