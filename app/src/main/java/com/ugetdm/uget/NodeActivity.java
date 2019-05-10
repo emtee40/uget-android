@@ -399,7 +399,7 @@ public class NodeActivity extends AppCompatActivity {
         downloadProp = (DownloadProp) categoryProp;
         getDownloadProp(downloadForm, downloadProp, categoryForm != null);
         if (isFolderWritable(downloadProp.folder) == false) {
-            startFolderRequest();
+            startFolderPermission();
             return;
         }
 
@@ -827,8 +827,8 @@ public class NodeActivity extends AppCompatActivity {
     // --------------------------------
     // folder chooser + permission
 
-    private static final int RESULT_FOLDER_CHOOSER = 0xDF0C;
-    private static final int RESULT_FOLDER_REQUEST = 0xDF0E;
+    private static final int REQUEST_FOLDER_CHOOSER = 0xDF0C;
+    private static final int REQUEST_FOLDER_PERMISSION = 0xDF0E;
 
     protected boolean isFolderWritable(String folder) {
         if (folder.equals(""))
@@ -857,18 +857,19 @@ public class NodeActivity extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                    Intent.FLAG_GRANT_PREFIX_URI_PERMISSION |
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(intent, RESULT_FOLDER_CHOOSER);
+            startActivityForResult(intent, REQUEST_FOLDER_CHOOSER);
         }
     }
 
-    protected void onFolderChooserResult (Uri  treeUri) {
+    protected void onFolderChooserResult (Uri treeUri, Intent resultData) {
         String folder = FileUtil.getFullPathFromTreeUri(treeUri, this);
         if (isFolderWritable(folder) == false) {
-            onFolderRequestResult(treeUri);
+            onFolderPermissionResult(treeUri, resultData);
             // --- Snackbar ---
             Snackbar.make(findViewById(R.id.viewpager), R.string.message_permission_folder_get, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
@@ -882,7 +883,7 @@ public class NodeActivity extends AppCompatActivity {
         editText.setText(folder);
     }
 
-    protected void startFolderRequest () {
+    protected void startFolderPermission() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage(R.string.message_permission_folder)
@@ -894,9 +895,10 @@ public class NodeActivity extends AppCompatActivity {
                     intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                     // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                            Intent.FLAG_GRANT_PREFIX_URI_PERMISSION |
                             Intent.FLAG_GRANT_READ_URI_PERMISSION |
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    startActivityForResult(intent, RESULT_FOLDER_REQUEST);
+                    startActivityForResult(intent, REQUEST_FOLDER_PERMISSION);
                 }
             }
         });
@@ -904,12 +906,15 @@ public class NodeActivity extends AppCompatActivity {
             builder.show();
     }
 
-    protected void onFolderRequestResult (Uri  treeUri) {
+    protected void onFolderPermissionResult (Uri treeUri, Intent resultData) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            /*
             grantUriPermission(getPackageName(), treeUri,
                     Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                            Intent.FLAG_GRANT_PREFIX_URI_PERMISSION |
                             Intent.FLAG_GRANT_READ_URI_PERMISSION |
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+             */
             getContentResolver().takePersistableUriPermission(treeUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -923,12 +928,12 @@ public class NodeActivity extends AppCompatActivity {
         Uri  treeUri = resultData.getData(); // you can't use Uri.fromFile() to get path
 
         switch (requestCode) {
-            case RESULT_FOLDER_CHOOSER:
-                onFolderChooserResult(treeUri);
+            case REQUEST_FOLDER_CHOOSER:
+                onFolderChooserResult(treeUri, resultData);
                 break;
 
-            case RESULT_FOLDER_REQUEST:
-                onFolderRequestResult(treeUri);
+            case REQUEST_FOLDER_PERMISSION:
+                onFolderPermissionResult(treeUri, resultData);
                 // --- Snackbar ---
                 Snackbar.make(findViewById(R.id.viewpager), FileUtil.getFullPathFromTreeUri(treeUri,this),
                         Snackbar.LENGTH_LONG).setAction("Action", null).show();
