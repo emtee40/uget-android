@@ -13,6 +13,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Build;
@@ -55,8 +56,9 @@ public class MainService extends Service {
         if (intent.getAction().equals(ACTION_START_FOREGROUND)) {
             app.logAppend("MainService - START");
             // --- start foreground service
-            Notification notification = createNotification();
-            startForeground(14777, notification);
+            initNotificationBuilder();
+            Notification notification = buildNotification(this);
+            startForeground(MainApp.NOTIFICATION_ID, notification);
         }
         else if (intent.getAction().equals(ACTION_STOP_FOREGROUND)) {
             app.logAppend("MainService - STOP");
@@ -118,7 +120,7 @@ public class MainService extends Service {
     // ----------------------------------------------------
     // Notification
 
-    static Notification.Builder builder;
+    public  static Notification.Builder builder;
     private final String        CHANNEL_ID_SERVICE    = "-.Service";
 
     private void initNotificationBuilder() {
@@ -131,36 +133,36 @@ public class MainService extends Service {
             if (notificationChannel == null) {
                 notificationChannel = new NotificationChannel(CHANNEL_ID_SERVICE,
                         getString(R.string.notification_channel_service),
-                        NotificationManager.IMPORTANCE_DEFAULT);
+                        NotificationManager.IMPORTANCE_MIN);
                 notificationChannel.enableVibration(false);
                 notificationChannel.setSound(null, null);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
             builder = new Notification.Builder(getApplicationContext(), CHANNEL_ID_SERVICE);
         }
-        else
+        else {
             builder = new Notification.Builder(getApplicationContext());
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                builder.setPriority(Notification.PRIORITY_MIN);
+        }
     }
 
-    private Notification createNotification() {
-        if (builder == null)
-            initNotificationBuilder();
-
-        Intent notifyIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
+    public static Notification buildNotification(Context context) {
+        Intent notifyIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, 0);
         builder.setContentIntent(pendingIntent)
-               .setWhen(System.currentTimeMillis());
+                .setWhen(System.currentTimeMillis());
 
-        String title = getString(R.string.notification_service_running);
+        String title = context.getString(R.string.notification_service_running);
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-            title = getString(R.string.app_name) + " · " + title;
+            title = context.getString(R.string.app_name) + " · " + title;
         builder.setContentTitle(title);
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             builder.setSmallIcon(R.mipmap.ic_launcher);
         else {
             builder.setSmallIcon(R.mipmap.ic_notification)
-                   .setColor(getResources().getColor(R.color.colorPrimary));
+                    .setColor(context.getResources().getColor(R.color.colorPrimary));
         }
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)

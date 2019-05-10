@@ -210,6 +210,7 @@ public class TimerHandler {
                 }
                 else if (nActive == 0 && nActiveLast > 0) {
                     // --- stop ---
+                    app.notifyServiceRunning();
                     // --- save data ---
                     if (Job.queued[Job.SAVE_ALL] == 0)
                         Job.saveAll();

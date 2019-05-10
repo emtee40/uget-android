@@ -298,8 +298,8 @@ public class MainApp extends Application {
 
         logAppend("App.onCreateRunning() - initSharedPreferences()");
         initSharedPreferences();
-        logAppend("App.onCreateRunning() - initNotification()");
-        initNotification();
+        logAppend("App.onCreateRunning() - initNotificationBuilder()");
+        initNotificationBuilder();
         logAppend("App.onCreateRunning() - initClipboard()");
         initClipboard();
 
@@ -395,6 +395,7 @@ public class MainApp extends Application {
                     logAppend(uri.toString() + " takePersistableUriPermission");
                     grantUriPermission(getPackageName(), uri,
                             Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                                    Intent.FLAG_GRANT_PREFIX_URI_PERMISSION |
                                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     getContentResolver().takePersistableUriPermission(uri,
@@ -1366,17 +1367,18 @@ public class MainApp extends Application {
     // ------------------------------------------------------------------------
     // Notification
     NotificationManager  notificationManager = null;
-    private final int    NOTIFICATION_ID = 1;
+    final static int     NOTIFICATION_ID = 1;
+    final static int     NOTIFICATION_ID_ED = 0xED;    // job finished
     // --- Notification.Builder ---
     Notification.Builder builderNormal = null;
     Notification.Builder builderCompleted = null;
     Notification.Builder builderError = null;
     // --- ID of the NotificationChannel ---
-    final String          CHANNEL_ID_NORMAL    = "0.Normal";
-    final String          CHANNEL_ID_COMPLETED = "1.Completed";
-    final String          CHANNEL_ID_ERROR     = "2.Error";
+    final String         CHANNEL_ID_NORMAL    = "0.Normal";
+    final String         CHANNEL_ID_COMPLETED = "1.Completed";
+    final String         CHANNEL_ID_ERROR     = "2.Error";
 
-    public void initNotification() {
+    public void initNotificationBuilder() {
         if (notificationManager == null)
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -1442,11 +1444,12 @@ public class MainApp extends Application {
     }
 
     public void cancelNotification() {
-        notificationManager.cancel(NOTIFICATION_ID);
-        //notificationManager.cancelAll();
+        // notificationManager.cancel(NOTIFICATION_ID);
+        // notificationManager.cancel(NOTIFICATION_ID_ED);
+        notificationManager.cancelAll();
     }
 
-    public void notifyMessage(Notification.Builder builder, String title, String content) {
+    public Notification buildNotification(Notification.Builder builder, String title, String content) {
         Intent notifyIntent = new Intent(MainApp.this, MainActivity.class);
         Context  context;
 
@@ -1458,10 +1461,10 @@ public class MainApp extends Application {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, 0);
 
         builder.setTicker(content)
-               .setContentIntent(pendingIntent)
-               .setContentTitle(title)
-               .setContentText(content)
-               .setAutoCancel(true);
+                .setContentIntent(pendingIntent)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setAutoCancel(true);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             builder.setShowWhen(true);
@@ -1469,19 +1472,21 @@ public class MainApp extends Application {
             builder.setSmallIcon(R.mipmap.ic_launcher);
         else {
             builder.setSmallIcon(R.mipmap.ic_notification)
-                   .setColor(getResources().getColor(R.color.colorPrimary));
+                    .setColor(getResources().getColor(R.color.colorPrimary));
         }
 
-        Notification notification;
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            notification = builder.getNotification();
+            return builder.getNotification();
         else
-            notification = builder.build();
+            return builder.build();
+    }
 
-        notificationManager.notify(NOTIFICATION_ID, notification);
+    public void notifyServiceRunning() {
+        notificationManager.notify(NOTIFICATION_ID, MainService.buildNotification(this));
     }
 
     public void notifyActiveSpeed(int nActive, boolean firstTime) {
+        notificationManager.cancel(NOTIFICATION_ID_ED);
         if (setting.ui.startNotification == false)
             return;
 
@@ -1501,7 +1506,9 @@ public class MainApp extends Application {
 
         builderNormal.setOngoing(true);
         builderNormal.setOnlyAlertOnce(true);
-        notifyMessage(builderNormal, title, subText);
+
+        notificationManager.notify(NOTIFICATION_ID,
+                buildNotification(builderNormal, title, subText));
     }
 
     public void notifyCompleted() {
@@ -1524,8 +1531,8 @@ public class MainApp extends Application {
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             title = getString(R.string.app_name) + " · " + title;
 
-        notifyMessage(builderCompleted, title,
-                getString(R.string.notification_completed_content));
+        notificationManager.notify(NOTIFICATION_ID_ED,
+                buildNotification(builderCompleted, title, getString(R.string.notification_completed_content)));
     }
 
     public void notifyError() {
@@ -1548,8 +1555,8 @@ public class MainApp extends Application {
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             title = getString(R.string.app_name) + " · " + title;
 
-        notifyMessage(builderError, title,
-                getString(R.string.notification_error_content));
+        notificationManager.notify(NOTIFICATION_ID_ED,
+                buildNotification(builderError, title, getString(R.string.notification_error_content)));
     }
 
     // ------------------------------------------------------------------------
