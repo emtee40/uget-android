@@ -205,9 +205,15 @@ public class TimerHandler {
                     // --- start ---
                     app.acquireWakeLock(true);
                     app.startMainService();
+                    // --- Autosave ---
+                    setAutosaved(false);
                 }
                 else if (nActive == 0 && nActiveLast > 0) {
                     // --- stop ---
+                    // --- save data ---
+                    if (Job.queued[Job.SAVE_ALL] == 0)
+                        Job.saveAll();
+                    // --- notification ---
                     if (app.userAction)
                         app.cancelNotification();
                     else if (app.core.nError > 0)
@@ -215,11 +221,14 @@ public class TimerHandler {
                     else
                         app.notifyCompleted();
                     // --- reduce power consumption ---
-                    app.releaseWakeLock();
-                    app.stopMainService();
+                    Job.runOnThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            app.stopMainService();
+                            app.releaseWakeLock();
+                        }
+                    });
                 }
-                // --- Autosave ---
-                setAutosaved(false);
                 // --- reset  "app.core.nError"
                 app.core.nError = 0;
             }
