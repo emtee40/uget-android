@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -962,6 +961,8 @@ public class NodeActivity extends AppCompatActivity {
             long         timeMillis;
             DownloadProp downloadProp;
 
+            if (batchUriIndex == 0)
+                app.startMainService();
             // --- batch dialog ---
             batchDialog.setMessage(
                     getString(R.string.batch_remaining_counts, batchUriTotal - batchUriIndex)
@@ -971,7 +972,7 @@ public class NodeActivity extends AppCompatActivity {
             downloadProp = (DownloadProp) categoryProp;
             timeMillis = System.currentTimeMillis();
             for (;  batchUriIndex < batchUriTotal;  batchUriIndex++) {
-                if (System.currentTimeMillis() - timeMillis > 100)
+                if (System.currentTimeMillis() - timeMillis > 200)
                     break;
 
                 String uri = batchInterface.batchGet1(batchResult);
@@ -992,6 +993,7 @@ public class NodeActivity extends AppCompatActivity {
             app.stateAdapter.notifyDataSetChanged();
 
             if (batchUriIndex == batchUriTotal) {
+                app.stopMainService();
                 batchInterface.batchEnd(batchResult);
                 batchDialog.dismiss();
                 finish();
