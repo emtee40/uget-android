@@ -1572,18 +1572,22 @@ public class MainApp extends Application {
         if (filesDir == null)
             return null;
 
-        if (Environment.getExternalStorageState().equals(
-                android.os.Environment.MEDIA_MOUNTED))
-        {
-            path = getExternalFilesDir(null).getAbsolutePath() +
-                    File.separator + "log.txt";
+        try {
+            if (Environment.getExternalStorageState().equals(
+                    android.os.Environment.MEDIA_MOUNTED))
+            {
+                path = getExternalFilesDir(null).getAbsolutePath() +
+                        File.separator + "log.txt";
 //            path = Environment.getExternalStorageDirectory().getAbsolutePath() +
 //                    File.separator + "uGet-log.txt";
+            }
+            else
+                path = filesDir.getAbsolutePath() + File.separator + "log.txt";
+            return new File(path);
         }
-        else
-            path = filesDir.getAbsolutePath() + File.separator + "log.txt";
-
-        return new File(path);
+        catch(Exception e) {
+            return null;
+        }
     }
 
     public void logClear()
