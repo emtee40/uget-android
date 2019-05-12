@@ -48,6 +48,7 @@ public class MainApp extends Application {
     // JSON-RPC
     public Rpc              rpc;
     // adapter
+    public DownloadAdapter  downloadAdapterTemp;
     public DownloadAdapter  downloadAdapter;
     public CategoryAdapter  categoryAdapter;
     public StateAdapter     stateAdapter;

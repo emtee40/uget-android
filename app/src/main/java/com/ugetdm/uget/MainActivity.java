@@ -1554,15 +1554,21 @@ public class MainActivity extends AppCompatActivity {
 
                 Runnable dataChangedRunnable = null;
                 if (resultData.getBooleanExtra("sortChanged", false)) {
+                    // remove adapter while sorting downloads.
+                    app.downloadAdapterTemp = app.downloadAdapter;
+                    app.downloadAdapter = null;
+                    downloadListView.setAdapter(null);
+                    // restore adapter after sorting downloads
                     dataChangedRunnable = new Runnable() {
                         @Override
                         public void run() {
+                            app.downloadAdapter = app.downloadAdapterTemp;
+                            app.downloadAdapterTemp = null;
                             downloadListView.setAdapter(app.downloadAdapter);
                         }
                     };
                 }
 
-                downloadListView.setAdapter(null);
                 SettingsRunnable settingsRunnable = new SettingsRunnable(resultData);
                 Job.runOnThread(settingsRunnable);
                 progressJob.waitForReady(R.string.message_loading, dataChangedRunnable);
