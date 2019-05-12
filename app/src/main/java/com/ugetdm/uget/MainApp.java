@@ -60,6 +60,9 @@ public class MainApp extends Application {
     // Timer Interval & Handler
     public TimerHandler   timerHandler = new TimerHandler(this);
 
+    // SettingsActivity
+    public Intent  settingsResult;
+
     // constructor must run before MainActivity.OnCreate()
     public MainApp() {
         core = new Core();
@@ -1079,11 +1082,6 @@ public class MainApp extends Application {
     }
 
     public void applySetting(boolean aria2Changed, boolean sortChanged) {
-//      Log.v("uGet", "App.applySetting() call setSorting(" + setting.sort_by + ")");
-        if (sortChanged) {
-            core.setSorting(setting.sortBy);
-            downloadAdapter.notifyDataSetChanged();
-        }
         if (setting.autosaveInterval > 0)
             timerHandler.startAutosave();
         else
@@ -1093,6 +1091,7 @@ public class MainApp extends Application {
         core.setMediaQuality(setting.plugin.media.quality);
         core.setMediaType(setting.plugin.media.type);
         core.setSpeedLimit(setting.speedDownload, setting.speedUpload);
+
         if (aria2Changed) {
             core.setPluginSetting(setting.plugin);
 
@@ -1155,6 +1154,10 @@ public class MainApp extends Application {
 	*/
         }
 
+        if (sortChanged) {
+            core.setSorting(setting.sortBy);
+            downloadAdapter.notifyDataSetChanged();
+        }
     }
 
     // ------------------------------------------------------------------------

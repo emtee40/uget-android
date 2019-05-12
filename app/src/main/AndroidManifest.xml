@@ -46,7 +46,8 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/action_settings" />
+            android:label="@string/action_settings"
+            android:launchMode="singleTop" />
 
         <activity
             android:name=".NodeActivity"

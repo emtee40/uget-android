@@ -3,6 +3,7 @@ package com.ugetdm.uget;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
@@ -31,9 +32,14 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
     // Application data
-    public static MainApp app = null;
-    public static boolean aria2Changed = false;
-    public static boolean sortChanged = false;
+    private static MainApp app = null;
+    public  static boolean aria2Changed = false;
+    public  static boolean sortChanged = false;
+
+    public static void reset() {
+        aria2Changed = false;
+        sortChanged = false;
+    }
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -55,9 +61,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onPause() {
-        app.getSettingFromPreferences();
-        app.applySetting(aria2Changed, sortChanged);
         super.onPause();
+
+        // --- setResult() can not work with PreferenceActivity
+        // --- MainActivity.onResume() will check & handle app.settingsResult
+        Intent resultData = app.settingsResult;
+        if (resultData == null) {
+            resultData = new Intent();
+            app.settingsResult = resultData;
+        }
+        resultData.putExtra("aria2Changed", aria2Changed);
+        resultData.putExtra("sortChanged", sortChanged);
+        // setResult(RESULT_OK, resultData);
     }
 
     /**

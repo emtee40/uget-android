@@ -235,6 +235,11 @@ public class MainActivity extends AppCompatActivity {
             if (adView != null)
                 ((AdView)adView).resume();
         }
+        // --- SettingsActivity ---
+        if (app.settingsResult != null) {
+            onActivityResult(REQUEST_SETTINGS, RESULT_OK, app.settingsResult);
+            app.settingsResult = null;
+        }
     }
 
     @Override
@@ -532,9 +537,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_settings:
+                // --- reset SettingsActivity
+                SettingsActivity.reset();
+                // --- start SettingsActivity
                 intent = new Intent();
                 intent.setClass(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
+                // --- startActivityForResult() can not work with PreferenceActivity.
+                // startActivityForResult(intent, REQUEST_SETTINGS);
                 return true;
 
             case R.id.action_exit:
@@ -1331,6 +1341,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_STORAGE = 112;
     private static final int REQUEST_QUEUING = 42;
     private static final int REQUEST_AUTOSAVE = 43;
+    private static final int REQUEST_SETTINGS = 46;
     private static final int REQUEST_FILE_CHOOSER = 44;
     private static final int REQUEST_FILE_CREATOR = 45;
 
@@ -1524,6 +1535,37 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_AUTOSAVE:
                 // --- Autosave ---
                 app.timerHandler.setAutosaved(false);
+                break;
+
+            case REQUEST_SETTINGS:
+                class SettingsRunnable implements Runnable {
+                    public Intent resultData;
+
+                    public SettingsRunnable(Intent resultData) { this.resultData = resultData; }
+                    @Override
+                    public void run() {
+                        app.getSettingFromPreferences();
+                        app.applySetting(resultData.getBooleanExtra("aria2Changed", false),
+                                false);
+                        if (resultData.getBooleanExtra("sortChanged", false))
+                            app.core.setSorting(app.setting.sortBy);
+                    }
+                }
+
+                Runnable dataChangedRunnable = null;
+                if (resultData.getBooleanExtra("sortChanged", false)) {
+                    dataChangedRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            downloadListView.setAdapter(app.downloadAdapter);
+                        }
+                    };
+                }
+
+                downloadListView.setAdapter(null);
+                SettingsRunnable settingsRunnable = new SettingsRunnable(resultData);
+                Job.runOnThread(settingsRunnable);
+                progressJob.waitForReady(R.string.message_loading, dataChangedRunnable);
                 break;
 
             default:
