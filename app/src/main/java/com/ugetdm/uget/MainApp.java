@@ -337,7 +337,7 @@ public class MainApp extends Application {
                 // startMainService();
 
                 // --- update permission after device reboot
-                refreshUriPermission();
+                // refreshUriPermission();
             }
         });
 

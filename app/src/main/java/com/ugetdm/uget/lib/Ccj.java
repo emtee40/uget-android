@@ -22,6 +22,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 // C Call Java
@@ -40,6 +42,7 @@ public class Ccj {
 
         initStorageMethod();
         cInit();
+        initUriCache();
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // first entry is emulated storage. Second if it exists is secondary (real) SD.
@@ -164,6 +167,76 @@ public class Ccj {
     }
 
     // ------------------------------------------------------------------------
+    // Uri & DocumentFile cache
+
+    public static List<String> treeUriList = new ArrayList<>();
+    public static Hashtable<String, DocumentFile> treeUriHash = new Hashtable<>();
+
+    private static void initUriCache() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            List<UriPermission> list = context.getContentResolver().getPersistedUriPermissions();
+            for (UriPermission uriPermission : list)
+                treeUriList.add(uriPermission.getUri().toString());
+        }
+    }
+
+    public static String getPersistedUriString(String uriString) {
+        String base = null;
+
+        for (String prefix:treeUriList) {
+            if (uriString.startsWith(prefix)) {
+                if (base == null || base.length() < prefix.length())
+                    base = prefix;
+            }
+        }
+        return base;
+    }
+
+    public static DocumentFile getDocumentTreeByUri(String uriString, String uriPersisted) {
+        int indexBeg, indexEnd;
+        DocumentFile docBase, docFile = null;
+
+        docBase = treeUriHash.get(uriString);
+        if (docBase != null)
+            return docBase;
+
+        if (uriPersisted == null)
+            uriPersisted = getPersistedUriString(uriString);
+        if (uriPersisted == null)
+            return null;
+        docBase = treeUriHash.get(uriPersisted);
+        if (docBase == null) {
+            docBase = DocumentFile.fromTreeUri(context, Uri.parse(uriPersisted));
+            if (docBase == null)
+                return null;
+            else
+                treeUriHash.put(uriPersisted, docBase);
+        }
+        if (uriString.equals(uriPersisted))
+            return docBase;
+
+        indexBeg = uriPersisted.length();
+        while (indexBeg < uriString.length()) {
+            indexEnd = uriString.indexOf("%2F", indexBeg);
+            if (indexEnd == -1)
+                indexEnd = uriString.length();
+
+            docFile = treeUriHash.get(uriString.substring(0, indexEnd));
+            if (docFile == null)
+                docFile = docBase.findFile(uriString.substring(indexBeg, indexEnd));
+            if (docFile == null)
+                docFile = docBase.createDirectory(uriString.substring(indexBeg, indexEnd));
+            if (docFile == null)
+                return null;
+
+            treeUriHash.put(uriString.substring(0, indexEnd), docFile);
+            indexBeg = indexEnd + 3;    // + "%2F"
+            docBase = docFile;
+        }
+        return docFile;
+    }
+
+    // ------------------------------------------------------------------------
     // UgStdio.h
 
     // parameter mode:
@@ -194,7 +267,8 @@ public class Ccj {
             return -1;
 
         try {
-            docTree = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            // docTree = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            docTree = getDocumentTreeByUri(treeAndName[0], null);
             docFile = docTree.findFile(treeAndName[1]);
             if (docFile != null) {
                 // if mode has O_CREAT & O_EXCL
@@ -238,7 +312,8 @@ public class Ccj {
         if(treeAndName[1].length() == 0)
             return -1;
         try {
-            docTree = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            // docTree = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            docTree = getDocumentTreeByUri(treeAndName[0], null);
             docFile = docTree.findFile(treeAndName[1]);
 
             if (docFile != null && docFile.renameTo(splitTreeAndName(docUriStrNew)[1]))
@@ -257,7 +332,8 @@ public class Ccj {
         if(treeAndName[1].length() == 0)
             return -1;
         try {
-            docTree = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            // docTree = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            docTree = getDocumentTreeByUri(treeAndName[0], null);
             docFile = docTree.findFile(treeAndName[1]);
 
             if (docFile != null && docFile.delete())
@@ -278,7 +354,8 @@ public class Ccj {
 
         String[] treeAndName = splitTreeAndName(docUriStr);
         try {
-            docFile = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            // docFile = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            docFile = getDocumentTreeByUri(treeAndName[0], null);
             if (docFile.findFile(treeAndName[1]) != null)
                 return 1;  // return TRUE;
         } catch(Exception e) {}
@@ -288,22 +365,29 @@ public class Ccj {
     public static int isDirectory(String docUriStr) {
         DocumentFile docTree;
 
-        docTree = DocumentFile.fromTreeUri(context, Uri.parse(docUriStr));
-        if(docTree.isDirectory())
-            return 1;    // return TRUE;
+        try {
+            // docTree = DocumentFile.fromTreeUri(context, Uri.parse(docUriStr));
+            docTree = getDocumentTreeByUri(docUriStr, null);
+            if(docTree.isDirectory())
+                return 1;    // return TRUE;
+        } catch (Exception e) {}
+
         return 0;    // return FALSE
     }
 
     public static int createDir(String docUriStr) {
         String[] treeAndName;
+        DocumentFile docTree;
+        DocumentFile docFile;
 
         try {
             treeAndName = splitTreeAndName(docUriStr);
             if(treeAndName[1].length() == 0)
                 return -1;
-            // check existed directory
-            DocumentFile docTree = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
-            DocumentFile docFile = docTree.findFile(treeAndName[1]);
+            // --- check existed directory
+            // docTree = DocumentFile.fromTreeUri(context, Uri.parse(treeAndName[0]));
+            docTree = getDocumentTreeByUri(treeAndName[0], null);
+            docFile = docTree.findFile(treeAndName[1]);
             if (docFile != null)
                 return -1;
             // create directory
@@ -315,8 +399,11 @@ public class Ccj {
     }
 
     public static int deleteDir(String docUriStr) {
-        DocumentFile docTree = DocumentFile.fromTreeUri(context, Uri.parse(docUriStr));
-        if (docTree.delete())
+        DocumentFile docTree;
+
+        // docTree = DocumentFile.fromTreeUri(context, Uri.parse(docUriStr));
+        docTree = getDocumentTreeByUri(docUriStr, null);
+        if (docTree != null && docTree.delete())
             return 0;
         else
             return -1;

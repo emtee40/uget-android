@@ -304,7 +304,7 @@
     <string name="message_permission_required">要求權限</string>
     <string name="message_permission_sd_card">此應用程式下載檔案需要存取 SD Card 的權限。</string>
     <string name="message_permission_folder">需要存取目錄的權限。請選擇此目錄以獲得寫入權限。</string>
-    <string name="message_permission_folder_get">獲得目錄權限直到重新啟動裝置為止。</string>
+    <string name="message_permission_folder_get">獲得目錄權限。</string>
     <string name="message_no_download_1">如果要增加新下載，可以將連結複製到剪貼簿或分享連結至 uGet。</string>
     <string name="message_no_download_2">如果要更改預設下載設定或同時啟動下載數，可以編輯分類屬性。（按工具列中的 \'檔案\' 並選擇 \'編輯分類\'）</string>
 

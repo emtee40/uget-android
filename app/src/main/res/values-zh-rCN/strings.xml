@@ -304,7 +304,7 @@
     <string name="message_permission_required">需要许可</string>
     <string name="message_permission_sd_card">此应用程序下载文件需要访问SD卡的权限。</string>
     <string name="message_permission_folder">需要访问此文件夹的权限。请选择此文件夹以获得写入权限。</string>
-    <string name="message_permission_folder_get">获取文件夹权限，直到重启设备。</string>
+    <string name="message_permission_folder_get">获取文件夹权限。</string>
     <string name="message_no_download_1">如果要添加新下载，可以将链接复制到剪贴板或分享链接到 uGet。</string>
     <string name="message_no_download_2">如果要更改默认下载设置或活动下载数，可以编辑分类属性。（按工具栏中的 \'文件\' 并选择 \'编辑分类\'）</string>
 
