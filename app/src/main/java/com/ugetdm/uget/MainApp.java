@@ -45,10 +45,10 @@ public class MainApp extends Application {
     //
     public int     nthCategoryCreation = 0;
     public boolean userAction  = false;
+    public boolean isSorting = false;
     // JSON-RPC
     public Rpc              rpc;
     // adapter
-    public DownloadAdapter  downloadAdapterTemp;
     public DownloadAdapter  downloadAdapter;
     public CategoryAdapter  categoryAdapter;
     public StateAdapter     stateAdapter;

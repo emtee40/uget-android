@@ -109,7 +109,10 @@ public class MainActivity extends AppCompatActivity {
         Runnable readyRunnable = new Runnable() {
             @Override
             public void run() {
-                downloadListView.setAdapter(app.downloadAdapter);
+                if (app.isSorting)
+                    downloadListView.setAdapter(null);
+                else
+                    downloadListView.setAdapter(app.downloadAdapter);
                 categoryListView.setAdapter(app.categoryAdapter);
                 stateListView.setAdapter(app.stateAdapter);
                 decideContent();
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         app.logAppend("MainActivity.onCreate() - Job.queuedTotal = " + Job.queuedTotal);
         progressJob = new ProgressJob(handler);
-        if (Job.queued[Job.LOAD_ALL] > 0)
+        if (Job.queued[Job.LOAD_ALL] > 0 || app.isSorting)
             progressJob.waitForReady(R.string.message_loading, readyRunnable);
         else {
             readyRunnable.run();
@@ -1549,21 +1552,20 @@ public class MainActivity extends AppCompatActivity {
                                 false);
                         if (resultData.getBooleanExtra("sortChanged", false))
                             app.core.setSorting(app.setting.sortBy);
+                        app.isSorting = false;
                     }
                 }
 
                 Runnable dataChangedRunnable = null;
                 if (resultData.getBooleanExtra("sortChanged", false)) {
                     // remove adapter while sorting downloads.
-                    app.downloadAdapterTemp = app.downloadAdapter;
-                    app.downloadAdapter = null;
+                    app.isSorting = true;
                     downloadListView.setAdapter(null);
                     // restore adapter after sorting downloads
                     dataChangedRunnable = new Runnable() {
                         @Override
                         public void run() {
-                            app.downloadAdapter = app.downloadAdapterTemp;
-                            app.downloadAdapterTemp = null;
+                            app.isSorting = false;
                             downloadListView.setAdapter(app.downloadAdapter);
                         }
                     };
