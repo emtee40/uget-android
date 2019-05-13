@@ -82,6 +82,8 @@ public class TimerHandler {
             queuingRunning = true;
             handler.postDelayed(queuingRunnable, queuingInterval);
         }
+        // --- Autosave --- enable saving function without delay
+        setAutosaved(false);
     }
 
     public void stopQueuing() {
