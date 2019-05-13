@@ -365,6 +365,13 @@ public class MainApp extends Application {
                 Info.setGroup(infoPointer, Info.Group.queuing);
             }
         }
+
+        // reset sort setting
+        setting.sortBy = 0;
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putString("pref_sort",
+                Integer.toString(setting.sortBy));
+        preferencesEditor.apply();
     }
 
     // this function is called by Job.saveAll()
