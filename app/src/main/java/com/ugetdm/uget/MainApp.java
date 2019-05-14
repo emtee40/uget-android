@@ -907,7 +907,7 @@ public class MainApp extends Application {
         setting.ui.soundNotification = preferences.getBoolean("pref_ui_notification_sound", true);
         setting.ui.vibrateNotification = preferences.getBoolean("pref_ui_notification_vibrate", true);
         setting.ui.noWifiGoOffline = preferences.getBoolean("pref_ui_no_wifi_go_offline", false);
-        setting.ui.skipExistingUri = preferences.getBoolean("pref_ui_skip_existing_uri", false);
+        setting.ui.skipExistingUri = preferences.getBoolean("pref_ui_skip_existing_uri", true);
 
         setting.clipboard.enable = preferences.getBoolean("pref_clipboard_monitor", true);
 

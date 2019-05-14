@@ -44,9 +44,9 @@
         android:summary="@string/pref_ui_no_wifi_go_offline_summary" />
 
     <CheckBoxPreference
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:key="pref_ui_skip_existing_uri"
         android:title="@string/pref_ui_skip_existing_uri"
-        android:summary="@string/pref_ui_skip_existing_uri" />
+        android:summary="@string/pref_ui_skip_existing_uri_summary" />
 
 </PreferenceScreen>

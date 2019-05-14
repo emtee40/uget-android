@@ -168,6 +168,7 @@
     <string name="pref_ui_no_wifi_go_offline">Go offline if no WiFi connection</string>
     <string name="pref_ui_no_wifi_go_offline_summary">Program will enable/disable offline mode if WiFi has disconnected/connected.</string>
     <string name="pref_ui_skip_existing_uri">Skip existing URI</string>
+    <string name="pref_ui_skip_existing_uri_summary">Enable this option if you don\'t want to add existed URI again.</string>
 
     <string name="pref_clipboard">Clipboard</string>
     <string name="pref_clipboard_monitor">Clipboard monitor</string>

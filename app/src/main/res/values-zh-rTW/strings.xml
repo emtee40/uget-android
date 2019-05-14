@@ -170,6 +170,7 @@
     <string name="pref_ui_no_wifi_go_offline">沒有 WiFi 連線時離線</string>
     <string name="pref_ui_no_wifi_go_offline_summary">WiFi 斷線/連線時程式啟動/關閉離線模式。</string>
     <string name="pref_ui_skip_existing_uri">跳過已有的網址</string>
+    <string name="pref_ui_skip_existing_uri_summary">如果您不想再次加入已有的 URI，請開啟此選項。</string>
 
     <string name="pref_clipboard">剪貼簿</string>
     <string name="pref_clipboard_monitor">剪貼簿監視器</string>

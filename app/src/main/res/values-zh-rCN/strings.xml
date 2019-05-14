@@ -170,6 +170,7 @@
     <string name="pref_ui_no_wifi_go_offline">若无 WiFi 连接则离线</string>
     <string name="pref_ui_no_wifi_go_offline_summary">如果 WiFi 断开/连接，程序将启用/禁用离线模式。</string>
     <string name="pref_ui_skip_existing_uri">跳过现有的 URI</string>
+    <string name="pref_ui_skip_existing_uri_summary">如果您不想再次添加现有的 URI，请启用此选项。</string>
 
     <string name="pref_clipboard">剪切板</string>
     <string name="pref_clipboard_monitor">剪切板监视</string>
