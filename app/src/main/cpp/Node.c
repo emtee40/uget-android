@@ -181,7 +181,7 @@ Java_com_ugetdm_uget_lib_Node_getChildrenByPositions(JNIEnv* env, jclass nodeCla
 		if (node)
 		    jArrayElements[index] = (jlong)(intptr_t) node->base;
 		else
-            jArrayElements[index] = NULL;
+            jArrayElements[index] = (jlong) NULL;
 	}
 
 	(*env)->ReleaseLongArrayElements(env, jArray, jArrayElements, 0);

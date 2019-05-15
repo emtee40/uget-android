@@ -172,7 +172,7 @@ Java_com_ugetdm_uget_lib_Sequence_batchStart(JNIEnv* env, jobject thiz, jstring 
 	if (count != size) {
 		// memory allocation failure.
 		batch_result_free(batchResult);
-		return NULL;
+		return (jlong) NULL;
 	}
 
 	return (intptr_t) batchResult;
