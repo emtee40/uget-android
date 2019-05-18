@@ -221,7 +221,10 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             holder.left.setVisibility(View.VISIBLE);
             holder.message.setVisibility(View.GONE);
             // --- speed & left ---
-            holder.speed.setText(Util.stringFromIntUnit(progress.downloadSpeed, 1));
+            if (progress.downloadSpeed == 0)
+                holder.speed.setText(Util.stringFromIntUnit(progress.uploadSpeed, 1));
+            else
+                holder.speed.setText(Util.stringFromIntUnit(progress.downloadSpeed, 1));
             if (progress.remainTime == 0)
                 holder.left.setText("");
             else {
