@@ -116,6 +116,8 @@
     <string name="action_category_delete">刪除分類</string>
     <string name="action_batch">批次</string>
     <string name="action_batch_sequence">網址序列下載</string>
+    <string name="action_torrent_new">新增 Torrent</string>
+    <string name="action_metalink_new">新增 Metalink</string>
     <string name="action_resume_all">恢復所有下載</string>
     <string name="action_pause_all">暫停所有下載</string>
     <string name="action_offline">離線</string>

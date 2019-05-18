@@ -9,8 +9,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.provider.DocumentFile;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.view.GravityCompat;
@@ -158,6 +160,7 @@ public class NodeActivity extends AppCompatActivity {
         // --- bundle ---
         Bundle bundle = getIntent().getExtras();
         mode = bundle.getInt("mode");
+        String uriString = bundle.getString("uriString", null);
         int  nthCategory = bundle.getInt("nthCategory", 0);
         long nodePointer = bundle.getLong("nodePointer");
         long infoPointer = Node.info(nodePointer);
@@ -232,9 +235,13 @@ public class NodeActivity extends AppCompatActivity {
         }
         else {
             if (mode == Mode.download_creation) {
-                Uri uri = app.getUriFromClipboard(false);
-                if (uri != null)
-                    categoryProp.uri = uri.toString();
+                if (uriString != null)
+                    categoryProp.uri = uriString;
+                else {
+                    Uri uri = app.getUriFromClipboard(false);
+                    if (uri != null)
+                        categoryProp.uri = uri.toString();
+                }
             }
             setDownloadProp(downloadForm, categoryProp, false);
         }
@@ -442,10 +449,22 @@ public class NodeActivity extends AppCompatActivity {
                     dialogBuilder.show();
                     return;
                 }
+
+                Uri  docUri = Uri.parse(downloadProp.uri);
+                boolean isDocUri = DocumentFile.isDocumentUri(this, docUri);
+                if (isDocUri) {
+                    grantUriPermission(getPackageName(), docUri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    downloadProp.uri = FileUtil.getFullPathFromDocumentUri(docUri, this);
+                }
+
                 nodePointer = Node.create();
                 infoPointer = Node.info(nodePointer);
                 Info.set(infoPointer, downloadProp);
                 app.addDownloadNode(nodePointer, nthCategoryReal + 1);
+
+                if (isDocUri)
+                    revokeUriPermission(docUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 break;
 
             case Mode.download_setting:
@@ -841,10 +860,20 @@ public class NodeActivity extends AppCompatActivity {
             }
 
             List<UriPermission> list = getContentResolver().getPersistedUriPermissions();
-            for (int i = 0; i < list.size(); i++){
-                String folderFromUri = FileUtil.getFullPathFromTreeUri(list.get(i).getUri(), this);
+            for (UriPermission uriPermission : list) {
+                Uri uri = uriPermission.getUri();
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    if (DocumentsContract.isTreeUri(uri) == false)
+                        continue;
+                }
+                else {
+                    if (DocumentsContract.isDocumentUri(this, uri))
+                        continue;
+                }
+                // --- only works with treeUri
+                String folderFromUri = FileUtil.getFullPathFromTreeUri(uri, this);
                 if (folder.startsWith(folderFromUri))
-                    if (list.get(i).isWritePermission())
+                    if (uriPermission.isWritePermission())
                         return true;
             }
             return false;

@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
             intent.removeExtra(Intent.EXTRA_TEXT);
             intent.setAction("");
             intent.replaceExtras(new Bundle());    // remove it completely
+            setIntent(new Intent());
 
             if (uri != null) {
                 if (app.setting.ui.skipExistingUri && app.core.isUriExist(uri.toString())) {
@@ -364,6 +365,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item;
+        boolean enabled;
         // --- offline ---
         item = menu.findItem(R.id.action_offline);
         item.setChecked(app.setting.offlineMode);
@@ -372,8 +374,14 @@ public class MainActivity extends AppCompatActivity {
         else
             item.setEnabled(true);
         // --- category menu ---
-        item = menu.findItem((R.id.action_category_delete));
+        item = menu.findItem(R.id.action_category_delete);
         item.setEnabled(app.nthCategory > 0);
+        // --- aria2 menu ---
+        enabled = app.setting.pluginOrder > Core.PluginOrder.curl;
+        item = menu.findItem(R.id.action_torrent_new);
+        item.setVisible(enabled);
+        item = menu.findItem(R.id.action_metalink_new);
+        item.setVisible(enabled);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -504,6 +512,47 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 intent.setClass(MainActivity.this, NodeActivity.class);
                 startActivityForResult(intent, REQUEST_QUEUING);
+                break;
+
+            case R.id.action_torrent_new:
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    startFileUriChooser("application/x-bittorrent");
+                else {
+                    FileChooserDialog fcDialog = new FileChooserDialog(MainActivity.this);
+                    fcDialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
+                        public void onFileSelected(Dialog source, File file) {
+                            source.hide();
+                            onFileUriChooserResult(file.getAbsolutePath());
+                        }
+                        // this is called when a file is created
+                        public void onFileSelected(Dialog source, File folder, String name) {
+                            source.hide();
+                        }
+                    });
+                    fcDialog.setFilter(".*torrent|.*TORRENT");
+                    fcDialog.show();
+                }
+                break;
+
+            case R.id.action_metalink_new:
+                // Android doesn't support "application/metalink+xml,application/metalink4+xml"
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    startFileUriChooser("application/*");
+                else {
+                    FileChooserDialog fcDialog = new FileChooserDialog(MainActivity.this);
+                    fcDialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
+                        public void onFileSelected(Dialog source, File file) {
+                            source.hide();
+                            onFileUriChooserResult(file.getAbsolutePath());
+                        }
+                        // this is called when a file is created
+                        public void onFileSelected(Dialog source, File folder, String name) {
+                            source.hide();
+                        }
+                    });
+                    fcDialog.setFilter(".*metalink|.*METALINK|.*meta4|.*META4");
+                    fcDialog.show();
+                }
                 break;
 
             case R.id.action_resume_all:
@@ -1345,6 +1394,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_QUEUING = 42;
     private static final int REQUEST_AUTOSAVE = 43;
     private static final int REQUEST_SETTINGS = 46;
+    private static final int REQUEST_FILE_URI_CHOOSER = 47;
     private static final int REQUEST_FILE_CHOOSER = 44;
     private static final int REQUEST_FILE_CREATOR = 45;
 
@@ -1512,6 +1562,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // application/x-bittorrent
+    // application/metalink+xml
+    protected void startFileUriChooser(String type) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType(type);
+            // Android doesn't support 'json', getMimeTypeFromExtension("json") return null
+            // intent.setType(MimeTypeMap.getSingleton().getMimeTypeFromExtension("zip"));
+            startActivityForResult(intent, REQUEST_FILE_URI_CHOOSER);
+        }
+    }
+
+    protected void onFileUriChooserResult(String fileUri) {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putInt("mode", NodeActivity.Mode.download_creation);
+        bundle.putString("uriString", fileUri);
+        bundle.putInt("nthCategory", app.nthCategory);
+        bundle.putLong("nodePointer", app.getNthCategory(app.nthCategory));
+        intent.putExtras(bundle);
+        intent.setClass(MainActivity.this, NodeActivity.class);
+        startActivityForResult(intent, REQUEST_QUEUING);
+    }
+
     //  @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent resultData) {
         Uri  treeUri;
@@ -1520,6 +1596,11 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         switch (requestCode) {
+            case REQUEST_FILE_URI_CHOOSER:
+                treeUri = resultData.getData(); // you can't use Uri.fromFile() to get path
+                onFileUriChooserResult(treeUri.toString());
+                break;
+
             case REQUEST_FILE_CHOOSER:
                 treeUri = resultData.getData(); // you can't use Uri.fromFile() to get path
                 onFileChooserResult(treeUri);
@@ -1567,6 +1648,8 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             app.isSorting = false;
                             downloadListView.setAdapter(app.downloadAdapter);
+                            // --- aria2 menu ---
+                            invalidateOptionsMenu();    // this will call onPrepareOptionsMenu()
                         }
                     };
                 }

@@ -55,6 +55,16 @@
     </item>
 
     <item
+        android:id="@+id/action_torrent_new"
+        android:title="@string/action_torrent_new"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_metalink_new"
+        android:title="@string/action_metalink_new"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_resume_all"
         android:title="@string/action_resume_all"
         app:showAsAction="never" />

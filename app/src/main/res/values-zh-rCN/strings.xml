@@ -116,6 +116,8 @@
     <string name="action_category_delete">删除分类</string>
     <string name="action_batch">批量</string>
     <string name="action_batch_sequence">URL序列批处理</string>
+    <string name="action_torrent_new">新建种子</string>
+    <string name="action_metalink_new">新建磁链</string>
     <string name="action_resume_all">恢复所有下载</string>
     <string name="action_pause_all">暂停所有下载</string>
     <string name="action_offline">离线</string>

@@ -412,6 +412,7 @@ public class MainApp extends Application {
                     getContentResolver().takePersistableUriPermission(uri,
                                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
                 }
             }
         }
