@@ -1729,6 +1729,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
+            if (MainActivity.this.isFinishing())
+                return;
+
             // --- wait MainApp ready
             if (Job.queuedTotal > 0) {
                 // --- progress dialog ---
