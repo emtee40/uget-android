@@ -14,8 +14,8 @@ android {
         applicationId "com.ugetdm.uget"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 60
-        versionName '2.2.0a'
+        versionCode 61
+        versionName '2.2.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -24,7 +24,7 @@ android {
             ndk {
                 // Specifies the ABI configurations of your native
                 // libraries Gradle should build and package with your APK.
-                // armeabi-v7a, arm64-v8a, x86, x86_64, mips, mips64
+                // armeabi-v7a, arm64-v8a, x86, x86_64
                 abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             }
         }
