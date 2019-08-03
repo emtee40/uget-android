@@ -13,9 +13,9 @@ android {
     defaultConfig {
         applicationId "com.ugetdm.uget"
         minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 61
-        versionName '2.2.1'
+        targetSdkVersion 28
+        versionCode 62
+        versionName '2.2.2'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
