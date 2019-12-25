@@ -1048,27 +1048,39 @@ public class MainApp extends Application {
         }
 
         // pref_media_quality
-        string = preferences.getString("pref_media_quality", "1");
+        string = preferences.getString("pref_media_quality", "3");
         try {
             if (string.length() > 0)
                 setting.plugin.media.quality = Integer.parseInt(string);
             else
-                setting.plugin.media.quality = 1;
+                setting.plugin.media.quality = 3;
         } catch (NumberFormatException e) {
-            setting.plugin.media.quality = 1;
+            setting.plugin.media.quality = 3;
+            preferencesEditor.putString("pref_media_quality",
+                    Integer.toString(setting.plugin.media.quality));
+        }
+        // v2.2.3 - for old version
+        if (setting.plugin.media.quality <= 1) {
+            setting.plugin.media.quality = 3;
             preferencesEditor.putString("pref_media_quality",
                     Integer.toString(setting.plugin.media.quality));
         }
 
         // pref_media_type
-        string = preferences.getString("pref_media_type", "0");
+        string = preferences.getString("pref_media_type", "1");
         try {
             if (string.length() > 0)
                 setting.plugin.media.type = Integer.parseInt(string);
             else
-                setting.plugin.media.type = 0;
+                setting.plugin.media.type = 1;
         } catch (NumberFormatException e) {
-            setting.plugin.media.type = 0;
+            setting.plugin.media.type = 1;
+            preferencesEditor.putString("pref_media_type",
+                    Integer.toString(setting.plugin.media.type));
+        }
+        // v2.2.3 - for old version
+        if (setting.plugin.media.type == 0) {
+            setting.plugin.media.type = 1;
             preferencesEditor.putString("pref_media_type",
                     Integer.toString(setting.plugin.media.type));
         }

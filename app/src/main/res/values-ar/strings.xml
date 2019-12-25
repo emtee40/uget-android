@@ -168,7 +168,7 @@
     </string-array>
     <string name="pref_media_quality">دقة الوسائط</string>
     <string name="pref_media_quality_summary">اعداد مطابقة شرط-دقة الوسائط</string>
-    <string name="pref_media_quality_entrie_default">1</string>
+    <string name="pref_media_quality_entrie_default">3</string>
     <string-array name="pref_media_quality_entrie_array">
         <item>240p</item>
         <item>360p</item>
@@ -177,15 +177,15 @@
         <item>1080p</item>
     </string-array>
     <string-array name="pref_media_quality_entrie_values">
-        <item>0</item>
-        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
+        <item>6</item>
     </string-array>
     <string name="pref_media_type">نوع الوسائط</string>
     <string name="pref_media_type_summary">اعداد مطابقة شرط-نوع الوسائط</string>
-    <string name="pref_media_type_entrie_default">0</string>
+    <string name="pref_media_type_entrie_default">1</string>
     <string-array name="pref_media_type_entrie_array">
         <item>mp4</item>
         <item>webm</item>
@@ -193,10 +193,10 @@
         <item>flv</item>
     </string-array>
     <string-array name="pref_media_type_entrie_values">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string name="pref_autosave_interval">فترة الحفظ التلقائي</string>

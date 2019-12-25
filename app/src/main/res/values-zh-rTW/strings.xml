@@ -252,7 +252,7 @@
     </string-array>
     <string name="pref_media_quality">媒體品質</string>
     <string name="pref_media_quality_summary">設定媒體匹配條件 - 品質</string>
-    <string name="pref_media_quality_entrie_default">1</string>
+    <string name="pref_media_quality_entrie_default">3</string>
     <string-array name="pref_media_quality_entrie_array">
         <item>240p</item>
         <item>360p</item>
@@ -261,15 +261,15 @@
         <item>1080p</item>
     </string-array>
     <string-array name="pref_media_quality_entrie_values">
-        <item>0</item>
-        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
+        <item>6</item>
     </string-array>
     <string name="pref_media_type">媒體格式</string>
     <string name="pref_media_type_summary">設定媒體匹配條件 - 格式</string>
-    <string name="pref_media_type_entrie_default">0</string>
+    <string name="pref_media_type_entrie_default">1</string>
     <string-array name="pref_media_type_entrie_array">
         <item>mp4</item>
         <item>webm</item>
@@ -277,10 +277,10 @@
         <item>flv</item>
     </string-array>
     <string-array name="pref_media_type_entrie_values">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string name="pref_other">其他</string>
