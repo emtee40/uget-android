@@ -9,7 +9,7 @@ android {
         abortOnError false
     }
 
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.ugetdm.uget"
         minSdkVersion 15
