@@ -1,6 +1,6 @@
 /*
  *
- *   Copyright (C) 2018-2019 by C.H. Huang
+ *   Copyright (C) 2018-2020 by C.H. Huang
  *   plushuang.tw@gmail.com
  */
 
@@ -39,13 +39,13 @@ Java_com_ugetdm_uget_lib_Node_free (JNIEnv* env, jclass nodeClass, jlong pointer
 JNIEXPORT jlong
 Java_com_ugetdm_uget_lib_Node_base (JNIEnv* env, jclass nodeClass, jlong pointer)
 {
-    UgetNode*  node;
+	UgetNode*  node;
 
-    node = (UgetNode*)(intptr_t) pointer;
-    if (node)
-        return (jlong)(intptr_t) node->base;
-    else
-        return 0;
+	node = (UgetNode*)(intptr_t) pointer;
+	if (node)
+		return (jlong)(intptr_t) node->base;
+	else
+		return 0;
 }
 
 JNIEXPORT jlong
@@ -99,12 +99,12 @@ Java_com_ugetdm_uget_lib_Node_children (JNIEnv* env, jclass nodeClass, jlong poi
 JNIEXPORT jint
 Java_com_ugetdm_uget_lib_Node_nChildren (JNIEnv* env, jclass nodeClass, jlong pointer)
 {
-    UgetNode*  node;
+	UgetNode*  node;
 
-    node = (UgetNode*)(intptr_t) pointer;
-    if (node)
+	node = (UgetNode*)(intptr_t) pointer;
+	if (node)
 		return node->n_children;
-    else
+	else
 		return 0;
 }
 
@@ -179,9 +179,9 @@ Java_com_ugetdm_uget_lib_Node_getChildrenByPositions(JNIEnv* env, jclass nodeCla
 		    node = node->next;
 		}
 		if (node)
-		    jArrayElements[index] = (jlong)(intptr_t) node->base;
+			jArrayElements[index] = (jlong)(intptr_t) node->base;
 		else
-            jArrayElements[index] = (jlong) NULL;
+			jArrayElements[index] = (jlong) NULL;
 	}
 
 	(*env)->ReleaseLongArrayElements(env, jArray, jArrayElements, 0);
@@ -197,7 +197,7 @@ Java_com_ugetdm_uget_lib_Node_getPositionsByChildren(JNIEnv* env, jclass nodeCla
 	UgetNode*  prev = NULL;
 	int        prev_position = 0;
 	int        size, index;
-    jlong*     jArrayElements;
+	jlong*     jArrayElements;
 
 	size = (*env)->GetArrayLength(env, jArray);
 	jArrayElements = (*env)->GetLongArrayElements(env, jArray, NULL);
@@ -205,23 +205,23 @@ Java_com_ugetdm_uget_lib_Node_getPositionsByChildren(JNIEnv* env, jclass nodeCla
 	for (index = 0;  index < size;  index++) {
 		node = (UgetNode*)(intptr_t) jArrayElements[index];
 		if (node == NULL) {
-            jArrayElements[index] = -1;
-            continue;
+			jArrayElements[index] = -1;
+			continue;
 		}
 		node = getFakeByParent(node, (UgetNode*)(intptr_t) pointer);
 		if (node == NULL) {
-            jArrayElements[index] = -1;
-            continue;
+			jArrayElements[index] = -1;
+			continue;
 		}
 
 		if (prev == NULL)
-            jArrayElements[index] = uget_node_child_position((UgetNode*)(intptr_t) pointer, node);
+			jArrayElements[index] = uget_node_child_position((UgetNode*)(intptr_t) pointer, node);
 		else if (node->next == prev)
 			jArrayElements[index] = prev_position - 1;
 		else if (node->prev == prev)
-            jArrayElements[index] = prev_position + 1;
+			jArrayElements[index] = prev_position + 1;
 		else
-            jArrayElements[index] = uget_node_child_position((UgetNode*)(intptr_t) pointer, node);
+			jArrayElements[index] = uget_node_child_position((UgetNode*)(intptr_t) pointer, node);
 		prev = node;
 		prev_position = (int)jArrayElements[index];
 	}
@@ -236,7 +236,7 @@ Java_com_ugetdm_uget_lib_Node_getFakeByGroup (JNIEnv* env, jclass nodeClass, jlo
 	UgetNode* node;
 
 	node = (UgetNode*)(intptr_t) pointer;
-    return (jlong)(intptr_t) uget_node_get_split(node, group);
+	return (jlong)(intptr_t) uget_node_get_split(node, group);
 }
 
 

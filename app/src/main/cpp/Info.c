@@ -1,6 +1,6 @@
 /*
  *
- *   Copyright (C) 2018-2019 by C.H. Huang
+ *   Copyright (C) 2018-2020 by C.H. Huang
  *   plushuang.tw@gmail.com
  */
 
@@ -69,12 +69,12 @@ JNIEXPORT jint
 Java_com_ugetdm_uget_lib_Info_getGroup (JNIEnv* env, jclass dataClass, jlong pointer)
 {
 	UgInfo*       info;
-    UgetRelation* relation;
+	UgetRelation* relation;
 
 	info = (UgInfo*)(intptr_t) pointer;
-    relation = ug_info_get(info, UgetRelationInfo);
-    if (relation)
-        return relation->group;
+	relation = ug_info_get(info, UgetRelationInfo);
+	if (relation)
+		return relation->group;
 	return 0;
 }
 
@@ -82,11 +82,11 @@ JNIEXPORT void
 Java_com_ugetdm_uget_lib_Info_setGroup (JNIEnv* env, jclass dataClass, jlong pointer, jint group)
 {
 	UgInfo*       info;
-    UgetRelation* relation;
+	UgetRelation* relation;
 
 	info = (UgInfo*)(intptr_t) pointer;
-    relation = ug_info_realloc(info, UgetRelationInfo);
-    relation->group = group;
+	relation = ug_info_realloc(info, UgetRelationInfo);
+	relation->group = group;
 }
 
 JNIEXPORT jstring
@@ -135,7 +135,7 @@ Java_com_ugetdm_uget_lib_Info_setName(JNIEnv* env, jclass dataClass, jlong point
 JNIEXPORT void
 Java_com_ugetdm_uget_lib_Info_setNameByUri(JNIEnv* env, jclass dataClass, jlong pointer, jstring uri)
 {
-    UgetCommon* common;
+	UgetCommon* common;
 	UgInfo*     info;
 	const char* cstr;
 
@@ -146,8 +146,8 @@ Java_com_ugetdm_uget_lib_Info_setNameByUri(JNIEnv* env, jclass dataClass, jlong 
 		if (cstr && cstr[0]) {
 			common = ug_info_realloc(info, UgetCommonInfo);
 			ug_free(common->name);
-            common->name = uget_name_from_uri_str(cstr);
-        }
+			common->name = uget_name_from_uri_str(cstr);
+		}
 		(*env)->ReleaseStringUTFChars(env, uri, cstr);
 	}
 }
@@ -522,7 +522,7 @@ Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_CategoryProp_2 (JNIEnv*
 //	jarray        jArray;
 	jstring       jString;
 	UgInfo*       info;
-    UgetCommon*   common;
+	UgetCommon*   common;
 	UgetCategory* category;
 	jboolean      has_data = JNI_FALSE;
 
@@ -536,7 +536,7 @@ Java_com_ugetdm_uget_lib_Info_get__JLcom_ugetdm_uget_lib_CategoryProp_2 (JNIEnv*
 	if (category) {
 		has_data = JNI_TRUE;
 
-        common = ug_info_get(info, UgetCommonInfo);
+		common = ug_info_get(info, UgetCommonInfo);
 		if (common && common->name)
 			jString = (*env)->NewStringUTF(env, common->name);
 		else
@@ -604,7 +604,7 @@ Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_CategoryProp_2 (JNIEnv*
 //	jarray        jArray;
 	jstring       jString;
 	UgInfo*       info;
-    UgetCommon*   common;
+	UgetCommon*   common;
 	UgetCategory* category;
 
 	setDownloadProp(env, pointer, cDataObject);
@@ -615,13 +615,13 @@ Java_com_ugetdm_uget_lib_Info_set__JLcom_ugetdm_uget_lib_CategoryProp_2 (JNIEnv*
 
 	jString = (*env)->GetObjectField (env, cDataObject,
 			(*env)->GetFieldID (env, cDataClass, "name", "Ljava/lang/String;"));
-    common = ug_info_realloc(info, UgetCommonInfo);
+	common = ug_info_realloc(info, UgetCommonInfo);
 	free (common->name);
-    common->name = NULL;
+	common->name = NULL;
 	if (jString) {
 		const char* cstr = (*env)->GetStringUTFChars (env, jString, NULL);
 		if (cstr && cstr[0])
-            common->name = ug_strdup (cstr);
+			common->name = ug_strdup (cstr);
 		(*env)->ReleaseStringUTFChars (env, jString, cstr);
 	}
 	(*env)->DeleteLocalRef (env, jString);

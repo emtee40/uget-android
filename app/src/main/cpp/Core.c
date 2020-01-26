@@ -1,6 +1,6 @@
 /*
  *
- *   Copyright (C) 2018-2019 by C.H. Huang
+ *   Copyright (C) 2018-2020 by C.H. Huang
  *   plushuang.tw@gmail.com
  */
 
@@ -31,13 +31,13 @@
 /*
 jint JNI_OnLoad (JavaVM* vm, void* reserved)
 {
-    JNIEnv* env = NULL;
-    jint    result = -1;
+	JNIEnv* env = NULL;
+	jint    result = -1;
 
-    if (vm->GetEnv((void**) &env, JNI_VERSION_1_4) != JNI_OK) {
-        LOGE("ERROR: GetEnv failed\n");
-     }
-    return result;
+	if (vm->GetEnv((void**) &env, JNI_VERSION_1_4) != JNI_OK) {
+		LOGE("ERROR: GetEnv failed\n");
+	}
+	return result;
 }
 
 jint JNI_OnUnload(JavaVM* vm, void* reserved)
@@ -78,7 +78,7 @@ static void init_locks (void)
 	int i;
 
 	lockarray = (pthread_mutex_t*) OPENSSL_malloc(CRYPTO_num_locks() *
-                                            sizeof(pthread_mutex_t));
+	                                        sizeof(pthread_mutex_t));
 	for (i=0; i < CRYPTO_num_locks(); i++) {
 		pthread_mutex_init(&(lockarray[i]), NULL);
 	}
@@ -255,8 +255,8 @@ Java_com_ugetdm_uget_lib_Core_trim (JNIEnv* env, jobject thiz)
 	UgetApp*    app;
 	UgArrayPtr* deletedNodes;
 	jclass      jCore_class;
-    jlongArray  jArray;
-    jlong       jLong;
+	jlongArray  jArray;
+	jlong       jLong;
 	int         index;
 
 	jCore_class = (*env)->GetObjectClass (env, thiz);
@@ -267,19 +267,19 @@ Java_com_ugetdm_uget_lib_Core_trim (JNIEnv* env, jobject thiz)
 	// C array
 	deletedNodes = ug_malloc(sizeof(UgArrayPtr));
 	ug_array_init(deletedNodes, sizeof(void*), 16);
-    // trim
-    app->n_deleted = uget_app_trim(app, deletedNodes);
+	// trim
+	app->n_deleted = uget_app_trim(app, deletedNodes);
 	// copy C array to Java array
 	if (app->n_deleted == 0)
-	    jArray = NULL;
+		jArray = NULL;
 	else {
-        // Java long : 64-bit
-        // C pointer : 32-bit or 64-bit
-        jArray = (*env)->NewLongArray(env, app->n_deleted);
-	    for (index = 0;  index < deletedNodes->length;  index++) {
+		// Java long : 64-bit
+		// C pointer : 32-bit or 64-bit
+		jArray = (*env)->NewLongArray(env, app->n_deleted);
+		for (index = 0;  index < deletedNodes->length;  index++) {
 			jLong = (jlong)(intptr_t) deletedNodes->at[index];
 			(*env)->SetLongArrayRegion(env, jArray, index, 1, &jLong);
-	    }
+		}
 	}
 	// C array
 	ug_array_clear(deletedNodes);

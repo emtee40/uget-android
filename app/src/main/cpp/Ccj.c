@@ -1,6 +1,6 @@
 /*
  *
- *   Copyright (C) 2018-2019 by C.H. Huang
+ *   Copyright (C) 2018-2020 by C.H. Huang
  *   plushuang.tw@gmail.com
  */
 
@@ -53,19 +53,19 @@ static int  get_android_version (JNIEnv* env);
 JNIEXPORT void
 Java_com_ugetdm_uget_lib_Ccj_cInit (JNIEnv* env, jclass this_class)
 {
-	(*env)->GetJavaVM (env, &jvm);
-//	jCcj_class      = (*env)->FindClass (env, "com/ugetdm/uget/lib/Ccj");
+    (*env)->GetJavaVM (env, &jvm);
+//  jCcj_class      = (*env)->FindClass (env, "com/ugetdm/uget/lib/Ccj");
     jCcj_class = (*env)->NewGlobalRef (env, this_class);
     jCcj_getStoragePathLength = (*env)->GetStaticMethodID (env, jCcj_class, "getStoragePathLength", "(Ljava/lang/String;)I");
     jCcj_pathToTreeUri = (*env)->GetStaticMethodID (env, jCcj_class, "pathToTreeUri", "(Ljava/lang/String;)Ljava/lang/String;");
-	jCcj_openFile   = (*env)->GetStaticMethodID (env, jCcj_class, "openFile", "(Ljava/lang/String;I)I");
-	jCcj_renameFile = (*env)->GetStaticMethodID (env, jCcj_class, "renameFile", "(Ljava/lang/String;Ljava/lang/String;)I");
-	jCcj_removeFile = (*env)->GetStaticMethodID (env, jCcj_class, "removeFile", "(Ljava/lang/String;)I");
+    jCcj_openFile   = (*env)->GetStaticMethodID (env, jCcj_class, "openFile", "(Ljava/lang/String;I)I");
+    jCcj_renameFile = (*env)->GetStaticMethodID (env, jCcj_class, "renameFile", "(Ljava/lang/String;Ljava/lang/String;)I");
+    jCcj_removeFile = (*env)->GetStaticMethodID (env, jCcj_class, "removeFile", "(Ljava/lang/String;)I");
 
-	jCcj_createDir  = (*env)->GetStaticMethodID (env, jCcj_class, "createDir", "(Ljava/lang/String;)I");
-	jCcj_deleteDir  = (*env)->GetStaticMethodID (env, jCcj_class, "deleteDir", "(Ljava/lang/String;)I");
+    jCcj_createDir  = (*env)->GetStaticMethodID (env, jCcj_class, "createDir", "(Ljava/lang/String;)I");
+    jCcj_deleteDir  = (*env)->GetStaticMethodID (env, jCcj_class, "deleteDir", "(Ljava/lang/String;)I");
 
-	jCcj_isFileExist = (*env)->GetStaticMethodID (env, jCcj_class, "isFileExist", "(Ljava/lang/String;)I");
+    jCcj_isFileExist = (*env)->GetStaticMethodID (env, jCcj_class, "isFileExist", "(Ljava/lang/String;)I");
     jCcj_isDirectory = (*env)->GetStaticMethodID (env, jCcj_class, "isDirectory", "(Ljava/lang/String;)I");
 
     sdkVer = get_android_version (env);
@@ -80,12 +80,12 @@ Java_com_ugetdm_uget_lib_Ccj_cFinal (JNIEnv* env, jclass this_class)
 
 static int  get_android_version (JNIEnv* env)
 {
-	int     sdkInt = 0;
+    int     sdkInt = 0;
 
-	// VERSION is a nested class within android.os.Build (hence "$" rather than "/")
-	jclass versionClass = (*env)->FindClass (env, "android/os/Build$VERSION" );
-	jfieldID sdkIntFieldID = (*env)->GetStaticFieldID (env, versionClass, "SDK_INT", "I" );
-	sdkInt = (*env)->GetStaticIntField (env, versionClass, sdkIntFieldID);
+    // VERSION is a nested class within android.os.Build (hence "$" rather than "/")
+    jclass versionClass = (*env)->FindClass (env, "android/os/Build$VERSION" );
+    jfieldID sdkIntFieldID = (*env)->GetStaticFieldID (env, versionClass, "SDK_INT", "I" );
+    sdkInt = (*env)->GetStaticIntField (env, versionClass, sdkIntFieldID);
     (*env)->DeleteLocalRef (env, versionClass);
     return sdkInt;
 }
@@ -131,10 +131,10 @@ static jstring path_to_tree_uri (JNIEnv* env, const char* path)
 // ignore parameter "mode"
 int  ug_open (const char* filename_utf8, int flags, int mode)
 {
-	JNIEnv* env;
-	jstring jTreeUri;
-	jint    jmode = 1;
-	int     result;
+    JNIEnv* env;
+    jstring jTreeUri;
+    jint    jmode = 1;
+    int     result;
     int     isDoAttachThread = FALSE;
 
     if ((*jvm)->GetEnv(jvm, (void**)&env, JNI_VERSION_1_6) == JNI_EDETACHED) {
@@ -149,31 +149,31 @@ int  ug_open (const char* filename_utf8, int flags, int mode)
         goto exit;
     }
 
-	// 1:  "r" for read-only
-	// 2:  "w" for write-only
-	// 4:  "t" truncates existing file
-	// 8:  O_CREAT
-	// 16: O_EXCL Use with O_CREAT, return error if file exist.
-	if (flags & O_RDONLY)
-		jmode = 1;
-	if (flags & O_WRONLY)
-		jmode = 2;
-	if (flags & O_RDWR)
-		jmode = 1 | 2;
-	if (flags & O_TRUNC)
-		jmode |= 4;
-	if (flags & O_CREAT)
-		jmode |= 8;
-	if (flags & O_EXCL)
-		jmode |= 16;
+    // 1:  "r" for read-only
+    // 2:  "w" for write-only
+    // 4:  "t" truncates existing file
+    // 8:  O_CREAT
+    // 16: O_EXCL Use with O_CREAT, return error if file exist.
+    if (flags & O_RDONLY)
+        jmode = 1;
+    if (flags & O_WRONLY)
+        jmode = 2;
+    if (flags & O_RDWR)
+        jmode = 1 | 2;
+    if (flags & O_TRUNC)
+        jmode |= 4;
+    if (flags & O_CREAT)
+        jmode |= 8;
+    if (flags & O_EXCL)
+        jmode |= 16;
 
-	result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_openFile, jTreeUri, jmode);
+    result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_openFile, jTreeUri, jmode);
     (*env)->DeleteLocalRef (env, jTreeUri);
 
 exit:
     if (isDoAttachThread)
-    	(*jvm)->DetachCurrentThread (jvm);
-	return result;
+        (*jvm)->DetachCurrentThread (jvm);
+    return result;
 }
 
 // ignore parameter "mode"
@@ -184,9 +184,9 @@ int  ug_creat (const char* filename_utf8, int mode)
 
 int  ug_rename (const char *old_filename, const char *new_filename)
 {
-	JNIEnv* env;
-	jstring jTreeUri1, jTreeUri2;
-	int     result;
+    JNIEnv* env;
+    jstring jTreeUri1, jTreeUri2;
+    int     result;
     int     isDoAttachThread = FALSE;
 
     if ((*jvm)->GetEnv(jvm, (void**)&env, JNI_VERSION_1_6) == JNI_EDETACHED) {
@@ -201,23 +201,23 @@ int  ug_rename (const char *old_filename, const char *new_filename)
         goto exit;
     }
 
-	jTreeUri2 = path_to_tree_uri(env, new_filename);
-	result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_renameFile,
-			jTreeUri1, jTreeUri2);
+    jTreeUri2 = path_to_tree_uri(env, new_filename);
+    result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_renameFile,
+                                          jTreeUri1, jTreeUri2);
     (*env)->DeleteLocalRef (env, jTreeUri1);
     (*env)->DeleteLocalRef (env, jTreeUri2);
 
 exit:
     if (isDoAttachThread)
-    	(*jvm)->DetachCurrentThread (jvm);
-	return result;
+        (*jvm)->DetachCurrentThread (jvm);
+    return result;
 }
 
 int  ug_remove (const char *filename_utf8)
 {
-	JNIEnv* env;
-	jstring jTreeUri;
-	int     result;
+    JNIEnv* env;
+    jstring jTreeUri;
+    int     result;
     int     isDoAttachThread = FALSE;
 
     if ((*jvm)->GetEnv(jvm, (void**)&env, JNI_VERSION_1_6) == JNI_EDETACHED) {
@@ -232,18 +232,18 @@ int  ug_remove (const char *filename_utf8)
         goto exit;
     }
 
-	result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_removeFile, jTreeUri);
+    result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_removeFile, jTreeUri);
     (*env)->DeleteLocalRef (env, jTreeUri);
 
 exit:
     if (isDoAttachThread)
-    	(*jvm)->DetachCurrentThread (jvm);
-	return result;
+        (*jvm)->DetachCurrentThread (jvm);
+    return result;
 }
 
 int  ug_unlink (const char *filename)
 {
-	return ug_remove (filename);
+    return ug_remove (filename);
 }
 
 FILE* ug_fopen (const char *filename_utf8, const char *mode)
@@ -360,9 +360,9 @@ exit:
 // return 0 or -1
 int  ug_create_dir (const char *dir)
 {
-	JNIEnv* env;
-	jstring jTreeUri;
-	int     result;
+    JNIEnv* env;
+    jstring jTreeUri;
+    int     result;
     int     isDoAttachThread = FALSE;
 
     if ((*jvm)->GetEnv(jvm, (void**)&env, JNI_VERSION_1_6) == JNI_EDETACHED) {
@@ -377,21 +377,21 @@ int  ug_create_dir (const char *dir)
         goto exit;
     }
 
-	result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_createDir, jTreeUri);
+    result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_createDir, jTreeUri);
     (*env)->DeleteLocalRef (env, jTreeUri);
 
 exit:
     if (isDoAttachThread)
-    	(*jvm)->DetachCurrentThread (jvm);
-	return result;
+        (*jvm)->DetachCurrentThread (jvm);
+    return result;
 }
 
 // return 0 or -1
 int  ug_delete_dir (const char *dir)
 {
-	JNIEnv* env;
-	jstring jTreeUri;
-	int     result;
+    JNIEnv* env;
+    jstring jTreeUri;
+    int     result;
     int     isDoAttachThread = FALSE;
 
     if ((*jvm)->GetEnv(jvm, (void**)&env, JNI_VERSION_1_6) == JNI_EDETACHED) {
@@ -406,13 +406,13 @@ int  ug_delete_dir (const char *dir)
         goto exit;
     }
 
-	result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_deleteDir, jTreeUri);
+    result = (*env)->CallStaticIntMethod (env, jCcj_class, jCcj_deleteDir, jTreeUri);
     (*env)->DeleteLocalRef (env, jTreeUri);
 
 exit:
     if (isDoAttachThread)
-    	(*jvm)->DetachCurrentThread (jvm);
-	return result;
+        (*jvm)->DetachCurrentThread (jvm);
+    return result;
 }
 
 static int  ug_get_saf_path_length (const char *dir)
@@ -444,7 +444,7 @@ static int  ug_get_saf_path_length (const char *dir)
 int  ug_create_dir_all (const char* dir, int len)
 {
     const char*   dir_end;
-    const char*   element_end;	// path element
+    const char*   element_end;    // path element
     char*         element_os;
 
     if (len == -1)

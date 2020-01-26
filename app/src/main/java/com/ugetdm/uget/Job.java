@@ -1,8 +1,8 @@
 /*
-      *
-      *   Copyright (C) 2019 by C.H. Huang
-      *   plushuang.tw@gmail.com
-      */
+ *
+ *   Copyright (C) 2019-2020 by C.H. Huang
+ *   plushuang.tw@gmail.com
+ */
 
 package com.ugetdm.uget;
 
